@@ -1,0 +1,270 @@
+STT ,CHỨC NĂNG / HỆ THỐNG,Câu Hỏi,,Trả lời,,
+,,Nội dung,Người hỏi,Nội dung,Người phụ trách,Đầu mối làm việc
+,"Receipt (vé hành khách, MCO, EMD…)",Hệ thống này phát sinh những loại giao dịch nào liên quan đến hóa đơn?,DUCLV,"Vé hành khách, MCO, EMD (có lý do xuất là dịch vụ) và gift card ",Đỗ Thúy Hồng,"Nga, Hằng"
+,,Những loại User nào được phát hành hóa đơn từ hệ thống này?,,Các nhân viên bán vé/MCO/EMD/GC và Ban TCKT,,
+1,,Khi nào thì dữ liệu từ hệ thống này cần xuất hóa đơn?,DUCLV,"- Phòng vé, dịch vụ khác qua API: realtime 
+",,
+2,,Luồng tạo dữ liệu hóa đơn để phát hành hóa đơn đang là nhập liệu trực tiếp lên hệ thống hóa đơn ? Hay đang tích hợp bằng API đẩy trực tiếp sang hệ thống hóa đơn ? Hay đang sử dụng tool hỗ trợ xuất hóa đơn theo định kỳ ?,DUCLV,"- Phòng vé: hệ thống xuất vé 1A, nhập thủ công (nếu là chứng từ viết tay)
+- Dịch vụ ngoài: API
+",,
+,,Mẫu hóa đơn phát hành từ phần mềm này?,,File gửi kèm email,,
+,,Việc khởi tạo hóa đơn phát hành là 1 giao dịch 1 hóa đơn tại một thời điểm? Hay là Đẩy nhiều giao dịch cùng 1 lúc để tạo hóa đơn ? Nếu đẩy cùng 1 lúc thì 1 lô sẽ là bao nhiêu giao dịch? (Mapping 1 chứng từ → nhiều hóa đơn? Hay nhiều chứng từ → 1 hóa đơn?),,"- Phòng vé, API: là xuất hóa đơn tại 1 thời điểm. Có thể 1 hóa đơn có nhiều chứng từ (tối đa hơn 10 chứng từ)
+",,
+,,Trong quá trình xuất hóa đơn từ hệ thống này có gặp khó khăn hay sai lệch gì không?,DUCLV,"- Có khó khăn trong việc kiểm tra logic. User có thể xuất sai nhưng hệ thống chưa kiểm tra logic được (ví dụ: vé nội địa có thu giá cước nhưng lại không có VAT hoặc ngược lại…)
+",,
+4,,Có backdate không?,DUCLV,Không cho phép,,
+5,,Có chỉnh sửa sau khi ký không?,DUCLV,Không cho phép,,
+6,,Đã có cơ chế chống trùng hóa đơn hay chưa?,DUCLV,"Đã có, kiểm soát theo số chứng từ",,
+7,Cargo Receipt (hàng hóa),"Hệ thống Cargo đang quản lý những nghiệp vụ nào liên quan tới hóa đơn?
+Các loại giao dịch chính:
+   - Vận chuyển hàng hóa?
+   - Phí dịch vụ?
+   - Phụ thu?",DUCLV,"Hệ thống Cargo Receipt đang sử dụng xuất hóa đơn cho dịch vụ vận chuyển Hàng hóa, Bưu kiện: trong đó chi tiết thu Cước, thuế, phụ phí vận chuyển hàng hóa/Bưu kiện",Đỗ Thúy Hồng,VIETHT; VANLK
+8,,Số lượng giao dịch/ngày?,DUCLV,khoảng 50 đ/ngày,,VIETHT
+9,,"Khi nào phát sinh hóa đơn?
+ -  Khi tạo vận đơn?
+ -  Khi thanh toán?
+ -  Khi hoàn tất vận chuyển?
+1 vận đơn → 1 hay nhiều hóa đơn?
+Có trường hợp:
+ -  Xuất gộp nhiều vận đơn?
+ -  Tách 1 vận đơn thành nhiều hóa đơn?",DUCLV,"1. Khách lẻ:          
+ - Sau khi AWB đã được Verify.     
+ - 1 AWB xuất 1 hóa đơn.
+- Khách lẻ phải thanh toán ngay tại thời điểm xuất AWB.   
+2. Khách hợp đồng & Bưu kiện:
+- Sau khi chốt kỳ báo cáo.
+- Nhiều AWB xuất 1 hóa đơn.
+3. Chiết khấu: 
+- Sau khi hết tháng, khoảng từ ngày 10 đến cuối tháng sau sẽ lập hóa đơn CK cho số liệu bán tháng trước.
+- 1 hóa đơn cho nhiều AWB.
+4. Lao vụ:
+- Khi khách nhận hàng.
+- 1 hóa đơn cho 1 Phiếu xuất kho.
+Không được tách 1 vận đơn cho nhiều hóa đơn",,VIETHT; VANLK
+10,,"Hiện tại có bị sai lệch / thiếu / trùng hóa đơn không?
+Mapping dữ liệu
+Cargo cung cấp các thông tin gì?
+ -  Thông tin khách hàng
+ -  Mã số thuế
+ -  Số tiền / thuế suất
+Dữ liệu có đầy đủ để xuất hóa đơn không?
+Có thiếu trường nào cần bổ sung?",DUCLV,"Hiện tại không bị sai lệch / thiếu / trùng hóa đơn.
+Mapping dữ liệu
+Cargo Receipt đã có: 
+1. Khách hợp đồng và chiết khâu:
+-  Thông tin khách hàng
+ -  Mã số thuế
+ -  Số tiền / thuế suất….
+Dữ liệu có đầy đủ để xuất hóa đơn.
+2. Khách lẻ và phí lao vụ:
+-  Số tiền / thuế suất….
+User sẽ phải nhập tự nhập Thông tin khách hàng
+3. Bưu kiện:
+-  Thông tin khách hàng
+ -  Mã số thuế
+ -  Số tiền / thuế suất….
+User sẽ phải nhập tự nhập tỷ giá quy đổi USD
+",,VIETHT; VANLK
+11,GAS (thu khác),"GAS đang quản lý những loại thu nào?
+ -  Phí dịch vụ?
+ -  Phí nội bộ?
+ -  Phí phát sinh?
+Có bao nhiêu loại phí?
+Có danh mục chuẩn không?
+Hệ thống GAS:
+ -  Hệ thống Tự phát triển hay vendor cung cấp dịch vụ?
+Số lượng giao dịch/ngày?",DUCLV,"1) Các loại thu trên GAS: quảng cáo, thuê tài sản, hoa hồng thuế sân bay/PVHK,HH bảo hiểm, thuê chuyến vận chuyển hành khách, hợp tác kinh doanh, hỗ trợ khai thác/kỹ thuật cho các hãng hàng không (khác VNA), thu phạt hợp đồng, thu bồi thường bảo hiểm, thanh lý tài sản, một số khoản thu khác. 
+2) Phí dịch vụ: Phí điều phối,
+3) Có bao nhiêu loại phí: thuế phí sân bay thu hộ các chuyến bay thuê chuyến, thuê khoang...
+4) Có Danh mục chuẩn không? Một số loại thu cố định phát sinh thường xuyên như hoa hồng, thanh lý tài sản, phạt...thì có danh mục, còn lại là để free text để người lập hóa đơn nhập thông tin tên HHDV. Thuế suất thì do người lập HĐon chọn theo danh mục các loại thuế suất đã set sẵn trong hệ thống GAS
+5) Hệ thống GAS: Vendor cung cấp
+6) Khoảng 250 hóa đơn/tháng",Hồ Xuân Tam-TP.KTTH,Nguyễn Tuyết Liên
+12,,"Có phát sinh:
+ -  Hoàn tiền?
+ -  Hủy giao dịch?
+ -  Điều chỉnh?
+Khi thay đổi:
+Xuất hóa đơn điều chỉnh hay thay thế?
+Có backdate không?",DUCLV,"1) Có phát sinh:
+- Hoàn tiền: Có, ít phát sinh
+- Hủy giao dịch: Có
+- Điều chỉnh: Có
+2) Khi thay đổi:
+- Xuất HĐ điều chỉnh hay thay thế: Cả 2 trường hợp
+- Có backdate không: Không",,
+13,,"Có nhiều loại thuế suất không?
+Có khoản:
+   không chịu thuế?
+    chịu thuế đặc biệt?
+Có nghiệp vụ quốc tế không?",DUCLV,"- Có nhiều loại thuế suất: nội địa 8/10%, quốc tế 0%, KKKNT
+- Không chịu thuế: Có
+- Chịu thuế đặc biệt: Không
+- Có nghiệp vụ quốc tế",,
+14,,Có yêu cầu realtime không?,DUCLV,"Có, tuân thủ theo quy định xuất hóa đơn của Nđinh 70",,
+15,,Có mapping rõ giữa loại phí và thuế suất / hóa đơn chưa?,DUCLV,"Hiện nay chưa mapping, áp thuế suất do người lập hóa đơn nhập.
+Mong muốn: có mapping",,
+16,,Hiện tại có bị thiếu hoặc sai hóa đơn từ GAS không?,DUCLV,"Việc lập hóa đơn trên Gas đang thực hiện manual nên đôi khi có sai sót. Khi phát hiện sai sót sẽ xử lý xuất hóa đơn điều chỉnh hoặc thay thế
+Mong muốn: đối soát được với hợp đồng, thu tiền",,
+17,Online (TMĐT),"Khi nào xuất hóa đơn 
+   + Khi thanh toán thành công?
+   + Khi hoàn tất dịch vụ?
+Có bắt buộc xuất hóa đơn cho tất cả đơn hàng không?
+Có:
+   - Xuất hóa đơn ngay?
+   - Hay cuối ngày (batch)?",,"- Xuất HĐ khi thanh toán thành công và có dữ liệu từ hệ thống xuất chứng từ (1A). Nhanh nhất là T+1 và chậm nhất T+5
+- Bắt buộc phải xuất hóa đơn cho các giao dịch thanh toán bằng VND. 
+- Xuất HĐ theo đăng ký của khách hàng. 
+- Đến ngày T+5 sẽ xuất hóa đơn tự động cho tất cả các chứng từ khách hàng không đăng ký xuất HĐ (trừ các trường hợp chứng từ không được xuất HĐ). HĐ được xuất theo từng booking (PNR)",Ms. Hồng,"Nga, Hằng"
+18,,"Có phát sinh:
+   - Hoàn tiền (refund)?
+   - Hủy đơn?
+   - Đổi dịch vụ?
+Khi refund:
+    Xử lý hóa đơn thế nào?
+Có:
+   1 đơn → nhiều thanh toán?
+   1 thanh toán → nhiều dịch vụ?",,"- Có phát sinh hoàn chứng từ. Không phát sinh hủy trên online. Nếu khách hủy thì sẽ hoàn vé. Đổi dịch vụ có phát sinh khi đó được xuất hóa đơn bán. Khách hàng phải đăng ký xuất hóa đơn cho vé đổi nếu có nhu cầu xuất HĐ.
+- Khi hoàn vé sẽ xuất hóa đơn hoàn. VNA có 2 loại hóa đơn bán và HĐ hoàn. Hóa đơn hoàn tiền sẽ là sso âm. Đây chính là hóa đơn điều chỉnh giảm mà trên HĐ không cần phải ghi điều chỉnh HĐ số….
+- Khi có vé hoàn hệ thống sẽ truy soát đến số vé hoàn xem trước đó vé có được xuất hóa đơn không? nếu có sẽ lấy tự động thông tin xuất HĐ (người mua) của vé bán để xuất HĐ cho vé hoàn. Nếu không tìm thấy thông tin xuất HĐ thì sẽ là trường hợp đổi vé không thu thêm tiền dẫn đến hệ thống không xuất HĐ, do vậy sẽ tìm đến thông tin của vé đổi trước đó để lấy thông tin xuất HĐ. 
+- Xuất hóa đơn hoàn theo hóa đơn bán. Nếu vé hoàn cùng trên 1 hóa đơn bán sẽ xuất HĐ hoàn cho các vé đó cùng 1 HĐ. Nếu HĐ bán tách riêng, HĐ hoàn cũng vậy.
+",,
+19,,"Các hình thức thanh toán:
+ -  Online (VNPay, thẻ, ví…)
+ -  COD?
+Có trường hợp:
+ -  Thanh toán thất bại nhưng vẫn giữ đơn?
+ -  Payment có phải trigger hóa đơn không?",,"_ Có rất nhiều hình thức thanh toán. Đối với online sẽ để hình thức thanh toán: Chuyển khoản/thẻ tín dụng.
+- Khi xuất hóa đơn sẽ liên quan đến số chứng từ, không kiểm tra đến thanh toán. Nếu hệ thống đã sinh ra số chứng từ 738xxx thì sẽ xuất HĐ",,
+20,,"DỮ LIỆU ĐẦU VÀO HÓA ĐƠN
+   TMĐT cung cấp:
+   Tên khách hàng
+    Email / MST
+    Nội dung dịch vụ
+    Giá trị đơn hàng
+Có thu thập:
+   Thông tin xuất hóa đơn riêng không?
+    Có thiếu dữ liệu không?",,"- Xây dựng dữ liệu đầu vào cho hóa đơn: tạo trang web để khách hàng vào đăng ký xuất HĐ ngay sau khi hệ thống xuất vé gửi số vé cho khách hàng.
+- Nội dung đăng ký xuất HĐ:
++ Số vé, địa chỉ email. 
++ Thông tin khách hàng: MST, Tên công ty, địa chỉ. Khách chỉ cần nhập MST hệ thống sẽ tự đưa ra các thông tin còn lại",,
+21,,"Có nhiều loại thuế suất không?
+     Có dịch vụ:
+     chịu thuế khác nhau?
+Có multi-currency không?",,"Có 2 loại thuế suất: 0% cho dịch vụ quốc tế và 8/10% cho dich vụ nội địa. Ngoài ra còn có KKKNT cho khoản thuế phí sân bay thu hộ nhà chức trách
+Chỉ xuất HĐ cho các giao dịch thanh toán tiền VND",,
+22,,"LIÊN QUAN KẾ TOÁN
+ -  TMĐT có tạo bút toán không?
+ -  Có sync sang kế toán không?
+Có lệch giữa:
+ -  TMĐT ↔ kế toán ↔ hóa đơn không?",,"- Không tạo bút toán từ HĐ. Sẽ tạo bút toán trên hệ thống REV.
+- Có thể có chênh lệch giữa kế toán và HĐ. ",,
+23,,"ĐỐI SOÁT
+Có đối soát:
+ -  TMĐT ↔ hóa đơn?
+ -  TMĐT ↔ thanh toán?
+Hiện tại làm bằng gì?
+ -  Excel?
+ -  Hệ thống tự động?",,"- Hiện tại chưa có đối soát giữa HĐ và TMĐT
+- Y/c sau này có đối soát tự động",,
+24,"Đại lý, đại lý BSP","Quy trình:
+   - Đại lý bán → BSP tổng hợp → hãng nhận tiền?
+Hãng nhận doanh thu:
+   - trực tiếp hay qua BSP?
+Có phân biệt:
+   - vé do hãng phát hành
+   - vé do đại lý phát hành?",,"Có 2 loại đại lý chỉ định và đại lý BSP
+- Đại lý chỉ định: bán -> Dữ liệu chuyển qua HOT file -> đổ vào REV -> đồng bộ sang chương trình xuất HĐ -> xuất hóa đơn theo kỳ
+- Đại lý BSP: ĐL bán -> BSP tổng hợp -> gửi HOT file -> đổ vào REV -> đồng bộ dữ liệu sang chương trình xuất HĐ -> xuất HĐ theo kỳ.
+- Phân biệt theo nơi xuất vé. Vé do ĐL nào xuất sẽ xuất HĐ cho ĐL đó ",,
+25,,"Đại lý bán hàng qua hệ thống nào?
+Có bao nhiêu loại đại lý?
+   - Nội địa?
+   - Quốc tế?
+Số lượng giao dịch/ngày?",,"- Đại lý chỉ định xuất vé trên hệ thống Amadues (HOST) 
+- ĐL BSP xuất trên các hệ thống xuất vé toàn cầu (GDS)
+-  Khoảng 22-23k giao dịch ngày. Tuy nhiên việc xuất HĐ cho ĐL được thực hiện theo kỳ báo cáo. HĐ kèm theo Bảng tổng hợp. Số liệu tổng hợp được tổng hợp từ các kỳ BC bán. 1 tháng sẽ xuất HĐ 4 lần cho ĐL. Kỳ cuối sẽ được xuất HĐ chậm nhất vào ngày 10 của tháng sau",,
+26,,"BSP cung cấp:
+   - thông tin khách hàng?
+   -  MST?
+Có đủ dữ liệu để xuất hóa đơn không?
+Có cần lấy thêm từ hệ khác không?",,"_ VNA xuất HĐ cho ĐL, ĐL xuất HĐ cho khách hàng. VNA không xuất HĐ trực tiếp cho khách hàng mua vé tại ĐL/ĐL BSP",,
+27,,"LIÊN QUAN KẾ TOÁN
+   - Có tạo bút toán không?
+   - Có sync sang kế toán không?
+ ",,- Vé xuất được đổ vào REV -> Hạch toán chi tiết. Số liệu xuất hóa đơn được đồng bộ từ REV sang ,,
+28,,"BSP có áp dụng:
+  - nhiều loại thuế?
+Có nghiệp vụ:
+  - quốc tế?
+Có multi-currency không?",,"Có 2 loại thuế suất: 0% cho dịch vụ quốc tế và 8/10% cho dich vụ nội địa. 
+",,
+29,,Doanh thu tính theo gross hay net (có trừ hoa hồng không)?,,"Xuất hóa đơn trên số tiền thu trên chứng từ, không phân biệt theo doanh thu ",,
+30,,Hiện tại có lệch giữa dữ liệu BSP và hệ nội bộ không?,,Có chênh lệch giữa hạch toán chi tiết các khoản mục và hóa đơn. Tổng tiền thanh toán không chênh lệch,,
+31,,Hiện tại có cơ chế nào đảm bảo dữ liệu BSP khớp hoàn toàn với hệ nội bộ và hóa đơn chưa?,,Có đối soát chênh lệch giữa hóa đơn và báo cáo bán,,
+32,IATA SIS,"Billing trong SIS có cần xuất hóa đơn không?
+ - Nếu có:
+     - Xuất cho ai?
+           - Hãng đối tác?
+           - Nội bộ (ITL)?
+     - Thời điểm xuất:
+           - Ngay khi lập billing?
+           - Khi clearing/settlement?
+     - Hóa đơn:
+           - Theo từng billing?
+           - Hay tổng hợp theo kỳ?",,"Billing trong SIS có cần xuất hóa đơn không? - Khi upload dữ liệu billing được generate từ 3 hệ thống (PRA - PAX, SIS M - MISC, CRA - Cargo) lên SIS, SIS sẽ tự động tạo hóa đơn theo đúng form TCT đã đăng ký với CQT. Khi truyền dữ liệu lên CQT, CT hóa đơn thực hiện thay thế số hóa đơn và Invoice Date mới, ký số và đẩy lên CQT.
+ - Nếu có:
+     - Xuất cho ai? - Hãng đối tác
+     - Thời điểm xuất: Advice Day (theo lịch ICH hàng năm) - ngày SIS chốt dữ liệu và thông báo tổng công nợ về từng hãng, Advice Day được dùng làm Invoice Date cho toàn bộ HĐ ký số trong kỳ
+     - Hóa đơn: Theo từng billing được generate từ 3 hệ thống nêu trên",Phạm Thu Hà,Nguyễn Huyền Linh
+33,,"SIS sử dụng:
+     - bao nhiêu loại currency?
+Tỷ giá:
+     -lấy theo SIS?
+     -hay hệ nội bộ?
+Hóa đơn xuất theo:
+     -currency nào?",,"SIS sử dụng:
+     - bao nhiêu loại currency? - USD
+Tỷ giá:
+     - hệ nội bộ =  tỷ giá quy đổi USD sang VND để ghi sổ, lấy theo Advice Day của kỳ, nguồn dữ liệu Internal Booking Rate (IBR) trên PRA
+Hóa đơn xuất theo:
+     -currency nào? - USD đối với hóa đơn đòi đối tác nước ngoài, VND đối với hóa đơn đòi BL (không phát sinh nữa)",,
+34,,"HẠCH TOÁN KẾ TOÁN
+     - SIS có hạch toán tự động không?
+     - Mapping tài khoản:
+          - theo loại billing?
+Có lệch giữa:
+     - SIS ↔ kế toán?",,"HẠCH TOÁN KẾ TOÁN
+     - SIS có hạch toán tự động không? - không, SIS chỉ tính tổng công nợ cho từng hãng, TCKT tự ghi sổ
+     - Mapping tài khoản:
+          - theo loại billing? - mỗi loại billing tương ứng với 1 tài khoản GAS
+Có lệch giữa:
+     - SIS ↔ kế toán?  - có chênh lệch tiền USD do làm tròn, không có chênh lệch tiền VND (SIS-GAS) do SIS không sử dụng VND",,
+35,,Hiện tại có cơ chế nào đảm bảo toàn bộ billing trong từng kỳ SIS được đối soát đầy đủ và đồng bộ với hệ kế toán và hóa đơn chưa?,,"- Đối soát giữa SIS và hệ kế toán: quy trình thủ công - các chuyên viên đổ hóa đơn kiểm tra đúng số lượng hóa đơn và đúng số tiền khi đổ và khi ghi sổ, giải quyết các lỗi phát sinh ngay lập tức nếu có
+- Đối soát giữa SIS và xuất hóa đơn: quy trình thủ công - các chuyên viên xuất hóa đơn dùng Form 1 - Final (danh sách tổng hợp hóa đơn tự động của SIS) làm template đổ vào CT hóa đơn, nếu trong CT có chênh lệch, chuyên viên kiểm tra và sửa hệ thống để đảm bảo tất cả hóa đơn trong Form 1 được đẩy vào CT",,
+36,"Đối soát số liệu giữa hóa đơn xuất ra với số ghi sổ (Đây là chức năng mới hoàn toàn, chưa từng có hệ thống đối soát nào và cũng thực hiện việc đối soát bao giờ)",,,"1. Hóa đơn hành khách
+- Sau khi đóng sổ trên hệ thống PRA, đổ toàn bộ dữ liệu ghi sổ (Accounting table) vào chương trình HĐ để đối soát với HĐ đã xuất:
++ Chức năng đổ dữ liệu tự động
++ Chức năng đổ dữ liệu manual theo lựa chọn: Ngày, module...
+--> Có báo cáo kết quả sau khi đổ để đối chiếu với dữ liệu gốc trên PRA
+- Căn cứ vào các điều kiện nhận diện đã được định nghĩa để đưa ra các vé có chênh lệch, lý do chênh lệch, cách xử lý…
++ Đối với các chênh lệch cần điều chỉnh sổ kế toán: Tạo bút toán theo template để user thực hiện upload vào PRA, sau đó đổ lại vào CTHĐ để giảm các vé có chênh lệch.
++ Đối với các vé không điều chỉnh sổ kế toán: Chọn nội dung xử lý tương ứng trên CTHĐ để giảm các vé có chênh lệch (VD: Lệch kỳ, chênh lệch khi xử lý chứng từ hoàn, đổi...)
+--> Yêu cầu monng muốn: Khi không còn vé trên báo cáo chênh lệch thì mới thực hiện chạy được báo cáo kê khai thuế GTGT",,Ngô Kim Lan (lannkim@vietnamairlines.com)
+,,,,"2. Hóa đơn hàng hóa, bưu kiện
+- Nguốn dữ liệu ghi sổ: Hệ thống CRA
+- Quy trình và các chức năng tương tự HĐ HK",,
+,,,,"3. Hóa đơn Interlines (IATA SIS)
+- Nguốn dữ liệu ghi sổ: Hệ thống PRA, CRA, SISM
+- Quy trình và các chức năng tương tự HĐ HK, HH",,
+,Báo cáo kê khai thuế,,,"Hiện nay Hành khách, hàng hóa,ITL đang kê khai theo số hạch toán trên sổ kế toán GAS, số thuế chạy phát sinh của tài khoản VAT, doanh số lấy theo báo cáo bán và phát sinh các tài khoản thuế phí. Tách manual các khoản include VAT như YR,YQ, phí đổi vé, phụ phí soi chiếu an ninh và phí AWB hàng hóa quốc tế.
+Gas và Bưu kiện: kê khai theo hóa đơn đã xuất
+Ctrinh mới: sẽ kê khai báo cáo VAT theo mẫu hiện hành theo hóa đơn đã xuất đối với thị trường trong nước. Đối với thị trường nước ngoài kê khai theo báo cáo bán","Vận tải Hàng không: Đỗ Thúy Hồng
+Doanh thu khác: Hồ Xuân Tam","Vận tải HK: Phạm Thu Hằng
+Vận tải Hàng hóa: Hoàng Tuấn Việt
+ITL: Nguyễn Huyền Linh
+GAS: Nguyễn Tuyết Liên"
+,,"Lập báo cáo kê khai thuế GTGT hàng tháng theo mẫu hiện hành và đối soát dữ liệu hóa đơn-kế toán-kê khai thuế
+=> CẦN LÀM RÕ",,"Có, là mục tiêu của Hệ thống hóa đơn mới",,
+,,"Kỳ xem báo cáo hiện tại? Nhu cầu export báo cáo
+=> CẦN LÀM RÕ",,"Có, các báo cáo xem theo tháng, cần export",,
