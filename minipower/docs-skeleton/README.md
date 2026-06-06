@@ -6,8 +6,8 @@ Khung folder **generic** — không gắn ngành, module hay dự án cụ thể
 
 ## Cách dùng
 
-1. **Copy** toàn bộ folder `docs-skeleton/` vào root repo dự án → đổi tên thành `docs/`
-2. **Tạo module** — copy `03-modules/_template/` → `03-modules/{module-id}/` (ví dụ `billing`, `inventory`, `auth`)
+1. **Khởi tạo dự án** — copy [`project-skeleton/`](../project-skeleton/) → `{project}/` và [`docs-skeleton/`](../docs-skeleton/) → `{project}/docs/` (xem [SKILL.md](../SKILL.md))
+2. **Tạo module** — copy `03-modules/_template/` → `03-modules/{module-id}/`
 3. **Sinh nội dung** — copy từ [`../templates/`](../templates/README.md) vào file tương ứng
 4. **Quy ước ID** — `{MOD}-{TYPE}-{NNN}` (MOD = mã module viết hoa, 3–6 ký tự)
 

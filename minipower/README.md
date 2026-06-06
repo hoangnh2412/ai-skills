@@ -12,8 +12,9 @@ minipower/
 │   ├── planning/SKILL.md
 │   ├── delivery/SKILL.md
 │   └── change-control/SKILL.md
+├── project-skeleton/        ← Khung dự án: memory, assets, notes
 ├── templates/               ← Khung 18 DOC
-└── docs-skeleton/           ← Khung folder dự án
+└── docs-skeleton/           ← Khung folder docs/ (artifact)
 ```
 
 ---
@@ -78,7 +79,8 @@ Dùng khi **chưa rõ phase** hoặc cần **overview end-to-end**. Agent hỏi 
 | Overview / full pipeline | `/minipower` |
 | Một phase cụ thể | `/minipower` + `Phase: …` **hoặc** `@skills/…/SKILL.md` |
 | Template DOC | `@templates/DOC-06-srs.md` (hoặc file template khác) |
-| Khởi tạo folder dự án | Copy `docs-skeleton/` → `{project}/docs/` |
+| Khởi tạo dự án | `/minipower` + `Init project` — xem [SKILL.md](SKILL.md#khởi-tạo-cấu-trúc-dự-án-mặc-định) |
+| Khởi tạo thủ công | Copy `project-skeleton/` + `docs-skeleton/` → `{project}/` |
 
 ---
 

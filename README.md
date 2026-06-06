@@ -93,11 +93,17 @@ Business Goal → Stakeholder → Process → Requirement → Solution
 | Delivery | `skills/delivery/` | 16–17 |
 | Change control | `skills/change-control/` | 18 |
 
-**Khởi tạo hồ sơ dự án:**
+**Khởi tạo dự án mới:**
 
 ```bash
-cp -R minipower/docs-skeleton /path/to/your-project/docs
+PROJECT=my-project
+MINIPOWER=/path/to/ai-skills/minipower
+mkdir -p "$PROJECT"
+cp -R "$MINIPOWER/project-skeleton/"* "$PROJECT/"
+cp -R "$MINIPOWER/docs-skeleton" "$PROJECT/docs"
 ```
+
+Cấu trúc: `memory/` · `assets/` · `notes/` (6 phase) · `docs/` (DOC-01–18). Chi tiết: [minipower/SKILL.md](minipower/SKILL.md).
 
 **Prompt mẫu:**
 
