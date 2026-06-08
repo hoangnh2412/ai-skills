@@ -12,10 +12,13 @@ Mọi thay đổi đáng chú ý của **Minipower skill pack** được ghi tro
 
 - **`docs/05-traceability/overview.md`** — rollup tiến độ 30s: snapshot, module × pipeline, milestones, blocker, việc 2 tuần tới
 - Link từ `memory/memory.md` và `project-skeleton/README.md` → `overview.md`; hướng dẫn agent rollup sau sync
+- **`docs/pipeline.md`**, **`docs/parallel-work.md`**, **`docs/README.md`** — tách tài liệu framework khỏi README chính
 
 ### Changed
 
 - `docs-skeleton/README.md`, `SKILL.md`, `README.md` — mô tả `05-traceability` gồm overview
+- `README.md` — giữ hướng dẫn Cursor; pipeline & song song chuyển sang `docs/`; onboarding chỉ ở `project-skeleton/README.md`
+- `project-skeleton/README.md` — hướng dẫn người mới join: cách đọc tài liệu, thứ tự đọc từng module
 
 ---
 
