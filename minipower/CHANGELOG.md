@@ -6,6 +6,19 @@ Mọi thay đổi đáng chú ý của **Minipower skill pack** được ghi tro
 
 ---
 
+## [Unreleased]
+
+### Added
+
+- **`docs/05-traceability/overview.md`** — rollup tiến độ 30s: snapshot, module × pipeline, milestones, blocker, việc 2 tuần tới
+- Link từ `memory/memory.md` và `project-skeleton/README.md` → `overview.md`; hướng dẫn agent rollup sau sync
+
+### Changed
+
+- `docs-skeleton/README.md`, `SKILL.md`, `README.md` — mô tả `05-traceability` gồm overview
+
+---
+
 ## [2.2.0] - 2026-06-08
 
 ### Added

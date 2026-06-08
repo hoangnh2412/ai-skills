@@ -17,4 +17,4 @@ Dự án quản lý theo **Minipower** — BA + Solution Architect + TPM.
 | [`brainstorm/`](brainstorm/) | Phân tích, trao đổi, decision log theo ngày; chốt → distill vào `docs/` |
 | [`docs/`](docs/) | Tài liệu baseline (Vision, BRD, kiến trúc, traceability, CR…) |
 
-**Context nhanh:** [`memory/memory.md`](memory/memory.md)
+**Tổng quan 30s:** [`docs/05-traceability/overview.md`](docs/05-traceability/overview.md) · **Context agent:** [`memory/memory.md`](memory/memory.md)

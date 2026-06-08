@@ -25,7 +25,7 @@ Khung folder **generic** — không gắn ngành, module hay dự án cụ thể
 | [`02-baseline/`](02-baseline/) | * | Snapshot sign-off — **READ ONLY** |
 | [`03-modules/`](03-modules/) | 04–07, 16 | Theo từng module / bounded context |
 | [`04-platform/`](04-platform/) | 08–14, 17 | Kiến trúc, tích hợp, NFR, deploy |
-| [`05-traceability/`](05-traceability/) | — | Trace matrix, doc registry |
+| [`05-traceability/`](05-traceability/) | — | Overview, trace matrix, doc registry |
 | [`06-changes/`](06-changes/) | 18 | CR + delta từng thay đổi |
 
 ## Luồng sửa một module

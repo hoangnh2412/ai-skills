@@ -181,7 +181,7 @@ Cập nhật `memory/planning/` và DOC-14/15 **lặp lại** khi BA/SA làm rõ
 |---|---------|
 | 1 | **Một module = một owner** — chỉ owner sửa DOC-04–07 trong folder module đó |
 | 2 | **SA chỉ `04-platform/`** — không sửa FR/UC của BA; thiếu thì TBD + note |
-| 3 | **File dùng chung — tránh sửa cùng lúc:** DOC-03, `trace-matrix.md`, `doc-registry.md` |
+| 3 | **File dùng chung — tránh sửa cùng lúc:** DOC-03, `overview.md`, `trace-matrix.md`, `doc-registry.md` |
 | 4 | **Cross-module** — thống nhất qua `memory/architecture/`, DOC-10, không meeting dài không ghi |
 | 5 | **MOD prefix cố định** — khai báo trong README module (`{MOD}-FR-001`, …) |
 | 6 | **Đăng ký module mới** — thêm vào DOC-03 trước khi tạo folder `03-modules/{id}/` |
@@ -192,6 +192,7 @@ Cập nhật `memory/planning/` và DOC-14/15 **lặp lại** khi BA/SA làm rõ
 |------------|---------|
 | `memory/memory.md` | Phase hiện tại, link chủ đề |
 | `memory/{phase}/` | Tóm tắt theo BA/SA/PM phụ trách |
+| `docs/05-traceability/overview.md` | Tổng quan 30s — phase, pipeline module, blocker |
 | `docs/05-traceability/trace-matrix.md` | Trace UC → FR → AC |
 | `docs/05-traceability/doc-registry.md` | Version, owner từng DOC |
 | `docs/01-project/DOC-03-brd.md` | Module index, in/out scope |

@@ -26,14 +26,17 @@
 
 ## Liên kết nhanh
 
-| Folder | Vai trò |
-|--------|---------|
+| Folder / file | Vai trò |
+|---------------|---------|
+| [**`docs/05-traceability/overview.md`**](../docs/05-traceability/overview.md) | **Tổng quan 30s** — phase, module, pipeline, blocker, 2 tuần tới |
 | [`../brainstorm/`](../brainstorm/) | Trao đổi chi tiết theo ngày |
 | [`../assets/`](../assets/) | Tài liệu gốc |
 | [`../docs/`](../docs/) | Artifact baseline |
 
 ## Ghi chú agent
 
-1. Đọc **file này** → mở **memory/{phase}/** tương ứng phase đang làm.
-2. Cập nhật memory **đúng chủ đề** — không append dài vào `memory.md` gốc.
-3. Trao đổi chi tiết → `brainstorm/` · chốt → `docs/`.
+1. Cần **nắm tổng thể dự án** → đọc [`docs/05-traceability/overview.md`](../docs/05-traceability/overview.md) trước.
+2. Đọc **file này** → mở **memory/{phase}/** tương ứng phase đang làm.
+3. Cập nhật memory **đúng chủ đề** — không append dài vào `memory.md` gốc.
+4. Sau sync / cuối phiên: rollup số liệu vào `overview.md` (PM hoặc owner module).
+5. Trao đổi chi tiết → `brainstorm/` · chốt → `docs/`.
