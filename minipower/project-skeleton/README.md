@@ -12,9 +12,9 @@ Dự án quản lý theo **Minipower** — BA + Solution Architect + TPM.
 
 | Thư mục | Vai trò |
 |---------|---------|
-| [`memory/`](memory/) | Tóm tắt ngữ cảnh, module draft, stakeholder, trạng thái công việc |
+| [`memory/`](memory/) | Index context theo chủ đề (`memory.md` + `discovery/` … `change-control/`) |
 | [`assets/`](assets/) | Giữ **bản gốc** khảo sát, checklist, biên bản — không sửa file gốc |
-| [`notes/`](notes/) | Phân tích, trao đổi, decision log; chốt → distill vào `docs/` |
+| [`brainstorm/`](brainstorm/) | Phân tích, trao đổi, decision log theo ngày; chốt → distill vào `docs/` |
 | [`docs/`](docs/) | Tài liệu baseline (Vision, BRD, kiến trúc, traceability, CR…) |
 
 **Context nhanh:** [`memory/memory.md`](memory/memory.md)

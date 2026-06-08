@@ -1,6 +1,6 @@
 # Memory — {Tên dự án}
 
-> **Mục đích:** Index context dự án — đọc trước khi bắt đầu session mới. Chi tiết trao đổi theo phase → [`../notes/`](../notes/).
+> **Index gốc** — chỉ giữ thông tin chung & link tới memory theo chủ đề. **Không** gom toàn bộ context vào file này.
 
 ---
 
@@ -10,41 +10,30 @@
 |-----|---------|
 | **Tên** | *(điền)* |
 | **Khách hàng** | *(điền)* |
-| **Phương pháp** | Minipower |
-| **Root** | `{path-dự-án}/` |
 | **Phase hiện tại** | *(điền)* |
 | **Baseline** | — *(draft)* |
 
-## Trạng thái nhanh
+## Memory theo chủ đề
 
-- [ ] Khởi tạo cấu trúc dự án
-- [ ] Discovery — DOC-01–03
-- [ ] Requirements — DOC-04–07, 13
-- [ ] Architecture — DOC-08–12
-- [ ] Planning — DOC-14–15
-- [ ] Delivery — DOC-16–17
-- [ ] Baseline v1.0
+| Chủ đề | Index | DOC |
+|--------|-------|-----|
+| Discovery | [discovery/](discovery/README.md) | 01–03 |
+| Requirements | [requirements/](requirements/README.md) | 04–07, 13 |
+| Architecture | [architecture/](architecture/README.md) | 08–12 |
+| Planning | [planning/](planning/README.md) | 14–15 |
+| Delivery | [delivery/](delivery/README.md) | 16–17 |
+| Change control | [change-control/](change-control/README.md) | 18 |
 
-## Index theo phase
+## Liên kết nhanh
 
-| Phase | Notes | DOC đích |
-|-------|-------|----------|
-| Discovery | [`notes/discovery/`](../notes/discovery/README.md) | 01–03 |
-| Requirements | [`notes/requirements/`](../notes/requirements/README.md) | 04–07, 13 |
-| Architecture | [`notes/architecture/`](../notes/architecture/README.md) | 08–12 |
-| Planning | [`notes/planning/`](../notes/planning/README.md) | 14–15 |
-| Delivery | [`notes/delivery/`](../notes/delivery/README.md) | 16–17 |
-| Change control | [`notes/change-control/`](../notes/change-control/README.md) | 18 |
+| Folder | Vai trò |
+|--------|---------|
+| [`../brainstorm/`](../brainstorm/) | Trao đổi chi tiết theo ngày |
+| [`../assets/`](../assets/) | Tài liệu gốc |
+| [`../docs/`](../docs/) | Artifact baseline |
 
-## Ghi chú cho agent
+## Ghi chú agent
 
-1. **Đọc [`memory/memory.md`](memory/memory.md) trước** — ngữ cảnh, module draft, stakeholder, trạng thái.
-2. Phase hiện tại → [`notes/{phase}/`](../notes/).
-3. Tài liệu gốc → [`assets/`](../assets/) (`public/` · `internal/`) — **không sửa bản gốc**.
-4. Artifact baseline → [`docs/`](../docs/) — distill từ `notes/`, không ghi draft dài trực tiếp.
-
----
-
-## Lịch sử (tóm tắt)
-
-*(Cập nhật sau mỗi phiên quan trọng — 2–3 dòng, link note chi tiết nếu có.)*
+1. Đọc **file này** → mở **memory/{phase}/** tương ứng phase đang làm.
+2. Cập nhật memory **đúng chủ đề** — không append dài vào `memory.md` gốc.
+3. Trao đổi chi tiết → `brainstorm/` · chốt → `docs/`.

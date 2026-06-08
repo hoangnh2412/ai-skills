@@ -18,17 +18,18 @@ cp -R "$MINIPOWER/docs-skeleton" "$PROJECT/docs"
 | Thư mục | Vai trò |
 |---------|---------|
 | `assets/` | Giữ **bản gốc** khảo sát, checklist, biên bản — không sửa file gốc |
-| `notes/` | Phân tích, trao đổi, decision log; chốt → distill vào `docs/` |
+| `brainstorm/` | Phân tích, trao đổi, decision log theo ngày; chốt → distill vào `docs/` |
 | `docs/` | Tài liệu baseline (Vision, BRD, kiến trúc, traceability, CR…) |
-| `memory/` | Tóm tắt ngữ cảnh, module draft, stakeholder, trạng thái công việc |
+| `memory/` | Index context theo chủ đề — `memory.md` + 6 folder phase |
 
 ## Nội dung skeleton (ngoài `docs/`)
 
 | Path | Mô tả |
 |------|--------|
 | `README.md` | Entry dự án |
-| `memory/memory.md` | Index context |
+| `memory/memory.md` | Index gốc (meta chung) |
+| `memory/{phase}/README.md` | Memory theo discovery, requirements, … |
 | `assets/public/`, `internal/` | Tài liệu thô |
-| `notes/{phase}/` | Working papers 6 phase |
+| `brainstorm/` | File trao đổi theo ngày — **không** chia folder con |
 
 `docs/` — copy từ [`docs-skeleton/`](../docs-skeleton/).

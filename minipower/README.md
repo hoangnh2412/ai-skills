@@ -12,7 +12,7 @@ minipower/
 │   ├── planning/SKILL.md
 │   ├── delivery/SKILL.md
 │   └── change-control/SKILL.md
-├── project-skeleton/        ← Khung dự án: memory, assets, notes
+├── project-skeleton/        ← Khung dự án: memory, assets, brainstorm
 ├── templates/               ← Khung 18 DOC
 └── docs-skeleton/           ← Khung folder docs/ (artifact)
 ```

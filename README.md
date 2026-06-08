@@ -103,7 +103,7 @@ cp -R "$MINIPOWER/project-skeleton/"* "$PROJECT/"
 cp -R "$MINIPOWER/docs-skeleton" "$PROJECT/docs"
 ```
 
-Cấu trúc: `memory/` · `assets/` · `notes/` (6 phase) · `docs/` (DOC-01–18). Chi tiết: [minipower/SKILL.md](minipower/SKILL.md).
+Cấu trúc: `memory/` · `assets/` · `brainstorm/` · `docs/` (DOC-01–18). Chi tiết: [minipower/SKILL.md](minipower/SKILL.md).
 
 **Prompt mẫu:**
 

@@ -1,6 +1,6 @@
 # Assets — Tài liệu thô
 
-Giữ **bản gốc** khảo sát, checklist, biên bản — **không sửa file gốc**. Phân tích → [`../notes/`](../notes/) hoặc distill → [`../docs/`](../docs/).
+Giữ **bản gốc** khảo sát, checklist, biên bản — **không sửa file gốc**. Phân tích → [`../brainstorm/`](../brainstorm/) hoặc distill → [`../docs/`](../docs/).
 
 | Folder | Mô tả |
 |--------|--------|
