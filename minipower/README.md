@@ -1,5 +1,7 @@
 # Minipower — Skill pack
 
+Verson 2.2.0
+
 **Một folder** — router + skill con + template + skeleton.
 
 ```
