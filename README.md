@@ -23,11 +23,62 @@ Cursor chỉ nhận skill tại **`.cursor/skills/{tên}/SKILL.md`**. Repo này 
 
 ### Minipower
 
+Tạo **symbolic link** từ folder `minipower/` trong repo này sang `.cursor/skills/minipower` của workspace.
+
+Chạy lệnh **từ root workspace** đang mở trong Cursor. Nếu `ai-skills` nằm ngoài workspace, thay path nguồn bằng **đường dẫn tuyệt đối** tới `…/ai-skills/minipower`.
+
+#### macOS
+
 ```bash
-# Từ root repo đang mở trong Cursor
 mkdir -p .cursor/skills
-ln -snf /path/to/ai-skills/minipower .cursor/skills/minipower
+ln -snf "$(pwd)/ai-skills/minipower" .cursor/skills/minipower
+
+# Kiểm tra
+ls -la .cursor/skills/minipower
+test -f .cursor/skills/minipower/SKILL.md && echo "OK"
 ```
+
+> Không dùng `ln` không có `-s` — macOS không cho hard link tới thư mục (`Is a directory`).
+
+#### Linux
+
+```bash
+mkdir -p .cursor/skills
+ln -snf "$(pwd)/ai-skills/minipower" .cursor/skills/minipower
+
+# Kiểm tra
+ls -la .cursor/skills/minipower
+test -f .cursor/skills/minipower/SKILL.md && echo "OK"
+```
+
+> Cờ `-n` tránh follow link cũ; `-f` ghi đè nếu đã tồn tại.
+
+#### Windows
+
+**PowerShell** (khuyên dùng):
+
+```powershell
+New-Item -ItemType Directory -Force -Path .cursor\skills
+$source = Join-Path (Get-Location) "ai-skills\minipower"
+New-Item -ItemType SymbolicLink -Force -Path .cursor\skills\minipower -Target $source
+
+# Hoặc path tuyệt đối:
+# New-Item -ItemType SymbolicLink -Force -Path .cursor\skills\minipower -Target "C:\path\to\ai-skills\minipower"
+
+# Kiểm tra
+Test-Path .cursor\skills\minipower\SKILL.md
+```
+
+**CMD** (cần quyền tạo symlink; target phải là path tuyệt đối):
+
+```cmd
+mkdir .cursor\skills
+mklink /D .cursor\skills\minipower "C:\path\to\ai-skills\minipower"
+```
+
+**Git Bash** — dùng lệnh giống macOS/Linux ở trên.
+
+> Trên Windows, bật **Developer Mode** (Settings → For developers) hoặc chạy terminal **Run as administrator** nếu `New-Item` / `mklink` báo thiếu quyền tạo symlink.
 
 Trong chat: `/minipower` hoặc `@minipower`, kèm `Phase: discovery` (hoặc requirements, architecture, …).
 
