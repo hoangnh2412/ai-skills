@@ -55,7 +55,7 @@ test -f .cursor/skills/minipower/SKILL.md && echo "OK"
 
 #### Windows
 
-**PowerShell** (khuyên dùng):
+**PowerShell**:
 
 ```powershell
 New-Item -ItemType Directory -Force -Path .cursor\skills
@@ -69,16 +69,12 @@ New-Item -ItemType SymbolicLink -Force -Path .cursor\skills\minipower -Target $s
 Test-Path .cursor\skills\minipower\SKILL.md
 ```
 
-**CMD** (cần quyền tạo symlink; target phải là path tuyệt đối):
+**CMD**:
 
 ```cmd
 mkdir .cursor\skills
-mklink /D .cursor\skills\minipower "C:\path\to\ai-skills\minipower"
+mklink /J "%CD%\.cursor\skills\minipower" "%CD%\ai-skills\minipower"
 ```
-
-**Git Bash** — dùng lệnh giống macOS/Linux ở trên.
-
-> Trên Windows, bật **Developer Mode** (Settings → For developers) hoặc chạy terminal **Run as administrator** nếu `New-Item` / `mklink` báo thiếu quyền tạo symlink.
 
 Trong chat: `/minipower` hoặc `@minipower`, kèm `Phase: discovery` (hoặc requirements, architecture, …).
 
