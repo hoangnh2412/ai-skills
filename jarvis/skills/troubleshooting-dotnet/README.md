@@ -23,11 +23,11 @@ Tương đương lệnh terminal:
 ```bash
 cd jarvis/skills/troubleshooting-dotnet/tools
 
-GRAFANA_URL=http://10.10.12.17:3000 \
+GRAFANA_URL=http://localhost:3000 \
 GRAFANA_USER=admin \
-GRAFANA_PASSWORD=Minvoice@123 \
-PROMETHEUS_URL=http://10.10.12.17:9090 \
-DASHBOARD_VAR_exported_job=MInvoice.Web \
+GRAFANA_PASSWORD=Admin@123 \
+PROMETHEUS_URL=http://localhost:9090 \
+DASHBOARD_VAR_exported_job=Sample \
 DASHBOARD_VAR_exported_instance=All \
 node fetch-dashboard-metrics.js --uid dfoxo2zt2lkaof
 ```
@@ -39,11 +39,11 @@ node fetch-dashboard-metrics.js --uid dfoxo2zt2lkaof
 
 Troubleshoot service .NET — lấy metrics 24h từ Grafana:
 
-- Grafana: http://10.10.12.17:3000 (admin / Minvoice@123)
-- Prometheus: http://10.10.12.17:9090
+- Grafana: http://localhost:3000 (admin / Admin@123)
+- Prometheus: http://localhost:9090
 - Dashboard UID: dfoxo2zt2lkaof (.Net Leak memory)
 - Biến dashboard:
-  - exported_job = MInvoice.Web
+  - exported_job = Sample
   - exported_instance = All
 
 Chạy fetch-dashboard-metrics, đọc file JSON trong artifacts/, phân tích RAM/GC/latency/RPS và gợi ý bước tiếp theo.
@@ -61,7 +61,7 @@ Khi chưa biết UID hoặc tên biến:
 ```text
 @jarvis/skills/troubleshooting-dotnet/SKILL.md
 
-Grafana 10.10.12.17:3000, Prometheus :9090.
+Grafana localhost:3000, Prometheus :9090.
 Tìm dashboard "Dotnet Runtime Metrics", lấy metrics 6h gần nhất.
 Filter job=my-service, instance=host1.
 Phân tích GC và thread pool.
@@ -73,10 +73,10 @@ Agent: `list-dashboards.js` → `list-dashboard-vars.js --uid <uid>` → `--var 
 
 | Thông tin | Ví dụ | Bắt buộc? |
 |---|---|---|
-| Grafana URL + auth | `10.10.12.17:3000`, user/password | Có (hoặc đã có trong `.env`) |
-| Prometheus URL | `10.10.12.17:9090` | Có |
+| Grafana URL + auth | `localhost:3000`, user/password | Có (hoặc đã có trong `.env`) |
+| Prometheus URL | `localhost:9090` | Có |
 | Dashboard | UID `dfoxo2zt2lkaof` hoặc tên `.Net Leak memory` | Có |
-| Biến dashboard | `exported_job=MInvoice.Web`, `exported_instance=All` | Có nếu dashboard có templating |
+| Biến dashboard | `exported_job=Sample`, `exported_instance=All` | Có nếu dashboard có templating |
 | Khung thời gian | `24h` (mặc định), `--hours 6`, hoặc `--start`/`--end` | Tùy chọn |
 | Mục tiêu phân tích | RAM leak, spike latency, Gen2 GC… | Khuyến nghị |
 
@@ -84,14 +84,14 @@ Agent: `list-dashboards.js` → `list-dashboard-vars.js --uid <uid>` → `--var 
 
 ```bash
 # Cách 1: env (tiện khi copy từ terminal)
-DASHBOARD_VAR_exported_job=MInvoice.Web \
+DASHBOARD_VAR_exported_job=Sample \
 DASHBOARD_VAR_exported_instance=All \
 node fetch-dashboard-metrics.js --uid dfoxo2zt2lkaof
 
 # Cách 2: CLI --var (tên lấy từ list-dashboard-vars.js)
 node fetch-dashboard-metrics.js \
   --uid dfoxo2zt2lkaof \
-  --var exported_job=MInvoice.Web \
+  --var exported_job=Sample \
   --var exported_instance=All
 ```
 

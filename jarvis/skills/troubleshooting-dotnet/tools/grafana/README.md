@@ -84,6 +84,6 @@ node fetch-dashboard-metrics.js --uid <uid> --var job=<job> --dry-run
 
 | Biến | Mặc định test |
 |---|---|
-| `GRAFANA_URL` | `http://10.10.12.17:3000` |
+| `GRAFANA_URL` | `http://localhost:3000` |
 | `GRAFANA_USER` | `admin` |
 | `GRAFANA_PASSWORD` | *(xem `.env.example`)* |

@@ -76,7 +76,7 @@ node fetch-dashboard-metrics.js \
 
 | Biến | Mặc định test |
 |---|---|
-| `PROMETHEUS_URL` | `http://10.10.12.17:9090` |
+| `PROMETHEUS_URL` | `http://localhost:9090` |
 
 ## Instant query (tùy chọn)
 
