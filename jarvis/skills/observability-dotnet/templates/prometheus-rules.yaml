@@ -1,0 +1,84 @@
+# Prometheus alerting rules — mẫu generic
+# Thay {service_name}, {memory_limit_bytes}, baseline P99/Gen2 bằng số thực từ Grafana.
+
+groups:
+  - name: dotnet-service-metrics
+    interval: 1m
+    rules:
+      - alert: DotnetHighRAM
+        expr: |
+          (
+            process_memory_usage_bytes{service_name="{service_name}"}
+            / {memory_limit_bytes}
+          ) > 0.8
+        for: 15m
+        labels:
+          severity: warning
+          service: "{service_name}"
+          team: ops
+        annotations:
+          summary: "RAM > 80% limit ({{ $labels.instance }})"
+          description: "Kiểm tra dashboard Memory; cân nhắc restart pod hoặc heap dump."
+
+      - alert: DotnetCommittedMemoryGrowth
+        expr: |
+          (
+            delta(process_runtime_dotnet_gc_committed_memory_size_bytes{service_name="{service_name}"}[6h])
+            /
+            process_runtime_dotnet_gc_committed_memory_size_bytes{service_name="{service_name}"} offset 6h
+          ) > 0.2
+        for: 30m
+        labels:
+          severity: warning
+          service: "{service_name}"
+          team: dev
+        annotations:
+          summary: "Committed heap tăng > 20% / 6h"
+          description: "Correlate Gen2 panel; phân tích allocation / leak managed."
+
+      - alert: DotnetThreadPoolCongestion
+        expr: |
+          process_runtime_dotnet_thread_pool_queue_length{service_name="{service_name}"} > 10
+        for: 5m
+        labels:
+          severity: warning
+          service: "{service_name}"
+          team: ops
+        annotations:
+          summary: "Thread pool queue > 10"
+          description: "Kiểm tra sync-over-async; giảm concurrency nếu cần."
+
+      - alert: DotnetHighP99Latency
+        expr: |
+          histogram_quantile(0.99,
+            sum(rate(http_server_request_duration_seconds_bucket{service_name="{service_name}"}[5m])) by (le, instance)
+          ) > ({baseline_p99_seconds} * 2)
+        for: 10m
+        labels:
+          severity: warning
+          service: "{service_name}"
+          team: dev
+        annotations:
+          summary: "P99 > 2× baseline"
+          description: "Trace OTEL slow span; kiểm tra thread pool queue."
+
+      - alert: DotnetGen2Pressure
+        expr: |
+          sum(rate(process_runtime_dotnet_gc_collections_count_total{generation="2", service_name="{service_name}"}[15m])) by (instance)
+          > ({baseline_gen2_rate} * 2)
+        for: 15m
+        labels:
+          severity: warning
+          service: "{service_name}"
+          team: dev
+        annotations:
+          summary: "Gen2 GC rate cao"
+          description: "Review traffic burst / large allocation."
+
+# prometheus.yml
+# rule_files:
+#   - /etc/prometheus/rules/dotnet-service-metrics.yaml
+# alerting:
+#   alertmanagers:
+#     - static_configs:
+#         - targets: ['alertmanager:9093']

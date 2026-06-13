@@ -112,7 +112,7 @@ Chi tiết publish sang repo product: [jarvis/README.md](jarvis/README.md).
 | [swashbuckle-dotnet](jarvis/skills/swashbuckle-dotnet/) | Swagger / OpenAPI |
 | [healthcheck-dotnet](jarvis/skills/healthcheck-dotnet/) | Health endpoints |
 | [telemetry-dotnet](jarvis/skills/telemetry-dotnet/) | OpenTelemetry |
-| [analyze-metric-dotnet](jarvis/skills/analyze-metric-dotnet/) | Đọc Grafana .NET Runtime Metrics |
+| [observability-dotnet](jarvis/skills/observability-dotnet/) | Thiết lập observability .NET — OTEL, Prometheus, Grafana, alert, vận hành |
 | [blobstoring-dotnet](jarvis/skills/blobstoring-dotnet/) | FileSystem / MinIO blob |
 | [code-review-dotnet](jarvis/skills/code-review-dotnet/) | Review PR C#/.NET |
 

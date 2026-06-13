@@ -16,7 +16,7 @@ Bản đồ skill AI cho repo Jarvis framework. Mỗi skill có **README** (ngư
 | **swashbuckle-dotnet** | [skills/swashbuckle-dotnet/README.md](./skills/swashbuckle-dotnet/README.md) | Swagger / OpenAPI |
 | **healthcheck-dotnet** | [skills/healthcheck-dotnet/README.md](./skills/healthcheck-dotnet/README.md) | Health endpoints |
 | **telemetry-dotnet** | [skills/telemetry-dotnet/README.md](./skills/telemetry-dotnet/README.md) | OpenTelemetry |
-| **analyze-metric-dotnet** | [skills/analyze-metric-dotnet/README.md](./skills/analyze-metric-dotnet/README.md) | Đọc Grafana Dotnet Runtime Metrics |
+| **observability-dotnet** | [skills/observability-dotnet/README.md](./skills/observability-dotnet/README.md) | Thiết lập observability .NET — OTEL, Prometheus, Grafana, alert |
 | **blobstoring-dotnet** | [skills/blobstoring-dotnet/README.md](./skills/blobstoring-dotnet/README.md) | FileSystem / MinIO blob |
 | **code-review-dotnet** | [skills/code-review-dotnet/README.md](./skills/code-review-dotnet/README.md) | Review PR C#/.NET |
 
@@ -33,8 +33,8 @@ Init Jarvis EF + single DB cho MyApp
 ```
 
 ```text
-@.opencode/skills/analyze-metric-dotnet/workflows/analyze.md
-Giải thích panel GC và thread pool trên Dotnet Runtime Metrics, job=myapp
+@.opencode/skills/observability-dotnet/workflows/setup.md
+Thiết lập observability OTEL → Prometheus → Grafana → alert cho service {Product}
 ```
 
 Framework overview: [README.md](../README.md) (repo gốc).
