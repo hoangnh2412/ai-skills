@@ -7,6 +7,8 @@ Version 2.3.0
 ```
 minipower/
 ├── SKILL.md                 ← Skill duy nhất trong menu / của Cursor
+├── agents/                  ← Guardrails agent (token, sửa DOC) — Cursor + Claude Code
+├── install/                 ← Adapter cài rules/hooks (cursor/, claude/)
 ├── skills/                  ← Phase con (file hướng dẫn, không có lệnh / riêng)
 │   ├── discovery/SKILL.md
 │   ├── requirements/SKILL.md
@@ -20,6 +22,88 @@ minipower/
 └── docs-skeleton/           ← Khung folder docs/ (artifact dự án)
 ```
 
+## Cài vào Cursor
+
+Cursor chỉ nhận skill tại **`.cursor/skills/{tên}/SKILL.md`**. Tạo **symbolic link** từ folder `minipower/` trong repo `ai-skills` sang `.cursor/skills/minipower` của workspace.
+
+Chạy lệnh **từ root workspace** đang mở trong Cursor. Nếu `ai-skills` nằm ngoài workspace, thay path nguồn bằng **đường dẫn tuyệt đối** tới `…/ai-skills/minipower`.
+
+### macOS / Linux
+
+```bash
+mkdir -p .cursor/skills
+ln -snf "$(pwd)/ai-skills/minipower" .cursor/skills/minipower
+
+# Kiểm tra
+ls -la .cursor/skills/minipower
+test -f .cursor/skills/minipower/SKILL.md && echo "OK"
+```
+
+> macOS: không dùng `ln` không có `-s` — không hard link được thư mục (`Is a directory`). Cờ `-n` tránh follow link cũ; `-f` ghi đè nếu đã tồn tại.
+
+### Windows
+
+**PowerShell**:
+
+```powershell
+New-Item -ItemType Directory -Force -Path .cursor\skills
+$source = Join-Path (Get-Location) "ai-skills\minipower"
+New-Item -ItemType SymbolicLink -Force -Path .cursor\skills\minipower -Target $source
+
+# Hoặc path tuyệt đối:
+# New-Item -ItemType SymbolicLink -Force -Path .cursor\skills\minipower -Target "C:\path\to\ai-skills\minipower"
+
+# Kiểm tra
+Test-Path .cursor\skills\minipower\SKILL.md
+```
+
+**CMD**:
+
+```cmd
+mkdir .cursor\skills
+mklink /J "%CD%\.cursor\skills\minipower" "%CD%\ai-skills\minipower"
+```
+
+Trong chat: `/minipower` hoặc `@minipower`, kèm `Phase: discovery` (hoặc requirements, architecture, …).
+
+---
+
+## Pipeline & phase
+
+```text
+Business Goal → Stakeholder → Process → Requirement → Solution
+```
+
+| Phase | Skill con | DOC |
+|-------|-----------|-----|
+| Discovery | `skills/discovery/` | 01–03 |
+| Requirements | `skills/requirements/` | 04–07, 13 |
+| Architecture | `skills/architecture/` | 08–12 |
+| Planning | `skills/planning/` | 14–15 |
+| Delivery | `skills/delivery/` | 16–17 |
+| Change control | `skills/change-control/` | 18 |
+
+### Khởi tạo dự án mới
+
+```bash
+PROJECT=my-project
+MINIPOWER=/path/to/ai-skills/minipower
+mkdir -p "$PROJECT"
+cp -R "$MINIPOWER/project-skeleton/"* "$PROJECT/"
+cp -R "$MINIPOWER/docs-skeleton" "$PROJECT/docs"
+```
+
+Cấu trúc: `memory/` · `assets/` · `brainstorm/` · `docs/` (DOC-01–18). Chi tiết: [SKILL.md](SKILL.md).
+
+**Prompt mẫu:**
+
+```text
+/minipower
+Phase: discovery — phân tích scope dự án X, output DOC-01–03 draft
+```
+
+---
+
 ## Tài liệu
 
 | Bạn cần | File |
@@ -31,6 +115,22 @@ minipower/
 | Init project, routing agent | [SKILL.md](SKILL.md) |
 | Template 18 DOC | [templates/README.md](templates/README.md) |
 | Index tài liệu pack | [docs/README.md](docs/README.md) |
+| Agent guardrails (token, DOC) | [agents/README.md](agents/README.md) |
+| Cài rules/hooks Cursor | [install/cursor/README.md](install/cursor/README.md) |
+| Cài rules Claude Code | [install/claude/README.md](install/claude/README.md) |
+
+---
+
+## Cài rules + hooks
+
+Symlink skill **không** kéo rules/hooks — cài riêng **từ root workspace project docs** (repo chứa `docs/`).
+
+| IDE | Nội dung | Hướng dẫn |
+|-----|----------|-----------|
+| **Cursor** | Rules `.mdc` + hooks (token guard, scope prompt) | [install/cursor/README.md](install/cursor/README.md) |
+| **Claude Code** | Rules `.md` + permissions (tuỳ chọn) | [install/claude/README.md](install/claude/README.md) |
+
+Guardrails agent (nguồn chung): [agents/README.md](agents/README.md)
 
 ---
 

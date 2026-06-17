@@ -19,10 +19,17 @@ Mỗi file là khung copy-paste khi sinh artifact. Tham chiếu tiêu chuẩn/ng
 | DOC-13 | [DOC-13-nfr.md](DOC-13-nfr.md) | ISO 25010, van Lamsweerde |
 | DOC-14 | [DOC-14-wbs-estimate.md](DOC-14-wbs-estimate.md) | **PMBOK WBS**, Story mapping |
 | DOC-15 | [DOC-15-project-plan.md](DOC-15-project-plan.md) | **IEEE 1058 SPMP** |
-| DOC-16 | [DOC-16-test-strategy.md](DOC-16-test-strategy.md) | **ISTQB** test levels & types |
+| DOC-16 | [DOC-16-test-strategy.md](DOC-16-test-strategy.md) | Test Strategy & Test Cases — catalog Layer/Path/Priority |
 | DOC-17 | [DOC-17-deployment-guide.md](DOC-17-deployment-guide.md) | Runbook / cutover checklist |
 | DOC-18 | [DOC-18-change-request-register.md](DOC-18-change-request-register.md) | Change Management / RFC |
 
-**Versioning:** Ghi `Version`, `Date`, `Author`, `Status` ở đầu mỗi tài liệu — quy tắc chi tiết: [`doc-versioning.md`](../docs-skeleton/00-governance/doc-versioning.md) *(Status: Draft | Review | Baseline | Superseded)*.
+## Governance & traceability (`docs-skeleton/`)
+
+| File | Mô tả |
+|------|-------|
+| [business-glossary.md](../docs-skeleton/00-governance/business-glossary.md) | SSOT trạng thái & thuật ngữ — DOC Status, sign-off registry, DOC-16 catalog (Layer/Path/Priority) |
+| [doc-versioning.md](../docs-skeleton/00-governance/doc-versioning.md) | Version, header, Change Log; đồng bộ `doc-registry` |
+| [doc-registry.md](../docs-skeleton/05-traceability/doc-registry.md) | Đăng ký DOC theo module — Author, Status, Baseline, sign-off |
+| [trace-matrix.md](../docs-skeleton/05-traceability/trace-matrix.md) | Trace FR↔UC↔AC↔TC — single source of truth |
 
 **Cấu trúc folder dự án:** copy [docs-skeleton](../docs-skeleton/README.md) → `{project-root}/docs/`.

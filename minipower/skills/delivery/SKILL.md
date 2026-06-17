@@ -9,7 +9,7 @@ description: >-
 
 **Pack:** minipower · **Tiên quyết:** DOC-06 + DOC-07.
 
-**Template:** [DOC-16–17](../../templates/) · **Folder:** module DOC-16 · platform DOC-17 · **Versioning:** [doc-versioning](../../docs-skeleton/00-governance/doc-versioning.md)
+**Template:** [DOC-16–17](../../templates/) · **Folder:** module DOC-16 · platform DOC-17 · **Versioning:** [doc-versioning](../../docs-skeleton/00-governance/doc-versioning.md) · **Glossary:** [business-glossary](../../docs-skeleton/00-governance/business-glossary.md)
 
 | Level | Owner |
 |-------|-------|

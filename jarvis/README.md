@@ -2,6 +2,52 @@
 
 Bản đồ skill AI cho repo Jarvis framework. Mỗi skill có **README** (người dùng) và **SKILL.md** (agent).
 
+## Cài vào Cursor
+
+Cursor nhận skill tại **`.cursor/skills/{tên-skill}/SKILL.md`**. Repo `ai-skills` là **source of truth** — link hoặc copy vào workspace đang làm việc.
+
+Chạy lệnh **từ root workspace**. Thay `/path/to/ai-skills` bằng path thực tế (tương đối hoặc tuyệt đối).
+
+### macOS / Linux — từng skill
+
+```bash
+mkdir -p .cursor/skills
+JARVIS=/path/to/ai-skills/jarvis
+for d in "$JARVIS"/skills/*/; do
+  name=$(basename "$d")
+  ln -snf "$d" ".cursor/skills/$name"
+done
+
+# Kiểm tra
+test -f .cursor/skills/jarvis-dotnet/SKILL.md && echo "OK"
+```
+
+### Windows — PowerShell
+
+```powershell
+New-Item -ItemType Directory -Force -Path .cursor\skills
+$jarvis = Join-Path (Get-Location) "ai-skills\jarvis\skills"
+Get-ChildItem -Directory $jarvis | ForEach-Object {
+  New-Item -ItemType SymbolicLink -Force `
+    -Path (Join-Path ".cursor\skills" $_.Name) -Target $_.FullName
+}
+
+# Kiểm tra
+Test-Path .cursor\skills\jarvis-dotnet\SKILL.md
+```
+
+### OpenCode — symlink cả tree
+
+Nếu prompt dùng path `.opencode/skills/`:
+
+```bash
+ln -snf /path/to/ai-skills/jarvis/skills .opencode/skills
+```
+
+Chi tiết publish sang repo product: [Publish skill sang repo consumer](#publish-skill-sang-repo-consumer) (bên dưới).
+
+---
+
 ## Skills
 
 | Skill | README | Mô tả |

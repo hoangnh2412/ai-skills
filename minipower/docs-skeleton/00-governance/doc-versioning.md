@@ -6,7 +6,7 @@
 
 **Áp dụng cho:** mọi DOC-01–18, governance doc và artifact trong `docs/` (trừ snapshot `02-baseline/` — read-only).
 
-**Liên quan:** [`doc-registry.md`](../05-traceability/doc-registry.md) (Status, Sign-off) · [`baseline-history.md`](baseline-history.md) (baseline ID).
+**Liên quan:** [`doc-registry.md`](../05-traceability/doc-registry.md) · [`business-glossary.md`](business-glossary.md) · [`baseline-history.md`](baseline-history.md) (baseline ID).
 
 ---
 
@@ -34,7 +34,7 @@
 | **Version** | `—` | `0.1`, `0.2`, … *(theo baseline / lần ký)* |
 | **Date** | Ngày cập nhật gần nhất | Ngày sign-off |
 | **Author** | Người soạn / cập nhật | Người trình / cập nhật lần ký |
-| **Status** | `Draft` hoặc `Review` | `Baseline` *(hoặc `Accepted` với ADR)* |
+| **Status** | `Draft` hoặc `Review` | `Baseline` *(hoặc `Accepted` với ADR)* — [DOC — Status](business-glossary.md#1-doc--status) |
 
 > **Review:** Author chuyển sang `Review` khi sẵn sàng REQ owner ký — vẫn giữ **Version = `—`** cho đến khi sign-off.
 
@@ -67,8 +67,11 @@ Không ghi từng chỉnh sửa nháp (vd. `0.3 Updated`, `0.4 Updated`…) khi 
 | Trường registry | Quy tắc |
 |-----------------|---------|
 | **Ver** | `—` khi DOC đang Draft/Review chưa ký; số version sau sign-off |
-| **Status** | Khớp header DOC |
-| **Sign-off** | `☑` chỉ khi § Approval đã ký và version đã ghi |
+| **Người thực hiện tài liệu** | Khớp cột **Author** header DOC — [Registry — Author](business-glossary.md#5-registry--author) |
+| **Status** | Khớp header DOC — [DOC — Status](business-glossary.md#1-doc--status) |
+| **Sign-off** | `☑` chỉ khi mục Approval REQ owner đã ký |
+| **Người Sign-off** | REQ owner trong mục Approval — [Sign-off (registry)](business-glossary.md#2-sign-off-registry) |
+| **Ngày sign-off** | Ngày trong mục Approval; `—` nếu chưa ký |
 
 ---
 

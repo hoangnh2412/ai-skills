@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(docs/02-baseline/**)",
+      "Read(docs/03-modules/_legacy/**)"
+    ]
+  }
+}

@@ -8,6 +8,32 @@ Mọi thay đổi đáng chú ý của **Minipower skill pack** được ghi tro
 
 ## [Unreleased]
 
+### Added
+
+- **`agents/`** — `token-guard.md`, `doc-editing.md`, `README.md` (guardrails tool-agnostic)
+- **`install/cursor/`** — rules `.mdc`, hooks (`check-prompt-scope.ps1`, `limit-reads.ps1`, `hooks.fragment.json`)
+- **`install/claude/`** — rule `paths` cho doc-editing, `settings.fragment.json`, README cài đặt
+
+### Changed
+
+- **`SKILL.md`** — section Agent guardrails + link `agents/`
+- **`README.md`** — cấu trúc pack, link `agents/` và `install/`
+
+---
+
+## [2.4.0] - 2026-06-17
+
+### Added
+
+- **`docs-skeleton/00-governance/business-glossary.md`** — SSOT trạng thái & thuật ngữ (DOC Status, Sign-off registry, DOC-16 catalog columns, Layer/Path/Priority, RACI)
+- **`templates/DOC-16-test-strategy.md`** — cấu trúc catalog-first (7 cột TC), trace matrix
+### Changed
+
+- **`docs-skeleton/05-traceability/doc-registry.md`** — template 9 cột (Author, Sign-off ×3), governance table, link glossary
+- **`docs-skeleton/00-governance/doc-versioning.md`** — link glossary; §4 sync registry (Người thực hiện, Sign-off, Người Sign-off, Ngày sign-off)
+- **`docs-skeleton/README.md`** — `business-glossary` trong `00-governance/`
+- **`templates/README.md`**, **`skills/delivery/SKILL.md`** — DOC-16 + glossary references
+
 ---
 
 ## [2.3.0] - 2026-06-17

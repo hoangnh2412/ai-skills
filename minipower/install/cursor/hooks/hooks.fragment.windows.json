@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "hooks": {
+    "beforeSubmitPrompt": [
+      {
+        "command": ".cursor/hooks/check-prompt-scope.ps1",
+        "timeout": 5
+      }
+    ],
+    "beforeReadFile": [
+      {
+        "command": ".cursor/hooks/limit-reads.ps1",
+        "matcher": "Read"
+      }
+    ]
+  }
+}

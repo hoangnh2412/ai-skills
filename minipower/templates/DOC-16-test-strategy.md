@@ -1,4 +1,4 @@
-# DOC-16 — Test Strategy
+# DOC-16 — Test Strategy & Test Cases ({module-id})
 
 | Version | Date | Author | Status |
 |---------|------|--------|--------|
@@ -6,127 +6,102 @@
 
 > Quy tắc versioning: [`doc-versioning.md`](../docs-skeleton/00-governance/doc-versioning.md).
 
-**Tiêu chuẩn tham khảo:** **ISTQB** — test levels (Component, Integration, System, Acceptance); test types (Functional, Non-functional)
+**Module:** `{module-id}` · **MOD prefix:** `{MOD}`
+
+**Tiêu chuẩn tham khảo:** **ISTQB** — test levels & types; catalog trace FR↔AC↔TC.
 
 ---
 
-## 1. Introduction
+## 1. Mục đích
 
-### 1.1 Purpose
+[Mô tả phạm vi test module — trace [`DOC-06-srs.md`](DOC-06-srs.md) (N FR) và [`DOC-07-acceptance-criteria.md`](DOC-07-acceptance-criteria.md) (N AC).]
 
-### 1.2 Scope
+---
 
-[In-scope modules; reference DOC-06 SRS baseline]
+## 2. Test Case Catalog
 
-### 1.3 References
+> Business glossary — [Trạng thái thực thi TC](../docs-skeleton/00-governance/business-glossary.md#4-doc-16--trạng-thái-thực-thi-tc) · [Cột catalog](../docs-skeleton/00-governance/business-glossary.md#8-doc-16--cột-catalog) · [Layer, Path, Priority](../docs-skeleton/00-governance/business-glossary.md#9-doc-16--layer-path-priority).
 
-| Doc | Role |
-|-----|------|
-| DOC-07 | Acceptance criteria |
-| DOC-13 | NFR verification |
+### 2.1 [Nhóm chức năng — ví dụ: Happy path chính]
 
-## 2. Test Objectives
+| TC ID | Mô tả | Kết quả mong muốn | Layer | Path | Priority | Trạng thái |
+|-------|-------|-------------------|-------|------|----------|------------|
+| {MOD}-TC-001 | [Tóm tắt kịch bản] | [Expected outcome ngắn] | E2E | Happy | Must | |
+| {MOD}-TC-002 | [Validation / unhappy] | [Thông báo lỗi / từ chối] | FE/BE | Validation | Must | |
 
-| Objective | Metric |
-|-----------|--------|
-| Verify FR coverage | 100% Must-have FR |
-| Verify NFR | Per DOC-13 targets |
-| Regression safety | 0 critical defect at go-live |
+### 2.2 [Nhóm chức năng khác]
 
-## 3. Test Scope
+| TC ID | Mô tả | Kết quả mong muốn | Layer | Path | Priority | Trạng thái |
+|-------|-------|-------------------|-------|------|----------|------------|
+| {MOD}-TC-010 | | | BE/API | Unhappy | Must | |
 
-### 3.1 In Scope
+---
 
-| Area | Test levels |
-|------|-------------|
-| Module A | Unit, Integration, UAT |
+## 3. Test Case Details
 
-### 3.2 Out of Scope
-
-- [Third-party internal testing]
-- [ ]
-
-## 4. Test Levels
-
-| Level | Owner | Tools | Entry criteria | Exit criteria |
-|-------|-------|-------|----------------|---------------|
-| **Unit** | Dev | xUnit / Jest | Code complete | Coverage ≥ X% critical paths |
-| **Integration** | Dev / QA | Postman / Testcontainers | Unit pass | All INT-xxx pass |
-| **System** | QA | Automated + manual | Integration pass | SRS FR pass |
-| **UAT** | Business | Manual scripts | System pass | DOC-07 AC sign-off |
-
-## 5. Test Types
-
-| Type | Scope | Approach |
-|------|-------|----------|
-| Functional | FR, UC | Positive + negative paths |
-| Regression | Baseline suite | Auto on each release |
-| Performance | NFR-Pxx | Load test staging |
-| Security | NFR-Sxx | SAST, pen test |
-| Compatibility | Browsers, devices | Matrix below |
-
-### Compatibility Matrix (example)
-
-| Browser | Version | Pass |
-|---------|---------|------|
-| Chrome | Latest - 1 | |
-
-## 6. Test Environment
-
-| Env | Purpose | Data | URL |
-|-----|---------|------|-----|
-| DEV | Dev test | Synthetic | |
-| STAGING | UAT, perf | Anonymized prod-like | |
-| PROD | Smoke post-deploy | | |
-
-## 7. Traceability Matrix
-
-| FR ID | UC | AC ID | TC ID | Level | Type | Status |
-|-------|----|----|-------|-------|------|--------|
-| FR-001 | UC-001 | AC-001 | TC-001 | System | Functional | Pass/Fail |
-
-## 8. Test Case Template
-
-### TC-[ID] — [Title]
+### {MOD}-TC-001 — [Tiêu đề]
 
 | Mục | Nội dung |
 |-----|----------|
-| **Trace** | FR-xxx, AC-xxx |
+| **Trace** | {MOD}-FR-001, {MOD}-AC-001, {MOD}-BR-001 |
 | **Preconditions** | |
 | **Steps** | 1. … 2. … |
 | **Expected result** | |
-| **Actual result** | |
-| **Status** | Pass / Fail / Blocked |
+| **Layer / Path** | E2E · Happy |
+| **Status** | *(Pass / Fail / Blocked / Skip)* |
 
-## 9. Defect Management
+---
 
-| Severity | Definition | SLA fix |
-|----------|------------|---------|
-| Critical | Production blocker | 24h |
-| High | Major feature broken | 3 days |
-| Medium | Workaround exists | Next sprint |
-| Low | Cosmetic | Backlog |
+## 4. Traceability Matrix
 
-## 10. UAT Plan
+| TC ID | FR ID | AC ID | BR ID | UC ID | Coverage |
+|-------|-------|-------|-------|-------|----------|
+| {MOD}-TC-001 | {MOD}-FR-001 | {MOD}-AC-001 | {MOD}-BR-001 | {MOD}-UC-001 | ✅ |
+| {MOD}-TC-002 | — | — | {MOD}-BR-002 | {MOD}-UC-001 | ⚠️ |
 
-| Scenario | Business owner | Schedule | Sign-off |
-|----------|----------------|----------|----------|
-| CRP-1 | | | |
+> **✅** map đủ FR/AC · **⚠️** edge / validation chưa có FR/AC riêng.
 
-## 11. Entry / Exit — Go-live
+---
 
-**Go-live test exit:**
-- [ ] 100% Must AC pass
-- [ ] 0 open Critical / High
-- [ ] Performance NFR pass
-- [ ] Security scan pass
-- [ ] Regression suite green
+## 5. Phương pháp kiểm thử
 
-## 12. Roles
+| Loại | Mô tả |
+|------|-------|
+| **Unit Test** | Kiểm thử từng hàm/service |
+| **Integration Test** | Luồng API + DB |
+| **UI / E2E** | Portal / client |
+| **Security Test** | Phân quyền, token |
 
-| Role | Responsibility |
-|------|----------------|
-| QA Lead | Strategy, trace matrix |
-| Dev | Unit / integration |
-| BA | UAT scripts from AC |
-| Business | UAT sign-off |
+---
+
+## 6. Môi trường kiểm thử
+
+| Môi trường | Mục đích |
+|------------|----------|
+| **Local/Dev** | Unit, integration cơ bản |
+| **QA/Staging** | Regression, UAT |
+| **Production** | Smoke sau deploy |
+
+---
+
+## 7. Defect severity
+
+→ [DOC-16 — Defect severity](../docs-skeleton/00-governance/business-glossary.md#10-doc-16--defect-severity).
+
+---
+
+## 8. Change Log
+
+> Quy tắc versioning: [`doc-versioning.md`](../docs-skeleton/00-governance/doc-versioning.md).
+
+| Version | Thay đổi | Tác giả |
+|---------|----------|---------|
+| — | *(chưa có — chờ approve lần đầu)* | — |
+
+---
+
+## 9. Approval
+
+| Vai trò | Họ tên | Ngày | Baseline |
+|---------|--------|------|----------|
+| REQ owner (sign-off) | | | ☐ |

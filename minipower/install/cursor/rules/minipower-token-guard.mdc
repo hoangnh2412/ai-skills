@@ -1,0 +1,29 @@
+---
+description: Minipower — giảm token, thu hẹp phạm vi đọc/sửa
+alwaysApply: true
+---
+
+# Token guard — Minipower docs
+
+## Trước khi đọc file
+
+1. Nếu user **không** @ file và **không** nêu rõ `module + DOC + section` → **hỏi 1 câu** thay vì search/read repo.
+2. **Không** tự đọc: `docs/02-baseline/`, `docs/03-modules/_legacy/`, toàn bộ `trace-matrix.md`, `doc-registry.md` trừ khi user yêu cầu rõ.
+3. Context theo lớp: `overview.md` (30s) → `memory/{phase}/` → **1 DOC đích** (+ tối đa 1 dependency).
+4. Tối đa **3 file** đọc thêm so với file user @; vượt → hỏi trước.
+
+## Trước khi sửa
+
+- Một phiên = **một slice**: `{module}/{DOC-XX}` + section hoặc ID (`MGS-FR-010`).
+- Chỉ diff section được yêu cầu; không rewrite cả file.
+- Không cập nhật `overview.md` / `doc-registry.md` / `trace-matrix.md` trừ khi user nói "rollup" hoặc "sync registry".
+
+## Prompt thiếu scope (ví dụ)
+
+User: "Đồng bộ toàn bộ requirements"
+→ Trả lời: đề xuất chọn **1 module** + file DOC; không bắt đầu đọc hàng loạt.
+
+## Minipower routing
+
+- Có `Phase: requirements|architecture|…` → đọc skill con tương ứng, **không** đọc cả 6 skill.
+- Không attach skill cha nếu đã có phase rõ.
