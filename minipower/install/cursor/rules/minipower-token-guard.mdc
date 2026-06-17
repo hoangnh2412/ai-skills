@@ -27,3 +27,4 @@ User: "Đồng bộ toàn bộ requirements"
 
 - Có `Phase: requirements|architecture|…` → đọc skill con tương ứng, **không** đọc cả 6 skill.
 - Không attach skill cha nếu đã có phase rõ.
+- `@` file DOC → tra [auto-routing.md](../../agents/auto-routing.md); conflict phase → tách prompt.

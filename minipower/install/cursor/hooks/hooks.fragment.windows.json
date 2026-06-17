@@ -5,6 +5,10 @@
       {
         "command": ".cursor/hooks/check-prompt-scope.ps1",
         "timeout": 5
+      },
+      {
+        "command": ".cursor/hooks/check-doc-phase.ps1",
+        "timeout": 5
       }
     ],
     "beforeReadFile": [
