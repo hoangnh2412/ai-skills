@@ -3,17 +3,17 @@
   "hooks": {
     "beforeSubmitPrompt": [
       {
-        "command": ".cursor/hooks/check-prompt-scope.ps1",
-        "timeout": 5
+        "command": "powershell -NoProfile -ExecutionPolicy Bypass -File .cursor/hooks/minipower-token-guard.ps1",
+        "timeout": 10
       },
       {
-        "command": ".cursor/hooks/check-doc-phase.ps1",
-        "timeout": 5
+        "command": "powershell -NoProfile -ExecutionPolicy Bypass -File .cursor/hooks/minipower-auto-routing.ps1",
+        "timeout": 10
       }
     ],
     "beforeReadFile": [
       {
-        "command": ".cursor/hooks/limit-reads.ps1",
+        "command": "powershell -NoProfile -ExecutionPolicy Bypass -File .cursor/hooks/minipower-token-guard-read.ps1",
         "matcher": "Read"
       }
     ]

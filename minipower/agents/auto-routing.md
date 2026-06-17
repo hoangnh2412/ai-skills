@@ -1,6 +1,6 @@
 # Auto-routing — DOC file → Minipower phase
 
-Markdown thuần — **SSOT** bảng map DOC→phase và hành vi agent khi user `@` file DOC. Hook Cursor triển khai logic này: [install/cursor/hooks/check-doc-phase.*](../install/cursor/README.md#auto-routing-doc--phase).
+Markdown thuần — **SSOT** bảng map DOC→phase và hành vi agent khi user `@` file DOC. Hook Cursor triển khai logic này: [install/cursor/hooks/minipower-auto-routing.*](../install/cursor/README.md#auto-routing-doc--phase).
 
 ## Bảng map DOC → phase
 
@@ -20,14 +20,14 @@ Markdown thuần — **SSOT** bảng map DOC→phase và hành vi agent khi user
 ## Agent — khi không có hook
 
 1. Parse `@` path, tên file `DOC-NN-*.md`, hoặc nhắc trần `DOC-NN` trong prompt → tra bảng trên.
-2. **Một phase** → đọc skill con tương ứng; nhắc user thêm `Phase: …` nếu thiếu.
+2. **Một phase** → hook/script chèn `Phase: …`, `/minipower`, `@skills/{phase}/SKILL.md` (và `@` file DOC nếu đã tag path đầy đủ); agent đọc skill con tương ứng.
 3. **Nhiều phase** → **không** bắt đầu đọc/sửa; liệt kê file theo phase và gợi ý tách prompt (mỗi prompt 1 phase).
 4. `Phase:` trong prompt **khác** phase file DOC → báo conflict, yêu cầu sửa.
 
 ## Kết hợp token guard
 
 - [token-guard.md](token-guard.md) — scope, giới hạn đọc file.
-- Hook `check-prompt-scope` — chặn `@docs/` quá rộng, thiếu scope.
-- Hook `check-doc-phase` — conflict phase khi tag hoặc **nhắc trần** nhiều `DOC-NN` thuộc phase khác nhau.
+- Hook `minipower-token-guard` — chặn `@docs/` quá rộng, thiếu scope.
+- Hook `minipower-auto-routing` — conflict phase khi tag hoặc **nhắc trần** nhiều `DOC-NN` thuộc phase khác nhau.
 
-Thứ tự `beforeSubmitPrompt`: **check-prompt-scope** → **check-doc-phase**.
+Thứ tự `beforeSubmitPrompt`: **minipower-token-guard** → **minipower-auto-routing**.

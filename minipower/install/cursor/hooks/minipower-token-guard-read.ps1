@@ -1,11 +1,8 @@
-# Minipower - beforeReadFile (optional, Windows / PowerShell)
+# Minipower - beforeReadFile / token guard read limits (optional, Windows / PowerShell)
 # Install: symlink to .cursor/hooks/ and merge hooks.fragment.windows.json into .cursor/hooks.json
-$inputJson = [Console]::In.ReadToEnd()
-$data = $inputJson | ConvertFrom-Json
-$path = ''
-if ($null -ne $data.file_path) { $path = [string]$data.file_path }
-elseif ($null -ne $data.path) { $path = [string]$data.path }
-$prompt = if ($null -ne $data.prompt) { [string]$data.prompt } else { '' }
+
+$ErrorActionPreference = 'Stop'
+. "$PSScriptRoot/hook-stdin.ps1"
 
 function Allow { '{"permission": "allow"}' | Write-Output; exit 0 }
 function Deny($msg) {
@@ -15,6 +12,17 @@ function Deny($msg) {
     agent_message = $msg
   } | ConvertTo-Json -Compress | Write-Output
   exit 0
+}
+
+$raw = Read-MinipowerHookStdin
+$data = ConvertFrom-MinipowerHookJson -Raw $raw
+
+$path = ''
+$prompt = ''
+if ($null -ne $data) {
+  if ($null -ne $data.file_path) { $path = [string]$data.file_path }
+  elseif ($null -ne $data.path) { $path = [string]$data.path }
+  if ($null -ne $data.prompt) { $prompt = [string]$data.prompt }
 }
 
 if ([string]::IsNullOrWhiteSpace($path)) { Allow }

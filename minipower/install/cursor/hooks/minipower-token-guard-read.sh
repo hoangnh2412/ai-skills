@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Minipower - beforeReadFile (optional, macOS / Linux)
+# Minipower - beforeReadFile / token guard read limits (optional, macOS / Linux)
 # Requires: python3 (stdlib json)
 # Install: chmod +x; symlink to .cursor/hooks/; merge hooks.fragment.unix.json
 set -euo pipefail

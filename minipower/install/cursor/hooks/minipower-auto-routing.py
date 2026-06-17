@@ -124,8 +124,62 @@ def parse_explicit_phase(prompt: str) -> Optional[str]:
     return match.group(1).lower() if match else None
 
 
+def build_route_prefix(
+    prompt: str, phase: str, skill: str, doc_labels: List[str]
+) -> str:
+    lines: List[str] = []
+    if "/minipower" not in prompt:
+        lines.append("/minipower")
+    if not re.search(rf"(?i)Phase:\s*{re.escape(phase)}\b", prompt):
+        lines.append(f"Phase: {phase}")
+    if skill not in prompt:
+        lines.append(f"@{skill}")
+    for doc in doc_labels:
+        if not doc or not re.search(r"[/\\]DOC-\d{2}", doc):
+            continue
+        doc_norm = doc.replace("\\", "/")
+        if doc_norm not in prompt:
+            lines.append(f"@{doc_norm}")
+    return "\n".join(lines)
+
+
+def build_enriched_prompt(original: str, prefix: str) -> str:
+    if not prefix:
+        return original
+    if not original:
+        return prefix
+    return f"{prefix}\n\n{original}"
+
+
+def continue_with_route(
+    original: str, enriched: str, phase: str, skill: str, info: str
+) -> None:
+    print(f"[INFO] Minipower auto-routing: {info}", file=sys.stderr)
+    context = (
+        "Minipower auto-route (DOC -> phase). "
+        f"Phase: {phase} Skill: @{skill} "
+        "Follow minipower-token-guard: one slice, read skill con for this phase only."
+    )
+    print(
+        json.dumps(
+            {
+                "continue": True,
+                "updated_input": {"prompt": enriched},
+                "additional_context": context,
+                "hookSpecificOutput": {
+                    "hookEventName": "UserPromptSubmit",
+                    "additionalContext": context,
+                    "updatedInput": {"prompt": enriched},
+                },
+            },
+            ensure_ascii=False,
+        )
+    )
+    sys.exit(0)
+
+
 def handle_single_phase(
-    by_phase: Dict[str, List[str]], explicit: Optional[str]
+    by_phase: Dict[str, List[str]], explicit: Optional[str], prompt: str
 ) -> None:
     detected = next(iter(by_phase))
     files = ", ".join(by_phase[detected])
@@ -140,9 +194,15 @@ def handle_single_phase(
         )
 
     if not explicit:
-        warn(
-            f"Phát hiện phase: {detected}. Thêm vào prompt: Phase: {detected} "
-            f"(+ /minipower, @{skill_path(detected)} nếu cần)."
+        skill = skill_path(detected)
+        prefix = build_route_prefix(prompt, detected, skill, by_phase[detected])
+        enriched = build_enriched_prompt(prompt, prefix)
+        continue_with_route(
+            prompt,
+            enriched,
+            detected,
+            skill,
+            f"Da chen Phase: {detected} (+ /minipower, @{skill}).",
         )
 
     allow()
@@ -215,7 +275,7 @@ def main() -> None:
     explicit = parse_explicit_phase(prompt)
 
     if len(by_phase) == 1:
-        handle_single_phase(by_phase, explicit)
+        handle_single_phase(by_phase, explicit, prompt)
 
     handle_multi_phase(by_phase, explicit)
 

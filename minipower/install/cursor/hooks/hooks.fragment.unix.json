@@ -3,17 +3,17 @@
   "hooks": {
     "beforeSubmitPrompt": [
       {
-        "command": ".cursor/hooks/check-prompt-scope.sh",
+        "command": ".cursor/hooks/minipower-token-guard.sh",
         "timeout": 5
       },
       {
-        "command": ".cursor/hooks/check-doc-phase.sh",
+        "command": ".cursor/hooks/minipower-auto-routing.sh",
         "timeout": 5
       }
     ],
     "beforeReadFile": [
       {
-        "command": ".cursor/hooks/limit-reads.sh",
+        "command": ".cursor/hooks/minipower-token-guard-read.sh",
         "matcher": "Read"
       }
     ]

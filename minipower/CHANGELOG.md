@@ -11,11 +11,12 @@ Mọi thay đổi đáng chú ý của **Minipower skill pack** được ghi tro
 ### Added
 
 - **`agents/`** — `token-guard.md`, `doc-editing.md`, `README.md` (guardrails tool-agnostic)
-- **`install/cursor/`** — rules `.mdc`, hooks (`check-prompt-scope.ps1`, `limit-reads.ps1`, `hooks.fragment.json`)
+- **`install/cursor/`** — rules `.mdc`, hooks (`minipower-token-guard.ps1`, `minipower-token-guard-read.ps1`, `hooks.fragment.json`)
 - **`install/claude/`** — rule `paths` cho doc-editing, `settings.fragment.json`, README cài đặt
 
 ### Changed
 
+- **Hooks** — đổi tên `check-prompt-scope` → `minipower-token-guard`, `check-doc-phase` → `minipower-auto-routing`, `limit-reads` → `minipower-token-guard-read` (khớp rule/agent)
 - **`SKILL.md`** — section Agent guardrails + link `agents/`
 - **`README.md`** — cấu trúc pack, link `agents/` và `install/`
 

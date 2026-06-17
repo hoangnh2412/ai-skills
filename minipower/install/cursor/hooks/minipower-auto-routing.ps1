@@ -1,7 +1,7 @@
 # Minipower - beforeSubmitPrompt: DOC file -> phase, block on conflict (Windows / PowerShell)
 # SSOT map: agents/auto-routing.md
 # Install: symlink to .cursor/hooks/; merge hooks.fragment.windows.json into .cursor/hooks.json
-# Runs after check-prompt-scope.ps1 in the same event chain.
+# Runs after minipower-token-guard.ps1 in the same event chain.
 
 $ErrorActionPreference = 'Stop'
 
@@ -85,12 +85,16 @@ function Add-DocEntry([hashtable]$Map, [System.Collections.Generic.HashSet[strin
   Add-DocRef -Map $Map -Seen $Seen -DocNum $Matches[1] -Label $Path
 }
 
-$raw = [Console]::In.ReadToEnd()
+. "$PSScriptRoot/hook-stdin.ps1"
+. "$PSScriptRoot/hook-route.ps1"
+
+$raw = Read-MinipowerHookStdin
 if ([string]::IsNullOrWhiteSpace($raw)) { Allow }
 
-try { $data = $raw | ConvertFrom-Json } catch { Allow }
+$data = ConvertFrom-MinipowerHookJson -Raw $raw
+if ($null -eq $data) { Allow }
 
-$prompt = [string]$data.prompt
+$prompt = if ($null -ne $data.prompt) { [string]$data.prompt } else { Get-HookPromptFromRaw -Raw $raw }
 $byPhase = @{}
 $seenDocs = [System.Collections.Generic.HashSet[string]]::new()
 
@@ -137,7 +141,15 @@ Hoac bo dong Phase: va chi tag file thuoc phase $explicitPhase.
 
   if (-not $explicitPhase) {
     $skill = Get-SkillRelPath $detected
-    Warn "Phat hien phase: $detected. Them vao prompt: Phase: $detected (+ /minipower, @$skill neu can)."
+    $docLabels = @($byPhase[$detected])
+    $prefix = Build-MinipowerRoutePrefix -Prompt $prompt -Phase $detected -SkillPath $skill -DocLabels $docLabels
+    $enriched = Build-MinipowerEnrichedPrompt -OriginalPrompt $prompt -Prefix $prefix
+    Write-MinipowerHookContinue `
+      -OriginalPrompt $prompt `
+      -EnrichedPrompt $enriched `
+      -Phase $detected `
+      -SkillPath $skill `
+      -InfoMessage "Da chen Phase: $detected (+ /minipower, @$skill)."
   }
 
   Allow
