@@ -66,22 +66,23 @@ function Get-SkillRelPath([string]$Phase) {
   }
 }
 
-function Add-DocEntry([hashtable]$Map, [string]$Path) {
-  if ([string]::IsNullOrWhiteSpace($Path)) { return }
-  $name = [System.IO.Path]::GetFileName($Path)
-  if ($name -notmatch 'DOC-(\d{2})-') { return }
-  $docNum = $Matches[1]
-  $phase = Get-PhaseForDoc $docNum
+function Add-DocRef([hashtable]$Map, [System.Collections.Generic.HashSet[string]]$Seen, [string]$DocNum, [string]$Label) {
+  if ([string]::IsNullOrWhiteSpace($DocNum) -or [string]::IsNullOrWhiteSpace($Label)) { return }
+  if ($Seen.Contains($DocNum)) { return }
+  $phase = Get-PhaseForDoc $DocNum
   if (-not $phase) { return }
   if (-not $Map.ContainsKey($phase)) {
     $Map[$phase] = [System.Collections.Generic.List[string]]::new()
   }
-  foreach ($list in $Map.Values) {
-    foreach ($existing in $list) {
-      if ([System.IO.Path]::GetFileName($existing) -eq $name) { return }
-    }
-  }
-  [void]$Map[$phase].Add($Path)
+  [void]$Seen.Add($DocNum)
+  [void]$Map[$phase].Add($Label)
+}
+
+function Add-DocEntry([hashtable]$Map, [System.Collections.Generic.HashSet[string]]$Seen, [string]$Path) {
+  if ([string]::IsNullOrWhiteSpace($Path)) { return }
+  $name = [System.IO.Path]::GetFileName($Path)
+  if ($name -notmatch 'DOC-(\d{2})') { return }
+  Add-DocRef -Map $Map -Seen $Seen -DocNum $Matches[1] -Label $Path
 }
 
 $raw = [Console]::In.ReadToEnd()
@@ -91,15 +92,20 @@ try { $data = $raw | ConvertFrom-Json } catch { Allow }
 
 $prompt = [string]$data.prompt
 $byPhase = @{}
+$seenDocs = [System.Collections.Generic.HashSet[string]]::new()
 
 if ($null -ne $data.attachments) {
   foreach ($att in @($data.attachments)) {
-    Add-DocEntry -Map $byPhase -Path ([string]$att.file_path)
+    Add-DocEntry -Map $byPhase -Seen $seenDocs -Path ([string]$att.file_path)
   }
 }
 
 foreach ($m in [regex]::Matches($prompt, 'DOC-(\d{2})-[\w-]+\.md')) {
-  Add-DocEntry -Map $byPhase -Path $m.Value
+  Add-DocEntry -Map $byPhase -Seen $seenDocs -Path $m.Value
+}
+
+foreach ($m in [regex]::Matches($prompt, 'DOC-(\d{2})(?![-\w])')) {
+  Add-DocRef -Map $byPhase -Seen $seenDocs -DocNum $m.Groups[1].Value -Label ("DOC-{0}" -f $m.Groups[1].Value)
 }
 
 if ($byPhase.Count -eq 0) { Allow }

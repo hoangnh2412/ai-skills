@@ -47,7 +47,8 @@ PHASE_LABEL: Dict[str, str] = {
 
 PHASES = frozenset(PHASE_LABEL.keys())
 DOC_IN_PROMPT = re.compile(r"DOC-(\d{2})-[\w-]+\.md")
-DOC_IN_NAME = re.compile(r"DOC-(\d{2})-")
+DOC_BARE_IN_PROMPT = re.compile(r"DOC-(\d{2})(?![-\w])")
+DOC_IN_NAME = re.compile(r"DOC-(\d{2})")
 EXPLICIT_PHASE = re.compile(
     r"(?i)Phase:\s*(discovery|requirements|architecture|planning|delivery|change-control)"
 )
@@ -82,29 +83,39 @@ def phase_for_doc(doc_num: str) -> Optional[str]:
     return PHASE_BY_DOC.get(doc_num)
 
 
-def add_entry(by_phase: Dict[str, List[str]], path: str) -> None:
-    if not path or not path.strip():
+def add_doc_ref(
+    by_phase: Dict[str, List[str]], seen: set[str], doc_num: str, label: str
+) -> None:
+    if not doc_num or not label.strip():
         return
-    base = basename(path)
-    match = DOC_IN_NAME.search(base)
-    if not match:
+    if doc_num in seen:
         return
-    phase = phase_for_doc(match.group(1))
+    phase = phase_for_doc(doc_num)
     if not phase:
         return
-    for paths in by_phase.values():
-        if any(basename(p) == base for p in paths):
-            return
-    by_phase.setdefault(phase, []).append(path)
+    seen.add(doc_num)
+    by_phase.setdefault(phase, []).append(label)
+
+
+def add_entry(by_phase: Dict[str, List[str]], seen: set[str], path: str) -> None:
+    if not path or not path.strip():
+        return
+    match = DOC_IN_NAME.search(basename(path))
+    if not match:
+        return
+    add_doc_ref(by_phase, seen, match.group(1), path)
 
 
 def collect_by_phase(data: dict, prompt: str) -> Dict[str, List[str]]:
     by_phase: Dict[str, List[str]] = {}
+    seen: set[str] = set()
     for att in data.get("attachments") or []:
         if isinstance(att, dict):
-            add_entry(by_phase, att.get("file_path") or "")
+            add_entry(by_phase, seen, att.get("file_path") or "")
     for match in DOC_IN_PROMPT.finditer(prompt):
-        add_entry(by_phase, match.group(0))
+        add_entry(by_phase, seen, match.group(0))
+    for match in DOC_BARE_IN_PROMPT.finditer(prompt):
+        add_doc_ref(by_phase, seen, match.group(1), f"DOC-{match.group(1)}")
     return by_phase
 
 

@@ -19,7 +19,7 @@ Markdown thuần — **SSOT** bảng map DOC→phase và hành vi agent khi user
 
 ## Agent — khi không có hook
 
-1. Parse `@` path hoặc tên file `DOC-NN-*.md` → tra bảng trên.
+1. Parse `@` path, tên file `DOC-NN-*.md`, hoặc nhắc trần `DOC-NN` trong prompt → tra bảng trên.
 2. **Một phase** → đọc skill con tương ứng; nhắc user thêm `Phase: …` nếu thiếu.
 3. **Nhiều phase** → **không** bắt đầu đọc/sửa; liệt kê file theo phase và gợi ý tách prompt (mỗi prompt 1 phase).
 4. `Phase:` trong prompt **khác** phase file DOC → báo conflict, yêu cầu sửa.
@@ -28,6 +28,6 @@ Markdown thuần — **SSOT** bảng map DOC→phase và hành vi agent khi user
 
 - [token-guard.md](token-guard.md) — scope, giới hạn đọc file.
 - Hook `check-prompt-scope` — chặn `@docs/` quá rộng, thiếu scope.
-- Hook `check-doc-phase` — conflict phase khi tag nhiều DOC.
+- Hook `check-doc-phase` — conflict phase khi tag hoặc **nhắc trần** nhiều `DOC-NN` thuộc phase khác nhau.
 
 Thứ tự `beforeSubmitPrompt`: **check-prompt-scope** → **check-doc-phase**.
