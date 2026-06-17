@@ -185,6 +185,7 @@ Cập nhật `memory/planning/` và DOC-14/15 **lặp lại** khi BA/SA làm rõ
 | 4 | **Cross-module** — thống nhất qua `memory/architecture/`, DOC-10, không meeting dài không ghi |
 | 5 | **MOD prefix cố định** — khai báo trong README module (`{MOD}-FR-001`, …) |
 | 6 | **Đăng ký module mới** — thêm vào DOC-03 trước khi tạo folder `03-modules/{id}/` |
+| 7 | **DOC versioning** — Version chỉ sau REQ owner sign-off; trước đó `—` + Draft — [`doc-versioning.md`](docs-skeleton/00-governance/doc-versioning.md) |
 
 ### Điểm đồng bộ (sync)
 

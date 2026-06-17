@@ -20,7 +20,7 @@ Khung folder **generic** — không gắn ngành, module hay dự án cụ thể
 
 | Folder | DOC | Mô tả |
 |--------|-----|-------|
-| [`00-governance/`](00-governance/) | 15, 18 | Plan, CR register, baseline history |
+| [`00-governance/`](00-governance/) | 15, 18 | Plan, CR register, baseline history, [doc versioning](00-governance/doc-versioning.md) |
 | [`01-project/`](01-project/) | 01–03 | Vision, stakeholder, BRD |
 | [`02-baseline/`](02-baseline/) | * | Snapshot sign-off — **READ ONLY** |
 | [`03-modules/`](03-modules/) | 04–07, 16 | Theo từng module / bounded context |

@@ -23,6 +23,6 @@ Mỗi file là khung copy-paste khi sinh artifact. Tham chiếu tiêu chuẩn/ng
 | DOC-17 | [DOC-17-deployment-guide.md](DOC-17-deployment-guide.md) | Runbook / cutover checklist |
 | DOC-18 | [DOC-18-change-request-register.md](DOC-18-change-request-register.md) | Change Management / RFC |
 
-**Versioning:** Ghi `Version`, `Date`, `Author`, `Status` (Draft | Review | Baseline | Superseded) ở đầu mỗi tài liệu.
+**Versioning:** Ghi `Version`, `Date`, `Author`, `Status` ở đầu mỗi tài liệu — quy tắc chi tiết: [`doc-versioning.md`](../docs-skeleton/00-governance/doc-versioning.md) *(Status: Draft | Review | Baseline | Superseded)*.
 
 **Cấu trúc folder dự án:** copy [docs-skeleton](../docs-skeleton/README.md) → `{project-root}/docs/`.

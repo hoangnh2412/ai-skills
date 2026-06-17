@@ -9,7 +9,7 @@ description: >-
 
 **Pack:** minipower · **Tiên quyết:** baseline DOC-01–07.
 
-**Template:** [DOC-18](../../templates/DOC-18-change-request-register.md) · **Folder:** `00-governance/` · `06-changes/CR-xxx/`
+**Template:** [DOC-18](../../templates/DOC-18-change-request-register.md) · **Folder:** `00-governance/` · `06-changes/CR-xxx/` · **Versioning:** [doc-versioning](../../docs-skeleton/00-governance/doc-versioning.md)
 
 **Quy tắc:** Sau baseline → CR bắt buộc · không sửa `02-baseline/` trực tiếp.
 

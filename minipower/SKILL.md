@@ -142,6 +142,7 @@ Business Goal → Stakeholder → Process → Requirement → Solution
 | Resource | Path |
 |----------|------|
 | **Project skeleton** | [project-skeleton/](project-skeleton/) |
+| **DOC versioning** | [docs-skeleton/00-governance/doc-versioning.md](docs-skeleton/00-governance/doc-versioning.md) |
 | Template 18 DOC | [templates/README.md](templates/README.md) |
 | Skeleton `docs/` | [docs-skeleton/README.md](docs-skeleton/README.md) |
 

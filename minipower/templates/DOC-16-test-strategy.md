@@ -2,7 +2,9 @@
 
 | Version | Date | Author | Status |
 |---------|------|--------|--------|
-| 0.1 | YYYY-MM-DD | | Draft |
+| — | YYYY-MM-DD | | Draft |
+
+> Quy tắc versioning: [`doc-versioning.md`](../docs-skeleton/00-governance/doc-versioning.md).
 
 **Tiêu chuẩn tham khảo:** **ISTQB** — test levels (Component, Integration, System, Acceptance); test types (Functional, Non-functional)
 
