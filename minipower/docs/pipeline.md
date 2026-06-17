@@ -34,9 +34,12 @@ Pipeline **không bắt buộc tuần tự tuyệt đối** sau khi đã có sco
 
 ## Luồng artifact
 
-```text
-assets/  →  brainstorm/  →  docs/  →  02-baseline/
-                                    ↘  06-changes/CR-xxx/  (sau baseline)
+```mermaid
+flowchart LR
+  A["assets/"] --> B["brainstorm/"]
+  B --> C["docs/"]
+  C --> D["02-baseline/"]
+  C -.->|sau baseline| E["06-changes/CR-xxx/"]
 ```
 
 | Bước | Thư mục | Ai làm | Mô tả |
@@ -68,16 +71,20 @@ assets/  →  brainstorm/  →  docs/  →  02-baseline/
 
 ## Luồng trong một module (BA)
 
-```text
-DOC-04 BR  →  DOC-05 UC  →  DOC-06 FR  →  DOC-07 AC
-                    ↓
-         docs/05-traceability/trace-matrix.md
+```mermaid
+flowchart LR
+  BR[DOC-04 BR] --> UC[DOC-05 UC] --> FR[DOC-06 FR] --> AC[DOC-07 AC]
+  UC -.->|trace| TM["05-traceability/trace-matrix.md"]
+  FR -.-> TM
+  AC -.-> TM
 ```
 
 ## Luồng kiến trúc (SA)
 
-```text
-DOC-08 SAD  →  DOC-09 ADR  →  DOC-10 Integration  →  DOC-11 Data Model  →  DOC-12 API
-       ↑ trace FR/UC từ 03-modules/                              ↑
-       └──────────── thống nhất biên module ─────────────────────┘
+```mermaid
+flowchart LR
+  MOD["03-modules/ FR·UC"]
+  SAD[DOC-08 SAD] --> ADR[DOC-09 ADR] --> INT[DOC-10 Integration] --> DM[DOC-11 Data Model] --> API[DOC-12 API]
+  MOD -->|trace FR/UC| SAD
+  MOD -->|thống nhất biên module| API
 ```

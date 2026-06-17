@@ -6,6 +6,7 @@ Tài liệu hướng dẫn **framework** Minipower (không nhầm với `{projec
 |------|----------|---------|
 | [pipeline.md](pipeline.md) | Pipeline 6 phase, nguyên tắc, luồng artifact, phase→DOC | Hiểu quy trình & folder dự án |
 | [parallel-work.md](parallel-work.md) | Multi-BA/SA/PM, sync, xung đột, dev tối thiểu | Lead team, dự án nhiều module |
+| [token-guard.md](token-guard.md) | Giảm token: scope prompt, rules, hooks Cursor | Làm việc trên repo `docs/` dự án |
 | [../docs-skeleton/00-governance/doc-versioning.md](../docs-skeleton/00-governance/doc-versioning.md) | Version & Change Log sau sign-off | Soạn / review DOC |
 
 **Khác:**

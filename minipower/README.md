@@ -115,7 +115,8 @@ Phase: discovery — phân tích scope dự án X, output DOC-01–03 draft
 | Init project, routing agent | [SKILL.md](SKILL.md) |
 | Template 18 DOC | [templates/README.md](templates/README.md) |
 | Index tài liệu pack | [docs/README.md](docs/README.md) |
-| Agent guardrails (token, DOC) | [agents/README.md](agents/README.md) |
+| Token guard (scope, hooks) | [docs/token-guard.md](docs/token-guard.md) |
+| Agent guardrails (nguồn rule) | [agents/README.md](agents/README.md) |
 | Cài rules/hooks Cursor | [install/cursor/README.md](install/cursor/README.md) |
 | Cài rules Claude Code | [install/claude/README.md](install/claude/README.md) |
 
@@ -130,7 +131,7 @@ Symlink skill **không** kéo rules/hooks — cài riêng **từ root workspace 
 | **Cursor** | Rules `.mdc` + hooks (token guard, scope prompt) | [install/cursor/README.md](install/cursor/README.md) |
 | **Claude Code** | Rules `.md` + permissions (tuỳ chọn) | [install/claude/README.md](install/claude/README.md) |
 
-Guardrails agent (nguồn chung): [agents/README.md](agents/README.md)
+Guardrails agent (nguồn chung): [agents/README.md](agents/README.md) · Token guard: [docs/token-guard.md](docs/token-guard.md)
 
 ---
 
@@ -193,6 +194,7 @@ Dùng khi **chưa rõ phase** hoặc cần **overview end-to-end**. Agent hỏi 
 |------|------------------------|
 | Overview / full pipeline | `/minipower` |
 | Một phase cụ thể | `/minipower` + `Phase: …` **hoặc** `@skills/…/SKILL.md` |
+| Một slice DOC (token guard) | Xem [docs/token-guard.md](docs/token-guard.md) |
 | Template DOC | `@templates/DOC-06-srs.md` (hoặc file template khác) |
 | Khởi tạo dự án | `/minipower` + `Init project` — xem [SKILL.md](SKILL.md#khởi-tạo-cấu-trúc-dự-án-mặc-định) |
 | Khởi tạo thủ công | Copy `project-skeleton/` + `docs-skeleton/` → `{project}/` |
