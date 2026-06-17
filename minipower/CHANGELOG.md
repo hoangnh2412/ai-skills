@@ -8,19 +8,26 @@ Mọi thay đổi đáng chú ý của **Minipower skill pack** được ghi tro
 
 ## [Unreleased]
 
+---
+
+## [2.3.0] - 2026-06-17
+
 ### Added
 
 - **`docs/05-traceability/overview.md`** — rollup tiến độ 30s: snapshot, module × pipeline, milestones, blocker, việc 2 tuần tới
 - Link từ `memory/memory.md` và `project-skeleton/README.md` → `overview.md`; hướng dẫn agent rollup sau sync
 - **`docs-skeleton/00-governance/doc-versioning.md`** — quy tắc version & Change Log: Version chỉ sau REQ owner sign-off; trước đó `—` + Draft; Change Log chỉ ghi mốc đã approve
-- Link từ `SKILL.md`, `README.md`, `docs-skeleton/README.md`, `templates/README.md`, skill `change-control` / `delivery` → `doc-versioning.md`
+- Link từ `SKILL.md`, `docs-skeleton/README.md`, `templates/README.md`, skill `change-control` / `delivery` → `doc-versioning.md`
+- **`docs/pipeline.md`**, **`docs/parallel-work.md`**, **`docs/README.md`** — tách tài liệu framework khỏi README chính
 
 ### Changed
 
 - `docs-skeleton/README.md`, `SKILL.md`, `README.md` — mô tả `05-traceability` gồm overview
-- **`README.md`** — nguyên tắc #7: DOC versioning (Version sau sign-off; Draft dùng `—`)
+- **`README.md`** — giữ hướng dẫn Cursor + bảng link tài liệu; pipeline & song song chuyển sang `docs/`
+- **`docs/parallel-work.md`** — quy tắc #7 DOC versioning (Version sau sign-off; Draft dùng `—`)
 - **`templates/DOC-16-test-strategy.md`** — header mặc định `Version = —` + blockquote tham chiếu `doc-versioning.md`
 - **`templates/README.md`** — mô tả versioning trỏ chi tiết sang `doc-versioning.md`
+- **`project-skeleton/README.md`** — hướng dẫn người mới join: cách đọc tài liệu, thứ tự đọc từng module
 
 ---
 

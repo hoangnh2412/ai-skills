@@ -1,0 +1,47 @@
+# Alertmanager — route mẫu
+# Thay receiver URL/email/Slack theo môi trường.
+
+global:
+  resolve_timeout: 5m
+
+route:
+  receiver: default
+  group_by: ['alertname', 'service', 'instance']
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 4h
+  routes:
+    - matchers:
+        - service="{service_name}"
+        - team="ops"
+      receiver: ops-team
+    - matchers:
+        - service="{service_name}"
+        - team="dev"
+      receiver: dev-team
+
+receivers:
+  - name: default
+    webhook_configs:
+      - url: 'http://localhost:5001/webhook'   # placeholder — thay production
+
+  - name: ops-team
+    slack_configs:
+      - api_url: 'https://hooks.slack.com/services/XXX/YYY/ZZZ'
+        channel: '#ops-alerts'
+        send_resolved: true
+        title: '{{ .Status | toUpper }} — {{ .CommonLabels.alertname }}'
+        text: '{{ range .Alerts }}{{ .Annotations.summary }}{{ end }}'
+
+  - name: dev-team
+    slack_configs:
+      - api_url: 'https://hooks.slack.com/services/XXX/YYY/ZZZ'
+        channel: '#dev-alerts'
+        send_resolved: true
+
+inhibit_rules:
+  - source_matchers:
+      - alertname="DotnetHighRAM"
+    target_matchers:
+      - severity="warning"
+    equal: ['instance']

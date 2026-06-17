@@ -26,7 +26,8 @@ Hub: [.opencode/README.md](../../../README.md) (repo Jarvis gốc).
 | Blob FileSystem / MinIO | [blobstoring-dotnet](../../blobstoring-dotnet/README.md) | `workflows/init.md` |
 | Swagger security scheme | [swashbuckle-dotnet](../../swashbuckle-dotnet/README.md) | `providers/jwt-security`, `api-key-security` |
 | OTEL Redis / EF trace | [telemetry-dotnet](../../telemetry-dotnet/README.md) | `providers/redis`, `entityframework` |
-| Đọc dashboard runtime CLR | [analyze-metric-dotnet](../../analyze-metric-dotnet/README.md) | `workflows/analyze.md` |
+| Observability pipeline OTEL → Grafana → alert | [observability-dotnet](../../observability-dotnet/README.md) | `workflows/setup.md` |
+| Troubleshoot metric từ dashboard | [troubleshooting-dotnet](../../troubleshooting-dotnet/README.md) | `SKILL.md` |
 
 ## Prompt sau scaffold (copy)
 

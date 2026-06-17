@@ -23,10 +23,57 @@ Cursor chỉ nhận skill tại **`.cursor/skills/{tên}/SKILL.md`**. Repo này 
 
 ### Minipower
 
+Tạo **symbolic link** từ folder `minipower/` trong repo này sang `.cursor/skills/minipower` của workspace.
+
+Chạy lệnh **từ root workspace** đang mở trong Cursor. Nếu `ai-skills` nằm ngoài workspace, thay path nguồn bằng **đường dẫn tuyệt đối** tới `…/ai-skills/minipower`.
+
+#### macOS
+
 ```bash
-# Từ root repo đang mở trong Cursor
 mkdir -p .cursor/skills
-ln -snf /path/to/ai-skills/minipower .cursor/skills/minipower
+ln -snf "$(pwd)/ai-skills/minipower" .cursor/skills/minipower
+
+# Kiểm tra
+ls -la .cursor/skills/minipower
+test -f .cursor/skills/minipower/SKILL.md && echo "OK"
+```
+
+> Không dùng `ln` không có `-s` — macOS không cho hard link tới thư mục (`Is a directory`).
+
+#### Linux
+
+```bash
+mkdir -p .cursor/skills
+ln -snf "$(pwd)/ai-skills/minipower" .cursor/skills/minipower
+
+# Kiểm tra
+ls -la .cursor/skills/minipower
+test -f .cursor/skills/minipower/SKILL.md && echo "OK"
+```
+
+> Cờ `-n` tránh follow link cũ; `-f` ghi đè nếu đã tồn tại.
+
+#### Windows
+
+**PowerShell**:
+
+```powershell
+New-Item -ItemType Directory -Force -Path .cursor\skills
+$source = Join-Path (Get-Location) "ai-skills\minipower"
+New-Item -ItemType SymbolicLink -Force -Path .cursor\skills\minipower -Target $source
+
+# Hoặc path tuyệt đối:
+# New-Item -ItemType SymbolicLink -Force -Path .cursor\skills\minipower -Target "C:\path\to\ai-skills\minipower"
+
+# Kiểm tra
+Test-Path .cursor\skills\minipower\SKILL.md
+```
+
+**CMD**:
+
+```cmd
+mkdir .cursor\skills
+mklink /J "%CD%\.cursor\skills\minipower" "%CD%\ai-skills\minipower"
 ```
 
 Trong chat: `/minipower` hoặc `@minipower`, kèm `Phase: discovery` (hoặc requirements, architecture, …).
@@ -65,7 +112,7 @@ Chi tiết publish sang repo product: [jarvis/README.md](jarvis/README.md).
 | [swashbuckle-dotnet](jarvis/skills/swashbuckle-dotnet/) | Swagger / OpenAPI |
 | [healthcheck-dotnet](jarvis/skills/healthcheck-dotnet/) | Health endpoints |
 | [telemetry-dotnet](jarvis/skills/telemetry-dotnet/) | OpenTelemetry |
-| [analyze-metric-dotnet](jarvis/skills/analyze-metric-dotnet/) | Đọc Grafana .NET Runtime Metrics |
+| [observability-dotnet](jarvis/skills/observability-dotnet/) | Thiết lập observability .NET — OTEL, Prometheus, Grafana, alert, vận hành |
 | [blobstoring-dotnet](jarvis/skills/blobstoring-dotnet/) | FileSystem / MinIO blob |
 | [code-review-dotnet](jarvis/skills/code-review-dotnet/) | Review PR C#/.NET |
 
