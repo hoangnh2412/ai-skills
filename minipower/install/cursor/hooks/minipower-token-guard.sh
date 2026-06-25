@@ -22,6 +22,11 @@ block() {
 
 [[ -z "${prompt//[[:space:]]/}" ]] && allow
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if printf '%s' "$prompt" | python3 "${SCRIPT_DIR}/hook_bypass.py"; then
+  allow
+fi
+
 lower=$(printf '%s' "$prompt" | tr '[:upper:]' '[:lower:]')
 
 has_phase=false

@@ -15,6 +15,8 @@ import re
 import sys
 from typing import Dict, List, Optional
 
+from hook_bypass import should_bypass
+
 PHASE_BY_DOC: Dict[str, str] = {
     "01": "discovery",
     "02": "discovery",
@@ -267,6 +269,9 @@ def main() -> None:
     prompt = data.get("prompt") or ""
     if not isinstance(prompt, str):
         prompt = str(prompt)
+
+    if should_bypass(prompt):
+        allow()
 
     by_phase = collect_by_phase(data, prompt)
     if not by_phase:

@@ -3,6 +3,7 @@
 
 $ErrorActionPreference = 'Stop'
 . "$PSScriptRoot/hook-stdin.ps1"
+. "$PSScriptRoot/hook-bypass.ps1"
 
 function Allow { '{"continue": true}' | Write-Output; exit 0 }
 function Warn($msg) {
@@ -23,6 +24,8 @@ $data = ConvertFrom-MinipowerHookJson -Raw $raw
 $prompt = if ($null -ne $data -and $null -ne $data.prompt) { [string]$data.prompt } else { Get-HookPromptFromRaw -Raw $raw }
 
 if ([string]::IsNullOrWhiteSpace($prompt)) { Allow }
+
+if (Test-MinipowerHookBypass $prompt) { Allow }
 
 $lower = $prompt.ToLowerInvariant()
 $hasPhase = $prompt -match 'Phase:\s*(discovery|requirements|architecture|planning|delivery|change-control)'

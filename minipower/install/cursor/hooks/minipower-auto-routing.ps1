@@ -87,6 +87,7 @@ function Add-DocEntry([hashtable]$Map, [System.Collections.Generic.HashSet[strin
 
 . "$PSScriptRoot/hook-stdin.ps1"
 . "$PSScriptRoot/hook-route.ps1"
+. "$PSScriptRoot/hook-bypass.ps1"
 
 $raw = Read-MinipowerHookStdin
 if ([string]::IsNullOrWhiteSpace($raw)) { Allow }
@@ -95,6 +96,8 @@ $data = ConvertFrom-MinipowerHookJson -Raw $raw
 if ($null -eq $data) { Allow }
 
 $prompt = if ($null -ne $data.prompt) { [string]$data.prompt } else { Get-HookPromptFromRaw -Raw $raw }
+if (Test-MinipowerHookBypass $prompt) { Allow }
+
 $byPhase = @{}
 $seenDocs = [System.Collections.Generic.HashSet[string]]::new()
 
