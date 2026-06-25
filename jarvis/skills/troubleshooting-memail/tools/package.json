@@ -1,0 +1,20 @@
+{
+  "name": "@jarvis/troubleshooting-memail-tools",
+  "version": "1.1.0",
+  "private": true,
+  "description": "Fetch Loki logs and Tempo traces from Grafana for mEmail troubleshooting",
+  "type": "module",
+  "engines": {
+    "node": ">=14"
+  },
+  "bin": {
+    "fetch-loki-logs": "./fetch-loki-logs.js",
+    "fetch-tempo-traces": "./fetch-tempo-traces.js",
+    "parse-explore-url": "./parse-explore-url.js"
+  },
+  "scripts": {
+    "fetch-logs": "node fetch-loki-logs.js",
+    "fetch-traces": "node fetch-tempo-traces.js",
+    "parse-url": "node parse-explore-url.js"
+  }
+}
