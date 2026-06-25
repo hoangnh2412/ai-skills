@@ -8,7 +8,7 @@ Version 2.3.0
 minipower/
 ├── SKILL.md                 ← Skill duy nhất trong menu / của Cursor
 ├── agents/                  ← Guardrails agent (token, sửa DOC) — Cursor + Claude Code
-├── install/                 ← Adapter cài rules/hooks (cursor/, claude/)
+├── install/                 ← Adapter cài rules/hooks (cursor/, claude/, opencode/)
 ├── skills/                  ← Phase con (file hướng dẫn, không có lệnh / riêng)
 │   ├── discovery/SKILL.md
 │   ├── requirements/SKILL.md
@@ -119,6 +119,7 @@ Phase: discovery — phân tích scope dự án X, output DOC-01–03 draft
 | Agent guardrails (nguồn rule) | [agents/README.md](agents/README.md) |
 | Cài rules/hooks Cursor | [install/cursor/README.md](install/cursor/README.md) |
 | Cài rules Claude Code | [install/claude/README.md](install/claude/README.md) |
+| Cài instructions + plugins OpenCode | [install/opencode/README.md](install/opencode/README.md) |
 
 ---
 
@@ -130,6 +131,7 @@ Symlink skill **không** kéo rules/hooks — cài riêng **từ root workspace 
 |-----|----------|-----------|
 | **Cursor** | Rules `.mdc` + hooks (token guard, scope prompt) | [install/cursor/README.md](install/cursor/README.md) |
 | **Claude Code** | Rules `.md` + permissions (tuỳ chọn) | [install/claude/README.md](install/claude/README.md) |
+| **OpenCode** | Instructions `.md` + plugins TS (token guard, auto-route) | [install/opencode/README.md](install/opencode/README.md) |
 
 Guardrails agent (nguồn chung): [agents/README.md](agents/README.md) · Token guard: [docs/token-guard.md](docs/token-guard.md)
 
