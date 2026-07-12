@@ -1,14 +1,14 @@
-# DOC-12 — API Specification
+# DOC-12 — Đặc tả API
 
-| Version | Date | Author | Status |
-|---------|------|--------|--------|
+| Phiên bản | Ngày | Tác giả | Trạng thái |
+|-----------|------|---------|------------|
 | 0.1 | YYYY-MM-DD | | Draft |
 
 **Tiêu chuẩn tham khảo:** **OpenAPI Specification (OAS) 3.x** — tiêu chuẩn de facto REST API
 
 ---
 
-## 1. Overview
+## 1. Tổng quan
 
 | Mục | Giá trị |
 |-----|---------|
@@ -17,7 +17,7 @@
 | **Base URL** | `https://api.example.com/v1` |
 | **OpenAPI file** | `openapi.yaml` (source of truth) |
 
-## 2. Authentication & Authorization
+## 2. Xác thực & Phân quyền
 
 | Method | Mô tả |
 |--------|-------|
@@ -27,7 +27,7 @@
 
 **RBAC / ABAC:** [Rule tóm tắt — trace BR/FR]
 
-## 3. Common Conventions
+## 3. Quy ước chung
 
 ### Request / Response
 
@@ -38,7 +38,7 @@
 | Pagination | `?page=1&size=20` |
 | Sort | `?sort=created_at:desc` |
 
-### Standard Error Response
+### Phản hồi lỗi chuẩn
 
 ```json
 {
@@ -50,7 +50,7 @@
 }
 ```
 
-### HTTP Status Codes
+### Mã trạng thái HTTP
 
 | Code | Usage |
 |------|-------|
@@ -63,14 +63,14 @@
 | 409 | Conflict |
 | 500 | Internal error |
 
-## 4. Endpoints Catalog
+## 4. Danh mục endpoint
 
 | Method | Path | Summary | Auth | FR trace |
 |--------|------|---------|------|----------|
 | POST | `/auth/login` | Login | Public | FR-001 |
 | GET | `/orders/{id}` | Get order | Bearer | FR-002 |
 
-## 5. Endpoint Detail — [METHOD] [PATH]
+## 5. Chi tiết endpoint — [METHOD] [PATH]
 
 ### `[METHOD] /resource/{id}`
 
@@ -107,7 +107,7 @@
 
 **Response 4xx/5xx:** → Standard Error Response
 
-## 6. OpenAPI Stub (copy to openapi.yaml)
+## 6. Khung OpenAPI (copy to openapi.yaml)
 
 ```yaml
 openapi: 3.0.3
@@ -134,14 +134,14 @@ paths:
           description: Success
 ```
 
-## 7. Rate Limiting & SLA
+## 7. Giới hạn tốc độ & SLA
 
 | Limit | Value |
 |-------|-------|
 | Rate | 100 req/min per client |
 | Timeout | 30s |
 
-## 8. Trace
+## 8. Truy vết
 
 | Endpoint | FR | UC | INT |
 |----------|----|----|-----|

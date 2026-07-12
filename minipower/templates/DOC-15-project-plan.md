@@ -1,26 +1,26 @@
-# DOC-15 — Project Plan
+# DOC-15 — Kế hoạch Dự án
 
-| Version | Date | Author | Status |
-|---------|------|--------|--------|
+| Phiên bản | Ngày | Tác giả | Trạng thái |
+|-----------|------|---------|------------|
 | 0.1 | YYYY-MM-DD | | Draft |
 
 **Tiêu chuẩn tham khảo:** **IEEE 1058** — Software Project Management Plan (SPMP)
 
 ---
 
-## 1. Introduction
+## 1. Giới thiệu
 
-### 1.1 Project Overview
+### 1.1 Tổng quan dự án
 
 [Tên dự án, sponsor, PM, timeline tổng]
 
-### 1.2 Objectives
+### 1.2 Mục tiêu
 
 | ID | Objective | Success criteria |
 |----|-----------|------------------|
 | | | |
 
-### 1.3 References
+### 1.3 Tài liệu tham chiếu
 
 | Doc | Version |
 |-----|---------|
@@ -28,9 +28,9 @@
 | DOC-06 SRS | |
 | DOC-14 WBS | |
 
-## 2. Project Organization
+## 2. Tổ chức dự án
 
-### 2.1 Roles & Responsibilities
+### 2.1 Vai trò & Trách nhiệm
 
 | Role | Name | Responsibility |
 |------|------|----------------|
@@ -39,11 +39,11 @@
 | BA | | |
 | Architect | | |
 
-### 2.2 Stakeholders
+### 2.2 Stakeholder
 
 → **DOC-02**
 
-## 3. Project Management Processes
+## 3. Quy trình quản lý dự án
 
 | Process | Approach |
 |---------|----------|
@@ -55,9 +55,9 @@
 | Communication | DOC-02 comm plan |
 | Change control | DOC-18 |
 
-## 4. Work Breakdown & Schedule
+## 4. WBS & Lịch trình
 
-### 4.1 Phases / Milestones
+### 4.1 Giai đoạn / Cột mốc
 
 | Phase | Milestone | Deliverables | Start | End |
 |-------|-----------|--------------|-------|-----|
@@ -65,38 +65,38 @@
 | Phase 2 | M2: UAT sign-off | DOC-07, DOC-16 | | |
 | Go-live | M3: Production | DOC-17 | | |
 
-### 4.2 Schedule Overview (Gantt summary)
+### 4.2 Tổng quan lịch trình (Gantt tóm tắt)
 
 | WBS ID | Task | Duration | Dependency | Owner |
 |--------|------|----------|------------|-------|
 | | | | FS / SS | |
 
-## 5. Resource Plan
+## 5. Kế hoạch nguồn lực
 
 | Role | FTE | Phase 1 | Phase 2 | Notes |
 |------|-----|---------|---------|-------|
 | Dev | | | | |
 
-## 6. Budget (nếu áp dụng)
+## 6. Ngân sách (nếu áp dụng)
 
 | Category | Estimated | Actual | Variance |
 |----------|-----------|--------|------------|
 | Labor | | | |
 | License / Infra | | | |
 
-## 7. Risk Register
+## 7. Đăng ký rủi ro
 
 | ID | Risk | Prob | Impact | Mitigation | Owner | Status |
 |----|------|------|--------|------------|-------|--------|
 | RK-001 | | H/M/L | H/M/L | | | Open |
 
-## 8. Dependency Register
+## 8. Đăng ký phụ thuộc
 
 | ID | Dependency | Type | Impact if delayed |
 |----|------------|------|-------------------|
 | | External team / vendor | | |
 
-## 9. Quality & Acceptance
+## 9. Chất lượng & Chấp nhận
 
 | Gate | Criteria | Sign-off |
 |------|----------|----------|
@@ -104,13 +104,13 @@
 | G2 Build complete | Unit + integration pass | |
 | G3 Go-live | UAT + DOC-17 dry-run | |
 
-## 10. Appendices
+## 10. Phụ lục
 
 - Communication plan
 - Training plan
 - Hypercare plan (post go-live)
 
-## 11. Approval
+## 11. Phê duyệt
 
 | Vai trò | Họ tên | Ngày |
 |---------|--------|------|

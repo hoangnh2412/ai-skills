@@ -22,14 +22,7 @@ Tương đương lệnh terminal:
 
 ```bash
 cd jarvis/skills/troubleshooting-dotnet/tools
-
-GRAFANA_URL=http://localhost:3000 \
-GRAFANA_USER=admin \
-GRAFANA_PASSWORD=Admin@123 \
-PROMETHEUS_URL=http://localhost:9090 \
-DASHBOARD_VAR_exported_job=Sample \
-DASHBOARD_VAR_exported_instance=All \
-node fetch-dashboard-metrics.js --uid dfoxo2zt2lkaof
+source .env && node fetch-dashboard-metrics.js --uid dfoxo2zt2lkaof
 ```
 
 **Prompt gợi ý (copy vào chat):**
@@ -37,15 +30,7 @@ node fetch-dashboard-metrics.js --uid dfoxo2zt2lkaof
 ```text
 @jarvis/skills/troubleshooting-dotnet/SKILL.md
 
-Troubleshoot service .NET — lấy metrics 24h từ Grafana:
-
-- Grafana: http://localhost:3000 (admin / Admin@123)
-- Prometheus: http://localhost:9090
-- Dashboard UID: dfoxo2zt2lkaof (.Net Leak memory)
-- Biến dashboard:
-  - exported_job = Sample
-  - exported_instance = All
-
+Troubleshoot service .NET — lấy metrics 24h từ Grafana
 Chạy fetch-dashboard-metrics, đọc file JSON trong artifacts/, phân tích RAM/GC/latency/RPS và gợi ý bước tiếp theo.
 ```
 

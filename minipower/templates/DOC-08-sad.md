@@ -1,47 +1,47 @@
-# DOC-08 — Solution Architecture Document (SAD)
+# DOC-08 — Tài liệu Kiến trúc Giải pháp (SAD)
 
-| Version | Date | Author | Status |
-|---------|------|--------|--------|
+| Phiên bản | Ngày | Tác giả | Trạng thái |
+|-----------|------|---------|------------|
 | 0.1 | YYYY-MM-DD | | Draft |
 
 **Tiêu chuẩn tham khảo:** **SEI** — *Documenting Software Architectures: Views and Beyond*; **Kruchten 4+1 View Model**
 
 ---
 
-## 1. Introduction
+## 1. Giới thiệu
 
-### 1.1 Purpose
+### 1.1 Mục đích
 
-### 1.2 Scope
+### 1.2 Phạm vi
 
 [In/out scope kiến trúc; tham chiếu DOC-06]
 
-### 1.3 Definitions & References
+### 1.3 Định nghĩa & Tài liệu tham chiếu
 
 | Ref | Tài liệu |
 |-----|----------|
 | | DOC-06 SRS, DOC-10 Integration, DOC-09 ADR |
 
-### 1.4 Architecture Overview
+### 1.4 Tổng quan kiến trúc
 
 [Tóm tắt 1 trang: style, pattern, key decisions]
 
-## 2. Architectural Goals & Constraints
+## 2. Mục tiêu & Ràng buộc kiến trúc
 
 | ID | Goal / Constraint | NFR trace |
 |----|-------------------|-----------|
 | AG-001 | | NFR-xxx |
 
-## 3. Stakeholders & Concerns
+## 3. Stakeholder & Mối quan tâm
 
 | Stakeholder | Concern | View addressing |
 |-------------|---------|-----------------|
 | Dev team | Maintainability | Module / Component |
 | Ops | Deployability | Deployment |
 
-## 4. Architecture Views
+## 4. Các góc nhìn kiến trúc
 
-### 4.1 Logical View (Component)
+### 4.1 Góc nhìn logic (Component)
 
 ```text
 [Component diagram — modules, layers, dependencies]
@@ -51,15 +51,15 @@
 |-----------|-------------|------------|
 | | | |
 
-### 4.2 Process View (Runtime)
+### 4.2 Góc nhìn tiến trình (Runtime)
 
 [Luồng xử lý, concurrency, async, queue]
 
-### 4.3 Development View (Module / Package)
+### 4.3 Góc nhìn phát triển (Module / Package)
 
 [Cấu trúc repo, module boundaries]
 
-### 4.4 Physical / Deployment View
+### 4.4 Góc nhìn vật lý / Triển khai
 
 ```text
 [Deployment diagram — nodes, network zones]
@@ -69,13 +69,13 @@
 |-------------|-------|---------|
 | Production | | |
 
-### 4.5 Scenarios (+1 — use case validation)
+### 4.5 Kịch bản (+1 — xác thực use case)
 
 | Scenario | Views involved | Validates |
 |----------|----------------|-----------|
 | UC-001 login flow | Logical + Process + Deployment | NFR security |
 
-## 5. Cross-Cutting Concerns
+## 5. Mối quan tâm xuyên suốt
 
 | Concern | Approach | ADR ref |
 |---------|----------|---------|
@@ -83,7 +83,7 @@
 | Logging / Audit | | |
 | Error handling | | |
 
-## 6. Architecture Decisions Summary
+## 6. Tóm tắt quyết định kiến trúc
 
 → Chi tiết **DOC-09 ADR**
 
@@ -91,13 +91,13 @@
 |--------|----------|--------|
 | ADR-001 | | Accepted |
 
-## 7. Risks & Technical Debt
+## 7. Rủi ro & Nợ kỹ thuật
 
 | ID | Rủi ro | Mitigation |
 |----|--------|------------|
 | | | |
 
-## 8. Approval
+## 8. Phê duyệt
 
 | Vai trò | Họ tên | Ngày |
 |---------|--------|------|

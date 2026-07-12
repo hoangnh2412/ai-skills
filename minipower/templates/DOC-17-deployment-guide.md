@@ -1,14 +1,14 @@
-# DOC-17 — Deployment Guide
+# DOC-17 — Hướng dẫn Triển khai
 
-| Version | Date | Author | Status |
-|---------|------|--------|--------|
+| Phiên bản | Ngày | Tác giả | Trạng thái |
+|-----------|------|---------|------------|
 | 0.1 | YYYY-MM-DD | | Draft |
 
 **Tiêu chuẩn tham khảo:** Runbook / cutover checklist; phụ thuộc hạ tầng cụ thể (cloud, on-prem)
 
 ---
 
-## 1. Overview
+## 1. Tổng quan
 
 | Mục | Giá trị |
 |-----|---------|
@@ -17,7 +17,7 @@
 | **Maintenance window** | YYYY-MM-DD HH:MM – HH:MM (TZ) |
 | **Rollback decision maker** | |
 
-## 2. Environments
+## 2. Môi trường
 
 | Env | URL | Purpose | Infra |
 |-----|-----|---------|-------|
@@ -25,7 +25,7 @@
 | STAGING | | Pre-prod validation | |
 | PROD | | Production | |
 
-## 3. Prerequisites
+## 3. Điều kiện tiên quyết
 
 | # | Item | Owner | Status |
 |---|------|-------|--------|
@@ -36,7 +36,7 @@
 | 5 | Rollback script tested | DevOps | ☐ |
 | 6 | Communication sent to users | PM | ☐ |
 
-## 4. Deployment Architecture
+## 4. Kiến trúc triển khai
 
 → **DOC-08 SAD** Deployment View
 
@@ -44,7 +44,7 @@
 [Load Balancer] → [App nodes] → [DB primary / replica]
 ```
 
-## 5. Deployment Steps
+## 5. Các bước triển khai
 
 | Step | Action | Command / Link | Owner | Verify |
 |------|--------|----------------|-------|--------|
@@ -55,13 +55,13 @@
 | 5 | Smoke test | TC-smoke-001 … | QA | All pass |
 | 6 | Disable maintenance | | DevOps | Users can login |
 
-## 6. Data Migration (nếu có)
+## 6. Di chuyển dữ liệu (nếu có)
 
 | Step | Action | Reconcile rule | Rollback |
 |------|--------|----------------|----------|
 | 1 | Export source | Row count match | Restore backup |
 
-## 7. Post-Deployment Verification
+## 7. Xác minh sau triển khai
 
 | Check | Expected | Actual | Pass |
 |-------|----------|--------|------|
@@ -70,14 +70,14 @@
 | Integration INT-001 | Sync OK | | ☐ |
 | APM / logs | No error spike | | ☐ |
 
-## 8. Rollback Procedure
+## 8. Quy trình rollback
 
 | Trigger | Action |
 |---------|--------|
 | Smoke fail | Execute rollback within X min |
 | Data corruption | Stop traffic + restore backup |
 
-### Rollback Steps
+### Các bước rollback
 
 | Step | Action | Owner |
 |------|--------|-------|
@@ -86,13 +86,13 @@
 | 3 | Verify rollback smoke | QA |
 | 4 | Notify stakeholders | PM |
 
-## 9. Hypercare (post go-live)
+## 9. Hypercare (sau go-live)
 
 | Period | Support model | Escalation |
 |--------|---------------|------------|
 | Day 1–7 | War room 24/7 | On-call roster |
 
-## 10. Contacts
+## 10. Liên hệ
 
 | Role | Name | Phone / Slack |
 |------|------|---------------|
@@ -100,7 +100,7 @@
 | DBA | | |
 | PM | | |
 
-## 11. Sign-off
+## 11. Ký duyệt
 
 | Vai trò | Go / No-go | Ngày |
 |---------|------------|------|

@@ -1,7 +1,7 @@
-# DOC-02 — Stakeholder Analysis
+# DOC-02 — Phân tích stakeholder
 
-| Version | Date | Author | Status |
-|---------|------|--------|--------|
+| Phiên bản | Ngày | Tác giả | Trạng thái |
+|-----------|------|---------|------------|
 | 0.1 | YYYY-MM-DD | | Draft |
 
 **Tiêu chuẩn tham khảo:** Stakeholder register (PMBOK, BABOK); thường là phần của BRD hoặc Quality/Communication Plan.
@@ -12,7 +12,7 @@
 
 [Phạm vi phân tích stakeholder cho dự án / phase]
 
-## 2. Stakeholder Register
+## 2. Đăng ký stakeholder
 
 | ID | Stakeholder | Vai trò / Tổ chức | Quyền lợi | Mức ảnh hưởng | Mức quan tâm | Chiến lược |
 |----|-------------|-------------------|-----------|---------------|--------------|------------|
@@ -20,7 +20,7 @@
 
 **Legend ảnh hưởng / quan tâm:** High · Medium · Low
 
-## 3. Stakeholder Map (Power × Interest)
+## 3. Bản đồ stakeholder (Quyền lực × Mức quan tâm)
 
 ```mermaid
 quadrantChart
@@ -49,13 +49,13 @@ quadrantChart
 
 **R** = Responsible · **A** = Accountable · **C** = Consulted · **I** = Informed
 
-## 5. Communication Plan (tóm tắt)
+## 5. Kế hoạch truyền thông (tóm tắt)
 
 | Stakeholder | Nội dung | Tần suất | Kênh | Owner |
 |-------------|----------|----------|------|-------|
 | | | Weekly / Sprint / Gate | Email / Workshop | |
 
-## 6. Assumptions
+## 6. Giả định
 
 | ID | Giả định |
 |----|----------|

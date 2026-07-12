@@ -1,33 +1,33 @@
-# DOC-13 — Non-Functional Requirements (NFR)
+# DOC-13 — Yêu cầu Phi chức năng (NFR)
 
-| Version | Date | Author | Status |
-|---------|------|--------|--------|
+| Phiên bản | Ngày | Tác giả | Trạng thái |
+|-----------|------|---------|------------|
 | 0.1 | YYYY-MM-DD | | Draft |
 
 **Tiêu chuẩn tham khảo:** **ISO/IEC 25010** (quality model); van Lamsweerde goal-oriented NFR; phần NFR trong ISO/IEC/IEEE 29148
 
 ---
 
-## 1. Introduction
+## 1. Giới thiệu
 
 [Phạm vi; tham chiếu DOC-06 SRS §5, DOC-08 SAD]
 
-## 2. NFR Summary Matrix
+## 2. Ma trận tóm tắt NFR
 
 | NFR ID | Category | Requirement (measurable) | Priority | Verification | Owner |
 |--------|----------|--------------------------|----------|--------------|-------|
 | NFR-001 | Performance | Response ≤ 2s @ 100 concurrent users | Must | Load test | |
 
-## 3. Categories
+## 3. Phân loại
 
-### 3.1 Performance
+### 3.1 Hiệu năng
 
 | NFR ID | Metric | Target | Measurement method | Environment |
 |--------|--------|--------|--------------------|-------------|
 | NFR-P01 | Response time (p95) | ≤ 2s | JMeter / k6 | Staging |
 | NFR-P02 | Throughput | 500 TPS | | |
 
-### 3.2 Availability & Reliability
+### 3.2 Khả dụng & Độ tin cậy
 
 | NFR ID | Requirement | Target |
 |--------|-------------|--------|
@@ -35,7 +35,7 @@
 | NFR-A02 | RTO | 4 hours |
 | NFR-A02 | RPO | 1 hour |
 
-### 3.3 Security
+### 3.3 Bảo mật
 
 | NFR ID | Requirement | Standard / control |
 |--------|-------------|------------------|
@@ -45,32 +45,32 @@
 | NFR-S04 | Encryption in transit | TLS 1.2+ |
 | NFR-S05 | Audit log | Immutable, 7-year retention |
 
-### 3.4 Maintainability & Operability
+### 3.4 Khả năng bảo trì & Vận hành
 
 | NFR ID | Requirement |
 |--------|-------------|
 | NFR-M01 | Deploy without downtime (blue-green) |
 | NFR-M02 | Structured logging (JSON) |
 
-### 3.5 Scalability
+### 3.5 Khả năng mở rộng
 
 | NFR ID | Requirement |
 |--------|-------------|
 | NFR-SC01 | Horizontal scale to 500 users |
 
-### 3.6 Compliance & Legal
+### 3.6 Tuân thủ & Pháp lý
 
 | NFR ID | Regulation / policy |
 |--------|---------------------|
 | NFR-C01 | PDPA / data residency VN |
 
-### 3.7 Usability & Accessibility
+### 3.7 Khả năng sử dụng & Tiếp cận
 
 | NFR ID | Requirement |
 |--------|-------------|
 | NFR-U01 | WCAG 2.1 AA (nếu áp dụng) |
 
-## 4. NFR Detail Template
+## 4. Mẫu chi tiết NFR
 
 ### NFR-[ID] — [Tên]
 
@@ -82,13 +82,13 @@
 | **Architectural impact** | → DOC-08, ADR-xxx |
 | **Test approach** | Load / Pen test / Audit |
 
-## 5. Traceability
+## 5. Truy vết
 
 | NFR ID | SAD section | AC ID | Test (DOC-16) | Monitoring |
 |--------|-------------|-------|---------------|------------|
 | NFR-001 | Deployment view | AC-NFR-001 | TC-perf-001 | APM dashboard |
 
-## 6. Approval
+## 6. Phê duyệt
 
 | Vai trò | Ngày |
 |---------|------|

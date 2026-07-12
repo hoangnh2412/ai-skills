@@ -1,7 +1,7 @@
-# DOC-07 — Acceptance Criteria
+# DOC-07 — Tiêu chí chấp nhận
 
-| Version | Date | Author | Status |
-|---------|------|--------|--------|
+| Phiên bản | Ngày | Tác giả | Trạng thái |
+|-----------|------|---------|------------|
 | 0.1 | YYYY-MM-DD | | Draft |
 
 **Tiêu chuẩn tham khảo:** **Gherkin (Given/When/Then)** — BDD; align User Story + AC (Agile).
@@ -12,13 +12,13 @@
 
 [Phase / release / module; trace tới DOC-06 SRS]
 
-## 2. Acceptance Criteria Catalog
+## 2. Danh mục tiêu chí chấp nhận
 
 | AC ID | FR ID | UC ID | Mô tả ngắn | Priority |
 |-------|-------|-------|------------|----------|
 | AC-001 | FR-001 | UC-001 | | Must |
 
-## 3. Gherkin Scenarios
+## 3. Kịch bản Gherkin
 
 ### AC-[ID] — [Tên] (FR-xxx)
 
@@ -47,13 +47,13 @@ Feature: [Tên feature]
 |-------|----------|-------------|--------|------|
 | AC-NFR-001 | Response time < 2s @ 100 users | | | |
 
-## 5. Definition of Done (DoD) — tham chiếu
+## 5. Định nghĩa hoàn thành (DoD) — tham chiếu
 
 - [ ] AC pass 100% Must-have
 - [ ] Regression suite pass
 - [ ] Sign-off PO / Business Owner
 
-## 6. Traceability
+## 6. Truy vết
 
 | AC ID | FR | UC | Test Case (DOC-16) |
 |-------|----|----|---------------------|

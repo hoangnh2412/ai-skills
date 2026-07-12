@@ -1,56 +1,56 @@
-# DOC-06 — Software Requirements Specification (SRS)
+# DOC-06 — Đặc tả Yêu cầu Phần mềm (SRS)
 
-| Version | Date | Author | Status |
-|---------|------|--------|--------|
+| Phiên bản | Ngày | Tác giả | Trạng thái |
+|-----------|------|---------|------------|
 | 0.1 | YYYY-MM-DD | | Draft |
 
 **Tiêu chuẩn tham khảo:** **IEEE 830** · **ISO/IEC/IEEE 29148:2011/2017**
 
 ---
 
-## 1. Introduction
+## 1. Giới thiệu
 
-### 1.1 Purpose
+### 1.1 Mục đích
 
 [Mục đích tài liệu, đối tượng đọc]
 
-### 1.2 Scope
+### 1.2 Phạm vi
 
 [Tên sản phẩm, phạm vi phần mềm — tham chiếu DOC-03]
 
-### 1.3 Definitions, Acronyms, Abbreviations
+### 1.3 Định nghĩa, Viết tắt
 
 | Thuật ngữ | Định nghĩa |
 |-----------|------------|
 | | |
 
-### 1.4 References
+### 1.4 Tài liệu tham chiếu
 
 | ID | Tài liệu |
 |----|----------|
 | | DOC-03 BRD, DOC-05 Use Cases |
 
-### 1.5 Overview
+### 1.5 Tổng quan
 
 [Cấu trúc phần còn lại của SRS]
 
-## 2. Overall Description
+## 2. Mô tả tổng quan
 
-### 2.1 Product Perspective
+### 2.1 Bối cảnh sản phẩm
 
 [Context hệ thống, interface với hệ thống khác]
 
-### 2.2 Product Functions
+### 2.2 Chức năng sản phẩm
 
 [Tóm tắt chức năng chính theo module]
 
-### 2.3 User Classes and Characteristics
+### 2.3 Phân loại người dùng
 
 | User class | Mô tả | Kỹ năng |
 |------------|-------|---------|
 | | | |
 
-### 2.4 Operating Environment
+### 2.4 Môi trường vận hành
 
 | Mục | Yêu cầu |
 |-----|---------|
@@ -58,19 +58,19 @@
 | Server | |
 | Network | |
 
-### 2.5 Design and Implementation Constraints
+### 2.5 Ràng buộc thiết kế & triển khai
 
 | ID | Constraint |
 |----|------------|
 | | |
 
-### 2.6 Assumptions and Dependencies
+### 2.6 Giả định & Phụ thuộc
 
 | ID | Mô tả |
 |----|-------|
 | | |
 
-## 3. Functional Requirements
+## 3. Yêu cầu chức năng
 
 > Chi tiết NFR → **DOC-13**. AC → **DOC-07**.
 
@@ -90,25 +90,25 @@
 | **Postconditions** | |
 | **Error handling** | |
 
-## 4. External Interface Requirements
+## 4. Yêu cầu giao diện bên ngoài
 
-### 4.1 User Interfaces
+### 4.1 Giao diện người dùng
 
 [Màn hình, UX constraint — hoặc tham chiếu wireframe]
 
-### 4.2 Hardware Interfaces
+### 4.2 Giao diện phần cứng
 
 [Nếu có]
 
-### 4.3 Software Interfaces
+### 4.3 Giao diện phần mềm
 
 → Chi tiết **DOC-10**, **DOC-12**
 
-### 4.4 Communication Interfaces
+### 4.4 Giao diện truyền thông
 
 [Protocol, format]
 
-## 5. Other Non-Functional Requirements (summary)
+## 5. Yêu cầu phi chức năng khác (tóm tắt)
 
 → Chi tiết **DOC-13**
 
@@ -116,15 +116,15 @@
 |--------|----------|---------|
 | NFR-001 | Performance | |
 
-## 6. Appendices
+## 6. Phụ lục
 
-### 6.1 Traceability Matrix (summary)
+### 6.1 Ma trận truy vết (tóm tắt)
 
 | FR ID | UC | BR | AC | Test |
 |-------|----|----|----|------|
 | FR-001 | UC-001 | BR-001 | AC-001 | TC-001 |
 
-## 7. Approval / Baseline
+## 7. Phê duyệt / Baseline
 
 | Vai trò | Họ tên | Ngày | Version baseline |
 |---------|--------|------|------------------|

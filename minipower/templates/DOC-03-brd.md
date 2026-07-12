@@ -1,62 +1,62 @@
-# DOC-03 — Business Requirements Document (BRD)
+# DOC-03 — Tài liệu Yêu cầu Nghiệp vụ (BRD)
 
-| Version | Date | Author | Status |
-|---------|------|--------|--------|
+| Phiên bản | Ngày | Tác giả | Trạng thái |
+|-----------|------|---------|------------|
 | 0.1 | YYYY-MM-DD | | Draft |
 
 **Tiêu chuẩn tham khảo:** BRD industry practice; align với BABOK business requirements.
 
 ---
 
-## 1. Document Control
+## 1. Kiểm soát tài liệu
 
-| Version | Ngày | Author | Thay đổi |
-|---------|------|--------|----------|
+| Phiên bản | Ngày | Tác giả | Thay đổi |
+|-----------|------|---------|----------|
 | 0.1 | | | Initial draft |
 
-## 2. Executive Summary
+## 2. Tóm tắt điều hành
 
 [Tóm tắt dự án, phạm vi, kết quả mong đợi]
 
-## 3. Business Objectives
+## 3. Mục tiêu nghiệp vụ
 
 | ID | Objective | Success Metric | Priority |
 |----|-----------|----------------|----------|
 | BO-001 | | | Must / Should / Could |
 
-## 4. Scope
+## 4. Phạm vi
 
-### 4.1 In Scope
-
-- [ ]
-
-### 4.2 Out of Scope
+### 4.1 Trong phạm vi
 
 - [ ]
 
-### 4.3 Boundaries & Interfaces
+### 4.2 Ngoài phạm vi
+
+- [ ]
+
+### 4.3 Biên giới & Giao diện
 
 [Hệ thống / quy trình / tổ chức liên quan]
 
-## 5. Current State (AS-IS) — tóm tắt
+## 5. Hiện trạng (AS-IS) — tóm tắt
 
 | Process / Area | Mô tả | Pain points |
 |----------------|-------|-------------|
 | | | |
 
-## 6. Future State (TO-BE) — tóm tắt
+## 6. Tương lai (TO-BE) — tóm tắt
 
 | Process / Area | Mô tả | Lợi ích |
 |----------------|-------|---------|
 | | | |
 
-## 7. Business Requirements
+## 7. Yêu cầu nghiệp vụ
 
 | ID | Requirement | Rationale | Stakeholder | Priority |
 |----|-------------|-----------|-------------|----------|
 | BRQ-001 | | | | MoSCoW |
 
-## 8. Business Rules (reference)
+## 8. Quy tắc nghiệp vụ (tham chiếu)
 
 → Chi tiết tại **DOC-04**. Tóm tắt:
 
@@ -64,31 +64,31 @@
 |----|----------------|
 | BR-001 | |
 
-## 9. Constraints
+## 9. Ràng buộc
 
 | ID | Loại | Mô tả |
 |----|------|-------|
 | | Regulatory / Legal / Budget / Timeline / Technology | |
 
-## 10. Assumptions
+## 10. Giả định
 
 | ID | Assumption | Impact if wrong |
 |----|------------|-----------------|
 | A-001 | | |
 
-## 11. Dependencies
+## 11. Phụ thuộc
 
 | ID | Dependency | Owner | Impact |
 |----|------------|-------|--------|
 | | | | |
 
-## 12. Glossary
+## 12. Thuật ngữ
 
 | Thuật ngữ | Định nghĩa |
 |-----------|------------|
 | | |
 
-## 13. Approval
+## 13. Phê duyệt
 
 | Vai trò | Họ tên | Ngày | Baseline |
 |---------|--------|------|----------|

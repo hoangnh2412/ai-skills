@@ -1,7 +1,7 @@
-# DOC-09 — Architecture Decision Record (ADR)
+# DOC-09 — Bản ghi Quyết định Kiến trúc (ADR)
 
-| Version | Date | Author | Status |
-|---------|------|--------|--------|
+| Phiên bản | Ngày | Tác giả | Trạng thái |
+|-----------|------|---------|------------|
 | 0.1 | YYYY-MM-DD | | Draft |
 
 **Tiêu chuẩn tham khảo:** **Michael Nygard ADR** — Context · Decision · Status · Consequences
@@ -20,19 +20,19 @@
 | **Consulted** | |
 | **Informed** | |
 
-### Context
+### Bối cảnh
 
 [Vấn đề cần quyết định; ràng buộc; lực lượng đang tác động — technical, business, team]
 
-### Decision
+### Quyết định
 
 [Chúng tôi sẽ … — câu rõ ràng, actionable]
 
-### Rationale
+### Lý do
 
 [Tại sao chọn phương án này]
 
-### Options Considered
+### Các phương án đã xem xét
 
 | Option | Pros | Cons |
 |--------|------|------|
@@ -40,24 +40,24 @@
 | B | | |
 | C | | |
 
-### Consequences
+### Hệ quả
 
-**Positive:**
+**Tích cực:**
 -
 
-**Negative / Trade-offs:**
+**Tiêu cực / Đánh đổi:**
 -
 
-**Risks:**
+**Rủi ro:**
 -
 
-### Compliance / NFR Impact
+### Tuân thủ & Tác động NFR
 
 | NFR ID | Impact |
 |--------|--------|
 | NFR-001 | |
 
-### Trace
+### Truy vết
 
 | SRS / Integration | Ghi chú |
 |-------------------|---------|
@@ -66,7 +66,7 @@
 
 ---
 
-## ADR Index (register)
+## Chỉ mục ADR (đăng ký)
 
 | ADR ID | Title | Status | Date |
 |--------|-------|--------|------|

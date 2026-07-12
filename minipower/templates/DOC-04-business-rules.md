@@ -1,7 +1,7 @@
-# DOC-04 — Business Rules
+# DOC-04 — Quy tắc nghiệp vụ
 
-| Version | Date | Author | Status |
-|---------|------|--------|--------|
+| Phiên bản | Ngày | Tác giả | Trạng thái |
+|-----------|------|---------|------------|
 | 0.1 | YYYY-MM-DD | | Draft |
 
 **Tiêu chuẩn tham khảo:** Business Rules catalog; có thể tham khảo DMN (Decision Model and Notation) cho rule phức tạp.
@@ -12,7 +12,7 @@
 
 [Module / domain áp dụng]
 
-## 2. Business Rules Catalog
+## 2. Danh mục quy tắc nghiệp vụ
 
 | ID | Tên | Mô tả rule | Loại | Priority | Trace (UC/FR) | Owner |
 |----|-----|------------|------|----------|---------------|-------|
@@ -24,7 +24,7 @@
 - **Authorization** — ai được làm gì
 - **Inference** — suy luận từ fact
 
-## 3. Chi tiết rule (mẫu từng item)
+## 3. Chi tiết quy tắc (mẫu từng item)
 
 ### BR-[ID] — [Tên]
 
@@ -38,15 +38,15 @@
 | **Effective date** | |
 | **Trace** | UC- · FR- · BRQ- |
 
-## 4. Decision Table (tùy chọn — rule phức tạp)
+## 4. Bảng quyết định (tùy chọn — rule phức tạp)
 
 | Condition 1 | Condition 2 | Outcome |
 |-------------|-------------|---------|
 | Yes | > 100M | Trưởng phòng duyệt |
 | Yes | ≤ 100M | Tự động duyệt |
 
-## 5. Change Log
+## 5. Nhật ký thay đổi
 
-| Version | BR ID | Thay đổi | CR Ref |
-|---------|-------|----------|--------|
+| Phiên bản | BR ID | Thay đổi | CR Ref |
+|-----------|-------|----------|--------|
 | | | | CR-xxx |

@@ -1,16 +1,16 @@
-# DOC-10 — Integration Specification
+# DOC-10 — Đặc tả Tích hợp
 
-| Version | Date | Author | Status |
-|---------|------|--------|--------|
+| Phiên bản | Ngày | Tác giả | Trạng thái |
+|-----------|------|---------|------------|
 | 0.1 | YYYY-MM-DD | | Draft |
 
 **Tiêu chuẩn tham khảo:** Integration patterns; adjunct của SAD (DOC-08); enterprise integration (Hohpe)
 
 ---
 
-## 1. Overview
+## 1. Tổng quan
 
-### 1.1 Integration Landscape
+### 1.1 Bản đồ tích hợp
 
 ```text
 [Central System] ←→ [ERP] ←→ [CRM]
@@ -18,7 +18,7 @@
     [SSO] [Email] [SMS]
 ```
 
-### 1.2 Integration Principles
+### 1.2 Nguyên tắc tích hợp
 
 | Principle | Mô tả |
 |-----------|-------|
@@ -26,7 +26,7 @@
 | Retry policy | |
 | Error handling | |
 
-## 2. Integration Catalog
+## 2. Danh mục tích hợp
 
 | INT ID | Hệ thống ngoài | Mục đích | Direction | Pattern | Protocol | Frequency | Owner |
 |--------|----------------|----------|-----------|---------|----------|-----------|-------|
@@ -36,7 +36,7 @@
 
 **Pattern:** Point-to-point · Hub-spoke · Event-driven · ETL · API Gateway
 
-## 3. Integration Detail — INT-[ID]
+## 3. Chi tiết tích hợp — INT-[ID]
 
 ### INT-[ID] — [Tên]
 
@@ -52,7 +52,7 @@
 | **Error handling** | Retry, DLQ, alert |
 | **Mapping** | → DOC-11 Data Model |
 
-### Sequence (tùy chọn)
+### Trình tự (tùy chọn)
 
 ```text
 System A → API Gateway → System B
@@ -60,7 +60,7 @@ System A → API Gateway → System B
     └── auth ─────────────────┘
 ```
 
-## 4. Message / Payload Contract
+## 4. Hợp đồng Message / Payload
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
@@ -68,7 +68,7 @@ System A → API Gateway → System B
 
 → REST detail: **DOC-12 API Specification**
 
-## 5. Security
+## 5. Bảo mật
 
 | Mục | Yêu cầu |
 |-----|---------|
@@ -76,13 +76,13 @@ System A → API Gateway → System B
 | Secrets | Vault / env |
 | PII | Masking / encryption |
 
-## 6. Monitoring & Support
+## 6. Giám sát & Hỗ trợ
 
 | Metric | Threshold | Alert |
 |--------|-----------|-------|
 | Error rate | | |
 
-## 7. Trace
+## 7. Truy vết
 
 | FR ID | UC ID | ADR ID |
 |-------|-------|--------|

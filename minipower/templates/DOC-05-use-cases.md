@@ -1,26 +1,26 @@
-# DOC-05 — Use Cases
+# DOC-05 — Kịch bản sử dụng (Use Cases)
 
-| Version | Date | Author | Status |
-|---------|------|--------|--------|
+| Phiên bản | Ngày | Tác giả | Trạng thái |
+|-----------|------|---------|------------|
 | 0.1 | YYYY-MM-DD | | Draft |
 
 **Tiêu chuẩn tham khảo:** UML Use Case; Cockburn (Fully Dressed / Casual).
 
 ---
 
-## 1. Actor Catalog
+## 1. Danh mục tác nhân
 
 | Actor ID | Tên | Mô tả | Loại (Primary / Secondary / System) |
 |----------|-----|-------|--------------------------------------|
 | ACT-001 | | | Primary |
 
-## 2. Use Case List
+## 2. Danh sách use case
 
 | UC ID | Tên | Actor chính | Priority | Trace (BRQ/FR) |
 |-------|-----|-------------|----------|----------------|
 | UC-001 | | | Must | |
 
-## 3. Use Case Diagram (tùy chọn)
+## 3. Sơ đồ use case (tùy chọn)
 
 ```text
 [Actor] ──► (UC-001 Tên use case)
@@ -29,7 +29,7 @@
             (UC-002 ...)
 ```
 
-## 4. Use Case Specification (Fully Dressed)
+## 4. Đặc tả use case (Fully Dressed)
 
 ### UC-[ID] — [Tên]
 
@@ -46,38 +46,38 @@
 | **Trigger** | |
 | **Frequency** | |
 
-#### Main Flow (Basic Path)
+#### Luồng chính (Basic Path)
 
 | Step | Actor | Hành động |
 |------|-------|-----------|
 | 1 | | |
 | 2 | Hệ thống | |
 
-#### Alternative Flows
+#### Luồng thay thế
 
 | ID | Điều kiện | Steps |
 |----|-----------|-------|
 | AF-1 | | |
 
-#### Exception Flows
+#### Luồng ngoại lệ
 
 | ID | Điều kiện | Steps | Kết quả |
 |----|-----------|-------|---------|
 | EF-1 | | | Error message / rollback |
 
-#### Business Rules
+#### Quy tắc nghiệp vụ
 
 | BR ID | Áp dụng tại step |
 |-------|------------------|
 | BR-001 | Step 3 |
 
-#### Trace
+#### Truy vết
 
 | FR ID | Ghi chú |
 |-------|---------|
 | FR-001 | |
 
-## 5. Use Case Summary (Casual — cho UC đơn giản)
+## 5. Tóm tắt use case (Casual — cho UC đơn giản)
 
 | UC ID | Actor | Mô tả 1 câu |
 |-------|-------|-------------|

@@ -1,7 +1,7 @@
-# DOC-16 — Test Strategy & Test Cases ({module-id})
+# DOC-16 — Chiến lược Kiểm thử & Test Cases ({module-id})
 
-| Version | Date | Author | Status |
-|---------|------|--------|--------|
+| Phiên bản | Ngày | Tác giả | Trạng thái |
+|-----------|------|---------|------------|
 | — | YYYY-MM-DD | | Draft |
 
 > Quy tắc versioning: [`doc-versioning.md`](../docs-skeleton/00-governance/doc-versioning.md).
@@ -18,7 +18,7 @@
 
 ---
 
-## 2. Test Case Catalog
+## 2. Danh mục test case
 
 > Business glossary — [Trạng thái thực thi TC](../docs-skeleton/00-governance/business-glossary.md#4-doc-16--trạng-thái-thực-thi-tc) · [Cột catalog](../docs-skeleton/00-governance/business-glossary.md#8-doc-16--cột-catalog) · [Layer, Path, Priority](../docs-skeleton/00-governance/business-glossary.md#9-doc-16--layer-path-priority).
 
@@ -37,7 +37,7 @@
 
 ---
 
-## 3. Test Case Details
+## 3. Chi tiết test case
 
 ### {MOD}-TC-001 — [Tiêu đề]
 
@@ -52,7 +52,7 @@
 
 ---
 
-## 4. Traceability Matrix
+## 4. Ma trận truy vết
 
 | TC ID | FR ID | AC ID | BR ID | UC ID | Coverage |
 |-------|-------|-------|-------|-------|----------|
@@ -84,23 +84,23 @@
 
 ---
 
-## 7. Defect severity
+## 7. Mức độ nghiêm trọng lỗi
 
 → [DOC-16 — Defect severity](../docs-skeleton/00-governance/business-glossary.md#10-doc-16--defect-severity).
 
 ---
 
-## 8. Change Log
+## 8. Nhật ký thay đổi
 
 > Quy tắc versioning: [`doc-versioning.md`](../docs-skeleton/00-governance/doc-versioning.md).
 
-| Version | Thay đổi | Tác giả |
-|---------|----------|---------|
+| Phiên bản | Thay đổi | Tác giả |
+|-----------|----------|---------|
 | — | *(chưa có — chờ approve lần đầu)* | — |
 
 ---
 
-## 9. Approval
+## 9. Phê duyệt
 
 | Vai trò | Họ tên | Ngày | Baseline |
 |---------|--------|------|----------|

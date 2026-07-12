@@ -1,7 +1,7 @@
-# DOC-18 — Change Request Register
+# DOC-18 — Đăng ký Yêu cầu Thay đổi
 
-| Version | Date | Author | Status |
-|---------|------|--------|--------|
+| Phiên bản | Ngày | Tác giả | Trạng thái |
+|-----------|------|---------|------------|
 | 0.1 | YYYY-MM-DD | | Draft |
 
 **Tiêu chuẩn tham khảo:** Change Management (PMBOK, ITIL); Request for Change (RFC) templates
@@ -10,7 +10,7 @@
 
 ---
 
-## 1. Register Overview
+## 1. Tổng quan đăng ký
 
 | Mục | Giá trị |
 |-----|---------|
@@ -18,13 +18,13 @@
 | **Change authority** | CCB / Sponsor / PM |
 | **CR prefix** | CR- |
 
-## 2. Change Request Log
+## 2. Nhật ký yêu cầu thay đổi
 
 | CR ID | Title | Type | Requester | Date | Priority | Status | Baseline after |
 |-------|-------|------|-----------|------|----------|--------|----------------|
 | CR-001 | | add / modify / remove | | | H/M/L | Open / Approved / Rejected / Deferred | v1.1 |
 
-## 3. Change Request Detail — CR-[ID]
+## 3. Chi tiết yêu cầu thay đổi — CR-[ID]
 
 ### CR-[ID] — [Title]
 
@@ -38,11 +38,11 @@
 | **Change type** | add \| modify \| remove |
 | **Priority** | Critical / High / Medium / Low |
 
-### Description
+### Mô tả
 
 [Mô tả thay đổi — business justification]
 
-### Affected Requirements
+### Yêu cầu bị ảnh hưởng
 
 | Req ID | Type | Current | Proposed |
 |--------|------|---------|----------|
@@ -50,7 +50,7 @@
 | UC-002 | add | — | … |
 | BR-003 | remove | … | — |
 
-### Affected Documents
+### Tài liệu bị ảnh hưởng
 
 | DOC | Current ver | New ver | Change summary |
 |-----|-------------|---------|----------------|
@@ -59,7 +59,7 @@
 | DOC-14 WBS | v1.0 | v1.1 | +3 SP |
 | DOC-09 ADR | — | ADR-005 new | Architecture decision |
 
-### Impact Analysis
+### Phân tích tác động
 
 | Dimension | Impact | Detail |
 |-----------|--------|--------|
@@ -70,13 +70,13 @@
 | **Risk** | New risk RK-xxx | |
 | **NFR / Security** | NFR-xxx affected | |
 
-### Regression Test Scope
+### Phạm vi regression test
 
 | TC ID | Must re-run |
 |-------|-------------|
 | TC-001 | Yes |
 
-### Decision
+### Quyết định
 
 | Decision | Approved / Rejected / Deferred |
 |----------|----------------------------------|
@@ -84,7 +84,7 @@
 | **Decision by** | |
 | **Comments** | |
 
-### Implementation
+### Triển khai
 
 | Mục | Nội dung |
 |-----|----------|
@@ -95,20 +95,20 @@
 
 ---
 
-## 4. Baseline History
+## 4. Lịch sử baseline
 
 | Baseline ID | Date | SRS ver | CRs included | Sign-off |
 |-------------|------|---------|--------------|----------|
 | BL-1.0 | YYYY-MM-DD | v1.0 | Initial | Sponsor |
 | BL-1.1 | YYYY-MM-DD | v1.1 | CR-001, CR-002 | Sponsor |
 
-## 5. CCB Meeting Notes (tùy chọn)
+## 5. Biên bản họp CCB (tùy chọn)
 
 | Date | CRs reviewed | Decisions |
 |------|--------------|-----------|
 | | CR-001 | Approved |
 
-## 6. Metrics (tùy chọn)
+## 6. Chỉ số (tùy chọn)
 
 | Metric | Value |
 |--------|-------|

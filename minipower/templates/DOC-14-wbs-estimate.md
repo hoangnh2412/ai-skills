@@ -1,14 +1,14 @@
-# DOC-14 — WBS & Estimate
+# DOC-14 — WBS & Ước lượng
 
-| Version | Date | Author | Status |
-|---------|------|--------|--------|
+| Phiên bản | Ngày | Tác giả | Trạng thái |
+|-----------|------|---------|------------|
 | 0.1 | YYYY-MM-DD | | Draft |
 
 **Tiêu chuẩn tham khảo:** **PMBOK WBS**; Agile Epic · Feature · User Story · Story Points
 
 ---
 
-## 1. Overview
+## 1. Tổng quan
 
 | Mục | Giá trị |
 |-----|---------|
@@ -17,7 +17,7 @@
 | **Estimation method** | Story Point / T-shirt / Bottom-up |
 | **Velocity assumption** | SP / sprint |
 
-## 2. WBS Structure
+## 2. Cấu trúc WBS
 
 ```text
 1.0 Project
@@ -28,13 +28,13 @@
 └── 1.3 Non-functional (NFR, security, perf)
 ```
 
-## 3. Epic · Feature · Story Breakdown
+## 3. Phân rã Epic · Feature · Story
 
 | WBS ID | Epic | Feature | Story ID | Story title | FR trace | SP | Priority |
 |--------|------|---------|----------|-------------|----------|----|----------|
 | 1.1.1 | EP-01 | FE-01 | US-001 | As a … I want … | FR-001 | 5 | Must |
 
-## 4. Story Detail (mẫu)
+## 4. Chi tiết story (mẫu)
 
 ### US-[ID] — [Title]
 
@@ -46,13 +46,13 @@
 | **Story points** | |
 | **Notes** | |
 
-## 5. Complexity Scoring (tham chiếu skill — 0–20 / chiều)
+## 5. Chấm điểm độ phức tạp (tham chiếu skill — 0–20 / chiều)
 
 | Module | Functional | Integration | Security | Data | Infra | Total | Size |
 |--------|------------|-------------|----------|------|-------|-------|------|
 | Module A | 12 | 8 | 10 | 6 | 4 | 40 | Medium |
 
-## 6. Effort Estimate by Role
+## 6. Ước lượng effort theo vai trò
 
 | Role | Person-days / hours | Ghi chú |
 |------|---------------------|---------|
@@ -64,20 +64,20 @@
 | PM | | |
 | **Total** | | |
 
-## 7. Assumptions & Risks (estimation)
+## 7. Giả định & Rủi ro (ước lượng)
 
 | ID | Assumption / Risk | Impact on estimate |
 |----|-------------------|--------------------|
 | | | +20% buffer |
 
-## 8. Release / Wave Mapping
+## 8. Ánh xạ Release / Wave
 
 | Wave | Stories | Total SP | Target date |
 |------|---------|----------|-------------|
 | MVP | US-001 … | | |
 | Phase 2 | | | |
 
-## 9. Trace
+## 9. Truy vết
 
 | Story | FR | UC | CR |
 |-------|----|----|-----|
