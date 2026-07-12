@@ -50,6 +50,7 @@ Plugin gói **một file entry** + thư mục `lib/` (cùng logic với Cursor h
 | Hook OpenCode | Tương đương Cursor | Mục đích |
 |---------------|-------------------|----------|
 | `chat.message` | `beforeSubmitPrompt` → token-guard + auto-routing | Scope, @docs rộng, conflict phase |
+| `chat.message` (message **đầu phiên**) | Claude SessionStart | Decision-log staleness advisory (không chặn) |
 | `tool.execute.before` (`read`) | `beforeReadFile` | Chặn `02-baseline/`, `_legacy/` (tuỳ chọn) |
 
 Biến môi trường tuỳ chọn: `MINIPOWER_ROOT` (mặc định `ai-skills/minipower`) — path gợi ý skill trong auto-route.
@@ -92,6 +93,10 @@ Chạy trong `chat.message` **sau** token guard:
 | `Phase:` sai so với file DOC | **Chặn** |
 
 **SSOT:** [agents/auto-routing.md](../../agents/auto-routing.md)
+
+### Decision-log staleness (advisory)
+
+Ở **message đầu tiên mỗi phiên** (mô phỏng SessionStart), plugin gọi `lib/decision-staleness.ts`: so ngày DEC (còn hiệu lực) với lịch sử git của DOC trong `Trace:`; DOC đổi sau ngày → chèn cảnh báo vào context. Thuần TS (git qua `child_process`, không cần python). **Không chặn** — lỗi hook không ảnh hưởng luồng. Cùng hành vi với scanner Cursor/Claude.
 
 ### Read guard (tuỳ chọn)
 

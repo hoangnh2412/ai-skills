@@ -41,6 +41,8 @@ description: >-
 
 ## Chế độ Brainstorm
 
+**Trước bước 1** — chạy [deliberation](../deliberation/SKILL.md): Premise Check (có đáng làm?) + nghị luận đa góc nhìn để khung lại vấn đề. Có verdict PROCEED/RESHAPE mới elicit tiếp.
+
 - Tối đa **10 câu hỏi** — phạm vi · chi phí · kiến trúc
 - **Đã rõ** · **Chưa rõ** · **Chưa đề cập** · gắn `Assumption`
 

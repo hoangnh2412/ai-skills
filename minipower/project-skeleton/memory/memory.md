@@ -38,5 +38,6 @@
 1. Cần **nắm tổng thể dự án** → đọc [`docs/05-traceability/overview.md`](../docs/05-traceability/overview.md) trước.
 2. Đọc **file này** → mở **memory/{phase}/** tương ứng phase đang làm.
 3. Cập nhật memory **đúng chủ đề** — không append dài vào `memory.md` gốc.
+   - Quyết định có phương án bị loại → `memory/{phase}/decision-log.md` (schema: minipower pack `docs/decision-log.md`).
 4. Sau sync / cuối phiên: rollup số liệu vào `overview.md` (PM hoặc owner module).
 5. Trao đổi chi tiết → `brainstorm/` · chốt → `docs/`.

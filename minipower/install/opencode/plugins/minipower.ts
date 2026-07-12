@@ -1,11 +1,12 @@
 /**
- * Minipower — OpenCode plugin (token guard + auto-routing + read guard).
+ * Minipower — OpenCode plugin (token guard + auto-routing + read guard + decision staleness).
  * SSOT logic: install/cursor/hooks/ · agents/auto-routing.md
  */
 
 import { checkAutoRouting } from "./lib/auto-routing.ts"
 import { checkTokenGuard } from "./lib/token-guard.ts"
 import { checkReadGuard } from "./lib/token-guard-read.ts"
+import { checkDecisionStaleness } from "./lib/decision-staleness.ts"
 import {
   blockParts,
   filePaths,
@@ -30,6 +31,7 @@ type MessageOutput = {
 }
 
 const promptBySession: Record<string, string> = {}
+const staleCheckedSessions = new Set<string>()
 
 function log(level: "info" | "warn" | "error", service: string, message: string) {
   console.error(`[${level.toUpperCase()}] ${service}: ${message}`)
@@ -51,6 +53,20 @@ export const MinipowerPlugin = async () => {
       const parts = output.parts
       const prompt = promptText(parts)
       promptBySession[input.sessionID] = prompt
+
+      // Session-start advisory (message đầu tiên của phiên): decision-log staleness.
+      if (!staleCheckedSessions.has(input.sessionID)) {
+        staleCheckedSessions.add(input.sessionID)
+        try {
+          const stale = checkDecisionStaleness(process.cwd())
+          if (stale) {
+            log("info", "minipower-decision-staleness", "DEC có thể lỗi thời")
+            pushContext(parts, stale)
+          }
+        } catch {
+          // advisory — không bao giờ chặn
+        }
+      }
 
       const guard = checkTokenGuard(prompt)
       if (guard.action === "block") blockMessage(output, guard.message)

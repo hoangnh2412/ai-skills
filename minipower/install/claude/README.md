@@ -27,8 +27,18 @@ New-Item -ItemType SymbolicLink -Force -Path .claude\rules\minipower-doc-editing
 @path/to/ai-skills/minipower/agents/doc-editing.md
 ```
 
-## Permissions (tuỳ chọn)
+## Permissions + hooks (tuỳ chọn)
 
-Merge [settings.fragment.json](settings.fragment.json) vào `.claude/settings.json` để chặn đọc `02-baseline/` và `_legacy/`.
+Merge [settings.fragment.json](settings.fragment.json) vào `.claude/settings.json`:
+
+- **`permissions.deny`** — chặn đọc `02-baseline/` và `_legacy/`.
+- **`hooks.SessionStart`** — chạy [decision-log staleness](hooks/minipower-decision-staleness.sh) đầu phiên: cảnh báo DEC lỗi thời (DOC đổi sau ngày quyết định). **Advisory, không chặn.** Sửa `/ABSOLUTE/PATH/TO/...` trong fragment thành path thật tới pack.
+
+Yêu cầu hook: `git` + `python3`. Chạy thủ công bất kỳ lúc nào (mọi IDE):
+
+```bash
+MP=/path/to/ai-skills/minipower
+bash "$MP/install/claude/hooks/minipower-decision-staleness.sh"   # chạy từ root dự án
+```
 
 Kiểm tra: `/memory` — thấy minipower rules.

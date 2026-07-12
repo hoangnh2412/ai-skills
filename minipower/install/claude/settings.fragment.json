@@ -4,5 +4,17 @@
       "Read(docs/02-baseline/**)",
       "Read(docs/03-modules/_legacy/**)"
     ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"/ABSOLUTE/PATH/TO/ai-skills/minipower/install/claude/hooks/minipower-decision-staleness.sh\""
+          }
+        ]
+      }
+    ]
   }
 }

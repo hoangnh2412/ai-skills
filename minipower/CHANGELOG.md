@@ -8,16 +8,34 @@ Mọi thay đổi đáng chú ý của **Minipower skill pack** được ghi tro
 
 ## [Unreleased]
 
+---
+
+## [2.5.0] - 2026-07-12
+
 ### Added
 
+- **`skills/deliberation/SKILL.md`** — skill "tư duy" cross-phase: **Premise Check** (verdict PROCEED/RESHAPE/STOP + reassessment trigger) + **Deliberation** đa góc nhìn (mỗi góc 1 lượt, tách hội tụ/căng thẳng). Chạy **trước** khi vào phase
+- **`skills/doc-review/SKILL.md`** — QC **đối kháng** 5 chiều (traceability, mâu thuẫn chéo, testable/mơ hồ, đầy đủ, ID/version); mức Blocker/Major/Minor; verdict gate PASS/BLOCK; subagent context sạch **một slice**
+- **`docs/decision-log.md`** — schema `DEC-{PHASE}-NNN` lưu **"tại sao" + phương án bị loại**; recall protocol; staleness nhẹ
+- **`project-skeleton/memory/{phase}/decision-log.md`** — 6 seed file (DIS/REQ/ARC/PLN/DLV/CHG), tự propagate qua `cp -R` khi init
+- **decision-staleness hook** (advisory, non-blocking) — so ngày DEC còn hiệu lực với lịch sử git của DOC trong `Trace:`, cảnh báo DEC lỗi thời. Đủ 3 nền tảng:
+  - SSOT scanner `install/cursor/hooks/minipower-decision-staleness.py`
+  - **Cursor** — `beforeSubmitPrompt` wrapper `.sh`/`.ps1` (keyword-gated) + entry trong 3 `hooks.fragment*.json`
+  - **Claude Code** — `install/claude/hooks/minipower-decision-staleness.{sh,ps1}` delegate về scanner (SessionStart)
+  - **OpenCode** — port TS `plugins/lib/decision-staleness.ts`, chạy ở message đầu phiên trong `minipower.ts`
 - **`agents/`** — `token-guard.md`, `doc-editing.md`, `README.md` (guardrails tool-agnostic)
 - **`install/cursor/`** — rules `.mdc`, hooks (`minipower-token-guard.ps1`, `minipower-token-guard-read.ps1`, `hooks.fragment.json`)
 - **`install/claude/`** — rule `paths` cho doc-editing, `settings.fragment.json`, README cài đặt
 
 ### Changed
 
+- **`SKILL.md`** — +2 route (deliberation, doc-review); đọc/ghi `memory/{phase}/decision-log.md`; exit init gồm decision-log; frontmatter `description` thêm keyword cross-phase (deliberation, doc-review, decision-log) để tăng auto-trigger
+- **`install/claude/settings.fragment.json`** + **README** — thêm `hooks.SessionStart` (decision-staleness) cạnh permissions
+- **`skills/discovery/SKILL.md`** — brainstorm gọi `deliberation` trước bước 1 (có verdict mới elicit)
+- **`skills/delivery/SKILL.md`** — `doc-review` làm gate trước go-live (0 Blocker mới baseline)
+- **`skills/change-control/SKILL.md`** — `doc-review` regression sau merge delta; `deliberation` cho CR lớn
+- **`skills/README.md`**, **`docs/README.md`**, **`project-skeleton/memory/memory.md`**, **`project-skeleton/INIT.md`** — index + convention decision-log
 - **Hooks** — đổi tên `check-prompt-scope` → `minipower-token-guard`, `check-doc-phase` → `minipower-auto-routing`, `limit-reads` → `minipower-token-guard-read` (khớp rule/agent)
-- **`SKILL.md`** — section Agent guardrails + link `agents/`
 - **`README.md`** — cấu trúc pack, link `agents/` và `install/`
 
 ---

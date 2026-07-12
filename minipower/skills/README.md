@@ -7,6 +7,8 @@
 
 | File | Phase keyword | Mục đích |
 |------|---------------|----------|
+| [deliberation/SKILL.md](deliberation/SKILL.md) | `deliberation` (cross-phase) | Premise Check + nghị luận — chạy trước phase |
+| [doc-review/SKILL.md](doc-review/SKILL.md) | `doc-review` (cross-phase) | QC đối kháng DOC — trace, mâu thuẫn, testable |
 | [discovery/SKILL.md](discovery/SKILL.md) | `Phase: discovery` | Khám phá, scope |
 | [requirements/SKILL.md](requirements/SKILL.md) | `Phase: requirements` | UC, FR, BR, NFR, AC |
 | [architecture/SKILL.md](architecture/SKILL.md) | `Phase: architecture` | SAD, ADR, API |

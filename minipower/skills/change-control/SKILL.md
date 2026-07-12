@@ -17,6 +17,8 @@ description: >-
 CR → impact → deltas/ → merge docs → regression → approve → vX.Y
 ```
 
+**Sau merge delta** — [doc-review](../doc-review/SKILL.md) regression tài liệu (trace + mâu thuẫn) trước re-baseline. CR lớn → [deliberation](../deliberation/SKILL.md) trước khi chấp thuận.
+
 **Liên quan:** [requirements](../requirements/SKILL.md) · [architecture](../architecture/SKILL.md) · [planning](../planning/SKILL.md) · [delivery](../delivery/SKILL.md)
 
 ## Anti-patterns

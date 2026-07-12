@@ -30,6 +30,7 @@ Mỗi hook có **hai bản** cùng logic:
 |------|---------|----------------|----------|
 | Kiểm tra scope prompt | `minipower-token-guard.ps1` | `minipower-token-guard.sh` | Token guard — thiếu scope, `@docs/` quá rộng |
 | **Auto-routing DOC → phase** | `minipower-auto-routing.ps1` | `minipower-auto-routing.sh` + `minipower-auto-routing.py` | Conflict phase khi tag nhiều DOC |
+| **Decision-log staleness** | `minipower-decision-staleness.ps1` | `minipower-decision-staleness.sh` + `minipower-decision-staleness.py` | Advisory (không chặn) — DEC lỗi thời; keyword-gated |
 | Giới hạn đọc baseline/_legacy | `minipower-token-guard-read.ps1` | `minipower-token-guard-read.sh` | Tuỳ chọn — chặn Read path nặng (cùng rule token guard) |
 
 Bản `.sh` cần **python3** (stdlib `json`) và quyền thực thi. Bản `.ps1` dùng message ASCII (tương thích PowerShell 5.1); `.sh` giữ đầy đủ tiếng Việt.
@@ -51,6 +52,13 @@ Biến môi trường tuỳ chọn: `MINIPOWER_ROOT` (mặc định `ai-skills/m
 
 **Chèn context sau auto-route (1 phase, thiếu `Phase:`):** hook trả `updated_input.prompt` (prompt đầy đủ có `/minipower`, `Phase:`, `@skill`) và `additional_context`. Cursor 3.6+ có thể chỉ áp dụng một trong hai — nếu transcript vẫn prompt gốc, kiểm tra Hooks log có `additional_context`; feature đầy đủ đang được Cursor mở rộng ([forum](https://forum.cursor.com/t/add-additional-context-to-beforesubmitprompt-hook-output/157231)).
 
+### Decision-log staleness (advisory)
+
+Chạy **sau** auto-routing trong `beforeSubmitPrompt`, **keyword-gated** — chỉ quét khi prompt bàn về quyết định (`decision|deliberation|premise|quyết định|đánh giá lại|baseline|supersede|stale|lỗi thời`). So ngày DEC (còn hiệu lực) với lịch sử git của DOC trong `Trace:`; DOC đổi sau ngày → cảnh báo (stderr + `additional_context`). **Không chặn.** Cursor không có SessionStart nên gate theo keyword đúng thời điểm đang ra/soát quyết định.
+
+- SSOT scanner: `minipower-decision-staleness.py` (dùng chung Claude/OpenCode). Yêu cầu `git` + `python3`.
+- Chạy tay mọi lúc: `MP_PROJECT_ROOT="$PWD" python3 .cursor/hooks/minipower-decision-staleness.py`.
+
 ### 1. Symlink scripts
 
 **Windows (PowerShell):**
@@ -64,6 +72,10 @@ New-Item -ItemType SymbolicLink -Force -Path .cursor\hooks\minipower-auto-routin
   -Target "$MP\install\cursor\hooks\minipower-auto-routing.ps1"
 New-Item -ItemType SymbolicLink -Force -Path .cursor\hooks\minipower-token-guard-read.ps1 `
   -Target "$MP\install\cursor\hooks\minipower-token-guard-read.ps1"
+New-Item -ItemType SymbolicLink -Force -Path .cursor\hooks\minipower-decision-staleness.ps1 `
+  -Target "$MP\install\cursor\hooks\minipower-decision-staleness.ps1"
+New-Item -ItemType SymbolicLink -Force -Path .cursor\hooks\minipower-decision-staleness.py `
+  -Target "$MP\install\cursor\hooks\minipower-decision-staleness.py"
 ```
 
 > **Symlink thất bại (Windows, thiếu quyền Admin):** `Copy-Item -Force "$MP\install\cursor\hooks\*.ps1" .cursor\hooks\`
@@ -77,7 +89,9 @@ ln -snf "$MP/install/cursor/hooks/minipower-token-guard.sh" .cursor/hooks/
 ln -snf "$MP/install/cursor/hooks/minipower-auto-routing.sh" .cursor/hooks/
 ln -snf "$MP/install/cursor/hooks/minipower-auto-routing.py" .cursor/hooks/
 ln -snf "$MP/install/cursor/hooks/minipower-token-guard-read.sh" .cursor/hooks/
-chmod +x .cursor/hooks/minipower-token-guard.sh .cursor/hooks/minipower-auto-routing.sh .cursor/hooks/minipower-token-guard-read.sh
+ln -snf "$MP/install/cursor/hooks/minipower-decision-staleness.sh" .cursor/hooks/
+ln -snf "$MP/install/cursor/hooks/minipower-decision-staleness.py" .cursor/hooks/
+chmod +x .cursor/hooks/minipower-token-guard.sh .cursor/hooks/minipower-auto-routing.sh .cursor/hooks/minipower-token-guard-read.sh .cursor/hooks/minipower-decision-staleness.sh
 ```
 
 ### 2. Merge `hooks.json`

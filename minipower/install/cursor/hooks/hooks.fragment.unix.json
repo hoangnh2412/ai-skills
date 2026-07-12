@@ -9,6 +9,10 @@
       {
         "command": ".cursor/hooks/minipower-auto-routing.sh",
         "timeout": 5
+      },
+      {
+        "command": ".cursor/hooks/minipower-decision-staleness.sh",
+        "timeout": 5
       }
     ],
     "beforeReadFile": [
