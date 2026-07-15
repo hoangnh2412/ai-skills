@@ -1,6 +1,6 @@
 ---
 name: authentication-dotnet
-description: Thiết lập Jarvis Authentication — JWT Bearer, API Key, AWS Cognito. Dùng khi API ASP.NET Core cần xác thực Bearer, header API key, hoặc Cognito qua Jarvis.Authentications.*.
+description: Thiết lập Jarvis Authentication — JWT Bearer, API Key, HTTP Basic, AWS Cognito qua AddJarvisAuthentication + Composite scheme. Dùng khi API ASP.NET Core cần xác thực Bearer, header API key, Basic hoặc Cognito qua Jarvis.Authentications.*.
 metadata:
   audience: hoangnh
   workflow: github
@@ -10,7 +10,7 @@ metadata:
 
 Skill điều phối `Jarvis.Authentications.*` trên ASP.NET Core Host.
 
-**Lưu ý PackageId:** folder repo `Jarvis.Authentication.*` → NuGet **`Jarvis.Authentications.*`** (có **s**).
+**Lưu ý PackageId:** folder repo `Jarvis.Authentication.*` → NuGet **`Jarvis.Authentications.*`** (có **s**). Namespace vẫn là `Jarvis.Authentication.*` (không s).
 
 Hướng dẫn: [README.md](README.md).
 
@@ -19,24 +19,27 @@ Hướng dẫn: [README.md](README.md).
 | Tình huống | Workflow |
 |---|---|
 | Host chưa có authentication Jarvis | [workflows/init.md](workflows/init.md) |
-| Thêm scheme (JWT + API Key) hoặc Cognito | [workflows/add.md](workflows/add.md) |
+| Thêm scheme (JWT / API Key / Basic / Cognito) | [workflows/add.md](workflows/add.md) |
 
 ## Quy tắc cốt lõi
 
-- `builder.Services.AddAuthentication()` rồi chain `.AddCoreJwtBearer` / `.AddCoreApiKey<>` / Cognito.
+- Entry point **bắt buộc**: `builder.Services.AddJarvisAuthentication(configuration, auth => { ... })` — bind section `Authentication`, validate `Type`, đăng ký `IPasswordPolicyValidator`, set Default Authenticate/Challenge scheme. **Không** gọi `services.AddAuthentication()` trực tiếp.
+- Satellite `AddCore*` đăng ký **trong callback**: `auth.AddCoreJwtBearer(...)` / `AddCoreApiKey<>` / `AddCoreBasic<>`.
+- ≥ 2 scheme → `auth.AddJarvisCompositeScheme(includeBasic: ...)` + `DefaultAuthenticateScheme = "Composite"` (forward theo header: API key → Basic → Bearer).
 - Pipeline: `UseAuthentication()` → `UseAuthorization()` **trước** `MapControllers`.
-- Section `Authentication` trong appsettings — `Type`, nhánh `Jwt` / `ApiKey` / `Cognito`.
-- API Key: implement `IApiKeyProvider` trong host.
+- Nguồn credential là extension point: mặc định `ConfigApiKeyProvider` / `ConfigBasicCredentialProvider` (đọc config), override sang DB/Redis/vault. Provider đăng ký **Singleton** — tra DB dùng `IDbContextFactory`.
+- Dùng hằng `JarvisAuthenticationSchemes` (`Composite` / `ApiKey`=`"Default"` / `Basic` / `Bearer`) thay vì hard-code string.
 - Swagger security: [swashbuckle-dotnet](../swashbuckle-dotnet/README.md) — `SecuritySchemes` JWT / API_KEY.
-- Không commit secret/key vào repo — env / secret store.
+- Không commit secret/key/password — env / secret store.
 
 ## Packages
 
 | PackageId | Khi nào |
 |---|---|
-| `Jarvis.Authentications` | Base |
+| `Jarvis.Authentications` | Base (entry point, Composite, password policy, hằng scheme) |
 | `Jarvis.Authentications.Jwt` | Bearer JWT |
 | `Jarvis.Authentications.ApiKey` | Header API key |
+| `Jarvis.Authentications.Basic` | HTTP Basic |
 | `Jarvis.Authentications.Cognito` | AWS Cognito |
 
 ## Providers (atomic)
@@ -45,6 +48,7 @@ Hướng dẫn: [README.md](README.md).
 |---|---|
 | JWT Bearer | [providers/jwt/SKILL.md](providers/jwt/SKILL.md) |
 | API Key | [providers/api-key/SKILL.md](providers/api-key/SKILL.md) |
+| HTTP Basic | [providers/basic/SKILL.md](providers/basic/SKILL.md) |
 | Cognito | [providers/cognito/SKILL.md](providers/cognito/SKILL.md) |
 
 ## Templates
@@ -54,6 +58,6 @@ Hướng dẫn: [README.md](README.md).
 
 ## Output bắt buộc
 
-- `AddAuthentication` chain + `UseAuthentication` / `UseAuthorization`
-- `appsettings` section `Authentication`
+- `AddJarvisAuthentication(config, auth => { AddCore* })` + `UseAuthentication` / `UseAuthorization`
+- `appsettings` section `Authentication` (schema đúng: API Key `KeyName`+`Key`, Basic `Users`, JWT `Authority`/`IssuerSigningKeys`)
 - Protected endpoint trả 401 khi thiếu credential (validate)

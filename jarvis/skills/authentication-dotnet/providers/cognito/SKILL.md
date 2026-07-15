@@ -30,8 +30,9 @@ Section `Authentication:Cognito` — pool id, region, client id theo implementat
 
 ## Sử dụng
 
-- `CognitoClient` / `IAuthenticationService` theo package
-- Đăng ký DI theo extension Cognito của repo Jarvis (xem source `Jarvis.Authentication.Cognito`)
+- Đăng ký **trong callback** `AddJarvisAuthentication` như các scheme khác (không gọi `AddAuthentication()` trực tiếp).
+- `CognitoClient` / `IAuthenticationService` theo package.
+- Chi tiết extension Cognito xem source `Jarvis.Authentication.Cognito` (chưa cover đầy đủ trong skill này).
 
 ## Secrets
 

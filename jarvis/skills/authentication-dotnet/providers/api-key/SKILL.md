@@ -1,6 +1,6 @@
 ---
 name: authentication-dotnet-api-key
-description: Đăng ký Jarvis API Key AddCoreApiKey với IApiKeyProvider tùy chỉnh. Dùng khi client gửi key qua header X-API-KEY hoặc tên tùy config.
+description: Đăng ký Jarvis API Key AddCoreApiKey trong callback AddJarvisAuthentication — mặc định ConfigApiKeyProvider đọc config, hoặc custom IApiKeyProvider cho DB. Dùng khi client gửi key qua header X-API-KEY.
 dependencies:
   - Jarvis.Authentications.ApiKey
 ---
@@ -15,34 +15,55 @@ dependencies:
 
 ## Program.cs
 
+Đăng ký **trong callback** `AddJarvisAuthentication`. Provider truyền qua generic — mặc định `ConfigApiKeyProvider` (đọc config):
+
 ```csharp
-using Jarvis.Authentication.ApiKey;
+using Jarvis.Authentication;          // AddJarvisAuthentication
+using Jarvis.Authentication.ApiKey;   // AddCoreApiKey, ConfigApiKeyProvider
 
-builder.Services.AddAuthentication()
-    .AddCoreApiKey<MyApiKeyProvider>(builder.Configuration);
-
-builder.Services.AddScoped<MyApiKeyProvider>();
+builder.Services.AddJarvisAuthentication(builder.Configuration, auth =>
+{
+    auth.AddCoreApiKey<ConfigApiKeyProvider>(builder.Configuration);
+});
 ```
 
-Implement `IApiKeyProvider` — validate key, map client id.
+Scheme mặc định `"Default"` (`JarvisAuthenticationSchemes.ApiKey`) — trùng section `Authentication:ApiKey:Default`.
+
+## Custom provider (DB / Redis / vault)
+
+```csharp
+auth.AddCoreApiKey<MyDbApiKeyProvider>(builder.Configuration);
+```
+
+- Implement `AspNetCore.Authentication.ApiKey.IApiKeyProvider` (`ProvideAsync(string key)`).
+- **Đăng ký Singleton** (tự động qua `AddCoreApiKey`) — **không** cần `AddScoped`. Tra DB → `IDbContextFactory` / `IServiceScopeFactory`.
+- `ConfigApiKeyProvider` bắt buộc `Key` trong config; custom provider chỉ bắt buộc `KeyName` (cờ `RequireConfigKey` tự set theo type, tách **theo từng realm**).
+
+## Multi-realm
+
+Một scheme, nhiều realm qua prefix `realm:secret` trong header; không prefix → realm `Default`.
+
+```
+X-API-KEY: my-secret                 → realm Default
+X-API-KEY: Integration:partner-key   → realm Integration
+```
 
 ## appsettings.json
+
+Mỗi realm là một section con — `KeyName` (tên header) + `Key` (secret):
 
 ```json
 {
   "Authentication": {
-    "Type": "ApiKey",
     "ApiKey": {
-      "Default": {
-        "KeyName": "X-API-KEY",
-        "Keys": []
-      }
+      "Default":     { "KeyName": "X-API-KEY", "Key": "" },
+      "Integration": { "KeyName": "X-API-KEY", "Key": "" }
     }
   }
 }
 ```
 
-**Keys** và secret — chỉ env/secret store, không commit.
+`Key` — env / secret store, không commit. (Không phải `Keys: []`.)
 
 ## Swagger
 
@@ -51,4 +72,5 @@ Implement `IApiKeyProvider` — validate key, map client id.
 ## Validate
 
 - Request thiếu/sai header → 401
-- Key hợp lệ → 200 trên endpoint protected
+- Key hợp lệ (realm Default) → 200
+- `Integration:secret` khớp realm Integration → 200

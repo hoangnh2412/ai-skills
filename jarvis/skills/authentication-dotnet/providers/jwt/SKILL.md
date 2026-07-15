@@ -1,6 +1,6 @@
 ---
 name: authentication-dotnet-jwt
-description: Đăng ký Jarvis JWT Bearer AddCoreJwtBearer và section Authentication Jwt. Dùng khi API cần xác thực Bearer token.
+description: Đăng ký Jarvis JWT Bearer AddCoreJwtBearer trong callback AddJarvisAuthentication, section Authentication:Jwt:{scheme}. Dùng khi API cần xác thực Bearer token (OIDC hoặc symmetric key).
 dependencies:
   - Jarvis.Authentications.Jwt
 ---
@@ -15,32 +15,62 @@ dependencies:
 
 ## Program.cs
 
-```csharp
-using Jarvis.Authentication.Jwt;
+Đăng ký **trong callback** của `AddJarvisAuthentication` (không gọi `AddAuthentication()` trực tiếp):
 
-builder.Services.AddAuthentication()
-    .AddCoreJwtBearer(builder.Configuration);
+```csharp
+using Jarvis.Authentication;          // AddJarvisAuthentication
+using Jarvis.Authentication.Jwt;      // AddCoreJwtBearer
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+
+builder.Services.AddJarvisAuthentication(builder.Configuration, auth =>
+{
+    auth.AddCoreJwtBearer(builder.Configuration, JwtBearerDefaults.AuthenticationScheme);
+});
 ```
+
+Scheme mặc định `"Bearer"`. Bind từ `Authentication:Jwt:{scheme}`.
+
+## Hai chế độ validate
+
+| Chế độ | Điều kiện | Dùng cho |
+|--------|-----------|----------|
+| **OIDC metadata** | có `Authority` | OpenIddict, Cognito, Azure AD — validate qua issuer metadata |
+| **Symmetric key** | không `Authority`, có `IssuerSigningKeys` | dev/test |
+
+Validator startup yêu cầu **`Authority` HOẶC `IssuerSigningKeys`** (khi `ValidateIssuerSigningKey`). `ClockSkew = 0`.
+`MaxExpireMinutes > 0` → giới hạn lifetime token theo policy.
+
+## Revoke / blacklist — IJwtTokenAccessChecker
+
+Mặc định `AllowAllJwtTokenAccessChecker` (cho tất cả). Override để chặn token bị thu hồi:
+
+```csharp
+auth.AddCoreJwtBearer<RedisJwtRevocationChecker>(builder.Configuration, "Bearer");
+```
+
+Checker đăng ký **Singleton**, gọi trong `OnTokenValidated` sau khi chữ ký + lifetime OK.
+Tra DB → dùng `IDbContextFactory` / `IServiceScopeFactory` (không inject scoped `DbContext`).
 
 ## appsettings.json
 
 ```json
 {
   "Authentication": {
-    "Type": "Jwt",
-    "Jwt": { }
+    "Jwt": {
+      "Bearer": {
+        "Authority": "",
+        "Audience": "",
+        "IssuerSigningKeys": [],
+        "ValidateAudience": true,
+        "ValidateIssuer": false,
+        "MaxExpireMinutes": 0
+      }
+    }
   }
 }
 ```
 
-Chi tiết key JWT theo implementation package — bind từ `IConfiguration`, secret qua env.
-
-## Pipeline
-
-```csharp
-app.UseAuthentication();
-app.UseAuthorization();
-```
+Signing key / secret — env / secret store, không commit.
 
 ## Swagger
 
@@ -48,5 +78,6 @@ app.UseAuthorization();
 
 ## Validate
 
-- Endpoint `[Authorize]` → 401 không token
-- Swagger Authorize + gọi API thành công
+- Endpoint `[Authorize]` → 401 khi thiếu token
+- Token symmetric hợp lệ → 200
+- (nếu có checker) token bị revoke → 401 dù chữ ký đúng

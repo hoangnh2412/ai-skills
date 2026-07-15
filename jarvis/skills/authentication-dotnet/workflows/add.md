@@ -1,25 +1,43 @@
 # Workflow: Thêm scheme authentication
 
-Áp dụng khi **đã có** một scheme và cần thêm scheme thứ hai hoặc đổi provider.
+Áp dụng khi **đã có** một scheme và cần thêm scheme thứ hai, hoặc đổi provider.
 
 ## Checklist
 
 ```text
-- [ ] 1. Đọc provider mới (jwt | api-key | cognito)
-- [ ] 2. Thêm package nếu chưa có
-- [ ] 3. Chain thêm vào AddAuthentication (policy name rõ ràng)
-- [ ] 4. Cập nhật Swagger SecuritySchemes nếu cần
-- [ ] 5. Controller [Authorize] / policy đúng scheme
+- [ ] 1. Đọc provider mới (jwt | api-key | basic | cognito)
+- [ ] 2. Thêm package Jarvis.Authentications.* nếu chưa có
+- [ ] 3. Thêm AddCore* vào callback AddJarvisAuthentication hiện có
+- [ ] 4. Bật Composite: auth.AddJarvisCompositeScheme(includeBasic: ...) + DefaultAuthenticateScheme = "Composite"
+- [ ] 5. Cập nhật Swagger SecuritySchemes nếu cần
+- [ ] 6. Controller [Authorize] (Composite) hoặc [Authorize(AuthenticationSchemes = "...")] theo scheme cụ thể
 ```
 
-## Multi-scheme
+## Multi-scheme + Composite
 
-Jarvis hỗ trợ cấu hình qua `Authentication:Type` — khi cần nhiều scheme, đăng ký từng extension và gán policy trên controller.
+Khi có ≥ 2 scheme, thêm `AddJarvisCompositeScheme` — một policy scheme forward theo header:
 
-## API Key provider
+```csharp
+auth.AddJarvisCompositeScheme(includeBasic: true);   // ưu tiên X-API-KEY → Basic → Bearer
+```
 
-Implement `IApiKeyProvider` — xem [providers/api-key/SKILL.md](../providers/api-key/SKILL.md).
+Ưu tiên: header **API key** → **Basic** (nếu `includeBasic`) → **Bearer**.
+Đặt `Authentication:DefaultAuthenticateScheme = "Composite"`. Endpoint dùng `[Authorize]` sẽ chấp nhận
+mọi scheme đang bật. `bearerScheme` mặc định `"Bearer"` — truyền tên khác nếu JWT đăng ký dưới scheme riêng.
 
-## Cognito
+Dùng hằng `JarvisAuthenticationSchemes` (`Composite` / `ApiKey` = `"Default"` / `Basic` / `Bearer`) thay vì hard-code string.
 
-ProjectReference / package Cognito — xem [providers/cognito/SKILL.md](../providers/cognito/SKILL.md).
+## Khoá endpoint theo scheme
+
+```csharp
+[Authorize(AuthenticationSchemes = JarvisAuthenticationSchemes.ApiKey)]  // chỉ API Key
+```
+
+⚠️ Scheme phải **đã đăng ký**, nếu không → lỗi "No authentication handler for scheme".
+
+## Provider tùy chỉnh
+
+- API Key: [providers/api-key/SKILL.md](../providers/api-key/SKILL.md) — `IApiKeyProvider` (Singleton).
+- Basic: [providers/basic/SKILL.md](../providers/basic/SKILL.md) — `IBasicCredentialProvider` (Singleton).
+- JWT revoke: `IJwtTokenAccessChecker` — [providers/jwt/SKILL.md](../providers/jwt/SKILL.md).
+- Cognito: [providers/cognito/SKILL.md](../providers/cognito/SKILL.md).
