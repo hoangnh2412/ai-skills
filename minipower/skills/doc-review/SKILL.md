@@ -17,6 +17,8 @@ description: >-
 
 **Chạy khi:** kết thúc mỗi phase (self-check) · trước sign-off/baseline (gate) · sau CR (regression tài liệu).
 
+> **Theo tầng** ([SKILL.md](../../SKILL.md#phân-tầng-công-việc-micro--light--full)): **bắt buộc ở Full** và trước baseline. **Khuyến nghị ở light** (đổi nội dung trong DOC đã có). **Bỏ ở micro** (typo/format).
+
 ---
 
 ## 5 chiều đối kháng

@@ -18,5 +18,14 @@ if (r.action === "block") {
 if (r.action === "warn") {
   process.stderr.write(`[WARN] Minipower token guard: ${r.message}\n`)
 }
+if (r.action === "allow" && r.tier === "micro" && r.note) {
+  const ctx = `[Minipower tier] ${r.note}`
+  out({
+    continue: true,
+    additional_context: ctx,
+    hookSpecificOutput: { hookEventName: "UserPromptSubmit", additionalContext: ctx },
+  })
+  process.exit(0)
+}
 out({ continue: true })
 process.exit(0)

@@ -60,6 +60,14 @@ test("shim token-guard", async (t) => {
     assert.equal(r.code, 0)
     assert.equal(r.json.continue, true)
   })
+
+  await t.test("micro → allow + additional_context gợi ý tầng (R2)", () => {
+    const r = run("token-guard.js", { prompt: "/minipower sửa typo trong DOC-06" })
+    assert.equal(r.code, 0)
+    assert.equal(r.json.continue, true)
+    assert.match(r.json.additional_context, /micro/i)
+    assert.equal(r.json.hookSpecificOutput.hookEventName, "UserPromptSubmit")
+  })
 })
 
 test("shim auto-routing", async (t) => {

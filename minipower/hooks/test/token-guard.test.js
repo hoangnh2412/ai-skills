@@ -205,6 +205,58 @@ test("token-guard: WARN — prompt quá rộng", async (t) => {
   })
 })
 
+test("token-guard: MICRO — hạ cảnh báo scope (R2 / tầng)", async (t) => {
+  const micro = (p) => checkTokenGuard(p)
+
+  await t.test("typo không khai scope → allow tier micro (không warn)", () => {
+    const r = micro('/minipower sửa typo "khách hàn" trong DOC-06')
+    assert.equal(r.action, "allow")
+    assert.equal(r.tier, "micro")
+    assert.match(r.note, /micro/i)
+  })
+
+  await t.test("format bảng → micro", () => {
+    assert.equal(micro("/minipower format lại bảng FR trong DOC-06").tier, "micro")
+  })
+
+  await t.test("đổi version metadata → micro", () => {
+    assert.equal(micro("minipower đổi version 0.1 sang 0.2 header DOC-08").tier, "micro")
+  })
+
+  await t.test("không dấu cũng nhận (chuẩn hoá)", () => {
+    assert.equal(micro("/minipower sua typo trong DOC-06").tier, "micro")
+  })
+
+  await t.test("thiếu tín hiệu micro (thêm requirement) → KHÔNG micro, vẫn theo luồng thường", () => {
+    // 'thêm requirement' là light — phải cảnh báo thiếu scope như cũ, không được nuốt.
+    const r = micro("/minipower thêm requirement đăng nhập SSO vào DOC-06")
+    assert.notEqual(r.tier, "micro")
+    assert.equal(r.action, "warn")
+  })
+
+  await t.test("micro NHƯNG đụng baseline → KHÔNG micro (an toàn)", () => {
+    assert.notEqual(micro("minipower sửa typo trong baseline v1.0 DOC-06").tier, "micro")
+  })
+
+  await t.test("micro NHƯNG breadth → KHÔNG micro", () => {
+    assert.notEqual(micro("minipower sửa typo toàn bộ module DOC-06").tier, "micro")
+  })
+
+  await t.test("micro NHƯNG đổi kiến trúc → KHÔNG micro", () => {
+    assert.notEqual(micro("minipower format DOC-08 rồi đổi kiến trúc sang message queue").tier, "micro")
+  })
+
+  await t.test("prompt dài > 20 từ → KHÔNG micro dù có 'typo'", () => {
+    const long = "minipower " + "sửa typo " + Array.from({ length: 25 }, (_, i) => `từ${i}`).join(" ")
+    assert.notEqual(micro(long).tier, "micro")
+  })
+
+  await t.test("đủ scope + micro signal → vẫn allow (không đổi hành vi tốt)", () => {
+    const r = micro("Phase: requirements — Module: billing, sửa typo DOC-06")
+    assert.equal(r.action, "allow")
+  })
+})
+
 test("token-guard: block ưu tiên hơn warn", async (t) => {
   await t.test("prompt vừa quá rộng vừa @ thư mục → block", () => {
     assert.equal(action("review toàn bộ @docs/"), "block")

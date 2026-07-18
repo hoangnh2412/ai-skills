@@ -5,7 +5,7 @@
  * Trả về quyết định thuần (không print/exit) để vừa test được vừa import được
  * từ shim mỗi nền tảng.
  *
- * @typedef {{action:"allow"}
+ * @typedef {{action:"allow", tier?:"micro", note?:string}
  *          |{action:"warn", message:string}
  *          |{action:"block", message:string}} GuardResult
  *
@@ -32,6 +32,23 @@ const HAS_PHASE = /Phase:\s*(discovery|requirements|architecture|planning|delive
 // [FIX-1] danh sách không dấu — khớp cả prompt có dấu (đã strip) lẫn không dấu.
 const EDIT_VERBS = /sua|cap nhat|viet|them|sync|dong bo|review|update|edit|write/
 const BREADTH = /toan bo|all modules|sync everything|dong bo het|review all/
+
+// [R2 / tầng] Micro = sửa bề mặt, KHÔNG đổi nội dung/quyết định (typo, format,
+// version, wording, thêm 1 dòng đã soạn). Chỉ dùng để HẠ cảnh báo scope — không
+// bỏ gate thật (agent vẫn tự phân tầng theo SKILL.md). Cố ý tight: cần tín hiệu
+// micro dương; breadth / baseline / việc nặng ⇒ KHÔNG micro.
+const MICRO_SIGNAL =
+  /\b(typo|sai chinh ta|chinh ta|loi danh may|danh may|format|dinh dang|can le|can cot|thang cot|thang hang|xuong dong|dau cau|wording|van phong|doi version|cap nhat version|version \d|metadata|them 1 dong|them mot dong|1 row|1 hang)\b/
+const MICRO_EXCLUDE =
+  /02-baseline|_legacy|\bbaseline\b|module moi|moi module|doi kien truc|thay doi kien truc|kien truc moi|adr moi|doc moi|tai lieu moi/
+
+/** Micro? Dựa trên tín hiệu bề mặt + độ ngắn; loại trừ breadth/baseline/việc nặng. */
+function isMicroTask(norm) {
+  const words = norm.trim().split(/\s+/).filter(Boolean).length
+  if (words > 20) return false
+  if (BREADTH.test(norm) || MICRO_EXCLUDE.test(norm)) return false
+  return MICRO_SIGNAL.test(norm)
+}
 
 /**
  * @param {string|null|undefined} prompt
@@ -79,6 +96,17 @@ export function checkTokenGuard(prompt) {
       action: "block",
       message:
         "02-baseline và _legacy tốn token. Chỉ dùng khi migrate — @ file MIGRATION.md hoặc 1 DOC cụ thể.",
+    }
+  }
+
+  // MICRO — sửa bề mặt: bỏ cảnh báo scope (nhưng block ở trên vẫn áp). Kèm
+  // gợi ý MỀM để agent tự xác nhận tầng (regex có thể sai — agent quyết cuối).
+  if (isMicroTask(norm)) {
+    return {
+      action: "allow",
+      tier: "micro",
+      note:
+        "Có thể là micro (sửa bề mặt: typo/format/version/1 dòng). Nếu đúng: bỏ deliberation/doc-review, giữ 1 slice. Nếu thật ra đổi nội dung/quyết định: theo tầng light/full trong SKILL.md.",
     }
   }
 

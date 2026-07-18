@@ -13,6 +13,8 @@ description: >-
 
 Chạy **trước** khi vào phase để tránh: viết DOC vô ích, chốt giải pháp sớm, bỏ sót góc nhìn. Output feed vào [discovery](../discovery/SKILL.md) (problem/scope), [architecture](../architecture/SKILL.md) (ADR), [change-control](../change-control/SKILL.md) (CR lớn).
 
+> **Theo tầng** ([SKILL.md](../../SKILL.md#phân-tầng-công-việc-micro--light--full)): Premise Check **bắt buộc ở Full** (module/DOC mới, đổi kiến trúc, discovery, đụng baseline). **Bỏ ở micro/light** (typo, sửa 1 FR trong DOC đã có) — trừ khi có bằng chứng mới làm nghi ngờ tiền đề.
+
 **Ghi kết quả vào:** `brainstorm/YYYY-MM-DD.md` + assumption/decision → `memory/{phase}/`. **Không** tự sinh file DOC.
 
 ---

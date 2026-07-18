@@ -25,7 +25,8 @@ Mọi thay đổi đáng chú ý của **Minipower skill pack** được ghi tro
 
 ### Added
 
-- **`hooks/test/*.js`** — 169 golden case (`node --test`, 0 dependency, 0 build): bypass, token-guard, auto-routing, token-guard-read, decision-staleness (unit) + bin (integration stdin→stdout→exit).
+- **Phân tầng công việc micro/light/full (chi phí tương xứng)** — token-guard `isMicroTask()` hạ cảnh báo scope cho sửa bề mặt (typo/format/version/1 dòng) + tiêm gợi ý mềm `[Minipower tier]`; `SKILL.md` thêm bảng tầng chọn gate (deliberation/doc-review/verdict) cho light/full; pointer ở `deliberation`/`doc-review`. Baseline/breadth/discovery/change-control **luôn Full**. Sửa §3.3 (guardrail không van xả → user học phớt lờ).
+- **`hooks/test/*.js`** — 181 golden case (`node --test`, 0 dependency, 0 build): bypass, token-guard, auto-routing, token-guard-read, decision-staleness (unit) + bin (integration stdin→stdout→exit).
 - **`.github/workflows/minipower-hooks.yml`** — CI matrix 3 OS (ubuntu/windows/macos) chạy `node --test` mỗi push/PR đụng `minipower/hooks/**`. Lưới bắt class bug cross-platform.
 - **`ADRs/2026-07-17-danh-gia-minipower-va-chien-luoc-phat-trien.md`** — đánh giá + chiến lược + decision log (DEC-ARC-001, Q7/Q8).
 - `.gitignore`: `__pycache__/`, `*.pyc`, `node_modules/`.
