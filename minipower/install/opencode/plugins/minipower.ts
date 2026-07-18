@@ -1,12 +1,16 @@
 /**
  * Minipower — OpenCode plugin (token guard + auto-routing + read guard + decision staleness).
- * SSOT logic: install/cursor/hooks/ · agents/auto-routing.md
+ *
+ * SSOT logic: minipower/hooks/lib/*.js (dùng chung với Cursor/Claude qua Node).
+ * OpenCode chạy Bun → import .js trực tiếp, không build. Chỉ phần glue OpenCode
+ * (parts.ts) là .ts riêng nền tảng. Đường dẫn ../../../hooks/lib resolve theo
+ * realpath của pack (yêu cầu symlink pack, không copy rời file này).
  */
 
-import { checkAutoRouting } from "./lib/auto-routing.ts"
-import { checkTokenGuard } from "./lib/token-guard.ts"
-import { checkReadGuard } from "./lib/token-guard-read.ts"
-import { checkDecisionStaleness } from "./lib/decision-staleness.ts"
+import { checkAutoRouting } from "../../../hooks/lib/auto-routing.js"
+import { checkTokenGuard } from "../../../hooks/lib/token-guard.js"
+import { checkReadGuard } from "../../../hooks/lib/token-guard-read.js"
+import { checkDecisionStaleness } from "../../../hooks/lib/decision-staleness.js"
 import {
   blockParts,
   filePaths,

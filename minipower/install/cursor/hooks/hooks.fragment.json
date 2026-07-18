@@ -3,21 +3,21 @@
   "hooks": {
     "beforeSubmitPrompt": [
       {
-        "command": ".cursor/hooks/minipower-token-guard.sh",
+        "command": "node .cursor/skills/minipower/hooks/bin/token-guard.js",
         "timeout": 5
       },
       {
-        "command": ".cursor/hooks/minipower-auto-routing.sh",
+        "command": "node .cursor/skills/minipower/hooks/bin/auto-routing.js",
         "timeout": 5
       },
       {
-        "command": ".cursor/hooks/minipower-decision-staleness.sh",
-        "timeout": 5
+        "command": "node .cursor/skills/minipower/hooks/bin/decision-staleness.js",
+        "timeout": 10
       }
     ],
     "beforeReadFile": [
       {
-        "command": ".cursor/hooks/minipower-token-guard-read.sh",
+        "command": "node .cursor/skills/minipower/hooks/bin/token-guard-read.js",
         "matcher": "Read"
       }
     ]

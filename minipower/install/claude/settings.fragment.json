@@ -6,12 +6,31 @@
     ]
   },
   "hooks": {
-    "SessionStart": [
+    "UserPromptSubmit": [
       {
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"/ABSOLUTE/PATH/TO/ai-skills/minipower/install/claude/hooks/minipower-decision-staleness.sh\""
+            "command": "node \"/ABSOLUTE/PATH/TO/ai-skills/minipower/hooks/bin/token-guard.js\""
+          },
+          {
+            "type": "command",
+            "command": "node \"/ABSOLUTE/PATH/TO/ai-skills/minipower/hooks/bin/auto-routing.js\""
+          },
+          {
+            "type": "command",
+            "command": "node \"/ABSOLUTE/PATH/TO/ai-skills/minipower/hooks/bin/decision-staleness.js\""
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/ABSOLUTE/PATH/TO/ai-skills/minipower/hooks/bin/token-guard-read.js\""
           }
         ]
       }
