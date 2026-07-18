@@ -8,6 +8,34 @@ Mọi thay đổi đáng chú ý của **Minipower skill pack** được ghi tro
 
 ## [Unreleased]
 
+### Changed — ⚠ BREAKING (cài đặt hook)
+
+- **Gộp 4 bản cài đặt hook → một implementation Node duy nhất.** Logic guard chuyển về [`hooks/lib/*.js`](hooks/) (bypass, token-guard, auto-routing, token-guard-read, decision-staleness) + shim CLI [`hooks/bin/*.js`](hooks/bin/). Cursor/Claude gọi `node …/hooks/bin/*.js`; OpenCode `import` thẳng lib `.js`. **Yêu cầu Node ≥ 18. Không còn cần `python3`.**
+- **DEC-ARC-001** (ADR): SSOT runtime = Node/`.js` (không `.ts`, không build). Lý do: OpenCode ràng buộc JS-native, python đã chết trên máy dev, tránh bẫy artifact-không-CI.
+- Cài đặt Cursor: bỏ symlink script riêng — pack đã symlink ở `.cursor/skills/minipower/` mang sẵn `bin/`+`lib/`. Chỉ merge **một** `hooks.fragment.json` (gộp từ 3 bản unix/windows/base).
+- Claude: wire đủ `UserPromptSubmit` (token-guard + auto-routing + staleness) + `PreToolUse` read guard — trước đây 2 prompt-guard là file chết.
+
+### Fixed
+
+- **BUG-1** — token-guard: động từ sửa lệch giữa `.ps1` (không dấu, `'sua|cap nhat'`) và `.sh`/`.ts` (có dấu, thiếu `update|edit|write`). Nay chuẩn hoá bỏ dấu + gộp Việt/Anh → `sửa` và `update` đều bắt trên mọi OS.
+- **BUG-2** — path `@docs/02-baseline` chỉ khớp `/` trên `.ps1`, bỏ sót `\`. Nay nhận cả hai.
+- **BUG-3** — `has_doc = /DOC-0[0-9]/` bỏ sót **DOC-10…DOC-18** (9/18 tài liệu) → cảnh báo "thiếu DOC" sai. Nay `/DOC-\d{2}/`.
+- **BUG-4** — read-guard baseline: `allow_legacy` tính rồi bỏ quên. Nay deny tuyệt đối, có chủ đích (Q7a).
+- **BUG-5** — regex nhận diện module qua đường dẫn có char class `]` thừa (`[^_/\\[\s:]]`) → **chưa bao giờ chạy** trên bất kỳ nền tảng nào. Nay viết lại bằng negative lookahead.
+
+### Added
+
+- **`hooks/test/*.js`** — 169 golden case (`node --test`, 0 dependency, 0 build): bypass, token-guard, auto-routing, token-guard-read, decision-staleness (unit) + bin (integration stdin→stdout→exit).
+- **`.github/workflows/minipower-hooks.yml`** — CI matrix 3 OS (ubuntu/windows/macos) chạy `node --test` mỗi push/PR đụng `minipower/hooks/**`. Lưới bắt class bug cross-platform.
+- **`ADRs/2026-07-17-danh-gia-minipower-va-chien-luoc-phat-trien.md`** — đánh giá + chiến lược + decision log (DEC-ARC-001, Q7/Q8).
+- `.gitignore`: `__pycache__/`, `*.pyc`, `node_modules/`.
+
+### Removed
+
+- Toàn bộ hook cũ: `install/cursor/hooks/*.{ps1,py,sh}` (auto-routing, token-guard, token-guard-read, decision-staleness, hook-bypass/route/stdin), `hooks.fragment.{unix,windows}.json`, `__pycache__/`.
+- `install/claude/hooks/` (6 file delegate `.sh`/`.ps1`).
+- `install/opencode/plugins/lib/{auto-routing,token-guard,token-guard-read,bypass,decision-staleness}.ts` (giữ `parts.ts` — glue OpenCode).
+
 ---
 
 ## [2.5.0] - 2026-07-12

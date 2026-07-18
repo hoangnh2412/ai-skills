@@ -1,0 +1,33 @@
+name: minipower-hooks
+
+# Chạy golden test cho hook logic (SSOT dùng chung Cursor/Claude/OpenCode).
+# Matrix 3 OS: chính là lưới bắt lại class bug cross-platform mà bản .ps1/.sh/.ts
+# từng lệch nhau (regex có dấu/không dấu, path / vs \). Xem ADRs/.
+
+on:
+  push:
+    paths:
+      - "minipower/hooks/**"
+      - ".github/workflows/minipower-hooks.yml"
+  pull_request:
+    paths:
+      - "minipower/hooks/**"
+      - ".github/workflows/minipower-hooks.yml"
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: minipower/hooks
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run tests (node --test)
+        run: node --test
