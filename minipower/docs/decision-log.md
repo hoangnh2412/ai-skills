@@ -49,10 +49,10 @@ Memory hiện tại lưu **trạng thái**; decision log lưu **lý do**: quyế
 
 - Mỗi DEC có **ngày** + **Status**. Quyết định trước baseline mà chưa `accepted` → nghi ngờ, xác nhận lại.
 - `superseded-by` giữ vết lịch sử — **không xóa** DEC cũ.
-- **Hook tự động** — decision-staleness: quét `memory/*/decision-log.md`, so ngày DEC (còn hiệu lực) với lịch sử git của DOC trong dòng `Trace:`. DOC đổi **sau** ngày quyết định → cảnh báo "cần review / supersede". Advisory, non-blocking. SSOT scanner: [`install/cursor/hooks/minipower-decision-staleness.py`](../install/cursor/hooks/minipower-decision-staleness.py).
-  - **Claude Code:** SessionStart (delegate về scanner) — [install/claude/README.md](../install/claude/README.md).
+- **Hook tự động** — decision-staleness: quét `memory/{phase}/decision-log.md`, so ngày DEC (còn hiệu lực) với lịch sử git của DOC trong dòng `Trace:`. DOC đổi **sau** ngày quyết định → cảnh báo "cần review / supersede". Advisory, non-blocking. Git thuần, không cần python. SSOT: [`hooks/lib/decision-staleness.js`](../hooks/lib/decision-staleness.js) (một implementation dùng chung).
+  - **Claude Code:** `UserPromptSubmit` keyword-gated — [install/claude/README.md](../install/claude/README.md).
   - **Cursor:** `beforeSubmitPrompt` keyword-gated (bàn về quyết định) — [install/cursor/README.md](../install/cursor/README.md).
-  - **OpenCode:** message đầu phiên, port TS `plugins/lib/decision-staleness.ts` — [install/opencode/README.md](../install/opencode/README.md).
+  - **OpenCode:** message đầu phiên (mô phỏng SessionStart), gọi lib `.js` chung — [install/opencode/README.md](../install/opencode/README.md).
   - *Giới hạn:* ánh xạ `DOC-NN` → file theo tên; DOC-NN dùng ở nhiều module sẽ kiểm mọi file khớp. Chỉ để **nhắc**, không phán quyết — verdict cuối do người/[deliberation](../skills/deliberation/SKILL.md).
 
 ## Quan hệ

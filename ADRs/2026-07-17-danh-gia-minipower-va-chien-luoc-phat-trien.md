@@ -403,7 +403,7 @@ Sau 3 tuần đầu: **mọi tính năng mới chỉ tốn 1× thay vì 4×.**
 | **P0 — port → `lib/*.js` (GREEN)** | ✅ **pass. Sửa BUG 1,2,3,4,5** (138 → sau khi thêm staleness+bin: **169**) | 2026-07-18 |
 | **P0 — shim + nối install + xoá bản cũ** | ✅ **xong** | 2026-07-18 |
 | **P2 — GitHub Action (matrix 3 OS)** | ✅ `.github/workflows/minipower-hooks.yml` | 2026-07-18 |
-| P4 — đồng bộ docs mô tả hook (docs/token-guard.md, agents/auto-routing.md) | ⏸ còn sót vài dòng mô tả cơ chế cũ | |
+| **P4 — đồng bộ docs mô tả hook** | ✅ token-guard.md · auto-routing.md · decision-log.md | 2026-07-18 |
 | P1 — rules.json | ⏸ | |
 
 ### P0 hoàn tất (2026-07-18)
