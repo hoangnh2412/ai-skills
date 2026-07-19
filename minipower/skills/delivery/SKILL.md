@@ -21,6 +21,8 @@ description: >-
 
 1. Test scope · 2. Trace gaps · 3. UAT · 4. Entry/exit · 5. Deploy · 6. Rollback · 7. Risks · 8. DOC-16/17 · 9. Questions · 10. Go-live checklist
 
+**Trước go-live** — chạy [doc-review](../doc-review/SKILL.md) làm gate: verdict PASS (0 Blocker) mới baseline.
+
 ## Anti-patterns
 
 - UAT không trace AC · go-live không dry-run · thiếu regression sau CR → [change-control](../change-control/SKILL.md)

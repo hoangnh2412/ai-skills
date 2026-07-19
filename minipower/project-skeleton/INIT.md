@@ -29,6 +29,7 @@ cp -R "$MINIPOWER/docs-skeleton" "$PROJECT/docs"
 | `README.md` | Entry dự án |
 | `memory/memory.md` | Index gốc (meta chung) |
 | `memory/{phase}/README.md` | Memory theo discovery, requirements, … |
+| `memory/{phase}/decision-log.md` | Quyết định + phương án bị loại (schema: pack `docs/decision-log.md`) |
 | `assets/public/`, `internal/` | Tài liệu thô |
 | `brainstorm/` | File trao đổi theo ngày — **không** chia folder con |
 

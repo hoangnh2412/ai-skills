@@ -8,16 +8,63 @@ Mọi thay đổi đáng chú ý của **Minipower skill pack** được ghi tro
 
 ## [Unreleased]
 
+### Changed — ⚠ BREAKING (cài đặt hook)
+
+- **Gộp 4 bản cài đặt hook → một implementation Node duy nhất.** Logic guard chuyển về [`hooks/lib/*.js`](hooks/) (bypass, token-guard, auto-routing, token-guard-read, decision-staleness) + shim CLI [`hooks/bin/*.js`](hooks/bin/). Cursor/Claude gọi `node …/hooks/bin/*.js`; OpenCode `import` thẳng lib `.js`. **Yêu cầu Node ≥ 18. Không còn cần `python3`.**
+- **DEC-ARC-001** (ADR): SSOT runtime = Node/`.js` (không `.ts`, không build). Lý do: OpenCode ràng buộc JS-native, python đã chết trên máy dev, tránh bẫy artifact-không-CI.
+- Cài đặt Cursor: bỏ symlink script riêng — pack đã symlink ở `.cursor/skills/minipower/` mang sẵn `bin/`+`lib/`. Chỉ merge **một** `hooks.fragment.json` (gộp từ 3 bản unix/windows/base).
+- Claude: wire đủ `UserPromptSubmit` (token-guard + auto-routing + staleness) + `PreToolUse` read guard — trước đây 2 prompt-guard là file chết.
+
+### Fixed
+
+- **BUG-1** — token-guard: động từ sửa lệch giữa `.ps1` (không dấu, `'sua|cap nhat'`) và `.sh`/`.ts` (có dấu, thiếu `update|edit|write`). Nay chuẩn hoá bỏ dấu + gộp Việt/Anh → `sửa` và `update` đều bắt trên mọi OS.
+- **BUG-2** — path `@docs/02-baseline` chỉ khớp `/` trên `.ps1`, bỏ sót `\`. Nay nhận cả hai.
+- **BUG-3** — `has_doc = /DOC-0[0-9]/` bỏ sót **DOC-10…DOC-18** (9/18 tài liệu) → cảnh báo "thiếu DOC" sai. Nay `/DOC-\d{2}/`.
+- **BUG-4** — read-guard baseline: `allow_legacy` tính rồi bỏ quên. Nay deny tuyệt đối, có chủ đích (Q7a).
+- **BUG-5** — regex nhận diện module qua đường dẫn có char class `]` thừa (`[^_/\\[\s:]]`) → **chưa bao giờ chạy** trên bất kỳ nền tảng nào. Nay viết lại bằng negative lookahead.
+
 ### Added
 
+- **Phân tầng công việc micro/light/full (chi phí tương xứng)** — token-guard `isMicroTask()` hạ cảnh báo scope cho sửa bề mặt (typo/format/version/1 dòng) + tiêm gợi ý mềm `[Minipower tier]`; `SKILL.md` thêm bảng tầng chọn gate (deliberation/doc-review/verdict) cho light/full; pointer ở `deliberation`/`doc-review`. Baseline/breadth/discovery/change-control **luôn Full**. Sửa §3.3 (guardrail không van xả → user học phớt lờ).
+- **`hooks/test/*.js`** — 181 golden case (`node --test`, 0 dependency, 0 build): bypass, token-guard, auto-routing, token-guard-read, decision-staleness (unit) + bin (integration stdin→stdout→exit).
+- **`.github/workflows/minipower-hooks.yml`** — CI matrix 3 OS (ubuntu/windows/macos) chạy `node --test` mỗi push/PR đụng `minipower/hooks/**`. Lưới bắt class bug cross-platform.
+- **`ADRs/2026-07-17-danh-gia-minipower-va-chien-luoc-phat-trien.md`** — đánh giá + chiến lược + decision log (DEC-ARC-001, Q7/Q8).
+- `.gitignore`: `__pycache__/`, `*.pyc`, `node_modules/`.
+
+### Removed
+
+- Toàn bộ hook cũ: `install/cursor/hooks/*.{ps1,py,sh}` (auto-routing, token-guard, token-guard-read, decision-staleness, hook-bypass/route/stdin), `hooks.fragment.{unix,windows}.json`, `__pycache__/`.
+- `install/claude/hooks/` (6 file delegate `.sh`/`.ps1`).
+- `install/opencode/plugins/lib/{auto-routing,token-guard,token-guard-read,bypass,decision-staleness}.ts` (giữ `parts.ts` — glue OpenCode).
+
+---
+
+## [2.5.0] - 2026-07-12
+
+### Added
+
+- **`skills/deliberation/SKILL.md`** — skill "tư duy" cross-phase: **Premise Check** (verdict PROCEED/RESHAPE/STOP + reassessment trigger) + **Deliberation** đa góc nhìn (mỗi góc 1 lượt, tách hội tụ/căng thẳng). Chạy **trước** khi vào phase
+- **`skills/doc-review/SKILL.md`** — QC **đối kháng** 5 chiều (traceability, mâu thuẫn chéo, testable/mơ hồ, đầy đủ, ID/version); mức Blocker/Major/Minor; verdict gate PASS/BLOCK; subagent context sạch **một slice**
+- **`docs/decision-log.md`** — schema `DEC-{PHASE}-NNN` lưu **"tại sao" + phương án bị loại**; recall protocol; staleness nhẹ
+- **`project-skeleton/memory/{phase}/decision-log.md`** — 6 seed file (DIS/REQ/ARC/PLN/DLV/CHG), tự propagate qua `cp -R` khi init
+- **decision-staleness hook** (advisory, non-blocking) — so ngày DEC còn hiệu lực với lịch sử git của DOC trong `Trace:`, cảnh báo DEC lỗi thời. Đủ 3 nền tảng:
+  - SSOT scanner `install/cursor/hooks/minipower-decision-staleness.py`
+  - **Cursor** — `beforeSubmitPrompt` wrapper `.sh`/`.ps1` (keyword-gated) + entry trong 3 `hooks.fragment*.json`
+  - **Claude Code** — `install/claude/hooks/minipower-decision-staleness.{sh,ps1}` delegate về scanner (SessionStart)
+  - **OpenCode** — port TS `plugins/lib/decision-staleness.ts`, chạy ở message đầu phiên trong `minipower.ts`
 - **`agents/`** — `token-guard.md`, `doc-editing.md`, `README.md` (guardrails tool-agnostic)
 - **`install/cursor/`** — rules `.mdc`, hooks (`minipower-token-guard.ps1`, `minipower-token-guard-read.ps1`, `hooks.fragment.json`)
 - **`install/claude/`** — rule `paths` cho doc-editing, `settings.fragment.json`, README cài đặt
 
 ### Changed
 
+- **`SKILL.md`** — +2 route (deliberation, doc-review); đọc/ghi `memory/{phase}/decision-log.md`; exit init gồm decision-log; frontmatter `description` thêm keyword cross-phase (deliberation, doc-review, decision-log) để tăng auto-trigger
+- **`install/claude/settings.fragment.json`** + **README** — thêm `hooks.SessionStart` (decision-staleness) cạnh permissions
+- **`skills/discovery/SKILL.md`** — brainstorm gọi `deliberation` trước bước 1 (có verdict mới elicit)
+- **`skills/delivery/SKILL.md`** — `doc-review` làm gate trước go-live (0 Blocker mới baseline)
+- **`skills/change-control/SKILL.md`** — `doc-review` regression sau merge delta; `deliberation` cho CR lớn
+- **`skills/README.md`**, **`docs/README.md`**, **`project-skeleton/memory/memory.md`**, **`project-skeleton/INIT.md`** — index + convention decision-log
 - **Hooks** — đổi tên `check-prompt-scope` → `minipower-token-guard`, `check-doc-phase` → `minipower-auto-routing`, `limit-reads` → `minipower-token-guard-read` (khớp rule/agent)
-- **`SKILL.md`** — section Agent guardrails + link `agents/`
 - **`README.md`** — cấu trúc pack, link `agents/` và `install/`
 
 ---

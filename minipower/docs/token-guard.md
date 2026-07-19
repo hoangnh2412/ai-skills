@@ -12,7 +12,7 @@ Giảm **đọc/sửa lan man** trên repo `docs/` (baseline, legacy, cả thư 
 |-----|---------|--------|
 | **Agent rules** | Hướng dẫn agent: hỏi scope, đọc theo lớp, một slice khi sửa | [../agents/token-guard.md](../agents/token-guard.md) · [../agents/doc-editing.md](../agents/doc-editing.md) |
 | **IDE rules** | Cursor `.mdc` / Claude `.md` — áp dụng khi chat hoặc khi sửa `docs/**/*.md` | [../install/cursor/README.md](../install/cursor/README.md) · [../install/claude/README.md](../install/claude/README.md) |
-| **Hooks (Cursor)** | Chặn/cảnh báo **trước khi gửi prompt** và **trước khi đọc file** | `minipower-token-guard` · `minipower-token-guard-read` — [../install/cursor/README.md](../install/cursor/README.md) |
+| **Hooks (Node)** | Chặn/cảnh báo **trước khi gửi prompt** và **trước khi đọc file** — một implementation Node cho cả Cursor/Claude/OpenCode | [../hooks/](../hooks/) (`bin/*.js` → `lib/*.js`) — cài: [../install/cursor/README.md](../install/cursor/README.md) |
 
 ## Quy ước scope trong prompt
 
@@ -53,11 +53,13 @@ Dong bo toan bo requirements tat ca module
 
 Chi tiết rule agent: [../agents/token-guard.md](../agents/token-guard.md)
 
-## Hooks Cursor (khi đã cài)
+## Hooks (khi đã cài)
 
-| Hook | Sự kiện | Hành vi |
+Chạy qua Node (`node …/hooks/bin/*.js`) — giống nhau trên Cursor/Claude/OpenCode. Hai hook token guard (cùng `beforeSubmitPrompt` còn có auto-routing + decision-staleness — xem [auto-routing.md](../agents/auto-routing.md), [decision-log.md](decision-log.md)):
+
+| Shim | Sự kiện | Hành vi |
 |------|---------|---------|
-| `minipower-token-guard` | `beforeSubmitPrompt` | **Chặn** `@docs/` hoặc `@docs/03-modules/` không kèm file; **cảnh báo** prompt sửa/sync thiếu Phase + Module (hoặc 04-platform) + DOC |
-| `minipower-token-guard-read` | `beforeReadFile` (tuỳ chọn) | **Từ chối** đọc `02-baseline/`, `_legacy/` trừ khi prompt có migrate / MIGRATION |
+| `bin/token-guard.js` | `beforeSubmitPrompt` | **Chặn** `@docs/` hoặc `@docs/03-modules/` không kèm file; **cảnh báo** prompt sửa/sync thiếu Phase + Module (hoặc 04-platform) + DOC |
+| `bin/token-guard-read.js` | `beforeReadFile` (tuỳ chọn) | **Từ chối** đọc `02-baseline/` (tuyệt đối) và `_legacy/` (trừ khi prompt có migrate / MIGRATION) |
 
 Smoke test: [../install/cursor/README.md](../install/cursor/README.md)

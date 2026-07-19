@@ -1,6 +1,6 @@
 # Auto-routing — DOC file → Minipower phase
 
-Markdown thuần — **SSOT** bảng map DOC→phase và hành vi agent khi user `@` file DOC. Hook Cursor triển khai logic này: [install/cursor/hooks/minipower-auto-routing.*](../install/cursor/README.md#auto-routing-doc--phase).
+Markdown thuần — **SSOT bảng map** DOC→phase và hành vi agent khi user `@` file DOC. Logic hook (một implementation Node cho cả 3 nền tảng): [hooks/lib/auto-routing.js](../hooks/lib/auto-routing.js) qua shim [hooks/bin/auto-routing.js](../hooks/bin/auto-routing.js) — cài: [install/cursor/README.md](../install/cursor/README.md#auto-routing-doc--phase).
 
 ## Bảng map DOC → phase
 
@@ -30,4 +30,4 @@ Markdown thuần — **SSOT** bảng map DOC→phase và hành vi agent khi user
 - Hook `minipower-token-guard` — chặn `@docs/` quá rộng, thiếu scope.
 - Hook `minipower-auto-routing` — conflict phase khi tag hoặc **nhắc trần** nhiều `DOC-NN` thuộc phase khác nhau.
 
-Thứ tự `beforeSubmitPrompt`: **minipower-token-guard** → **minipower-auto-routing**.
+Thứ tự `beforeSubmitPrompt`: **token-guard** → **auto-routing** → **decision-staleness** (advisory, keyword-gated). Shim tương ứng: `hooks/bin/{token-guard,auto-routing,decision-staleness}.js`.

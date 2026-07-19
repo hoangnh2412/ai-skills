@@ -4,5 +4,36 @@
       "Read(docs/02-baseline/**)",
       "Read(docs/03-modules/_legacy/**)"
     ]
+  },
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/ABSOLUTE/PATH/TO/ai-skills/minipower/hooks/bin/token-guard.js\""
+          },
+          {
+            "type": "command",
+            "command": "node \"/ABSOLUTE/PATH/TO/ai-skills/minipower/hooks/bin/auto-routing.js\""
+          },
+          {
+            "type": "command",
+            "command": "node \"/ABSOLUTE/PATH/TO/ai-skills/minipower/hooks/bin/decision-staleness.js\""
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/ABSOLUTE/PATH/TO/ai-skills/minipower/hooks/bin/token-guard-read.js\""
+          }
+        ]
+      }
+    ]
   }
 }

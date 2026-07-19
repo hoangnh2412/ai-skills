@@ -27,8 +27,23 @@ New-Item -ItemType SymbolicLink -Force -Path .claude\rules\minipower-doc-editing
 @path/to/ai-skills/minipower/agents/doc-editing.md
 ```
 
-## Permissions (tuỳ chọn)
+## Permissions + hooks (tuỳ chọn)
 
-Merge [settings.fragment.json](settings.fragment.json) vào `.claude/settings.json` để chặn đọc `02-baseline/` và `_legacy/`.
+Merge [settings.fragment.json](settings.fragment.json) vào `.claude/settings.json`, rồi **thay mọi `/ABSOLUTE/PATH/TO/ai-skills/minipower`** bằng path thật tới pack (find & replace).
+
+- **`permissions.deny`** — chặn đọc `02-baseline/` và `_legacy/`.
+- **`hooks.UserPromptSubmit`** — token-guard → auto-routing → decision-staleness (cùng logic Cursor).
+- **`hooks.PreToolUse`** (`Read`) — read guard baseline/_legacy.
+
+Tất cả gọi `node "…/minipower/hooks/bin/*.js"` — **một implementation dùng chung** với Cursor/OpenCode ([hooks/lib/*.js](../../hooks/)). Yêu cầu: **Node ≥ 18** + `git` (cho staleness). **Không còn cần `python3`**; bản `.sh`/`.ps1` cũ đã bỏ.
+
+> Trước đây chỉ `SessionStart` (staleness) được wire, 2 prompt-guard là file chết (ADR §3.5). Nay wire đủ; staleness chuyển sang keyword-gated trên `UserPromptSubmit` như Cursor.
+
+Chạy staleness thủ công bất kỳ lúc nào:
+
+```bash
+MP=/path/to/ai-skills/minipower
+echo '{"prompt":"đánh giá lại quyết định"}' | node "$MP/hooks/bin/decision-staleness.js"   # từ root dự án
+```
 
 Kiểm tra: `/memory` — thấy minipower rules.

@@ -24,111 +24,65 @@ ln -snf "$MP/install/cursor/rules/minipower-doc-editing.mdc" .cursor/rules/
 
 ## Hooks
 
-Mỗi hook có **hai bản** cùng logic:
+**Một implementation Node duy nhất** cho cả 3 nền tảng (Cursor/Claude/OpenCode). Logic ở [`hooks/lib/*.js`](../../hooks/), shim CLI ở [`hooks/bin/*.js`](../../hooks/bin/). Yêu cầu **Node ≥ 18** trên PATH — không còn cần `python3`, không còn bản `.ps1`/`.sh` riêng.
 
-| Hook | Windows | macOS / Linux | Mục đích |
-|------|---------|----------------|----------|
-| Kiểm tra scope prompt | `minipower-token-guard.ps1` | `minipower-token-guard.sh` | Token guard — thiếu scope, `@docs/` quá rộng |
-| **Auto-routing DOC → phase** | `minipower-auto-routing.ps1` | `minipower-auto-routing.sh` + `minipower-auto-routing.py` | Conflict phase khi tag nhiều DOC |
-| Giới hạn đọc baseline/_legacy | `minipower-token-guard-read.ps1` | `minipower-token-guard-read.sh` | Tuỳ chọn — chặn Read path nặng (cùng rule token guard) |
+> Vì sao đổi: 4 bản cài đặt cũ (`.py`/`.ps1`/`.sh`/`.ts`) đã lệch nhau thành nhiều bug thật (regex có dấu/không dấu, path `/` vs `\`, `DOC-0[0-9]` bỏ sót DOC-10…18). Gộp về một bản Node + golden test (`node --test`) + CI 3 OS. Xem `ADRs/`.
 
-Bản `.sh` cần **python3** (stdlib `json`) và quyền thực thi. Bản `.ps1` dùng message ASCII (tương thích PowerShell 5.1); `.sh` giữ đầy đủ tiếng Việt.
+| Hook (`beforeSubmitPrompt`) | Shim | Mục đích |
+|------|------|----------|
+| Token guard | `bin/token-guard.js` | Thiếu scope, `@docs/` quá rộng, chặn baseline/_legacy |
+| Auto-routing DOC → phase | `bin/auto-routing.js` | Chèn `Phase:` / chặn conflict khi tag nhiều DOC |
+| Decision-log staleness | `bin/decision-staleness.js` | Advisory (không chặn), keyword-gated |
+| Read guard (`beforeReadFile`) | `bin/token-guard-read.js` | Tuỳ chọn — chặn Read `02-baseline/`, `_legacy/` |
 
-**SSOT logic agent:** [agents/auto-routing.md](../../agents/auto-routing.md) · **Hướng dẫn dự án:** [`auto-routing.md`](../../../auto-routing.md) *(root workspace docs, nếu có)*.
+**SSOT logic agent:** [agents/auto-routing.md](../../agents/auto-routing.md).
 
 ### Auto-routing (DOC → phase)
-
-Chạy **sau** `minipower-token-guard` trong cùng `beforeSubmitPrompt`:
 
 | Tình huống | Hành vi |
 |------------|---------|
 | Tag 1 DOC, đúng `Phase:` | Cho gửi |
-| Tag 1 DOC, thiếu `Phase:` | Cho gửi + **chèn** `/minipower`, `Phase:`, `@skill` vào prompt (`updated_input` + `additional_context`) |
+| Tag 1 DOC, thiếu `Phase:` | Cho gửi + **chèn** `/minipower`, `Phase:`, `@skill` (`updated_input` + `additional_context`) |
 | Tag DOC khác phase (vd. DOC-07 + DOC-16) | **Chặn** + gợi ý tách prompt |
 | `Phase:` sai so với file DOC | **Chặn** |
 
 Biến môi trường tuỳ chọn: `MINIPOWER_ROOT` (mặc định `ai-skills/minipower`) — path gợi ý skill trong message hook.
 
-**Chèn context sau auto-route (1 phase, thiếu `Phase:`):** hook trả `updated_input.prompt` (prompt đầy đủ có `/minipower`, `Phase:`, `@skill`) và `additional_context`. Cursor 3.6+ có thể chỉ áp dụng một trong hai — nếu transcript vẫn prompt gốc, kiểm tra Hooks log có `additional_context`; feature đầy đủ đang được Cursor mở rộng ([forum](https://forum.cursor.com/t/add-additional-context-to-beforesubmitprompt-hook-output/157231)).
+### Decision-log staleness (advisory)
 
-### 1. Symlink scripts
+**Keyword-gated** — chỉ quét khi prompt bàn về quyết định (`decision|deliberation|premise|quyết định|đánh giá lại|baseline|supersede|stale|lỗi thời`). So ngày DEC (còn hiệu lực) với lịch sử git của DOC trong `Trace:`; DOC đổi sau ngày → cảnh báo (`additional_context`). **Không chặn.** Git thuần, không cần python.
 
-**Windows (PowerShell):**
+### Cài đặt
 
-```powershell
-$MP = "D:\path\to\ai-skills\minipower"
-New-Item -ItemType Directory -Force -Path .cursor\hooks
-New-Item -ItemType SymbolicLink -Force -Path .cursor\hooks\minipower-token-guard.ps1 `
-  -Target "$MP\install\cursor\hooks\minipower-token-guard.ps1"
-New-Item -ItemType SymbolicLink -Force -Path .cursor\hooks\minipower-auto-routing.ps1 `
-  -Target "$MP\install\cursor\hooks\minipower-auto-routing.ps1"
-New-Item -ItemType SymbolicLink -Force -Path .cursor\hooks\minipower-token-guard-read.ps1 `
-  -Target "$MP\install\cursor\hooks\minipower-token-guard-read.ps1"
-```
+Pack đã được symlink tại `.cursor/skills/minipower/` (xem [README chính](../../README.md)) → bin + lib đi kèm sẵn, **không cần symlink script riêng**. Chỉ cần merge một fragment.
 
-> **Symlink thất bại (Windows, thiếu quyền Admin):** `Copy-Item -Force "$MP\install\cursor\hooks\*.ps1" .cursor\hooks\`
+Merge [hooks.fragment.json](hooks/hooks.fragment.json) vào `.cursor/hooks.json` (giữ hook khác nếu đã có). Fragment gọi `node .cursor/skills/minipower/hooks/bin/*.js` — giống hệt trên Windows/macOS/Linux.
 
-**macOS / Linux:**
+> Nếu pack **không** nằm ở `.cursor/skills/minipower/` (vd. Claude/khác), sửa path trong fragment thành đường dẫn tới `…/minipower/hooks/bin/`.
+
+### Kiểm tra
+
+1. **Settings → Hooks** — hook hiển thị, không lỗi path.
+2. Prompt thiếu scope: `/minipower` + `đồng bộ requirements` (không @ file) → cảnh báo token guard.
+3. `@docs/` hoặc `@docs/03-modules/` không kèm file → bị chặn.
+4. `@` DOC-07 + DOC-16 cùng lúc → bị chặn (auto-routing).
+5. Nhắc `DOC-16` + `DOC-04` trong text → bị chặn (delivery vs requirements).
+
+`beforeReadFile` là **tuỳ chọn** — xoá block tương ứng trong `hooks.json` nếu chưa cần.
+
+### Smoke test (mọi OS, giống hệt nhau)
 
 ```bash
 MP=/path/to/ai-skills/minipower
-mkdir -p .cursor/hooks
-ln -snf "$MP/install/cursor/hooks/minipower-token-guard.sh" .cursor/hooks/
-ln -snf "$MP/install/cursor/hooks/minipower-auto-routing.sh" .cursor/hooks/
-ln -snf "$MP/install/cursor/hooks/minipower-auto-routing.py" .cursor/hooks/
-ln -snf "$MP/install/cursor/hooks/minipower-token-guard-read.sh" .cursor/hooks/
-chmod +x .cursor/hooks/minipower-token-guard.sh .cursor/hooks/minipower-auto-routing.sh .cursor/hooks/minipower-token-guard-read.sh
+
+echo '{"prompt":"@docs/03-modules/"}' | node "$MP/hooks/bin/token-guard.js"
+# Kỳ vọng: exit 2, {"continue":false,...}
+
+echo '{"prompt":"Phase: requirements — Module: billing, DOC-06"}' | node "$MP/hooks/bin/token-guard.js"
+# Kỳ vọng: exit 0, {"continue":true}
+
+echo '{"prompt":"review DOC-06 và DOC-08"}' | node "$MP/hooks/bin/auto-routing.js"
+# Kỳ vọng: exit 2, continue:false (requirements vs architecture)
 ```
 
-### 2. Merge `hooks.json`
-
-**Windows:** fragment dùng `powershell -NoProfile -ExecutionPolicy Bypass -File …` — Cursor gọi `.ps1` trực tiếp thì stdin không tới `[Console]::In` (hook treo/timeout → `continue: true`). Spawn process con với `-File` là bắt buộc.
-
-Hook `.ps1` dùng `hook-stdin.ps1`: đọc stdin UTF-8 (raw bytes + BOM), ghi stdout JSON với non-ASCII escape `\uXXXX` (tránh mojibake trong Hooks log khi Cursor decode sai code page).
-
-Chọn fragment theo OS — merge vào `.cursor/hooks.json` (giữ hook khác nếu đã có):
-
-| OS | File fragment |
-|----|----------------|
-| **Windows** | [hooks/hooks.fragment.windows.json](hooks/hooks.fragment.windows.json) |
-| **macOS / Linux** | [hooks/hooks.fragment.unix.json](hooks/hooks.fragment.unix.json) |
-
-[hooks.fragment.json](hooks/hooks.fragment.json) giữ alias macOS/Linux (tương đương `hooks.fragment.unix.json`).
-
-### 3. Kiểm tra
-
-1. **Settings → Hooks** — hook hiển thị và không lỗi path.
-2. Thử prompt thiếu scope: `/minipower` + `đồng bộ requirements` (không @ file) → cảnh báo token guard.
-3. Thử `@docs/` hoặc `@docs/03-modules/` không kèm file → bị chặn (token guard).
-4. Thử `@` DOC-07 + DOC-16 cùng lúc → bị chặn (auto-routing); xem [agents/auto-routing.md](../../agents/auto-routing.md).
-5. Thử nhắc `DOC-16` + `DOC-04` trong text (không `@` file) → bị chặn (auto-routing — conflict delivery vs requirements).
-
-`beforeReadFile` (`minipower-token-guard-read`) là **tuỳ chọn** — xoá block tương ứng trong `hooks.json` nếu chưa cần.
-
-### Smoke test (tuỳ chọn)
-
-```bash
-# macOS / Linux — beforeSubmitPrompt
-printf '%s' '{"prompt":"@docs/03-modules/"}' | .cursor/hooks/minipower-token-guard.sh
-# Kỳ vọng: exit 2, JSON continue:false
-
-printf '%s' '{"prompt":"Phase: requirements — Module: billing, DOC-06"}' | .cursor/hooks/minipower-token-guard.sh
-# Kỳ vọng: exit 0, {"continue": true}
-```
-
-```powershell
-# Windows — dùng cùng wrapper như hooks.json (không pipe trực tiếp vào .ps1 — sẽ treo)
-$hook = { param($s) $s | powershell -NoProfile -ExecutionPolicy Bypass -File $args[0] }
-
-# auto-routing conflict
-$payload = '{"prompt":"/minipower","attachments":[{"type":"file","file_path":"docs/03-modules/identity/DOC-07-acceptance-criteria.md"},{"type":"file","file_path":"docs/03-modules/identity/DOC-16-test-strategy.md"}]}'
-& $hook $payload .cursor\hooks\minipower-auto-routing.ps1
-# Kỳ vọng: exit 2, continue:false
-
-& $hook '{"prompt":"Phase: requirements — Module: billing, DOC-06"}' .cursor\hooks\minipower-token-guard.ps1
-# Kỳ vọng: exit 0, {"continue": true}
-
-$pBare = '{"prompt":"review toan bo tai lieu DOC-16 trong @docs/03-modules xem phan nao ko khop voi DOC-04, DOC-05, DOC-07"}'
-& $hook $pBare .cursor\hooks\minipower-auto-routing.ps1
-# Kỳ vọng: exit 2, continue:false (delivery DOC-16 vs requirements DOC-04/05/07)
-```
+Chạy toàn bộ golden test: `cd "$MP/hooks" && node --test` (169 case, không cần cài gì).

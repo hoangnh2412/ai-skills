@@ -1,11 +1,16 @@
 /**
- * Minipower — OpenCode plugin (token guard + auto-routing + read guard).
- * SSOT logic: install/cursor/hooks/ · agents/auto-routing.md
+ * Minipower — OpenCode plugin (token guard + auto-routing + read guard + decision staleness).
+ *
+ * SSOT logic: minipower/hooks/lib/*.js (dùng chung với Cursor/Claude qua Node).
+ * OpenCode chạy Bun → import .js trực tiếp, không build. Chỉ phần glue OpenCode
+ * (parts.ts) là .ts riêng nền tảng. Đường dẫn ../../../hooks/lib resolve theo
+ * realpath của pack (yêu cầu symlink pack, không copy rời file này).
  */
 
-import { checkAutoRouting } from "./lib/auto-routing.ts"
-import { checkTokenGuard } from "./lib/token-guard.ts"
-import { checkReadGuard } from "./lib/token-guard-read.ts"
+import { checkAutoRouting } from "../../../hooks/lib/auto-routing.js"
+import { checkTokenGuard } from "../../../hooks/lib/token-guard.js"
+import { checkReadGuard } from "../../../hooks/lib/token-guard-read.js"
+import { checkDecisionStaleness } from "../../../hooks/lib/decision-staleness.js"
 import {
   blockParts,
   filePaths,
@@ -30,6 +35,7 @@ type MessageOutput = {
 }
 
 const promptBySession: Record<string, string> = {}
+const staleCheckedSessions = new Set<string>()
 
 function log(level: "info" | "warn" | "error", service: string, message: string) {
   console.error(`[${level.toUpperCase()}] ${service}: ${message}`)
@@ -51,6 +57,20 @@ export const MinipowerPlugin = async () => {
       const parts = output.parts
       const prompt = promptText(parts)
       promptBySession[input.sessionID] = prompt
+
+      // Session-start advisory (message đầu tiên của phiên): decision-log staleness.
+      if (!staleCheckedSessions.has(input.sessionID)) {
+        staleCheckedSessions.add(input.sessionID)
+        try {
+          const stale = checkDecisionStaleness(process.cwd())
+          if (stale) {
+            log("info", "minipower-decision-staleness", "DEC có thể lỗi thời")
+            pushContext(parts, stale)
+          }
+        } catch {
+          // advisory — không bao giờ chặn
+        }
+      }
 
       const guard = checkTokenGuard(prompt)
       if (guard.action === "block") blockMessage(output, guard.message)
