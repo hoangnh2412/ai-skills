@@ -761,3 +761,13 @@ Security Test
 ```
 
 Đây là một kiến trúc kiểm thử thực tế, cân bằng giữa chi phí triển khai, khả năng bảo trì và độ bao phủ cho các hệ thống .NET + PostgreSQL + Redis + RabbitMQ.
+
+
+
+
+
+
+
+
+
+
