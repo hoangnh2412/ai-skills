@@ -19,6 +19,10 @@
  *           → Bản JS dùng /DOC-\d{2}/.
  *   [FIX-4] 'module:' — .sh match chữ thường, .ps1 đòi 'Module:' hoa.
  *           → Bản JS không phân biệt hoa thường.
+ *   [FIX-6] @docs / @docs/03-modules: neo $ (chỉ cuối prompt) bỏ sót tag giữa
+ *           câu. → Neo ranh giới tag (sau đó là khoảng trắng / dấu câu / EOS).
+ *   [FIX-7] Cursor @ folder → attachments[].file_path, prompt có thể không còn
+ *           chữ "@docs". → checkTokenGuard(prompt, filePaths).
  *
  * Thứ tự quyết định (giữ nguyên từ .sh):
  *   rỗng → allow · bypass → allow · block(@thư mục) · block(baseline/_legacy)
@@ -30,7 +34,7 @@ import assert from "node:assert/strict"
 
 import { checkTokenGuard } from "../lib/token-guard.js"
 
-const action = (prompt) => checkTokenGuard(prompt).action
+const action = (prompt, filePaths) => checkTokenGuard(prompt, filePaths).action
 
 test("token-guard: cho qua sớm", async (t) => {
   await t.test("prompt rỗng / chỉ khoảng trắng", () => {
@@ -45,7 +49,7 @@ test("token-guard: cho qua sớm", async (t) => {
 })
 
 test("token-guard: BLOCK — @ cả thư mục", async (t) => {
-  await t.test("@docs/ ở cuối prompt", () => {
+  await t.test("@docs / @docs/ đứng một mình", () => {
     assert.equal(action("@docs/"), "block")
     assert.equal(action("@docs"), "block")
     assert.equal(action("xem giúp @docs/  "), "block") // khoảng trắng cuối vẫn tính
@@ -55,14 +59,51 @@ test("token-guard: BLOCK — @ cả thư mục", async (t) => {
     assert.equal(action("@docs\\"), "block")
   })
 
-  await t.test("@docs/03-modules/ ở cuối prompt", () => {
+  await t.test("@docs/03-modules đứng một mình", () => {
     assert.equal(action("@docs/03-modules/"), "block")
     assert.equal(action("@docs/03-modules"), "block")
     assert.equal(action("@docs\\03-modules\\"), "block") // [FIX-2]
   })
 
-  await t.test("KHÔNG block khi @docs không ở cuối (đã trỏ vào file)", () => {
+  await t.test("@docs / @docs/03-modules giữa câu [FIX-6]", () => {
+    assert.equal(action("@docs/03-modules đang có những modules, features nào?"), "block")
+    assert.equal(action("liệt kê giúp @docs/03-modules nhé"), "block")
+    assert.equal(action("xem @docs rồi tóm tắt"), "block")
+    assert.equal(action("tóm tắt @docs/, rồi tiếp"), "block")
+  })
+
+  await t.test("KHÔNG block khi @ trỏ vào file cụ thể", () => {
     assert.equal(action("@docs/03-modules/billing/DOC-06-srs.md"), "allow")
+    assert.equal(
+      action("Phase: requirements — sửa @docs/03-modules/billing/DOC-06-srs.md giúp"),
+      "allow",
+    )
+  })
+
+  await t.test("attachment folder docs/03-modules [FIX-7]", () => {
+    // Cursor @ picker: prompt chỉ còn câu hỏi, path nằm trong attachments.
+    assert.equal(
+      action("đang có những modules, features nào?", [
+        "/Volumes/proj/docs/03-modules",
+      ]),
+      "block",
+    )
+    assert.equal(action("liệt kê modules", ["docs/03-modules/"]), "block")
+    assert.equal(action("tóm tắt", ["/home/u/proj/docs"]), "block")
+    assert.equal(action("tóm tắt", ["docs\\03-modules"]), "block") // Windows
+  })
+
+  await t.test("attachment file DOC cụ thể → không block folder [FIX-7]", () => {
+    assert.equal(
+      action("sửa giúp", ["docs/03-modules/billing/DOC-06-srs.md"]),
+      "allow",
+    )
+    assert.equal(
+      action("sửa giúp", [
+        "/Volumes/proj/docs/03-modules/billing/DOC-06-srs.md",
+      ]),
+      "allow",
+    )
   })
 
   await t.test("thông điệp block gợi ý @ 1 file cụ thể", () => {

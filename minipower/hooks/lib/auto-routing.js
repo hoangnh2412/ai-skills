@@ -49,9 +49,11 @@ const PHASE_LABEL = {
   "change-control": "change-control (DOC-18)",
 }
 
-const DOC_IN_PROMPT = /DOC-(\d{2})-[\w-]+\.md/g
-const DOC_BARE_IN_PROMPT = /DOC-(\d{2})(?![-\w])/g
-const DOC_IN_NAME = /DOC-(\d{2})/
+// [FIX-8] Không phân biệt hoa thường; separator `-` hoặc khoảng trắng;
+//         số 1–2 chữ số (DOC 4 → 04). Tránh khớp tiếp chữ số (doc 100).
+const DOC_IN_PROMPT = /\bDOC[\s-](\d{1,2})-[\w-]+\.md\b/gi
+const DOC_BARE_IN_PROMPT = /\bDOC[\s-](\d{1,2})(?![\d\w-])/gi
+const DOC_IN_NAME = /DOC[\s-](\d{1,2})/i
 const EXPLICIT_PHASE =
   /Phase:\s*(discovery|requirements|architecture|planning|delivery|change-control)/i
 
@@ -70,7 +72,15 @@ function basename(path) {
   return i >= 0 ? norm.slice(i + 1) : norm
 }
 
-function addDocRef(byPhase, seen, docNum, label) {
+/** "4" / "04" / "16" → "04" / "16"; ngoài 01–18 → null. */
+function normalizeDocNum(raw) {
+  const n = Number(raw)
+  if (!Number.isInteger(n) || n < 1 || n > 18) return null
+  return String(n).padStart(2, "0")
+}
+
+function addDocRef(byPhase, seen, docNumRaw, label) {
+  const docNum = normalizeDocNum(docNumRaw)
   if (!docNum || !label.trim() || seen.has(docNum)) return
   const phase = PHASE_BY_DOC[docNum]
   if (!phase) return
@@ -93,7 +103,8 @@ function collectByPhase(prompt, filePaths) {
 
   for (const match of prompt.matchAll(DOC_IN_PROMPT)) addEntry(byPhase, seen, match[0])
   for (const match of prompt.matchAll(DOC_BARE_IN_PROMPT)) {
-    addDocRef(byPhase, seen, match[1], `DOC-${match[1]}`)
+    const num = normalizeDocNum(match[1])
+    if (num) addDocRef(byPhase, seen, num, `DOC-${num}`)
   }
 
   return byPhase
@@ -110,7 +121,7 @@ function buildRoutePrefix(prompt, phase, skill, docLabels) {
   if (!new RegExp(`Phase:\\s*${phase}\\b`, "i").test(prompt)) lines.push(`Phase: ${phase}`)
   if (!prompt.includes(skill)) lines.push(`@${skill}`)
   for (const doc of docLabels) {
-    if (!doc || !/[/\\]DOC-\d{2}/.test(doc)) continue
+    if (!doc || !/[/\\]DOC[\s-]\d{1,2}/i.test(doc)) continue
     const docNorm = doc.replace(/\\/g, "/")
     if (!prompt.includes(docNorm)) lines.push(`@${docNorm}`)
   }

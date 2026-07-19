@@ -129,6 +129,21 @@ test("auto-routing: nhận dạng tham chiếu DOC", async (t) => {
     assert.equal(route("sửa DOC-06").phase, "requirements")
   })
 
+  await t.test("không phân biệt hoa thường + separator khoảng trắng [FIX-8]", () => {
+    assert.equal(route("doc-16 và doc-04 có trong tài liệu ko?").action, "block")
+    assert.equal(route("doc 16 và doc 04 có trong tài liệu ko?").action, "block")
+    assert.equal(route("DOC 16 và DOC 4 có trong tài liệu ko?").action, "block")
+    const r = route("doc 16 và doc 04 có trong tài liệu ko?")
+    assert.match(r.message, /delivery/)
+    assert.match(r.message, /requirements/)
+  })
+
+  await t.test("DOC 4 (1 chữ số) chuẩn hoá thành 04 [FIX-8]", () => {
+    const r = route("sửa doc 4")
+    assert.equal(r.action, "enrich")
+    assert.equal(r.phase, "requirements")
+  })
+
   await t.test("DOC-06-srs.md KHÔNG bị đếm hai lần (dedup theo số DOC)", () => {
     const r = route("sửa DOC-06 trong DOC-06-srs.md")
     assert.equal(r.action, "enrich") // nếu đếm 2 lần vẫn 1 phase → vẫn enrich; kiểm tra không block

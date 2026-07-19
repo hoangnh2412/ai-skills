@@ -16,6 +16,9 @@
  *   [FIX-3] hasDoc = /DOC-\d{2}/ — phủ DOC-01…DOC-18 (Q8=A). Bản cũ /DOC-0[0-9]/
  *           bỏ sót DOC-10…DOC-18 → cảnh báo sai ở 9/18 tài liệu.
  *   [FIX-4] module: không phân biệt hoa thường (đã có sẵn ở .ts).
+ *   [FIX-6] @docs / @docs/03-modules: tag giữa câu (không chỉ cuối prompt).
+ *   [FIX-7] Cursor @ folder → path nằm trong attachments, không còn chữ
+ *           "@docs/…" trong prompt. Soi cả filePaths (giống auto-routing).
  */
 
 import { shouldBypass } from "./bypass.js"
@@ -50,13 +53,38 @@ function isMicroTask(norm) {
   return MICRO_SIGNAL.test(norm)
 }
 
+/** Chuẩn hoá path attachment (absolute hoặc relative) để so khớp. */
+function normPath(path) {
+  return String(path || "")
+    .replace(/\\/g, "/")
+    .replace(/\/+$/, "")
+    .toLowerCase()
+}
+
+/** Attachment là folder docs/ hoặc docs/03-modules (chưa xuống file). [FIX-7] */
+function isBroadDocsAttachment(path) {
+  const n = normPath(path)
+  return /(?:^|\/)docs$/.test(n) || /(?:^|\/)docs\/03-modules$/.test(n)
+}
+
+function isBaselineOrLegacyAttachment(path) {
+  const n = normPath(path)
+  return (
+    n.includes("/docs/02-baseline") ||
+    /(?:^|\/)docs\/02-baseline$/.test(n) ||
+    n.includes("/docs/03-modules/_legacy")
+  )
+}
+
 /**
  * @param {string|null|undefined} prompt
+ * @param {string[]|null|undefined} [filePaths] paths từ Cursor attachments
  * @returns {GuardResult}
  */
-export function checkTokenGuard(prompt) {
+export function checkTokenGuard(prompt, filePaths) {
   const p = prompt || ""
-  if (!p.trim()) return { action: "allow" }
+  const files = (filePaths || []).filter(Boolean)
+  if (!p.trim() && files.length === 0) return { action: "allow" }
   if (shouldBypass(p)) return { action: "allow" }
 
   const lower = p.toLowerCase()
@@ -73,16 +101,31 @@ export function checkTokenGuard(prompt) {
   let hasModule = /module:\s*[a-z0-9_-]+/i.test(lower)
   if (!hasModule && /@docs[/\\]03-modules[/\\](?!_)[^/\\\s:]+/.test(p)) hasModule = true
   if (!hasModule && MODULE_SEG.test(p)) hasModule = true
+  if (!hasModule && files.some((f) => MODULE_SEG.test(f))) hasModule = true
   if (!hasModule && /\b[A-Z][A-Z0-9]{1,5}-(FR|UC|BR|AC|NFR|ADR)-[0-9]{2,}\b/.test(p)) hasModule = true
 
-  const hasPlatform = lower.includes("04-platform") || /@docs[/\\]04-platform/.test(p)
-  const hasDoc = /DOC-\d{2}/.test(p) // [FIX-3]
+  const hasPlatform =
+    lower.includes("04-platform") ||
+    /@docs[/\\]04-platform/.test(p) ||
+    files.some((f) => /04-platform/i.test(f))
+  const hasDoc = /DOC-\d{2}/.test(p) || files.some((f) => /DOC-\d{2}/i.test(f)) // [FIX-3]
   const hasAtFile =
     /@docs[/\\]03-modules[/\\][^/\\\s]+[/\\]DOC-/.test(p) ||
-    /@docs[/\\]04-platform[/\\]DOC-/.test(p)
+    /@docs[/\\]04-platform[/\\]DOC-/.test(p) ||
+    files.some(
+      (f) =>
+        /03-modules[/\\][^/\\\s]+[/\\]DOC-/i.test(f) || /04-platform[/\\]DOC-/i.test(f),
+    )
 
-  // BLOCK — @ cả thư mục (chưa trỏ vào file cụ thể).
-  if (/@docs[/\\]?\s*$/.test(p) || /@docs[/\\]03-modules[/\\]?\s*$/.test(p)) {
+  // BLOCK — @ cả thư mục (chưa trỏ vào file cụ thể). Tag có thể ở BẤT KỲ
+  // vị trí trong prompt (Cursor cho @ giữa câu). Neo theo ranh giới tag:
+  // sau @docs hoặc @docs/03-modules chỉ còn khoảng trắng / dấu câu / hết chuỗi
+  // — không phải segment path tiếp (vd. billing/, DOC-…). [FIX-6]
+  // Cursor @ picker: path vào attachments, prompt có thể không còn chữ "@docs". [FIX-7]
+  const broadInPrompt =
+    /@docs[/\\]?(?=[\s]|[,.;:!?…]|$)/.test(p) ||
+    /@docs[/\\]03-modules[/\\]?(?=[\s]|[,.;:!?…]|$)/.test(p)
+  if (broadInPrompt || files.some(isBroadDocsAttachment)) {
     return {
       action: "block",
       message:
@@ -91,7 +134,11 @@ export function checkTokenGuard(prompt) {
   }
 
   // BLOCK — baseline / legacy tốn token.
-  if (/@docs[/\\]02-baseline/.test(p) || /@docs[/\\]03-modules[/\\]_legacy/.test(p)) {
+  if (
+    /@docs[/\\]02-baseline/.test(p) ||
+    /@docs[/\\]03-modules[/\\]_legacy/.test(p) ||
+    files.some(isBaselineOrLegacyAttachment)
+  ) {
     return {
       action: "block",
       message:

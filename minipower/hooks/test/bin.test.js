@@ -49,6 +49,16 @@ test("shim token-guard", async (t) => {
     assert.match(r.json.user_message, /1 file/)
   })
 
+  await t.test("block attachment folder docs/03-modules [FIX-7]", () => {
+    const r = run("token-guard.js", {
+      prompt: "đang có những modules, features nào?",
+      attachments: [{ type: "file", file_path: "/proj/docs/03-modules" }],
+    })
+    assert.equal(r.code, 2)
+    assert.equal(r.json.continue, false)
+    assert.match(r.json.user_message, /1 file/)
+  })
+
   await t.test("warn thiếu scope → vẫn {continue:true} exit 0", () => {
     const r = run("token-guard.js", { prompt: "Phase: requirements — sửa DOC-06" })
     assert.equal(r.code, 0)
