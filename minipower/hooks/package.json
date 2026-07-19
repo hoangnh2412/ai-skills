@@ -5,6 +5,8 @@
   "type": "module",
   "description": "Minipower hook logic — SSOT. Plain JS (ESM), no build step, no dependencies.",
   "scripts": {
-    "test": "node --test"
+    "test": "node --test",
+    "gen": "node gen-agents-doc.js",
+    "gen:check": "node gen-agents-doc.js --check"
   }
 }

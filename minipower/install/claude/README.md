@@ -29,11 +29,24 @@ New-Item -ItemType SymbolicLink -Force -Path .claude\rules\minipower-doc-editing
 
 ## Permissions + hooks (tuỳ chọn)
 
-Merge [settings.fragment.json](settings.fragment.json) vào `.claude/settings.json`, rồi **thay mọi `/ABSOLUTE/PATH/TO/ai-skills/minipower`** bằng path thật tới pack (find & replace).
+**Khuyên dùng — script tự cài + verify** (thay find & replace tay, ADR R5). Đứng ở **root project docs** (nơi có/định tạo `.claude/settings.json`):
+
+```bash
+MP=/path/to/ai-skills/minipower
+node "$MP/install/claude/install.mjs"          # resolve path + merge + smoke-test 4 shim
+# node "$MP/install/claude/install.mjs" --check  # chỉ verify shim, không ghi
+# node "$MP/install/claude/install.mjs" --print  # in JSON đã resolve ra stdout
+```
+
+Script tự suy path pack (không cần gõ), **merge an toàn**: giữ nguyên hook/permission khác của bạn, idempotent (chạy lại không nhân đôi), backup `.claude/settings.json.bak` trước khi ghi đè, và **verify** bằng cách chạy thật 4 shim dưới `node` hiện tại. Yêu cầu **Node ≥ 18**.
+
+Fragment gồm:
 
 - **`permissions.deny`** — chặn đọc `02-baseline/` và `_legacy/`.
 - **`hooks.UserPromptSubmit`** — token-guard → auto-routing → decision-staleness (cùng logic Cursor).
 - **`hooks.PreToolUse`** (`Read`) — read guard baseline/_legacy.
+
+> Cài tay: vẫn merge [settings.fragment.json](settings.fragment.json) rồi thay mọi `/ABSOLUTE/PATH/TO/ai-skills/minipower` bằng path thật. Script ở trên làm đúng việc đó, có kiểm tra.
 
 Tất cả gọi `node "…/minipower/hooks/bin/*.js"` — **một implementation dùng chung** với Cursor/OpenCode ([hooks/lib/*.js](../../hooks/)). Yêu cầu: **Node ≥ 18** + `git` (cho staleness). **Không còn cần `python3`**; bản `.sh`/`.ps1` cũ đã bỏ.
 

@@ -1,21 +1,23 @@
 # Auto-routing — DOC file → Minipower phase
 
-Markdown thuần — **SSOT bảng map** DOC→phase và hành vi agent khi user `@` file DOC. Logic hook (một implementation Node cho cả 3 nền tảng): [hooks/lib/auto-routing.js](../hooks/lib/auto-routing.js) qua shim [hooks/bin/auto-routing.js](../hooks/bin/auto-routing.js) — cài: [install/cursor/README.md](../install/cursor/README.md#auto-routing-doc--phase).
+Markdown thuần — hành vi agent khi user `@` file DOC. **Bảng map DOC→phase là dữ liệu**, SSOT ở [hooks/lib/rules.json](../hooks/lib/rules.json) (R3). Bảng dưới **sinh tự động** từ đó (`npm run gen`) — thêm DOC-19 chỉ sửa rules.json, không đụng doc/code. Logic hook (một implementation Node cho cả 3 nền tảng): [hooks/lib/auto-routing.js](../hooks/lib/auto-routing.js) qua shim [hooks/bin/auto-routing.js](../hooks/bin/auto-routing.js) — cài: [install/cursor/README.md](../install/cursor/README.md#auto-routing-doc--phase).
 
 ## Bảng map DOC → phase
 
-| DOC | Phase | Skill con |
-|-----|-------|-----------|
-| DOC-01, 02, 03 | **discovery** | `skills/discovery/SKILL.md` |
-| DOC-04, 05, 06, 07 | **requirements** | `skills/requirements/SKILL.md` |
-| DOC-13 (NFR) | **requirements** | `skills/requirements/SKILL.md` |
-| DOC-08, 09, 10, 11, 12 | **architecture** | `skills/architecture/SKILL.md` |
-| DOC-14, 15 | **planning** | `skills/planning/SKILL.md` |
-| DOC-16 | **delivery** | `skills/delivery/SKILL.md` |
-| DOC-17 | **delivery** | `skills/delivery/SKILL.md` |
-| DOC-18 | **change-control** | `skills/change-control/SKILL.md` |
+<!-- BEGIN generated: phase-map (nguồn: hooks/lib/rules.json — chạy `npm run gen`) -->
 
-**Lưu ý:** DOC-16 nằm trong `docs/03-modules/` nhưng phase là **delivery**, không phải requirements.
+| Phase | DOC | Skill con |
+|-------|-----|-----------|
+| **discovery** | DOC-01–03 | `skills/discovery/SKILL.md` |
+| **requirements** | DOC-04–07, 13 | `skills/requirements/SKILL.md` |
+| **architecture** | DOC-08–12 | `skills/architecture/SKILL.md` |
+| **planning** | DOC-14–15 | `skills/planning/SKILL.md` |
+| **delivery** | DOC-16–17 | `skills/delivery/SKILL.md` |
+| **change-control** | DOC-18 | `skills/change-control/SKILL.md` |
+
+<!-- END generated: phase-map -->
+
+**Lưu ý:** DOC-13 (NFR) nằm ngoài dải 04–07 nhưng vẫn thuộc **requirements**. DOC-16 nằm trong `docs/03-modules/` nhưng phase là **delivery**, không phải requirements.
 
 ## Agent — khi không có hook
 

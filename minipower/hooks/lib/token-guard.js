@@ -22,19 +22,10 @@
  */
 
 import { shouldBypass } from "./bypass.js"
-
-/** Bỏ dấu tiếng Việt (gồm đ/Đ mà NFD không tách). */
-function stripDiacritics(s) {
-  return s
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .replace(/[đĐ]/g, (c) => (c === "đ" ? "d" : "D"))
-}
+// [R3] stripDiacritics + EDIT_VERBS/BREADTH sinh từ rules.json (SSOT) — không hardcode.
+import { stripDiacritics, EDIT_VERBS, BREADTH } from "./rules.js"
 
 const HAS_PHASE = /Phase:\s*(discovery|requirements|architecture|planning|delivery|change-control)/i
-// [FIX-1] danh sách không dấu — khớp cả prompt có dấu (đã strip) lẫn không dấu.
-const EDIT_VERBS = /sua|cap nhat|viet|them|sync|dong bo|review|update|edit|write/
-const BREADTH = /toan bo|all modules|sync everything|dong bo het|review all/
 
 // [R2 / tầng] Micro = sửa bề mặt, KHÔNG đổi nội dung/quyết định (typo, format,
 // version, wording, thêm 1 dòng đã soạn). Chỉ dùng để HẠ cảnh báo scope — không

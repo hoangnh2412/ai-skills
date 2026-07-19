@@ -16,38 +16,8 @@
  */
 
 import { shouldBypass } from "./bypass.js"
-
-/** @type {Record<string,string>} — SSOT map, khớp agents/auto-routing.md */
-const PHASE_BY_DOC = {
-  "01": "discovery",
-  "02": "discovery",
-  "03": "discovery",
-  "04": "requirements",
-  "05": "requirements",
-  "06": "requirements",
-  "07": "requirements",
-  "08": "architecture",
-  "09": "architecture",
-  "10": "architecture",
-  "11": "architecture",
-  "12": "architecture",
-  "13": "requirements",
-  "14": "planning",
-  "15": "planning",
-  "16": "delivery",
-  "17": "delivery",
-  "18": "change-control",
-}
-
-/** @type {Record<string,string>} */
-const PHASE_LABEL = {
-  discovery: "discovery (DOC-01–03)",
-  requirements: "requirements (DOC-04–07, 13)",
-  architecture: "architecture (DOC-08–12)",
-  planning: "planning (DOC-14–15)",
-  delivery: "delivery (DOC-16–17)",
-  "change-control": "change-control (DOC-18)",
-}
+// [R3] Map DOC→phase và nhãn phase sinh từ rules.json (SSOT) — không hardcode.
+import { PHASE_BY_DOC, PHASE_LABEL } from "./rules.js"
 
 // [FIX-8] Không phân biệt hoa thường; separator `-` hoặc khoảng trắng;
 //         số 1–2 chữ số (DOC 4 → 04). Tránh khớp tiếp chữ số (doc 100).

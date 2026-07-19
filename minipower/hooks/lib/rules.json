@@ -1,0 +1,49 @@
+{
+  "phase_by_doc": {
+    "01": "discovery",
+    "02": "discovery",
+    "03": "discovery",
+    "04": "requirements",
+    "05": "requirements",
+    "06": "requirements",
+    "07": "requirements",
+    "08": "architecture",
+    "09": "architecture",
+    "10": "architecture",
+    "11": "architecture",
+    "12": "architecture",
+    "13": "requirements",
+    "14": "planning",
+    "15": "planning",
+    "16": "delivery",
+    "17": "delivery",
+    "18": "change-control"
+  },
+  "phase_order": [
+    "discovery",
+    "requirements",
+    "architecture",
+    "planning",
+    "delivery",
+    "change-control"
+  ],
+  "edit_verbs": [
+    "sửa",
+    "cập nhật",
+    "viết",
+    "thêm",
+    "sync",
+    "đồng bộ",
+    "review",
+    "update",
+    "edit",
+    "write"
+  ],
+  "breadth_words": [
+    "toàn bộ",
+    "all modules",
+    "sync everything",
+    "đồng bộ hết",
+    "review all"
+  ]
+}

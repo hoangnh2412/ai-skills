@@ -11,7 +11,7 @@ description: >-
 
 **Template:** [DOC-14–15](../../templates/) · **Folder:** `04-platform/` · `00-governance/DOC-15`
 
-**Bước 10:** Complexity 0–20 × 5 chiều → Small…Enterprise
+**Bước 10:** Complexity 0–20 × 5 chiều → Small…Enterprise — rubric: [complexity-rubric.md](complexity-rubric.md)
 
 **Bước 11:** DOC-14 WBS · Epic/Feature/Story · trace FR
 

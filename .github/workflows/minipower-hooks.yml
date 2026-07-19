@@ -8,10 +8,12 @@ on:
   push:
     paths:
       - "minipower/hooks/**"
+      - "minipower/agents/auto-routing.md"
       - ".github/workflows/minipower-hooks.yml"
   pull_request:
     paths:
       - "minipower/hooks/**"
+      - "minipower/agents/auto-routing.md"
       - ".github/workflows/minipower-hooks.yml"
 
 jobs:
