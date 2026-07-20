@@ -17,7 +17,8 @@
 
 import { shouldBypass } from "./bypass.js"
 // [R3] Map DOC→phase và nhãn phase sinh từ rules.json (SSOT) — không hardcode.
-import { PHASE_BY_DOC, PHASE_LABEL } from "./rules.js"
+// [N2] state/role gợi ý theo phase (project-state awareness).
+import { PHASE_BY_DOC, PHASE_LABEL, stateForPhase, roleForPhase } from "./rules.js"
 
 // [FIX-8] Không phân biệt hoa thường; separator `-` hoặc khoảng trắng;
 //         số 1–2 chữ số (DOC 4 → 04). Tránh khớp tiếp chữ số (doc 100).
@@ -124,9 +125,12 @@ function handleSinglePhase(byPhase, explicit, prompt, root) {
   if (!explicit) {
     const skill = skillPath(detected, root)
     const prefix = buildRoutePrefix(prompt, detected, skill, byPhase[detected])
+    const role = roleForPhase(detected)
     const context = [
       "Minipower auto-route (DOC -> phase).",
       `Phase: ${detected} Skill: @${skill}`,
+      // [N2] Giai đoạn dự án + vai trò chính (lăng kính hỗ trợ, không phải agent tự chạy).
+      `State: ${stateForPhase(detected)}${role ? ` Role: ${role}` : ""}`,
       "Follow minipower-token-guard: one slice, read skill con for this phase only.",
     ].join(" ")
     return { action: "enrich", prefix, context, phase: detected }

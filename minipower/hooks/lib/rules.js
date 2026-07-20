@@ -18,7 +18,12 @@ import { readFileSync } from "node:fs"
  *   phase_by_doc: Record<string,string>,
  *   phase_order: string[],
  *   edit_verbs: string[],
- *   breadth_words: string[]
+ *   breadth_words: string[],
+ *   doc_short: Record<string,string>,
+ *   phase_meta: Record<string,{state:string,role:string}>,
+ *   roles: {id:string,title:string,phase:string,file:string}[],
+ *   prereq_by_intent: {id:string,label:string,keywords:string[],requires:string[]}[],
+ *   context_chain: {label:string,doc?:string,path?:string}[]
  * }} Rules */
 
 /** @type {Rules} */
@@ -90,3 +95,50 @@ export const EDIT_VERBS = wordListRegex(RULES.edit_verbs)
 
 /** Từ khoá độ rộng — prompt quá rộng. Match trên `norm`. */
 export const BREADTH = wordListRegex(RULES.breadth_words)
+
+// ─── N1/N2/N4 — dữ liệu bổ sung, cùng SSOT rules.json ───────────────────────
+
+/** @type {Record<string,string>} DOC "01".."18" → tên ngắn (SSOT nhãn DOC). */
+export const DOC_SHORT = RULES.doc_short
+
+/** "06" → "DOC-06 (SRS)"; số không rõ → "DOC-06". */
+export function docLabel(num) {
+  const key = pad(Number(num))
+  const short = DOC_SHORT[key]
+  return short ? `DOC-${key} (${short})` : `DOC-${key}`
+}
+
+/** @type {Record<string,{state:string,role:string}>} phase → giai đoạn vòng đời + vai trò chính (N2). */
+export const PHASE_META = RULES.phase_meta
+
+/** phase → giai đoạn dự án ("Design"…) hoặc phase gốc nếu thiếu. */
+export function stateForPhase(phase) {
+  return (PHASE_META[phase] && PHASE_META[phase].state) || phase
+}
+
+/** phase → vai trò chính ("SA"…) hoặc "" nếu thiếu. */
+export function roleForPhase(phase) {
+  return (PHASE_META[phase] && PHASE_META[phase].role) || ""
+}
+
+/** @type {{id:string,title:string,phase:string,file:string}[]} Danh mục vai trò (N3). */
+export const ROLES = RULES.roles
+
+/** @type {{id:string,label:string,keywords:string[],requires:string[]}[]} Bộ tiền đề theo intent (N1). */
+export const PREREQ_BY_INTENT = RULES.prereq_by_intent
+
+/**
+ * Nhận diện intent từ prompt đã chuẩn hoá (strip+lower). Keyword lưu KHÔNG dấu
+ * trong rules.json → so trực tiếp trên `norm`. Trả mọi intent khớp (có thể nhiều).
+ * @param {string} norm text đã stripDiacritics + toLowerCase
+ * @returns {{id:string,label:string,requires:string[]}[]}
+ */
+export function matchIntents(norm) {
+  const s = String(norm)
+  return PREREQ_BY_INTENT.filter((it) => it.keywords.some((k) => s.includes(k))).map(
+    ({ id, label, requires }) => ({ id, label, requires }),
+  )
+}
+
+/** @type {{label:string,doc?:string,path?:string}[]} Chuỗi ngữ cảnh auto-load (N4). */
+export const CONTEXT_CHAIN = RULES.context_chain

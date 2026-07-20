@@ -9,6 +9,7 @@
 import test from "node:test"
 import assert from "node:assert/strict"
 import { execFileSync } from "node:child_process"
+import { existsSync } from "node:fs"
 import { fileURLToPath } from "node:url"
 import { dirname, join } from "node:path"
 import {
@@ -18,8 +19,17 @@ import {
   PHASE_LABEL,
   EDIT_VERBS,
   BREADTH,
+  DOC_SHORT,
+  PHASE_META,
+  ROLES,
+  PREREQ_BY_INTENT,
+  CONTEXT_CHAIN,
   formatDocRanges,
   stripDiacritics,
+  docLabel,
+  stateForPhase,
+  roleForPhase,
+  matchIntents,
 } from "../lib/rules.js"
 
 const HOOKS = dirname(dirname(fileURLToPath(import.meta.url)))
@@ -70,4 +80,77 @@ test("rules.json giữ đủ danh sách keyword không rỗng", () => {
 test("agents/auto-routing.md đồng bộ rules.json (gen --check)", () => {
   // Nếu lệch, execFileSync ném (exit 1) → test fail với stderr hướng dẫn.
   execFileSync("node", [join(HOOKS, "gen-agents-doc.js"), "--check"], { encoding: "utf8" })
+})
+
+// ─── N1/N2/N3/N4 — dữ liệu bổ sung ──────────────────────────────────────────
+
+test("doc_short (N4) — phủ đủ DOC-01..18, không ngoặc lồng", () => {
+  for (let i = 1; i <= 18; i++) {
+    const key = String(i).padStart(2, "0")
+    assert.ok(DOC_SHORT[key], `thiếu doc_short ${key}`)
+    assert.ok(!/[()]/.test(DOC_SHORT[key]), `doc_short ${key} có ngoặc → docLabel lồng`)
+  }
+  assert.equal(docLabel("06"), "DOC-06 (SRS)")
+  assert.equal(docLabel(3), "DOC-03 (BRD)")
+})
+
+test("phase_meta (N2) — mọi phase có state+role, role trỏ ROLES hợp lệ", () => {
+  const roleIds = new Set(ROLES.map((r) => r.id))
+  for (const phase of PHASE_ORDER) {
+    const meta = PHASE_META[phase]
+    assert.ok(meta && meta.state && meta.role, `phase ${phase} thiếu state/role`)
+    // role có thể là "DEV / QC / DevOps" — mỗi token phải là role hợp lệ.
+    for (const id of meta.role.split("/").map((s) => s.trim())) {
+      assert.ok(roleIds.has(id), `phase ${phase}: role lạ "${id}"`)
+    }
+  }
+  assert.equal(stateForPhase("architecture"), "Design")
+  assert.equal(roleForPhase("architecture"), "SA")
+  assert.equal(stateForPhase("phase-khong-ton-tai"), "phase-khong-ton-tai")
+})
+
+test("roles (N3) — id duy nhất, phase hợp lệ, file .md", () => {
+  const ids = ROLES.map((r) => r.id)
+  assert.equal(new Set(ids).size, ids.length, "role id trùng")
+  const phases = new Set(PHASE_ORDER)
+  for (const r of ROLES) {
+    assert.ok(r.file.endsWith(".md"), `role ${r.id} file lạ`)
+    for (const p of r.phase.split(",").map((s) => s.trim())) {
+      assert.ok(phases.has(p), `role ${r.id}: phase lạ "${p}"`)
+    }
+  }
+})
+
+test("role files (N3) — mỗi role trong rules.json có file thật", () => {
+  const rolesDir = join(dirname(HOOKS), "roles")
+  for (const r of ROLES) {
+    assert.ok(existsSync(join(rolesDir, r.file)), `thiếu file roles/${r.file}`)
+  }
+})
+
+test("prereq_by_intent (N1) — requires trỏ DOC hợp lệ, keyword không dấu", () => {
+  assert.ok(PREREQ_BY_INTENT.length >= 3)
+  for (const it of PREREQ_BY_INTENT) {
+    assert.ok(it.keywords.length >= 1, `intent ${it.id} không keyword`)
+    for (const k of it.keywords) {
+      assert.equal(k, stripDiacritics(k.toLowerCase()), `keyword "${k}" phải strip+lower để match norm`)
+    }
+    for (const d of it.requires) {
+      assert.ok(PHASE_BY_DOC[d], `intent ${it.id}: DOC lạ "${d}"`)
+    }
+  }
+})
+
+test("matchIntents (N1) — nhận diện intent từ prompt đã strip", () => {
+  const hit = matchIntents(stripDiacritics("giúp tôi viết code cho module billing".toLowerCase()))
+  assert.ok(hit.some((h) => h.id === "implement"), "miss intent implement")
+  assert.equal(matchIntents(stripDiacritics("chào bạn".toLowerCase())).length, 0)
+})
+
+test("context_chain (N4) — mỗi mục có doc hợp lệ HOẶC path", () => {
+  assert.ok(CONTEXT_CHAIN.length >= 3)
+  for (const c of CONTEXT_CHAIN) {
+    if (c.doc) assert.ok(DOC_SHORT[c.doc], `context doc lạ "${c.doc}"`)
+    else assert.ok(c.path, `context "${c.label}" thiếu cả doc lẫn path`)
+  }
 })

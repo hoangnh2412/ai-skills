@@ -7,6 +7,8 @@ Markdown thuần — **source of truth** cho Cursor, Claude Code và agent khác
 | [token-guard.md](token-guard.md) | Mọi phiên Minipower trên repo `docs/` |
 | [doc-editing.md](doc-editing.md) | Khi sửa file `docs/**/*.md` trên project đích |
 | [auto-routing.md](auto-routing.md) | Khi `@` file DOC — map phase, xử lý conflict (agent + hook) |
+| [project-state.md](project-state.md) | Suy giai đoạn dự án → phase → vai trò (lăng kính hỗ trợ) |
+| [context-load.md](context-load.md) | Khi tiền đề đủ — nạp chuỗi ngữ cảnh trước khi đề xuất |
 
 ## Cài trên workspace project docs
 

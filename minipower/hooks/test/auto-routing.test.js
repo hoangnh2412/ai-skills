@@ -107,6 +107,12 @@ test("auto-routing: ENRICH — một phase, prompt chưa khai Phase", async (t) 
     assert.match(r.context, /token-guard|one slice/i)
   })
 
+  await t.test("[N2] context có State + Role theo phase", () => {
+    const r = route("sửa DOC-08") // architecture → Design / SA
+    assert.match(r.context, /State: Design/)
+    assert.match(r.context, /Role: SA/)
+  })
+
   await t.test("opts.root đổi được đường dẫn skill", () => {
     const r = checkAutoRouting("sửa DOC-06", [], { root: "custom/mp" })
     assert.match(r.prefix, /^@custom\/mp\/skills\/requirements\/SKILL\.md$/m)

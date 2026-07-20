@@ -13,6 +13,7 @@
 - Decision: chọn X
 - Why (loại B, C vì): …
 - Consequences: …
+- Affects: <module/hệ thống> · <task/CR> · <release>
 - Trace: DOC-XX · {MOD}-FR-xxx · ADR-xxx
 - Confidence: cao | vừa | thấp
 -->

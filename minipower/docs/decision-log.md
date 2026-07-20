@@ -16,9 +16,12 @@ Memory hiện tại lưu **trạng thái**; decision log lưu **lý do**: quyế
 - Decision: chọn X
 - Why (loại B, C vì): <lý do — quan trọng nhất>
 - Consequences: trade-off đã chấp nhận
+- Affects: <module/hệ thống bị ảnh hưởng> · <task/CR> · <release/version>
 - Trace: DOC-XX · {MOD}-FR-xxx · ADR-xxx (nếu có)
 - Confidence: cao | vừa | thấp
 ```
+
+**`Affects` (N6 — truy vết ngược):** liên kết quyết định → hệ thống/task/release chịu tác động. Nhờ đó trả lời được *"Vì sao API này đổi?"* → lần theo `Affects` ngược về DEC/ADR. `Trace` chỉ *lên* (yêu cầu gốc); `Affects` chỉ *xuống* (hệ quả). Khi một CR/incident đụng quyết định cũ → thêm chính nó vào `Affects` của DEC đó.
 
 **ID:** `DEC-DIS-001` (discovery), `DEC-REQ-…`, `DEC-ARC-…`, `DEC-PLN-…`, `DEC-DLV-…`, `DEC-CHG-…`.
 
@@ -32,6 +35,7 @@ Memory hiện tại lưu **trạng thái**; decision log lưu **lý do**: quyế
 - Decision: B — RabbitMQ
 - Why (loại A vì mất decoupling khi notification down; loại C vì team chưa vận hành được Kafka, over-engineered cho volume hiện tại).
 - Consequences: chấp nhận eventual consistency; cần dead-letter + retry policy.
+- Affects: module billing, notification · CR-014 · v1.3
 - Trace: DOC-10 §3 · BILL-FR-021 · ADR-005
 - Confidence: vừa
 ```
@@ -42,6 +46,7 @@ Memory hiện tại lưu **trạng thái**; decision log lưu **lý do**: quyế
 |-----|-----------|
 | **Đầu phiên** | Đọc `memory/memory.md` → mở `memory/{phase}/decision-log.md` của phase đang làm |
 | **Trước khi quyết lại** | Tìm DEC liên quan; nếu đã có → **không** quyết lại từ đầu, kế thừa hoặc supersede |
+| **Hỏi "vì sao X đổi?"** | Tìm `Affects:` chứa X (module/API/release) → lần ngược về DEC/ADR gốc + ngày (N6) |
 | **Có bằng chứng mới** | Chạy [deliberation](../skills/deliberation/SKILL.md) Premise Check; nếu đổi → thêm DEC mới `superseded-by` |
 | **Cuối phiên** | Ghi DEC cho mọi quyết định có phương án bị loại — **không** nhồi vào `memory.md` gốc |
 

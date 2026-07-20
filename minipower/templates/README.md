@@ -23,6 +23,17 @@ Mỗi file là khung copy-paste khi sinh artifact. Tham chiếu tiêu chuẩn/ng
 | DOC-17 | [DOC-17-deployment-guide.md](DOC-17-deployment-guide.md) | Runbook / cutover checklist |
 | DOC-18 | [DOC-18-change-request-register.md](DOC-18-change-request-register.md) | Change Management / RFC |
 
+## Template phụ trợ (ngoài bộ DOC-01→18)
+
+Dùng khi vận hành/quản trị, **không** đánh số DOC — không vào trace-matrix baseline (N5, ADR 2026-07-20 §3.5).
+
+| Template | File | Khi nào dùng |
+|----------|------|--------------|
+| RFC | [TPL-rfc.md](TPL-rfc.md) | Đề xuất thay đổi cần lấy ý kiến trước khi quyết; chốt → ADR (DOC-09) |
+| Meeting Minutes | [TPL-meeting-minutes.md](TPL-meeting-minutes.md) | Biên bản họp — quyết định + action item |
+| Incident Report | [TPL-incident-report.md](TPL-incident-report.md) | Ghi nhận sự cố vận hành (SEV1–3) |
+| Postmortem | [TPL-postmortem.md](TPL-postmortem.md) | Phân tích blameless sau sự cố nghiêm trọng/lặp lại |
+
 ## Governance & traceability (`docs-skeleton/`)
 
 | File | Mô tả |

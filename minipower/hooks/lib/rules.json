@@ -45,5 +45,85 @@
     "sync everything",
     "đồng bộ hết",
     "review all"
+  ],
+  "doc_short": {
+    "01": "Vision / Business Case",
+    "02": "Stakeholder Analysis",
+    "03": "BRD",
+    "04": "Business Rules",
+    "05": "Use Cases",
+    "06": "SRS",
+    "07": "Acceptance Criteria",
+    "08": "SAD",
+    "09": "ADR",
+    "10": "Integration Spec",
+    "11": "Data Model",
+    "12": "API Spec",
+    "13": "NFR",
+    "14": "WBS / Estimate",
+    "15": "Project Plan",
+    "16": "Test Strategy",
+    "17": "Deployment Guide",
+    "18": "Change Request Register"
+  },
+  "phase_meta": {
+    "discovery": { "state": "Requirement", "role": "BA" },
+    "requirements": { "state": "Analysis", "role": "BA" },
+    "architecture": { "state": "Design", "role": "SA" },
+    "planning": { "state": "Planning", "role": "PM" },
+    "delivery": { "state": "Development → Testing → Deployment", "role": "DEV / QC / DevOps" },
+    "change-control": { "state": "Maintenance", "role": "Support" }
+  },
+  "roles": [
+    { "id": "BA", "title": "Business Analyst", "phase": "discovery, requirements", "file": "BA.md" },
+    { "id": "PM", "title": "Project Manager", "phase": "planning", "file": "PM.md" },
+    { "id": "SA", "title": "Solution Architect", "phase": "architecture", "file": "SA.md" },
+    { "id": "DEV", "title": "Developer", "phase": "delivery", "file": "DEV.md" },
+    { "id": "QC", "title": "Quality Control", "phase": "delivery", "file": "QC.md" },
+    { "id": "DevOps", "title": "DevOps", "phase": "delivery", "file": "DevOps.md" },
+    { "id": "Support", "title": "Support / Maintenance", "phase": "change-control", "file": "Support.md" }
+  ],
+  "prereq_by_intent": [
+    {
+      "id": "write-requirements",
+      "label": "Phân tích yêu cầu (UC, FR, SRS, AC)",
+      "keywords": ["phan tich yeu cau", "requirement", "use case", "viet srs", "viet fr", "acceptance criteria"],
+      "requires": ["03"]
+    },
+    {
+      "id": "design-architecture",
+      "label": "Thiết kế kiến trúc / giải pháp / module",
+      "keywords": ["thiet ke kien truc", "thiet ke giai phap", "thiet ke module", "architecture", "thiet ke he thong"],
+      "requires": ["03", "06", "13"]
+    },
+    {
+      "id": "implement",
+      "label": "Viết code / hiện thực module",
+      "keywords": ["viet code", "code module", "hien thuc", "implement", "lap trinh", "dung module", "build module"],
+      "requires": ["06", "07", "08", "11", "12"]
+    },
+    {
+      "id": "test",
+      "label": "Kiểm thử / viết test case",
+      "keywords": ["viet test", "test case", "kiem thu", "test plan", "qc module"],
+      "requires": ["06", "07", "16"]
+    },
+    {
+      "id": "deploy",
+      "label": "Triển khai / go-live / release",
+      "keywords": ["trien khai", "deploy", "go-live", "go live", "release", "phat hanh"],
+      "requires": ["15", "17"]
+    }
+  ],
+  "context_chain": [
+    { "label": "BRD", "doc": "03" },
+    { "label": "SRS", "doc": "06" },
+    { "label": "Architecture (SAD)", "doc": "08" },
+    { "label": "Data model", "doc": "11" },
+    { "label": "API spec", "doc": "12" },
+    { "label": "Coding convention", "path": "docs/00-governance/" },
+    { "label": "Decision log", "path": "memory/{phase}/decision-log.md" },
+    { "label": "Open questions / issues", "path": "memory/{phase}/open-questions.md" },
+    { "label": "Current sprint", "doc": "15" }
   ]
 }
