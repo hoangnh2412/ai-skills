@@ -9,7 +9,7 @@ Markdown thuần — hành vi agent khi user `@` file DOC. **Bảng map DOC→ph
 | Phase | DOC | Skill con |
 |-------|-----|-----------|
 | **discovery** | DOC-01–03 | `skills/discovery/SKILL.md` |
-| **requirements** | DOC-04–07, 13 | `skills/requirements/SKILL.md` |
+| **requirements** | DOC-04–07, 13, 19 | `skills/requirements/SKILL.md` |
 | **architecture** | DOC-08–12 | `skills/architecture/SKILL.md` |
 | **planning** | DOC-14–15 | `skills/planning/SKILL.md` |
 | **delivery** | DOC-16–17 | `skills/delivery/SKILL.md` |

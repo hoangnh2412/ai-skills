@@ -11,7 +11,7 @@ Business Goal → Stakeholder → Process → Requirement → Solution → Plann
 | Giai đoạn | Vai trò chính | Đầu ra chính |
 |-----------|---------------|--------------|
 | Discovery | BA, PM | Phạm vi, stakeholder, BRD, danh sách module |
-| Requirements | BA (theo module) | UC, BR, FR, AC, NFR |
+| Requirements | BA (theo module) | UC, BR, Prototype, FR, AC, NFR |
 | Architecture | SA | SAD, ADR, tích hợp, data model, API |
 | Planning | PM, BA lead | WBS, ước lượng, kế hoạch, roadmap |
 | Delivery | QA, BA, DevOps | Test strategy, triển khai, go-live |
@@ -56,7 +56,7 @@ flowchart LR
 | Phase | Skill / prompt | Memory | Docs | DOC |
 |-------|----------------|--------|------|-----|
 | Discovery | `Phase: discovery` | `memory/discovery/` | `docs/01-project/` | 01–03 |
-| Requirements | `Phase: requirements` | `memory/requirements/` | `docs/03-modules/{module}/` | 04–07 |
+| Requirements | `Phase: requirements` | `memory/requirements/` | `docs/03-modules/{module}/` | 04–07, 19 |
 | Architecture | `Phase: architecture` | `memory/architecture/` | `docs/04-platform/` | 08–12 |
 | Planning | `Phase: planning` | `memory/planning/` | `00-governance/`, `04-platform/` | 14–15 |
 | Delivery | `Phase: delivery` | `memory/delivery/` | `03-modules/`, `04-platform/` | 16–17 |
@@ -73,11 +73,14 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-  BR[DOC-04 BR] --> UC[DOC-05 UC] --> FR[DOC-06 FR] --> AC[DOC-07 AC]
+  BR[DOC-04 BR] --> UC[DOC-05 UC] --> PROTO[DOC-19 Prototype] --> FR[DOC-06 FR] --> AC[DOC-07 AC]
   UC -.->|trace| TM["05-traceability/trace-matrix.md"]
+  PROTO -.->|cổng chốt| G["agents/approval-gate.md"]
   FR -.-> TM
   AC -.-> TM
 ```
+
+> **Cổng người-chốt (A2, ADR gated-fanout):** giữa các bước có cổng — người chốt DOC trước (ghi DEC) thì AI mới fan-out bước sau theo module. Bảng cổng: [agents/approval-gate.md](../agents/approval-gate.md). Prototype (DOC-19) sinh HTML wireframe qua MCP ngoài (hoãn).
 
 ## Luồng kiến trúc (SA)
 

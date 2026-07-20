@@ -4,6 +4,8 @@
 
 Dự án lớn thường chia **theo bounded context (module)** và **theo vai trò**. Minipower hỗ trợ song song khi có **hợp đồng tại biên** (integration spec, entity dùng chung, API contract).
 
+> **Hai kiểu song song:** (1) **nhiều người** (multi-BA/SA/PM) — trang này; (2) **AI fan-out** giữa hai cổng người-chốt — điều phối bởi [skills/fan-out](../skills/fan-out/SKILL.md) (ADR gated-fanout). Cả hai **dùng chung** quy tắc bên dưới: một module = một owner, tránh sửa file chung đồng thời.
+
 ## Phân vai mẫu
 
 | Vai trò | Phase chính | Folder sở hữu | Ví dụ công việc |

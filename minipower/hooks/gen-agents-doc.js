@@ -25,6 +25,7 @@ import {
   ROLES,
   PREREQ_BY_INTENT,
   CONTEXT_CHAIN,
+  APPROVAL_GATES,
   docsForPhase,
   formatDocRanges,
   docLabel,
@@ -76,6 +77,17 @@ function prereqTable() {
   return rows.join("\n")
 }
 
+function approvalGateTable() {
+  const rows = [
+    "| # | Cổng (người chốt) | DOC duyệt | Mở khoá bước sau |",
+    "|---|-------------------|-----------|------------------|",
+  ]
+  APPROVAL_GATES.forEach((g, i) => {
+    rows.push(`| ${i + 1} | **${g.label}** | ${docLabel(g.approve)} | ${g.unlocks} |`)
+  })
+  return rows.join("\n")
+}
+
 function rolesTable() {
   const rows = ["| Vai trò | Chức danh | Phase liên quan | File |", "|---------|-----------|-----------------|------|"]
   for (const r of ROLES) {
@@ -89,6 +101,7 @@ const TARGETS = [
   { file: rel("../agents/project-state.md"), id: "project-state", build: projectStateTable },
   { file: rel("../agents/context-load.md"), id: "context-chain", build: contextChainTable },
   { file: rel("../skills/readiness-gate/SKILL.md"), id: "prereq-by-intent", build: prereqTable },
+  { file: rel("../agents/approval-gate.md"), id: "approval-gates", build: approvalGateTable },
   { file: rel("../roles/README.md"), id: "roles-index", build: rolesTable },
 ]
 

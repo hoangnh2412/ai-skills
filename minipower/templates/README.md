@@ -1,4 +1,4 @@
-# Template tài liệu chuẩn (DOC-01 → DOC-18)
+# Template tài liệu chuẩn (DOC-01 → DOC-19)
 
 Mỗi file là khung copy-paste khi sinh artifact. Tham chiếu tiêu chuẩn/nguồn chính:
 
@@ -22,8 +22,9 @@ Mỗi file là khung copy-paste khi sinh artifact. Tham chiếu tiêu chuẩn/ng
 | DOC-16 | [DOC-16-test-strategy.md](DOC-16-test-strategy.md) | Test Strategy & Test Cases — catalog Layer/Path/Priority |
 | DOC-17 | [DOC-17-deployment-guide.md](DOC-17-deployment-guide.md) | Runbook / cutover checklist |
 | DOC-18 | [DOC-18-change-request-register.md](DOC-18-change-request-register.md) | Change Management / RFC |
+| DOC-19 | [DOC-19-prototype.md](DOC-19-prototype.md) | Prototype / Wireframe (phase requirements; HTML wireframe qua MCP ngoài — hoãn) |
 
-## Template phụ trợ (ngoài bộ DOC-01→18)
+## Template phụ trợ (ngoài bộ DOC-01→19)
 
 Dùng khi vận hành/quản trị, **không** đánh số DOC — không vào trace-matrix baseline (N5, ADR 2026-07-20 §3.5).
 

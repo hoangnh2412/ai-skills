@@ -44,8 +44,9 @@ Yêu cầu thực thi
 | Intent | Tiền đề cần có |
 |--------|----------------|
 | **Phân tích yêu cầu (UC, FR, SRS, AC)** | DOC-03 (BRD) |
+| **Vẽ prototype / wireframe** | DOC-04 (Business Rules) |
 | **Thiết kế kiến trúc / giải pháp / module** | DOC-03 (BRD) · DOC-06 (SRS) · DOC-13 (NFR) |
-| **Viết code / hiện thực module** | DOC-06 (SRS) · DOC-07 (Acceptance Criteria) · DOC-08 (SAD) · DOC-11 (Data Model) · DOC-12 (API Spec) |
+| **Viết code / hiện thực module** | DOC-06 (SRS) · DOC-07 (Acceptance Criteria) · DOC-08 (SAD) · DOC-11 (Data Model) · DOC-12 (API Spec) · DOC-19 (Prototype / Wireframe) |
 | **Kiểm thử / viết test case** | DOC-06 (SRS) · DOC-07 (Acceptance Criteria) · DOC-16 (Test Strategy) |
 | **Triển khai / go-live / release** | DOC-15 (Project Plan) · DOC-17 (Deployment Guide) |
 

@@ -43,11 +43,12 @@ function basename(path) {
   return i >= 0 ? norm.slice(i + 1) : norm
 }
 
-/** "4" / "04" / "16" → "04" / "16"; ngoài 01–18 → null. */
+/** "4" / "04" / "19" → "04" / "19"; số không có trong map (rules.json) → null. */
 function normalizeDocNum(raw) {
   const n = Number(raw)
-  if (!Number.isInteger(n) || n < 1 || n > 18) return null
-  return String(n).padStart(2, "0")
+  if (!Number.isInteger(n) || n < 1) return null
+  const key = String(n).padStart(2, "0")
+  return key in PHASE_BY_DOC ? key : null
 }
 
 function addDocRef(byPhase, seen, docNumRaw, label) {

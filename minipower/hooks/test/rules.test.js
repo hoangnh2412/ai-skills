@@ -24,6 +24,7 @@ import {
   ROLES,
   PREREQ_BY_INTENT,
   CONTEXT_CHAIN,
+  APPROVAL_GATES,
   formatDocRanges,
   stripDiacritics,
   docLabel,
@@ -34,18 +35,19 @@ import {
 
 const HOOKS = dirname(dirname(fileURLToPath(import.meta.url)))
 
-test("rules.json — phủ đủ DOC-01..18, phase hợp lệ", () => {
-  for (let i = 1; i <= 18; i++) {
+test("rules.json — phủ đủ DOC-01..19, phase hợp lệ", () => {
+  for (let i = 1; i <= 19; i++) {
     const key = String(i).padStart(2, "0")
     assert.ok(PHASE_BY_DOC[key], `thiếu ${key}`)
     assert.ok(PHASE_ORDER.includes(PHASE_BY_DOC[key]), `phase lạ cho ${key}: ${PHASE_BY_DOC[key]}`)
   }
-  assert.equal(Object.keys(PHASE_BY_DOC).length, 18)
+  assert.equal(Object.keys(PHASE_BY_DOC).length, 19)
+  assert.equal(PHASE_BY_DOC["19"], "requirements") // DOC-19 Prototype thuộc requirements
 })
 
 test("PHASE_LABEL — suy ra khớp chuỗi cũ", () => {
   assert.equal(PHASE_LABEL.discovery, "discovery (DOC-01–03)")
-  assert.equal(PHASE_LABEL.requirements, "requirements (DOC-04–07, 13)")
+  assert.equal(PHASE_LABEL.requirements, "requirements (DOC-04–07, 13, 19)")
   assert.equal(PHASE_LABEL.architecture, "architecture (DOC-08–12)")
   assert.equal(PHASE_LABEL.planning, "planning (DOC-14–15)")
   assert.equal(PHASE_LABEL.delivery, "delivery (DOC-16–17)")
@@ -84,8 +86,8 @@ test("agents/auto-routing.md đồng bộ rules.json (gen --check)", () => {
 
 // ─── N1/N2/N3/N4 — dữ liệu bổ sung ──────────────────────────────────────────
 
-test("doc_short (N4) — phủ đủ DOC-01..18, không ngoặc lồng", () => {
-  for (let i = 1; i <= 18; i++) {
+test("doc_short (N4) — phủ đủ DOC-01..19, không ngoặc lồng", () => {
+  for (let i = 1; i <= 19; i++) {
     const key = String(i).padStart(2, "0")
     assert.ok(DOC_SHORT[key], `thiếu doc_short ${key}`)
     assert.ok(!/[()]/.test(DOC_SHORT[key]), `doc_short ${key} có ngoặc → docLabel lồng`)
@@ -153,4 +155,28 @@ test("context_chain (N4) — mỗi mục có doc hợp lệ HOẶC path", () => 
     if (c.doc) assert.ok(DOC_SHORT[c.doc], `context doc lạ "${c.doc}"`)
     else assert.ok(c.path, `context "${c.label}" thiếu cả doc lẫn path`)
   }
+})
+
+// ─── A2/A3 — gated fan-out (ADR 2026-07-20 gated-fanout) ─────────────────────
+
+test("approval_gates (A2) — id duy nhất, approve trỏ DOC hợp lệ, có label+unlocks", () => {
+  assert.ok(APPROVAL_GATES.length >= 5)
+  const ids = APPROVAL_GATES.map((g) => g.id)
+  assert.equal(new Set(ids).size, ids.length, "gate id trùng")
+  for (const g of APPROVAL_GATES) {
+    assert.ok(g.label && g.unlocks, `gate ${g.id} thiếu label/unlocks`)
+    assert.ok(PHASE_BY_DOC[g.approve], `gate ${g.id}: approve DOC lạ "${g.approve}"`)
+  }
+  // Cổng prototype duyệt đúng DOC-19.
+  assert.ok(APPROVAL_GATES.some((g) => g.id === "prototype" && g.approve === "19"))
+})
+
+test("intent prototype (A3) — nhận diện, requires DOC-04 (Business Rules đã chốt)", () => {
+  const proto = PREREQ_BY_INTENT.find((it) => it.id === "prototype")
+  assert.ok(proto, "thiếu intent prototype")
+  assert.deepEqual(proto.requires, ["04"])
+  assert.ok(matchIntents(stripDiacritics("vẽ prototype cho module billing".toLowerCase())).some((h) => h.id === "prototype"))
+  // implement (viết code) nay cần cả prototype DOC-19.
+  const impl = PREREQ_BY_INTENT.find((it) => it.id === "implement")
+  assert.ok(impl.requires.includes("19"), "implement phải yêu cầu DOC-19 prototype")
 })

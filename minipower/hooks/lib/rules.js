@@ -23,7 +23,8 @@ import { readFileSync } from "node:fs"
  *   phase_meta: Record<string,{state:string,role:string}>,
  *   roles: {id:string,title:string,phase:string,file:string}[],
  *   prereq_by_intent: {id:string,label:string,keywords:string[],requires:string[]}[],
- *   context_chain: {label:string,doc?:string,path?:string}[]
+ *   context_chain: {label:string,doc?:string,path?:string}[],
+ *   approval_gates: {id:string,label:string,approve:string,unlocks:string}[]
  * }} Rules */
 
 /** @type {Rules} */
@@ -142,3 +143,10 @@ export function matchIntents(norm) {
 
 /** @type {{label:string,doc?:string,path?:string}[]} Chuỗi ngữ cảnh auto-load (N4). */
 export const CONTEXT_CHAIN = RULES.context_chain
+
+/**
+ * @type {{id:string,label:string,approve:string,unlocks:string}[]}
+ * Cổng người-chốt (A2, ADR 2026-07-20 gated-fanout). Mỗi cổng: người duyệt DOC
+ * `approve` (ghi DEC) → mở khoá bước `unlocks`. AI soạn DEC nháp, người review.
+ */
+export const APPROVAL_GATES = RULES.approval_gates

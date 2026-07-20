@@ -19,7 +19,7 @@ Thay vì viết tài liệu tuỳ hứng, Minipower dẫn bạn qua **6 giai đo
 
 ---
 
-## 6 phase & 18 DOC
+## 6 phase & 19 DOC
 
 ```text
 Business Goal → Stakeholder → Process → Requirement → Solution
@@ -28,7 +28,7 @@ Business Goal → Stakeholder → Process → Requirement → Solution
 | Phase | Skill | Làm gì | DOC |
 |-------|-------|--------|-----|
 | **Discovery** | [discovery](skills/discovery/SKILL.md) | Khám phá bài toán, stakeholder, scope | 01–03 |
-| **Requirements** | [requirements](skills/requirements/SKILL.md) | Use Case, Business Rule, FR/SRS, NFR, Acceptance Criteria | 04–07, 13 |
+| **Requirements** | [requirements](skills/requirements/SKILL.md) | Use Case, Business Rule, Prototype, FR/SRS, NFR, Acceptance Criteria | 04–07, 13, 19 |
 | **Architecture** | [architecture](skills/architecture/SKILL.md) | SAD, ADR, Integration, Data Model, API | 08–12 |
 | **Planning** | [planning](skills/planning/SKILL.md) | Complexity, WBS, estimate, roadmap | 14–15 |
 | **Delivery** | [delivery](skills/delivery/SKILL.md) | Test strategy, deployment, go-live | 16–17 |
@@ -215,7 +215,7 @@ Phase: architecture — shared data model + API contract giữa {module-a} và {
 | Router kỹ thuật đầy đủ, init project, phân tầng micro/light/full | [SKILL.md](SKILL.md) |
 | Pipeline, nguyên tắc, luồng artifact | [docs/pipeline.md](docs/pipeline.md) |
 | Làm việc song song (multi-BA / SA / PM) | [docs/parallel-work.md](docs/parallel-work.md) |
-| Template 18 DOC | [templates/README.md](templates/README.md) |
+| Template 19 DOC | [templates/README.md](templates/README.md) |
 | Khung folder `docs/` của dự án | [docs-skeleton/README.md](docs-skeleton/README.md) |
 | DOC versioning (Version sau sign-off) | [docs-skeleton/00-governance/doc-versioning.md](docs-skeleton/00-governance/doc-versioning.md) |
 | Token guard (scope, hooks) | [docs/token-guard.md](docs/token-guard.md) |
@@ -234,7 +234,7 @@ minipower/
 ├── agents/            ← Guardrails agent (token, sửa DOC)
 ├── install/           ← Adapter cài rules/hooks (cursor / claude / opencode)
 ├── docs/              ← Tài liệu framework (pipeline, parallel-work, token-guard)
-├── templates/         ← Khung 18 DOC
+├── templates/         ← Khung 19 DOC
 ├── project-skeleton/  ← Khung dự án: memory, assets, brainstorm
 └── docs-skeleton/     ← Khung folder docs/ (artifact dự án)
 ```

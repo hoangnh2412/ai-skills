@@ -17,7 +17,8 @@
     "15": "planning",
     "16": "delivery",
     "17": "delivery",
-    "18": "change-control"
+    "18": "change-control",
+    "19": "requirements"
   },
   "phase_order": [
     "discovery",
@@ -64,7 +65,8 @@
     "15": "Project Plan",
     "16": "Test Strategy",
     "17": "Deployment Guide",
-    "18": "Change Request Register"
+    "18": "Change Request Register",
+    "19": "Prototype / Wireframe"
   },
   "phase_meta": {
     "discovery": { "state": "Requirement", "role": "BA" },
@@ -91,6 +93,12 @@
       "requires": ["03"]
     },
     {
+      "id": "prototype",
+      "label": "Vẽ prototype / wireframe",
+      "keywords": ["prototype", "wireframe", "wire frame", "ve prototype", "mockup", "phac giao dien", "ban ve giao dien"],
+      "requires": ["04"]
+    },
+    {
       "id": "design-architecture",
       "label": "Thiết kế kiến trúc / giải pháp / module",
       "keywords": ["thiet ke kien truc", "thiet ke giai phap", "thiet ke module", "architecture", "thiet ke he thong"],
@@ -100,7 +108,7 @@
       "id": "implement",
       "label": "Viết code / hiện thực module",
       "keywords": ["viet code", "code module", "hien thuc", "implement", "lap trinh", "dung module", "build module"],
-      "requires": ["06", "07", "08", "11", "12"]
+      "requires": ["06", "07", "08", "11", "12", "19"]
     },
     {
       "id": "test",
@@ -125,5 +133,14 @@
     { "label": "Decision log", "path": "memory/{phase}/decision-log.md" },
     { "label": "Open questions / issues", "path": "memory/{phase}/open-questions.md" },
     { "label": "Current sprint", "doc": "15" }
+  ],
+  "approval_gates": [
+    { "id": "brd", "label": "Chốt BRD", "approve": "03", "unlocks": "Business Rules — fan-out theo module" },
+    { "id": "business-rules", "label": "Chốt Business Rules", "approve": "04", "unlocks": "Prototype / Wireframe — fan-out theo module" },
+    { "id": "prototype", "label": "Chốt Prototype / Wireframe", "approve": "19", "unlocks": "SRS — fan-out theo module" },
+    { "id": "srs", "label": "Chốt SRS", "approve": "06", "unlocks": "Architecture (SAD / Data model / API)" },
+    { "id": "architecture", "label": "Chốt Architecture", "approve": "08", "unlocks": "Epic / Story / Task → tạo task (Lark)" },
+    { "id": "plan", "label": "Chốt Project Plan", "approve": "15", "unlocks": "Test case + Code" },
+    { "id": "test-cases", "label": "Chốt Test case", "approve": "16", "unlocks": "Code + Unit test → cập nhật task" }
   ]
 }
