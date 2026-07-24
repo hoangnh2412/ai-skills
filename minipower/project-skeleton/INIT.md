@@ -21,12 +21,14 @@ cp -R "$MINIPOWER/docs-skeleton" "$PROJECT/docs"
 | `brainstorm/` | Phân tích, trao đổi, decision log theo ngày; chốt → distill vào `docs/` |
 | `docs/` | Tài liệu baseline (Vision, BRD, kiến trúc, traceability, CR…) |
 | `memory/` | Index context theo chủ đề — `memory.md` + 6 folder phase |
+| `FAQ.md` | FAQ hướng dẫn thiết lập sẵn (làm gì / làm thế nào / thiếu gì) |
 
 ## Nội dung skeleton (ngoài `docs/`)
 
 | Path | Mô tả |
 |------|--------|
 | `README.md` | Entry dự án |
+| `FAQ.md` | FAQ hướng dẫn thiết lập sẵn (làm gì / làm thế nào / thiếu gì) |
 | `memory/profile.json` | *(tạo lúc init)* — SSOT cá nhân hoá |
 | `memory/memory.md` | Index gốc (meta chung) |
 | `memory/{phase}/README.md` | Memory theo discovery, requirements, … |

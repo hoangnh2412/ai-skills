@@ -30,6 +30,7 @@
 |---------------|---------|
 | [**`docs/05-traceability/overview.md`**](../docs/05-traceability/overview.md) | **Tổng quan 30s** — phase, module, pipeline, blocker, 2 tuần tới |
 | [`../brainstorm/`](../brainstorm/) | Trao đổi chi tiết theo ngày |
+| [`../FAQ.md`](../FAQ.md) | FAQ hướng dẫn thiết lập sẵn |
 | [`../assets/`](../assets/) | Tài liệu gốc |
 | [`../docs/`](../docs/) | Artifact baseline |
 
@@ -41,4 +42,4 @@
 3. Cập nhật memory **đúng chủ đề** — không append dài vào `memory.md` gốc.
    - Quyết định có phương án bị loại → `memory/{phase}/decision-log.md` (schema: minipower pack `docs/decision-log.md`).
 4. Sau sync / cuối phiên: rollup số liệu vào `overview.md` (PM hoặc owner module).
-5. Trao đổi chi tiết → `brainstorm/` · chốt → `docs/`.
+5. Trao đổi chi tiết → `brainstorm/` · chốt → `docs/`. User hỏi hướng dẫn / bước tiếp → đọc `FAQ.md`.
