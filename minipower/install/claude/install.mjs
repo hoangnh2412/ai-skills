@@ -75,6 +75,7 @@ function verify() {
   const cases = [
     ["token-guard.js", { prompt: "@docs/" }],
     ["auto-routing.js", { prompt: "sửa DOC-06" }],
+    ["profile-guard.js", { prompt: "Phase: requirements — DOC-06" }],
     ["decision-staleness.js", { prompt: "đánh giá lại quyết định" }],
     ["token-guard-read.js", { file_path: "docs/02-baseline/x.md", prompt: "" }],
   ]

@@ -20,6 +20,7 @@ MP=/path/to/ai-skills/minipower
 mkdir -p .cursor/rules
 ln -snf "$MP/install/cursor/rules/minipower-token-guard.mdc" .cursor/rules/
 ln -snf "$MP/install/cursor/rules/minipower-doc-editing.mdc" .cursor/rules/
+ln -snf "$MP/install/cursor/rules/minipower-profile.mdc" .cursor/rules/
 ```
 
 ## Hooks
@@ -32,6 +33,7 @@ ln -snf "$MP/install/cursor/rules/minipower-doc-editing.mdc" .cursor/rules/
 |------|------|----------|
 | Token guard | `bin/token-guard.js` | Thiếu scope, `@docs/` quá rộng, chặn baseline/_legacy |
 | Auto-routing DOC → phase | `bin/auto-routing.js` | Chèn `Phase:` / chặn conflict khi tag nhiều DOC |
+| Profile guard | `bin/profile-guard.js` | Chặn việc minipower khi thiếu `memory/profile.json` |
 | Decision-log staleness | `bin/decision-staleness.js` | Advisory (không chặn), keyword-gated |
 | Read guard (`beforeReadFile`) | `bin/token-guard-read.js` | Tuỳ chọn — chặn Read `02-baseline/`, `_legacy/` |
 

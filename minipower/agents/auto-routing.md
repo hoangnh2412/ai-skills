@@ -32,4 +32,4 @@ Markdown thuần — hành vi agent khi user `@` file DOC. **Bảng map DOC→ph
 - Hook `minipower-token-guard` — chặn `@docs/` quá rộng, thiếu scope.
 - Hook `minipower-auto-routing` — conflict phase khi tag hoặc **nhắc trần** nhiều `DOC-NN` thuộc phase khác nhau.
 
-Thứ tự `beforeSubmitPrompt`: **token-guard** → **auto-routing** → **decision-staleness** (advisory, keyword-gated). Shim tương ứng: `hooks/bin/{token-guard,auto-routing,decision-staleness}.js`.
+Thứ tự `beforeSubmitPrompt`: **token-guard** → **auto-routing** → **profile-guard** → **decision-staleness** (advisory, keyword-gated). Shim tương ứng: `hooks/bin/{token-guard,auto-routing,profile-guard,decision-staleness}.js`.

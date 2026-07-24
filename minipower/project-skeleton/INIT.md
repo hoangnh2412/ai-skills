@@ -27,6 +27,7 @@ cp -R "$MINIPOWER/docs-skeleton" "$PROJECT/docs"
 | Path | Mô tả |
 |------|--------|
 | `README.md` | Entry dự án |
+| `memory/profile.json` | *(tạo lúc init)* — SSOT cá nhân hoá |
 | `memory/memory.md` | Index gốc (meta chung) |
 | `memory/{phase}/README.md` | Memory theo discovery, requirements, … |
 | `memory/{phase}/decision-log.md` | Quyết định + phương án bị loại (schema: pack `docs/decision-log.md`) |

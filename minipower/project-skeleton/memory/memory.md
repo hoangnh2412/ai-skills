@@ -35,6 +35,7 @@
 
 ## Ghi chú agent
 
+0. Đọc **`memory/profile.json`** (nếu có) — xưng hô, vai trò, phase; chưa có → chỉ init / hoàn tất profile.
 1. Cần **nắm tổng thể dự án** → đọc [`docs/05-traceability/overview.md`](../docs/05-traceability/overview.md) trước.
 2. Đọc **file này** → mở **memory/{phase}/** tương ứng phase đang làm.
 3. Cập nhật memory **đúng chủ đề** — không append dài vào `memory.md` gốc.

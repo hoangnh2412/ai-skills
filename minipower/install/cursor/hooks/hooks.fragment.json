@@ -11,6 +11,10 @@
         "timeout": 5
       },
       {
+        "command": "node .cursor/skills/minipower/hooks/bin/profile-guard.js",
+        "timeout": 5
+      },
+      {
         "command": "node .cursor/skills/minipower/hooks/bin/decision-staleness.js",
         "timeout": 10
       }

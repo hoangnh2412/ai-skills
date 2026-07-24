@@ -1,0 +1,19 @@
+---
+description: Minipower — bắt buộc profile trước khi làm việc
+alwaysApply: true
+---
+
+# Profile — Minipower
+
+## Đầu session
+
+1. Nếu có `memory/profile.json` → đọc để biết xưng hô, vai trò, phase hiện tại.
+2. Nếu chưa có → **chỉ** làm init / hoàn tất profile (5 câu hỏi bắt buộc); chưa làm việc DOC.
+
+## Xưng hô
+
+Theo `memory/profile.json`: gọi user bằng honorific + tên; agent xưng `em`; tiếng Việt.
+
+## Hook
+
+`profile-guard` chặn prompt làm việc minipower khi thiếu profile hợp lệ. Chi tiết: [profile-guard.md](../../agents/profile-guard.md).

@@ -10,6 +10,7 @@
 import { checkAutoRouting } from "../../../hooks/lib/auto-routing.js"
 import { checkTokenGuard } from "../../../hooks/lib/token-guard.js"
 import { checkReadGuard } from "../../../hooks/lib/token-guard-read.js"
+import { checkProfileGuard } from "../../../hooks/lib/profile-guard.js"
 import { checkDecisionStaleness } from "../../../hooks/lib/decision-staleness.js"
 import {
   blockParts,
@@ -72,12 +73,15 @@ export const MinipowerPlugin = async () => {
         }
       }
 
-      const guard = checkTokenGuard(prompt)
+      const guard = checkTokenGuard(prompt, filePaths(parts))
       if (guard.action === "block") blockMessage(output, guard.message)
       if (guard.action === "warn") {
         log("warn", "minipower-token-guard", guard.message)
         pushContext(parts, `[Minipower token guard] ${guard.message}`)
       }
+
+      const profile = checkProfileGuard(prompt, filePaths(parts))
+      if (profile.action === "block") blockMessage(output, profile.message)
 
       const route = checkAutoRouting(prompt, filePaths(parts))
       if (route.action === "block") blockMessage(output, route.message)

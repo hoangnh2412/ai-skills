@@ -143,6 +143,20 @@ test("shim token-guard-read", async (t) => {
   })
 })
 
+test("shim profile-guard", async (t) => {
+  await t.test("ngoài dự án minipower → allow", () => {
+    const r = run("profile-guard.js", { prompt: "Phase: requirements — DOC-06" })
+    assert.equal(r.code, 0)
+    assert.equal(r.json.continue, true)
+  })
+
+  await t.test("stdin rỗng → allow", () => {
+    const r = run("profile-guard.js", {})
+    assert.equal(r.code, 0)
+    assert.equal(r.json.continue, true)
+  })
+})
+
 test("shim decision-staleness", async (t) => {
   await t.test("prompt không liên quan → {continue:true}, không quét", () => {
     const r = run("decision-staleness.js", { prompt: "sửa DOC-06" })
