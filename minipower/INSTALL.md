@@ -55,9 +55,22 @@ Sau khi link: trong chat gõ `/minipower` hoặc `@minipower`, kèm `Phase: disc
 
 > Skill con trong `skills/` **không** xuất hiện trong menu `/` — đó là hành vi bình thường của Cursor (chỉ nhận skill một cấp), không phải lỗi. Gọi phase con bằng `Phase:` hoặc `@skills/{phase}/SKILL.md`.
 
-### Claude Code / OpenCode
+### Claude Code
 
-Xem hướng dẫn riêng theo IDE ở bảng **Rules + hooks** bên dưới — mỗi adapter có script cài skill + rules cùng lúc.
+Claude Code nhận skill tại **`.claude/skills/{tên}/SKILL.md`**. Symlink cả pack `minipower/` vào — `SKILL.md` ở gốc pack là router.
+
+```bash
+MP=/path/to/ai-skills/minipower
+mkdir -p .claude/skills
+ln -snf "$MP" .claude/skills/minipower
+test -f .claude/skills/minipower/SKILL.md && echo "OK"
+```
+
+Sau khi link: gõ `/minipower` kèm `Phase: discovery` (hoặc requirements, architecture, …). Rules + hooks (permissions, token guard) cài riêng — xem [install/claude/README.md](install/claude/README.md).
+
+### OpenCode
+
+Xem [install/opencode/README.md](install/opencode/README.md) — adapter riêng cài instructions + plugins TS.
 
 ---
 

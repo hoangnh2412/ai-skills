@@ -1,3 +1,5 @@
+<!-- SSOT instruction cho mọi công cụ. Claude Code đọc qua CLAUDE.md (chỉ chứa @AGENTS.md); Cursor/OpenCode đọc trực tiếp file này. Sửa Ở ĐÂY — đừng sửa CLAUDE.md. -->
+
 # AI SDLC Pipeline (Minipower) — Agent
 
 Bạn là agent hỗ trợ xây dựng **bộ AI SDLC pipeline** trong repo `ai-skills` — một hệ **skill + tài liệu + hook** dẫn dắt vòng đời phát triển phần mềm, với cốt lõi: **con người làm gatekeeper ở từng chặng, AI fan-out xử lý song song theo từng module / từng giai đoạn**. Nhiệm vụ: phát triển, mở rộng và bảo trì các skill (`minipower`, `jarvis`), hook, template và roles sao cho đúng triết lý, đúng quy ước, và tuân thủ các nguyên tắc code ở phần cuối tài liệu.
@@ -23,8 +25,8 @@ Repo này **là bản thân bộ pipeline** (source of truth của skill), khôn
   - **Theo phase:** sau khi có scope (DOC-03), nhiều phase tiến song song; SA/PM không chờ SRS hoàn chỉnh.
   - **Theo chiều review:** doc-review dispatch **1 subagent / chiều** hoặc **/ module**, mỗi subagent **context sạch** (chỉ 1 slice), agent chính **dedup** finding theo `{DOC}#{section/ID}`. Đây là fan-out *đọc/QC* — **không** để agent tự sửa DOC của owner khác.
   - Điều phối giữa các mảnh song song là việc của **con người** qua **ID ổn định** (`{MOD}-FR-`, `{MOD}-AC-`, `DEC-{PHASE}-`, `ADR-`) + memory theo chủ đề — không có "agent bàn giao cho agent".
-- **Rules-as-data (SSOT):** bảng map DOC→phase, project-state, roles index, prereq-by-intent, context-chain đều **sinh tự động** từ [`rules.json`](minipower/hooks/lib/rules.json) vào vùng `<!-- BEGIN/END generated -->`. **Không sửa tay vùng generated.** Thêm DOC / intent / role / skill = sửa `rules.json` rồi chạy `npm run gen`.
-- **SKILL.md cho agent, README.md cho người:** SKILL.md = quy tắc/workflow/output bắt buộc; README.md = hướng dẫn, bảng tra, prompt mẫu. Skill mới phải **single-purpose** và **khai trigger trong `rules.json`** để auto-routing biết khi nào gọi ([ADR Q6](ADRs/2026-07-20-dinh-huong-minipower-ai-ho-tro-ra-quyet-dinh.md)).
+- **Rules-as-data (SSOT):** bảng map DOC→phase, project-state, roles index, prereq-by-intent, context-chain đều **sinh tự động** từ [`rules.json`](minipower/hooks/lib/rules.json) vào vùng `<!-- BEGIN/END generated -->`. **Không sửa tay vùng generated.** Thêm DOC / intent / role = sửa `rules.json` rồi chạy `npm run gen`.
+- **SKILL.md cho agent, README.md cho người:** SKILL.md = quy tắc/workflow/output bắt buộc; README.md = hướng dẫn, bảng tra, prompt mẫu. Skill mới phải **single-purpose** và **khai trigger để router biết khi nào gọi**: phase-skill map qua `rules.json` (`phase_by_doc`); skill cross-phase (như `deliberation`/`doc-review`/`fan-out`) khai ở **bảng trigger trong router [`minipower/SKILL.md`](minipower/SKILL.md)** ([ADR Q6](ADRs/2026-07-20-dinh-huong-minipower-ai-ho-tro-ra-quyet-dinh.md)).
 - **Chi phí tương xứng (micro / light / full):** không phải thay đổi nào cũng qua đủ gate ([phân tầng](minipower/SKILL.md#phân-tầng-công-việc-micro--light--full)). Micro (typo/format) bỏ gate; Full (skill/DOC/kiến trúc mới, đụng baseline) bật đầy đủ. Không chắc micro hay light → chọn **light**. `discovery` scope mới và `change-control` **luôn Full**; đụng `docs/02-baseline/` **luôn Full**.
 - **Co lại trước khi mở rộng:** không thêm "nền tảng thứ tư"; mọi thứ mới phải có SSOT + test/CI, không dựa vào kỷ luật con người.
 
