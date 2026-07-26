@@ -15,9 +15,10 @@
  *   agents/context-load.md          — chuỗi ngữ cảnh auto-load (N4)
  *   skills/readiness-gate/SKILL.md  — bảng tiền đề theo intent (N1)
  *   roles/README.md                 — chỉ mục vai trò (N3)
+ *   hooks/hooks.json                — hook wiring bản plugin (nguồn: settings.fragment.json)
  */
 
-import { readFileSync, writeFileSync } from "node:fs"
+import { readFileSync, writeFileSync, existsSync } from "node:fs"
 import { fileURLToPath } from "node:url"
 import {
   PHASE_ORDER,
@@ -109,6 +110,22 @@ function escape(s) {
   return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
 }
 
+// ── Plugin hooks.json (sinh từ settings.fragment.json) ──────────────────────
+// Bản plugin của hook wiring: cùng nội dung fragment, chỉ thay path tuyệt đối
+// (placeholder cài đặt) bằng ${CLAUDE_PLUGIN_ROOT}. SSOT ở fragment — sửa fragment,
+// chạy `npm run gen`, hooks.json tự cập nhật (ADR 2026-07-26 plugin §1.4).
+const FRAGMENT = rel("../install/claude/settings.fragment.json")
+const PLUGIN_HOOKS = rel("hooks.json")
+const INSTALL_PLACEHOLDER = "/ABSOLUTE/PATH/TO/ai-skills/minipower"
+
+function pluginHooksJson() {
+  const frag = JSON.parse(readFileSync(FRAGMENT, "utf8"))
+  const hooks = JSON.parse(
+    JSON.stringify(frag.hooks).split(INSTALL_PLACEHOLDER).join("${CLAUDE_PLUGIN_ROOT}"),
+  )
+  return JSON.stringify({ hooks }, null, 2) + "\n"
+}
+
 function render(target) {
   const current = readFileSync(target.file, "utf8")
   const begin = marker(target.id)
@@ -135,6 +152,24 @@ for (const target of TARGETS) {
   } else if (next !== current) {
     writeFileSync(target.file, next)
     process.stdout.write(`Đã cập nhật ${name} từ rules.json.\n`)
+  } else {
+    process.stdout.write(`${name} đã đồng bộ — không đổi.\n`)
+  }
+}
+
+// hooks.json cho plugin — cùng cơ chế drift, nhưng nguồn là settings.fragment.json.
+{
+  const next = pluginHooksJson()
+  const current = existsSync(PLUGIN_HOOKS) ? readFileSync(PLUGIN_HOOKS, "utf8") : ""
+  const name = "hooks/hooks.json"
+  if (check) {
+    if (next !== current) {
+      drift = true
+      process.stderr.write(`${name} lệch settings.fragment.json. Chạy \`npm run gen\` rồi commit.\n`)
+    }
+  } else if (next !== current) {
+    writeFileSync(PLUGIN_HOOKS, next)
+    process.stdout.write(`Đã cập nhật ${name} từ settings.fragment.json.\n`)
   } else {
     process.stdout.write(`${name} đã đồng bộ — không đổi.\n`)
   }

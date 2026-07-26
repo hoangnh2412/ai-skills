@@ -1,0 +1,6 @@
+{
+  "name": "minipower",
+  "description": "AI SDLC pipeline (BA + Solution Architect + TPM) — con người gatekeeper, AI fan-out song song theo module. Skill 6 phase + cross-phase (deliberation, doc-review, readiness-gate, fan-out); hook token-guard/auto-routing/profile-guard.",
+  "version": "0.1.0",
+  "agents": []
+}

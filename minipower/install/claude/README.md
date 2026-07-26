@@ -1,6 +1,46 @@
-# Cài Minipower — Claude Code (rules)
+# Cài Minipower — Claude Code (skill + rules + hooks)
 
 Chạy từ **root workspace project docs**. Thay `$MP` bằng path tới pack `minipower/`.
+
+## Đăng ký skill (để gõ `/minipower`)
+
+Claude Code nhận skill tại **`.claude/skills/{tên}/SKILL.md`**. Symlink cả pack `minipower/` vào — `SKILL.md` ở gốc pack chính là router.
+
+```bash
+MP=/path/to/ai-skills/minipower
+mkdir -p .claude/skills
+ln -snf "$MP" .claude/skills/minipower
+
+# Kiểm tra
+test -f .claude/skills/minipower/SKILL.md && echo "OK"
+```
+
+```powershell
+$MP = "D:\path\to\ai-skills\minipower"
+New-Item -ItemType Directory -Force -Path .claude\skills
+New-Item -ItemType SymbolicLink -Force -Path .claude\skills\minipower -Target $MP
+```
+
+> Skill con trong `skills/` **không** hiện thành `/` riêng — auto-routing tự chọn phase theo intent (ADR Q6), không phải lỗi. Gọi phase con qua `Phase:` hoặc `@skills/{phase}/SKILL.md`.
+
+## Cài bằng plugin (tùy chọn — gộp skill + hook)
+
+Thay cho symlink skill + wire hook thủ công, có thể nạp cả pack như **plugin** ([ADR 2026-07-26](../../../ADRs/2026-07-26-minipower-claude-code-plugin.md)). Gốc plugin = `minipower/`, manifest ở `.claude-plugin/plugin.json`.
+
+```bash
+# Dev/local — không cần marketplace
+claude --plugin-dir /path/to/ai-skills/minipower
+```
+
+- **Skill namespaced:** gọi `/minipower:ba-discovery`, `/minipower:doc-review`, … (không phải `/minipower` gọn như đường project-skill ở trên).
+- **Hook tự nạp** từ `hooks/hooks.json` (sinh từ `settings.fragment.json` qua `npm run gen`). **KHÔNG** chạy `install.mjs` khi đã dùng plugin — nếu không hook chạy **hai lần** (settings + plugin).
+- **`permissions.deny` KHÔNG đi trong plugin.** Nếu dùng plugin, tự thêm 2 dòng deny vào `.claude/settings.json`:
+
+  ```json
+  { "permissions": { "deny": ["Read(docs/02-baseline/**)", "Read(docs/03-modules/_legacy/**)"] } }
+  ```
+
+> Chọn **một** kênh: **project-skill + install.mjs** (mục dưới) *hoặc* **plugin** — đừng dùng cả hai, tránh trùng skill/hook.
 
 ## Symlink rules (khuyên dùng)
 
