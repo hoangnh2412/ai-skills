@@ -4,8 +4,8 @@
 |---|---|
 | **Ngày** | 2026-07-25 |
 | **Trạng thái** | ✅ Checkpoint đã lưu — **tạm dừng** triển khai tiếp trên lộ trình A→E |
-| **Phạm vi** | `minipower/` — nhánh công việc [Gated Fan-out Execution](2026-07-20-minipower-gated-fanout-execution.md) |
-| **Nối tiếp** | [ADR gated-fanout 2026-07-20](2026-07-20-minipower-gated-fanout-execution.md) · branch `feature/minipower-pm-project` |
+| **Phạm vi** | `minipower/` — nhánh công việc [Gated Fan-out Execution](paused_2026-07-20_minipower-gated-fanout-execution.md) |
+| **Nối tiếp** | [ADR gated-fanout 2026-07-20](paused_2026-07-20_minipower-gated-fanout-execution.md) · branch `feature/minipower-pm-project` |
 | **Mục đích** | Ghi lại trạng thái hiện tại trước khi chuyển sang công việc ưu tiên khác; làm mốc khi mở lại |
 
 ---
@@ -49,7 +49,7 @@ Triết lý §0 (người chốt tại cổng, AI fan-out giữa hai cổng) **v
 
 ## §2. Đã hoàn thành (giai đoạn A / B / C)
 
-Chi tiết kỹ thuật: [ADR gated-fanout §3–§3′](2026-07-20-minipower-gated-fanout-execution.md).
+Chi tiết kỹ thuật: [ADR gated-fanout §3–§3′](paused_2026-07-20_minipower-gated-fanout-execution.md).
 
 | GĐ | Deliverable chính | Trạng thái |
 |---|---|---|
@@ -61,7 +61,7 @@ Chi tiết kỹ thuật: [ADR gated-fanout §3–§3′](2026-07-20-minipower-ga
 
 **Artifact đáng kể đã có trên branch:**
 
-- ADR: [2026-07-20-minipower-gated-fanout-execution.md](2026-07-20-minipower-gated-fanout-execution.md) (cập nhật trạng thái ⏸️)
+- ADR: [paused_2026-07-20_minipower-gated-fanout-execution.md](paused_2026-07-20_minipower-gated-fanout-execution.md) (cập nhật trạng thái ⏸️)
 - Skills: `fan-out`, `readiness-gate` (mở rộng `requirements`)
 - Agents: `approval-gate`, `context-load`, `project-state`
 - Template: `DOC-19-prototype.md` + 4 TPL phụ trợ
@@ -112,7 +112,7 @@ Chi tiết kỹ thuật: [ADR gated-fanout §3–§3′](2026-07-20-minipower-ga
 
 Khi quay lại nhánh gated-fanout, làm theo thứ tự:
 
-1. **Đọc lại** ADR này + [ADR gated-fanout](2026-07-20-minipower-gated-fanout-execution.md) §4–§6.
+1. **Đọc lại** ADR này + [ADR gated-fanout](paused_2026-07-20_minipower-gated-fanout-execution.md) §4–§6.
 2. **Checkout** `feature/minipower-pm-project` (hoặc merge vào `main` nếu đã review — quyết định riêng).
 3. **Xác minh** `cd minipower/hooks && npm test && npm run gen:check` — baseline 204 pass.
 4. **Chọn nhánh tiếp theo** (một trong hai, độc lập):
@@ -137,7 +137,7 @@ Khi quay lại nhánh gated-fanout, làm theo thứ tự:
 
 | Tài liệu | Vai trò |
 |---|---|
-| [2026-07-20-minipower-gated-fanout-execution.md](2026-07-20-minipower-gated-fanout-execution.md) | Kiến trúc + lộ trình A→E (trạng thái ⏸️) |
+| [paused_2026-07-20_minipower-gated-fanout-execution.md](paused_2026-07-20_minipower-gated-fanout-execution.md) | Kiến trúc + lộ trình A→E (trạng thái ⏸️) |
 | [minipower/skills/fan-out/SKILL.md](../minipower/skills/fan-out/SKILL.md) | Cơ chế fan-out đã triển khai |
 | [minipower/agents/approval-gate.md](../minipower/agents/approval-gate.md) | Giao thức cổng người-chốt |
 | Branch `feature/minipower-pm-project` @ `7dbf584` | Snapshot code |

@@ -3,10 +3,11 @@
 | | |
 |---|---|
 | **Ngày** | 2026-07-20 |
-| **Trạng thái** | ⏸️ **Tạm dừng** (checkpoint [2026-07-25](2026-07-25-tam-dung-gated-fanout-checkpoint.md)). A + B + C **đã xong** trên branch `feature/minipower-pm-project` @ `7dbf584`. Còn lại: wireframe MCP (C), **D & E chờ SOP Lark**. Test **204 pass**, `gen:check` xanh lần cuối khi đóng A/B/C |
+| **Trạng thái** | ⏸️ **Tạm dừng** (checkpoint [2026-07-25](accepted_2026-07-25_tam-dung-gated-fanout-checkpoint.md)). A + B + C **đã xong** trên branch `feature/minipower-pm-project` @ `7dbf584`. Còn lại: wireframe MCP (C), **D & E chờ SOP Lark**. Test **204 pass**, `gen:check` xanh lần cuối khi đóng A/B/C |
 | **Phạm vi** | `minipower/` — pivot triết lý §0 + vá pipeline (approval gate, prototype, thứ tự phase) |
-| **Nối tiếp** | [ADR 2026-07-17](2026-07-17-danh-gia-minipower-va-chien-luoc-phat-trien.md) (P0–P4, R1–R6) · **supersede §0** của [ADR 2026-07-20 định hướng](2026-07-20-dinh-huong-minipower-ai-ho-tro-ra-quyet-dinh.md) |
+| **Nối tiếp** | [ADR 2026-07-17](accepted_2026-07-17_danh-gia-minipower-va-chien-luoc-phat-trien.md) (P0–P4, R1–R6) · **supersede §0** của [ADR 2026-07-20 định hướng](superseded_2026-07-20_dinh-huong-minipower-ai-ho-tro-ra-quyet-dinh.md) |
 | **Mục đích** | Chốt hướng cho tầm nhìn 8 bước (BRD→BR→Prototype→SRS→Task→Plan→Test→Code→Report); ghi lại quyết định kiến trúc và lộ trình A→E |
+| **Ảnh hưởng** | [minipower/agents/approval-gate.md](../minipower/agents/approval-gate.md) — guardrail cổng người-chốt (§0/§3-A2) · [minipower/skills/fan-out/SKILL.md](../minipower/skills/fan-out/SKILL.md) — fan-out chỉ chạy giữa hai cổng (§0). Cũng chi phối mô hình "gatekeeper + fan-out" mô tả trong [AGENTS.md](../AGENTS.md). |
 
 ---
 
@@ -170,10 +171,10 @@ Cổng người-chốt hiện là *ngầm* (readiness-gate soát tiền đề đ
 | **A** | Chốt hướng + vá pipeline (ADR, approval gate, prototype, thứ tự) | nền | thấp | ✅ xong |
 | **B** | Fan-out sinh tài liệu song song (BR, SRS) | 1, 3 | thấp — tận dụng 60% | ✅ xong |
 | **C** | Prototype (fan-out khung; HTML wireframe qua MCP ngoài) | 2 | trung — năng lực mới | ✅ khung · 🔜 HTML |
-| **D** | Epic/Story/Task hierarchy + chi phí định lượng + test case per-FR | 5, 6, ½·4 | trung | ⏸️ **tạm dừng** — chờ SOP Lark · [checkpoint 2026-07-25](2026-07-25-tam-dung-gated-fanout-checkpoint.md) |
-| **E** | Lark MCP adapter · code+unit test → update task · MCP báo cáo/nhắc | 4, 7, 8 | **cao** — lệ thuộc ngoài, làm sau cùng | ⏸️ **tạm dừng** — chờ SOP Lark · [checkpoint 2026-07-25](2026-07-25-tam-dung-gated-fanout-checkpoint.md) |
+| **D** | Epic/Story/Task hierarchy + chi phí định lượng + test case per-FR | 5, 6, ½·4 | trung | ⏸️ **tạm dừng** — chờ SOP Lark · [checkpoint 2026-07-25](accepted_2026-07-25_tam-dung-gated-fanout-checkpoint.md) |
+| **E** | Lark MCP adapter · code+unit test → update task · MCP báo cáo/nhắc | 4, 7, 8 | **cao** — lệ thuộc ngoài, làm sau cùng | ⏸️ **tạm dừng** — chờ SOP Lark · [checkpoint 2026-07-25](accepted_2026-07-25_tam-dung-gated-fanout-checkpoint.md) |
 
-> **⏸️ Toàn bộ lộ trình D & E + phần wireframe C — tạm dừng từ 2026-07-25** ([ADR checkpoint](2026-07-25-tam-dung-gated-fanout-checkpoint.md)). Lý do gốc không đổi: Epic/Story/Task, trường/trạng thái, báo cáo/nhắc tiến độ phải bám **SOP Lark thực tế** — làm trước sẽ phải đập đi. Khi mở lại: đọc checkpoint → xác minh test → có SOP thì chốt data model (D) rồi mới Lark MCP (E).
+> **⏸️ Toàn bộ lộ trình D & E + phần wireframe C — tạm dừng từ 2026-07-25** ([ADR checkpoint](accepted_2026-07-25_tam-dung-gated-fanout-checkpoint.md)). Lý do gốc không đổi: Epic/Story/Task, trường/trạng thái, báo cáo/nhắc tiến độ phải bám **SOP Lark thực tế** — làm trước sẽ phải đập đi. Khi mở lại: đọc checkpoint → xác minh test → có SOP thì chốt data model (D) rồi mới Lark MCP (E).
 
 ---
 

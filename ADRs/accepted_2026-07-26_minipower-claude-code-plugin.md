@@ -7,6 +7,7 @@
 | **Phạm vi** | `minipower/` — thêm mặt phân phối (plugin) tại chỗ; **không** dời file, **không** đổi pipeline/skill logic |
 | **Nối tiếp** | [SOP NguyenTac_ClaudeCode](../SOPs/NguyenTac_ClaudeCode.md) (Module 07) · các fix conformance 2026-07-26 (skill install, AGENTS/CLAUDE SSOT) |
 | **Mục đích** | Cho phép phân phối minipower cho team qua Claude Code plugin (`claude --plugin-dir` / marketplace), giữ nguyên kiến trúc đa công cụ |
+| **Ảnh hưởng** | [minipower/install/claude/README.md](../minipower/install/claude/README.md) — mục "Cài bằng plugin" · `minipower/.claude-plugin/plugin.json` + `hooks.json` (sinh từ SSOT) |
 
 ---
 

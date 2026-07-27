@@ -1,6 +1,6 @@
 # Approval Gate — cổng người-chốt giữa các bước
 
-Markdown thuần — guardrail cho **mô hình Gated Fan-out Execution** (ADR [2026-07-20 gated-fanout](../../ADRs/2026-07-20-minipower-gated-fanout-execution.md) §0/§3-A2). **Con người quyết tại mỗi cổng; AI fan-out song song *giữa* hai cổng.** Bảng cổng là **dữ liệu**, SSOT ở [hooks/lib/rules.json](../hooks/lib/rules.json) (`approval_gates`). Bảng dưới **sinh tự động** (`npm run gen`).
+Markdown thuần — guardrail cho **mô hình Gated Fan-out Execution**. **Con người quyết tại mỗi cổng; AI fan-out song song *giữa* hai cổng.** Bảng cổng là **dữ liệu**, SSOT ở [hooks/lib/rules.json](../hooks/lib/rules.json) (`approval_gates`). Bảng dưới **sinh tự động** (`npm run gen`).
 
 ## Bảng cổng
 

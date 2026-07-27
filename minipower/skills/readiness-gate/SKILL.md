@@ -11,11 +11,11 @@ description: >-
 
 **Pack:** minipower · **Loại:** skill cross-phase · **Không** sinh DOC — sinh *checklist tiền đề + verdict đi tiếp*.
 
-Nguyên tắc §0 (ADR 2026-07-20): **AI chỉ chuyển sang thực thi khi tài liệu đủ rõ.** Gate này canh ranh giới đó — nhưng **không chặn cứng**: "đủ" = *đủ ở mức chấp nhận được* do con người quyết, không phải đủ tuyệt đối.
+Nguyên tắc nền tảng: **AI chỉ chuyển sang thực thi khi tài liệu đủ rõ.** Gate này canh ranh giới đó — nhưng **không chặn cứng**: "đủ" = *đủ ở mức chấp nhận được* do con người quyết, không phải đủ tuyệt đối.
 
 Khác [deliberation](../deliberation/SKILL.md): deliberation soát *có nên làm/viết DOC không*; readiness-gate soát *bộ tiền đề đầu vào đã đủ để bắt đầu thực thi chưa*.
 
-> **Không phải người chọn skill.** Router (SKILL.md + auto-routing) tự kích hoạt khi intent là thực thi. Xem [§6 Q6, ADR](../../../ADRs/2026-07-20-dinh-huong-minipower-ai-ho-tro-ra-quyet-dinh.md).
+> **Không phải người chọn skill.** Router (SKILL.md + auto-routing) tự kích hoạt khi intent là thực thi.
 
 ---
 

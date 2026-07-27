@@ -4,8 +4,8 @@
 |---|---|
 | **Ngày** | 2026-07-26 |
 | **Trạng thái** | ⏸️ **Chấp nhận: HOÃN** (người chốt 2026-07-26). Giữ adapter Cursor cũ; mở lại khi đủ điều kiện tái xét §4 |
-| **Phạm vi** | `minipower/` — có nên đóng plugin Cursor song song [plugin Claude Code](2026-07-26-minipower-claude-code-plugin.md) không |
-| **Nối tiếp** | [ADR plugin Claude Code 2026-07-26](2026-07-26-minipower-claude-code-plugin.md) · adapter Cursor hiện có `minipower/install/cursor/` |
+| **Phạm vi** | `minipower/` — có nên đóng plugin Cursor song song [plugin Claude Code](accepted_2026-07-26_minipower-claude-code-plugin.md) không |
+| **Nối tiếp** | [ADR plugin Claude Code 2026-07-26](accepted_2026-07-26_minipower-claude-code-plugin.md) · adapter Cursor hiện có `minipower/install/cursor/` |
 | **Mục đích** | Ghi lại cơ chế plugin Cursor đã xác minh + ma sát, và quyết định làm/hoãn |
 
 ---

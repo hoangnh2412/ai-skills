@@ -3,9 +3,10 @@
 | | |
 |---|---|
 | **Ngày** | 2026-07-20 |
-| **Trạng thái** | ✅ N1–N6 đã triển khai (2026-07-20, branch `feature/minipower-rules-as-data`) · Q6/Q7 chốt (§6). Test 202 pass, `gen --check` xanh. Nối tiếp [ADR 2026-07-17](2026-07-17-danh-gia-minipower-va-chien-luoc-phat-trien.md) (P0–P4, R1–R6) |
+| **Trạng thái** | ✅ N1–N6 đã triển khai (2026-07-20, branch `feature/minipower-rules-as-data`) · Q6/Q7 chốt (§6). Test 202 pass, `gen --check` xanh. Nối tiếp [ADR 2026-07-17](accepted_2026-07-17_danh-gia-minipower-va-chien-luoc-phat-trien.md) (P0–P4, R1–R6) |
 | **Phạm vi** | `minipower/` — lớp Thinking / Workflow / Roles / Memory |
 | **Mục đích** | Chốt triết lý sản phẩm và liệt kê việc cần làm cho giai đoạn kế |
+| **Ảnh hưởng** | [AGENTS.md](../AGENTS.md) — mục "Triết lý bất biến" (§0) và quy ước khai trigger cho router (Q6) · [minipower/skills/readiness-gate/SKILL.md](../minipower/skills/readiness-gate/SKILL.md) — nguyên tắc "chỉ thực thi khi tài liệu đủ rõ" + auto-routing (Q6). **Lưu ý:** §0 đã bị [gated-fanout](paused_2026-07-20_minipower-gated-fanout-execution.md) supersede. |
 
 ---
 

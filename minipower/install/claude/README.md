@@ -21,11 +21,11 @@ New-Item -ItemType Directory -Force -Path .claude\skills
 New-Item -ItemType SymbolicLink -Force -Path .claude\skills\minipower -Target $MP
 ```
 
-> Skill con trong `skills/` **không** hiện thành `/` riêng — auto-routing tự chọn phase theo intent (ADR Q6), không phải lỗi. Gọi phase con qua `Phase:` hoặc `@skills/{phase}/SKILL.md`.
+> Skill con trong `skills/` **không** hiện thành `/` riêng — auto-routing tự chọn phase theo intent, không phải lỗi. Gọi phase con qua `Phase:` hoặc `@skills/{phase}/SKILL.md`.
 
 ## Cài bằng plugin (tùy chọn — gộp skill + hook)
 
-Thay cho symlink skill + wire hook thủ công, có thể nạp cả pack như **plugin** ([ADR 2026-07-26](../../../ADRs/2026-07-26-minipower-claude-code-plugin.md)). Gốc plugin = `minipower/`, manifest ở `.claude-plugin/plugin.json`.
+Thay cho symlink skill + wire hook thủ công, có thể nạp cả pack như **plugin**. Gốc plugin = `minipower/`, manifest ở `.claude-plugin/plugin.json`.
 
 ```bash
 # Dev/local — không cần marketplace
@@ -90,7 +90,7 @@ Fragment gồm:
 
 Tất cả gọi `node "…/minipower/hooks/bin/*.js"` — **một implementation dùng chung** với Cursor/OpenCode ([hooks/lib/*.js](../../hooks/)). Yêu cầu: **Node ≥ 18** + `git` (cho staleness). **Không còn cần `python3`**; bản `.sh`/`.ps1` cũ đã bỏ.
 
-> Trước đây chỉ `SessionStart` (staleness) được wire, 2 prompt-guard là file chết (ADR §3.5). Nay wire đủ; staleness chuyển sang keyword-gated trên `UserPromptSubmit` như Cursor.
+> Trước đây chỉ `SessionStart` (staleness) được wire, 2 prompt-guard là file chết. Nay wire đủ; staleness chuyển sang keyword-gated trên `UserPromptSubmit` như Cursor.
 
 Chạy staleness thủ công bất kỳ lúc nào:
 

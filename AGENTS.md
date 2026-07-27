@@ -9,7 +9,7 @@ Repo này **là bản thân bộ pipeline** (source of truth của skill), khôn
 ## Bối cảnh dự án
 
 - **Mục tiêu:** dẫn một dự án phần mềm đi từ *painpoint khách hàng* → *SRS, kiến trúc, kế hoạch, tài liệu bàn giao* qua **6 phase / 18 DOC** chuẩn nghề (IEEE 830, ISO/IEC/IEEE 29148, BABOK, PMBOK, ADR, OpenAPI), giữ mọi thứ **trace được** (UC → FR → AC → Test).
-- **Triết lý bất biến ([ADR 2026-07-20 §0](ADRs/2026-07-20-dinh-huong-minipower-ai-ho-tro-ra-quyet-dinh.md)):** `AI = trợ lý ra quyết định · Con người = người quyết định cuối cùng`. **Không** xây đội agent tự chạy / tự bàn giao. AI chỉ chuyển sang *thực thi* (sinh code, sinh artifact cuối) **khi tài liệu tiền đề đã đủ rõ**; trước đó chỉ discovery, đặt câu hỏi, phản biện, phân tích trade-off, gợi ý — **không nhảy giải pháp sớm**.
+- **Triết lý bất biến:** `AI = trợ lý ra quyết định · Con người = người quyết định cuối cùng`. **Không** xây đội agent tự chạy / tự bàn giao. AI chỉ chuyển sang *thực thi* (sinh code, sinh artifact cuối) **khi tài liệu tiền đề đã đủ rõ**; trước đó chỉ discovery, đặt câu hỏi, phản biện, phân tích trade-off, gợi ý — **không nhảy giải pháp sớm**.
 - **Định vị:** *AI Project Intelligence* — Model là engine (thay được), Knowledge + Memory là tài sản (model-agnostic). **Không** phải Prompt Library, **không** marketing "research-backed".
 - **Stack:** tài liệu Markdown thuần cho agent; logic hook là **Node ESM plain (`minipower/hooks/`), không build step, không dependency**, yêu cầu **Node ≥ 18**. Nguồn chân lý của mọi bảng sinh-tự-động là **[`rules.json`](minipower/hooks/lib/rules.json)** ("rules-as-data").
 
@@ -26,7 +26,7 @@ Repo này **là bản thân bộ pipeline** (source of truth của skill), khôn
   - **Theo chiều review:** doc-review dispatch **1 subagent / chiều** hoặc **/ module**, mỗi subagent **context sạch** (chỉ 1 slice), agent chính **dedup** finding theo `{DOC}#{section/ID}`. Đây là fan-out *đọc/QC* — **không** để agent tự sửa DOC của owner khác.
   - Điều phối giữa các mảnh song song là việc của **con người** qua **ID ổn định** (`{MOD}-FR-`, `{MOD}-AC-`, `DEC-{PHASE}-`, `ADR-`) + memory theo chủ đề — không có "agent bàn giao cho agent".
 - **Rules-as-data (SSOT):** bảng map DOC→phase, project-state, roles index, prereq-by-intent, context-chain đều **sinh tự động** từ [`rules.json`](minipower/hooks/lib/rules.json) vào vùng `<!-- BEGIN/END generated -->`. **Không sửa tay vùng generated.** Thêm DOC / intent / role = sửa `rules.json` rồi chạy `npm run gen`.
-- **SKILL.md cho agent, README.md cho người:** SKILL.md = quy tắc/workflow/output bắt buộc; README.md = hướng dẫn, bảng tra, prompt mẫu. Skill mới phải **single-purpose** và **khai trigger để router biết khi nào gọi**: phase-skill map qua `rules.json` (`phase_by_doc`); skill cross-phase (như `deliberation`/`doc-review`/`fan-out`) khai ở **bảng trigger trong router [`minipower/SKILL.md`](minipower/SKILL.md)** ([ADR Q6](ADRs/2026-07-20-dinh-huong-minipower-ai-ho-tro-ra-quyet-dinh.md)).
+- **SKILL.md cho agent, README.md cho người:** SKILL.md = quy tắc/workflow/output bắt buộc; README.md = hướng dẫn, bảng tra, prompt mẫu. Skill mới phải **single-purpose** và **khai trigger để router biết khi nào gọi**: phase-skill map qua `rules.json` (`phase_by_doc`); skill cross-phase (như `deliberation`/`doc-review`/`fan-out`) khai ở **bảng trigger trong router [`minipower/SKILL.md`](minipower/SKILL.md)**.
 - **Chi phí tương xứng (micro / light / full):** không phải thay đổi nào cũng qua đủ gate ([phân tầng](minipower/SKILL.md#phân-tầng-công-việc-micro--light--full)). Micro (typo/format) bỏ gate; Full (skill/DOC/kiến trúc mới, đụng baseline) bật đầy đủ. Không chắc micro hay light → chọn **light**. `discovery` scope mới và `change-control` **luôn Full**; đụng `docs/02-baseline/` **luôn Full**.
 - **Co lại trước khi mở rộng:** không thêm "nền tảng thứ tư"; mọi thứ mới phải có SSOT + test/CI, không dựa vào kỷ luật con người.
 
@@ -34,7 +34,7 @@ Repo này **là bản thân bộ pipeline** (source of truth của skill), khôn
 - **Pack:** `minipower/` (lõi pipeline BA+SA+TPM) · `jarvis/` (skill implementation .NET) · `SOPs/` (quy chuẩn dùng chung + `interview/`) · `ADRs/` (quyết định định hướng) · `COORDINATION.md` (hợp đồng liên-pack/liên-repo).
 - **Trong `minipower/`:** `skills/{phase}/SKILL.md` (6 phase + `deliberation`/`doc-review`/`readiness-gate`) · `agents/*.md` (guardrail markdown thuần) · `hooks/{bin,lib,test}/` (Node ESM) · `roles/*.md` (7 lăng kính) · `templates/` (DOC-01–18 + TPL phụ trợ) · `project-skeleton/` + `docs-skeleton/` (khung dự án đích) · `install/{cursor,claude,opencode}/`.
 - **ID artifact dự án đích:** `{MOD}-{UC|FR|BR|AC|NFR}-NNN`, `DEC-{PHASE}-NNN`, `ADR-NNN`, `DOC-NN`. Cross-ref bằng ID, **không** copy nội dung FR giữa module.
-- **ADR:** đặt tại `ADRs/`, tên `yyyy-MM-dd-{slug}.md`. Đổi triết lý/phạm vi → ghi/đối chiếu ADR **trước**.
+- **ADR:** đặt tại `ADRs/`, tên `{status}_{yyyy-MM-dd}_{slug}.md` — status ∈ `proposed`/`accepted`/`superseded`/`paused`/`deferred`/`merged`. Mỗi ADR tự khai mục **Ảnh hưởng** (quyết định chi phối nội dung/file nào); file cụ thể **không** trỏ ngược về ADR. Đổi triết lý/phạm vi → ghi/đối chiếu ADR **trước**.
 
 ### Build / Test / Run
 Chạy trong `minipower/hooks/`:
@@ -53,7 +53,7 @@ Chạy trong `minipower/hooks/`:
 - `README.md` — bản đồ toàn repo; `minipower/README.md`, `jarvis/README.md` — hub từng pack.
 - `minipower/SKILL.md` — router kỹ thuật (routing intent→phase, init dự án, phân tầng chi phí).
 - `minipower/docs/` — `pipeline.md` (luồng artifact), `parallel-work.md` (fan-out song song), `token-guard.md`, `decision-log.md`.
-- `ADRs/` — `2026-07-20-...` (triết lý §0, N1–N6) và `2026-07-17-...` (chiến lược, P0–P4). Đọc **trước** khi đổi định hướng.
+- `ADRs/` — quyết định định hướng; mỗi file tự khai mục **Ảnh hưởng** (chi phối nội dung/file nào). Đọc **trước** khi đổi định hướng.
 - `COORDINATION.md` — trace spine, handoff H1–H6, pack manifest cho phối hợp liên-repo.
 - `minipower/hooks/lib/rules.json` — SSOT; generator: `minipower/hooks/gen-agents-doc.js`.
 

@@ -11,7 +11,7 @@ description: >-
 
 **Pack:** minipower · **Loại:** skill cross-phase (điều phối, **không** thay phase con) · **Không** tự sáng tác nội dung — **điều phối** phase skill + template sinh cho từng module.
 
-Đây là cơ chế cốt lõi của **Gated Fan-out Execution** (ADR [gated-fanout](../../../ADRs/2026-07-20-minipower-gated-fanout-execution.md) §0). Ranh giới bất biến: **fan-out chỉ chạy GIỮA hai cổng người-chốt.** Trước cổng chưa chốt → không fan-out; xem [approval-gate](../../agents/approval-gate.md).
+Đây là cơ chế cốt lõi của **Gated Fan-out Execution**. Ranh giới bất biến: **fan-out chỉ chạy GIỮA hai cổng người-chốt.** Trước cổng chưa chốt → không fan-out; xem [approval-gate](../../agents/approval-gate.md).
 
 > **Không phải người chọn skill** (Q6). Router ([SKILL.md](../../SKILL.md)) tự gọi khi intent là "sinh {BR/Prototype/SRS} cho các module".
 
@@ -59,7 +59,7 @@ flowchart TB
 ## Đặc thù Prototype (C) — HTML wireframe HOÃN
 
 - Fan-out DOC-19 hiện chỉ sinh **khung**: danh sách màn hình, luồng điều hướng (mermaid), trace về BR/UC — **chừa chỗ** nhúng wireframe ở mục 3 của template.
-- **Bản vẽ HTML wireframe do MCP ngoài** đảm nhận (ADR §6 Q2 — tích hợp sau). Chưa có MCP → ghi `TBD: wireframe (chờ MCP)` vào `memory/requirements/open-questions.md`, đi tiếp bằng mô tả text/mermaid (hoãn có ghi nợ — khớp readiness-gate).
+- **Bản vẽ HTML wireframe do MCP ngoài** đảm nhận (tích hợp sau). Chưa có MCP → ghi `TBD: wireframe (chờ MCP)` vào `memory/requirements/open-questions.md`, đi tiếp bằng mô tả text/mermaid (hoãn có ghi nợ — khớp readiness-gate).
 
 ## Ranh giới (KHÔNG làm)
 
