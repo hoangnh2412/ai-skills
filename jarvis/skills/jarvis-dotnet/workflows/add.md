@@ -63,6 +63,6 @@ Mỗi module có `workflows/init.md` / `workflows/add.md` và `providers/` riên
 
 ## Anti-patterns
 
-- Reference `Jarvis.Mvc` mà không có `Jarvis.Domain.Shared` (Mvc phụ thuộc shared)
+- Reference `Jarvis.Mvc` mà không có `Jarvis.DDD.Domain.Shared` (Mvc phụ thuộc shared)
 - `AddCoreDbContext` mà chưa `AddEntityFramework()` / chưa đăng ký `ITenantConnectionStringResolver`
 - Copy toàn bộ Sample.csproj cho microservice chỉ cần API + DB

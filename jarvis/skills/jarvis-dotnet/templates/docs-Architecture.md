@@ -14,7 +14,7 @@
 
 | Layer | Package / API | Skill mở rộng (repo Jarvis `.opencode/skills/`) |
 |-------|----------------|--------------------------------------------------|
-| Application | `Jarvis.Application` — CQRS | `application-dotnet` |
+| Application | `Jarvis.DDD.Application` — CQRS | `application-dotnet` |
 | Infrastructure | `Jarvis.Caching` → `Jarvis.EntityFramework` | `caching-dotnet`, `entityframework-dotnet` |
 | Host | Mvc, Swashbuckle, HealthChecks, OpenTelemetry | `foundation-dotnet`, `swashbuckle-dotnet`, `healthcheck-dotnet`, `telemetry-dotnet` |
 

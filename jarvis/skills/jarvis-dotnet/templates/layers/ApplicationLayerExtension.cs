@@ -1,6 +1,6 @@
 // Scaffold Application — handlers: application-dotnet/workflows/add.md
 
-using Jarvis.Application;
+using Jarvis.DDD.Application;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 

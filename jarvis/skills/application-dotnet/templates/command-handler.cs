@@ -1,4 +1,4 @@
-// Ví dụ — điều chỉnh theo contract Jarvis.Application của repo
+// Ví dụ — điều chỉnh theo contract Jarvis.DDD.Application của repo
 
 namespace {Product}.Application.Orders;
 

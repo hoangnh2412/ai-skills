@@ -6,7 +6,7 @@ using {Product}.Domain.DependencyInjection;
 using {Product}.Domain.Repositories;
 using {Product}.Infrastructure.Persistence;
 using Jarvis.Caching.Extensions;
-using Jarvis.Domain.DataStorages;
+using Jarvis.DDD.Domain.DataStorages;
 using Jarvis.EntityFramework;
 using Jarvis.EntityFramework.DataStorages;
 using Microsoft.EntityFrameworkCore;

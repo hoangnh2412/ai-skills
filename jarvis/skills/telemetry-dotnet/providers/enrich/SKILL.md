@@ -22,7 +22,7 @@ app.UseJarvisOpenTelemetry();
 ```
 
 ```csharp
-// Implement (hoặc kế thừa EnrichDataService từ Jarvis.Domain):
+// Implement (hoặc kế thừa EnrichDataService từ Jarvis.DDD.Domain):
 public sealed class EnrichTraceService(IHttpContextAccessor accessor) : IEnrichTraceService
 {
     public Task<Dictionary<string, string>> ExtractAsync() => Task.FromResult(new Dictionary<string, string>());

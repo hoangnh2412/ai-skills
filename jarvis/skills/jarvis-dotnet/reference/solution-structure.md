@@ -38,13 +38,15 @@ Khung scaffold cho repo mới. Ranh giới Clean Architecture / DDD chi tiết: 
 
 ## Jarvis package → layer
 
+Cross-cutting packages (Mvc, EF, Caching, Auth, Blob, Notification, OTEL, HealthChecks, Swashbuckle, Common) nằm trong `{JarvisRoot}/frameworks/`. Domain / Application (DDD) cũng nằm trong `{JarvisRoot}/frameworks/`.
+
 | Layer product | Jarvis packages (NuGet / ProjectReference) |
 |---|---|
-| Domain.Shared | `Jarvis.Domain.Shared` (tùy chọn — error/response base) |
+| Domain.Shared | `Jarvis.DDD.Domain.Shared` (tùy chọn — error/response base) |
 | Domain | *(không bắt buộc Jarvis — giữ domain thuần)* |
-| Application | `Jarvis.Application`, `Jarvis.Application.Contracts` |
-| Infrastructure | `Jarvis.EntityFramework`, `Jarvis.Caching` (bắt buộc trước EF), `Jarvis.Caching.Redis`, `Jarvis.BlobStoring.*`, `Jarvis.Notification.*` |
-| Host | `Jarvis.Mvc`, `Jarvis.Swashbuckle`, `Jarvis.HealthChecks`, `Jarvis.OpenTelemetry`, `Jarvis.Domain`, `Jarvis.Authentications.*` |
+| Application | `Jarvis.DDD.Application`, `Jarvis.DDD.Application.Contracts` |
+| Infrastructure | `Jarvis.EntityFramework`, `Jarvis.Caching` (bắt buộc trước EF), `Jarvis.Caching.Redis`, `Jarvis.BlobStoring.*`, `Jarvis.Notification.*` → `{JarvisRoot}/frameworks/...` |
+| Host | `Jarvis.Mvc`, `Jarvis.Swashbuckle`, `Jarvis.HealthChecks`, `Jarvis.OpenTelemetry`, `Jarvis.Authentications.*` → `{JarvisRoot}/frameworks/...`; `Jarvis.DDD.Domain` → `{JarvisRoot}/frameworks/` |
 
 ## DI convention
 

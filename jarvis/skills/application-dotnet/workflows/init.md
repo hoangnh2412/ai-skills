@@ -1,12 +1,12 @@
-# Workflow: Khởi tạo Jarvis.Application
+# Workflow: Khởi tạo Jarvis.DDD.Application
 
 Áp dụng khi project **Application** chưa có `AddCoreApplication()`.
 
 ## Checklist
 
 ```text
-- [ ] 1. Package Jarvis.Application.Contracts + Jarvis.Application
-- [ ] 2. Reference Jarvis.Domain
+- [ ] 1. Package Jarvis.DDD.Application.Contracts + Jarvis.DDD.Application
+- [ ] 2. Reference Jarvis.DDD.Domain
 - [ ] 3. ApplicationLayerExtension — AddCoreApplication()
 - [ ] 4. Host gọi AddApplicationLayer() (hoặc tương đương)
 - [ ] 5. Đăng ký ít nhất một ICommandHandler / IQueryHandler
@@ -16,8 +16,8 @@
 ## Bước 1 — Packages (Application csproj)
 
 ```xml
-<PackageReference Include="Jarvis.Application.Contracts" Version="1.2.1" />
-<PackageReference Include="Jarvis.Application" Version="1.2.1" />
+<PackageReference Include="Jarvis.DDD.Application.Contracts" Version="1.2.1" />
+<PackageReference Include="Jarvis.DDD.Application" Version="1.2.1" />
 ```
 
 ## Bước 2 — Extension

@@ -1,4 +1,4 @@
-using Jarvis.Application;
+using Jarvis.DDD.Application;
 
 namespace {Product}.Application;
 

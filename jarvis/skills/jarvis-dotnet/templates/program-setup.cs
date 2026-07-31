@@ -2,7 +2,7 @@
 // Solution phân lớp: dùng templates/layers/Program.cs + HostLayerExtension thay file này.
 // Replace {App} with your application namespace.
 
-using Jarvis.Domain;
+using Jarvis.DDD.Domain;
 using Jarvis.EntityFramework;
 using Jarvis.HealthChecks;
 using Jarvis.Mvc;

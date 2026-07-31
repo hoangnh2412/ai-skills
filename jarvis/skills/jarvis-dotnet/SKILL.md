@@ -29,7 +29,7 @@ Folder trống → skill jarvis-dotnet → solution phân lớp + Jarvis → F5
 ├── src/{Product}.sln
 │   ├── {Product}.Domain.Shared
 │   ├── {Product}.Domain
-│   ├── {Product}.Application      → Jarvis.Application
+│   ├── {Product}.Application      → Jarvis.DDD.Application
 │   ├── {Product}.Infrastructure   → Jarvis.EntityFramework
 │   └── {Product}.Host             → Jarvis.Mvc, OTEL, HealthChecks, Swagger
 └── tests/
@@ -53,7 +53,7 @@ Chi tiết folder, DI convention, Jarvis mapping: [reference/solution-structure.
 
 | Cách | Khi nào |
 |---|---|
-| **ProjectReference** | Monorepo cạnh repo Jarvis (`{JarvisRoot}`) |
+| **ProjectReference** | Monorepo cạnh repo Jarvis (`{JarvisRoot}`) — packages cross-cutting trong `{JarvisRoot}/frameworks/` |
 | **NuGet** | Repo độc lập, feed nội bộ |
 
 **PackageId:** `Jarvis.Authentication.*` folder → NuGet `Jarvis.Authentications.*`.
@@ -64,10 +64,10 @@ Phiên bản tham chiếu từ repo Jarvis (`develop`):
 
 | Module | PackageId | Version | Layer |
 |---|---|---|---|
-| Domain shared | `Jarvis.Domain.Shared` | 1.0.0 | Domain.Shared |
-| Domain | `Jarvis.Domain` | 1.1.1 | Host (enricher) |
-| Application | `Jarvis.Application` | 1.2.1 | Application |
-| Application contracts | `Jarvis.Application.Contracts` | 1.2.1 | Application |
+| Domain shared | `Jarvis.DDD.Domain.Shared` | 1.0.0 | Domain.Shared |
+| Domain | `Jarvis.DDD.Domain` | 1.1.1 | Host (enricher) |
+| Application | `Jarvis.DDD.Application` | 1.2.1 | Application |
+| Application contracts | `Jarvis.DDD.Application.Contracts` | 1.2.1 | Application |
 | Entity Framework | `Jarvis.EntityFramework` | 1.0.0 | Infrastructure |
 | Caching | `Jarvis.Caching` | 1.1.0 | Infrastructure (**bắt buộc trước EF**) |
 | Caching Redis | `Jarvis.Caching.Redis` | 1.1.0 | Infrastructure (tùy chọn) |

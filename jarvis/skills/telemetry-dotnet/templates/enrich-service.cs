@@ -1,5 +1,5 @@
 // EnrichTraceService.cs / EnrichLogService.cs — mẫu enrich từ HttpContext
-// Jarvis.Domain có EnrichDataService base; hoặc implement trực tiếp IEnrich*.
+// Jarvis.DDD.Domain có EnrichDataService base; hoặc implement trực tiếp IEnrich*.
 
 using Jarvis.OpenTelemetry.Abstractions;
 using Jarvis.OpenTelemetry.SemanticConventions;

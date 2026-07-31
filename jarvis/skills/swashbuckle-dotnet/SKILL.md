@@ -31,7 +31,7 @@ Skill điều phối `Jarvis.Swashbuckle` trên ASP.NET Core. Hướng dẫn: [R
 |---|---|
 | `Jarvis.Swashbuckle` | 1.0.1 |
 
-Phụ thuộc `Jarvis.Domain.Shared`, Swashbuckle, Asp.Versioning (host).
+Phụ thuộc `Jarvis.DDD.Domain.Shared`, Swashbuckle, Asp.Versioning (host).
 
 ## Providers (atomic)
 

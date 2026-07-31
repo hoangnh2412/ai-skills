@@ -1,14 +1,14 @@
 ---
 name: application-dotnet
-description: Thiết lập Jarvis.Application — CQRS dispatcher ICommand/IQuery, handler DI. Dùng khi project Application layer dùng pattern command/query với Jarvis.
+description: Thiết lập Jarvis.DDD.Application — CQRS dispatcher ICommand/IQuery, handler DI. Dùng khi project Application layer dùng pattern command/query với Jarvis.
 metadata:
   audience: hoangnh
   workflow: github
 ---
 
-# Jarvis.Application — Orchestrator
+# Jarvis.DDD.Application — Orchestrator
 
-Skill điều phối `Jarvis.Application` + `Jarvis.Application.Contracts` trên layer Application.
+Skill điều phối `Jarvis.DDD.Application` + `Jarvis.DDD.Application.Contracts` trên layer Application.
 
 Hướng dẫn: [README.md](README.md).
 
@@ -23,15 +23,15 @@ Hướng dẫn: [README.md](README.md).
 
 - `AddCoreApplication()` gọi `AddCommandQuery()` — đăng ký `ICommandDispatcher`, `IQueryDispatcher` (+ async).
 - Handler implement `ICommandHandler<>`, `IQueryHandler<>`, … — **app** đăng ký `AddScoped` từng handler.
-- Phụ thuộc `Jarvis.Domain` — Application layer reference Domain, không reference Host trực tiếp.
+- Phụ thuộc `Jarvis.DDD.Domain` — Application layer reference Domain, không reference Host trực tiếp.
 - Controller gọi dispatcher, không inject DbContext trực tiếp (theo convention Jarvis).
 
 ## Packages
 
 | PackageId | Layer |
 |---|---|
-| `Jarvis.Application.Contracts` | Application |
-| `Jarvis.Application` | Application |
+| `Jarvis.DDD.Application.Contracts` | Application |
+| `Jarvis.DDD.Application` | Application |
 
 ## Templates
 

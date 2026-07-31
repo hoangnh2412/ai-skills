@@ -1,5 +1,5 @@
 // Host — Jarvis foundation (minimal)
-using Jarvis.Domain;
+using Jarvis.DDD.Domain;
 using Jarvis.Mvc;
 using Jarvis.Mvc.ApplicationBuilders;
 using Jarvis.Mvc.ExceptionHandling;

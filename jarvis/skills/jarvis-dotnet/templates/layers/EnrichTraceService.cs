@@ -1,4 +1,4 @@
-using Jarvis.Domain.Services;
+using Jarvis.DDD.Domain.Services;
 using Jarvis.OpenTelemetry.Abstractions;
 using Microsoft.AspNetCore.Http;
 

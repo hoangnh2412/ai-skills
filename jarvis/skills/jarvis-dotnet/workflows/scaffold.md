@@ -6,7 +6,7 @@
 
 - `{Product}` — PascalCase (vd. `Acme`)
 - `{product}` — kebab/lowercase (vd. `acme`)
-- `{JarvisRoot}` — đường dẫn tới repo Jarvis framework (monorepo) **hoặc** dùng NuGet feed
+- `{JarvisRoot}` — đường dẫn tới repo Jarvis framework (monorepo) **hoặc** dùng NuGet feed. Cross-cutting packages nằm trong `{JarvisRoot}/frameworks/` (Mvc, EF, Caching, Auth, …); Domain/Application ở root `{JarvisRoot}`.
 
 ## Checklist agent
 
@@ -78,7 +78,7 @@ dotnet add "../tests/${PRODUCT}.Application.Tests" reference "${PRODUCT}.Applica
 
 **Application** — [templates/layer-csproj/Application.csproj.xml](../templates/layer-csproj/Application.csproj.xml).
 
-**Domain.Shared** (tùy chọn) — `Jarvis.Domain.Shared`.
+**Domain.Shared** (tùy chọn) — `Jarvis.DDD.Domain.Shared`.
 
 Thêm package host bên thứ ba:
 

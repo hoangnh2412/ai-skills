@@ -88,7 +88,7 @@ Sau khi xong: dotnet build và báo URL Swagger.
 
 Cài Jarvis vào solution MyApp:
 - Host: Jarvis.Mvc, Swashbuckle, HealthChecks, OpenTelemetry
-- Application: Jarvis.Application
+- Application: Jarvis.DDD.Application
 - Infrastructure: Jarvis.EntityFramework + Jarvis.Caching
 ```
 
@@ -174,10 +174,10 @@ Chỉ mở skill cần dùng — [workflows/add.md](./workflows/add.md):
 
 | PackageId | Version | Layer |
 |-----------|---------|-------|
-| `Jarvis.Domain.Shared` | 1.0.0 | Domain.Shared |
-| `Jarvis.Domain` | 1.1.1 | Host |
-| `Jarvis.Application` | 1.2.1 | Application |
-| `Jarvis.Application.Contracts` | 1.2.1 | Application |
+| `Jarvis.DDD.Domain.Shared` | 1.0.0 | Domain.Shared |
+| `Jarvis.DDD.Domain` | 1.1.1 | Host |
+| `Jarvis.DDD.Application` | 1.2.1 | Application |
+| `Jarvis.DDD.Application.Contracts` | 1.2.1 | Application |
 | `Jarvis.EntityFramework` | 1.0.0 | Infrastructure |
 | `Jarvis.Caching` | 1.1.0 | Infrastructure |
 | `Jarvis.Caching.Redis` | 1.1.0 | Infrastructure (tùy chọn) |
@@ -217,5 +217,5 @@ Chỉ mở skill cần dùng — [workflows/add.md](./workflows/add.md):
 
 - Skill ưu tiên **scaffold chạy được ngay** (Swagger, ping, liveness) — DB readiness có thể bật sau
 - **Không** thêm package không dùng — giảm dependency surface
-- Monorepo: thay `PackageReference` bằng `ProjectReference` tới `{JarvisRoot}` — xem [templates/layer-csproj/](./templates/layer-csproj/)
+- Monorepo: thay `PackageReference` bằng `ProjectReference` tới `{JarvisRoot}/frameworks/...` (Mvc, Domain, DDD.Application, …) — xem [templates/layer-csproj/](./templates/layer-csproj/) và [templates/csproj-references.xml](./templates/csproj-references.xml)
 - Phiên bản package lấy từ csproj repo Jarvis branch `develop`; cập nhật khi release mới

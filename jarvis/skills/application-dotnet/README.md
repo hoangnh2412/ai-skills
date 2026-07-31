@@ -1,6 +1,6 @@
 # application-dotnet
 
-Skill tích hợp **Jarvis.Application** — CQRS dispatcher (`ICommand` / `IQuery`).
+Skill tích hợp **Jarvis.DDD.Application** — CQRS dispatcher (`ICommand` / `IQuery`).
 
 Agent đọc [SKILL.md](./SKILL.md).
 
@@ -16,7 +16,7 @@ Agent đọc [SKILL.md](./SKILL.md).
 ```text
 @.opencode/skills/application-dotnet/workflows/init.md
 
-Init Jarvis.Application cho MyApp.Application — AddCoreApplication + mẫu handler.
+Init Jarvis.DDD.Application cho MyApp.Application — AddCoreApplication + mẫu handler.
 ```
 
 ## Extension

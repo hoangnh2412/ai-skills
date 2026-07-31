@@ -4,12 +4,13 @@
   <FrameworkReference Include="Microsoft.AspNetCore.App" />
 </ItemGroup>
 <ItemGroup>
-  <PackageReference Include="Jarvis.Application" Version="1.2.1" />
-  <PackageReference Include="Jarvis.Application.Contracts" Version="1.2.1" />
+  <PackageReference Include="Jarvis.DDD.Application" Version="1.2.1" />
+  <PackageReference Include="Jarvis.DDD.Application.Contracts" Version="1.2.1" />
 </ItemGroup>
-<!-- Monorepo Jarvis: -->
+<!-- Monorepo Jarvis — packages trong frameworks/: -->
 <!--
 <ItemGroup>
-  <ProjectReference Include="{JarvisRoot}/Jarvis.Application/Jarvis.Application.csproj" />
+  <ProjectReference Include="{JarvisRoot}/frameworks/Jarvis.DDD.Application/Jarvis.DDD.Application.csproj" />
+  <ProjectReference Include="{JarvisRoot}/frameworks/Jarvis.DDD.Application.Contracts/Jarvis.DDD.Application.Contracts.csproj" />
 </ItemGroup>
 -->

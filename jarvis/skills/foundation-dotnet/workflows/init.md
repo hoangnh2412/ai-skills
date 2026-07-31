@@ -5,7 +5,7 @@
 ## Checklist
 
 ```text
-- [ ] 1. Package Jarvis.Domain.Shared, Jarvis.Domain, Jarvis.Mvc trên Host
+- [ ] 1. Package Jarvis.DDD.Domain.Shared, Jarvis.DDD.Domain, Jarvis.Mvc trên Host
 - [ ] 2. AddCoreJson → AddCoreCors → AddCoreDomain → AddCoreWebApi
 - [ ] 3. appsettings Json, Cors, Middlewares
 - [ ] 4. UseCoreCors → UseCoreMiddleware<ApiResponseWrapperMiddleware> → MapControllers
@@ -15,8 +15,8 @@
 ## Bước 1 — Packages
 
 ```xml
-<PackageReference Include="Jarvis.Domain.Shared" Version="1.0.0" />
-<PackageReference Include="Jarvis.Domain" Version="1.1.1" />
+<PackageReference Include="Jarvis.DDD.Domain.Shared" Version="1.0.0" />
+<PackageReference Include="Jarvis.DDD.Domain" Version="1.1.1" />
 <PackageReference Include="Jarvis.Mvc" Version="1.1.0" />
 ```
 

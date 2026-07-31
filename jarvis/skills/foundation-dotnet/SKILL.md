@@ -8,7 +8,7 @@ metadata:
 
 # Jarvis Foundation — Orchestrator
 
-Skill điều phối lớp nền: `Jarvis.Domain.Shared`, `Jarvis.Domain`, `Jarvis.Mvc` trên ASP.NET Core.
+Skill điều phối lớp nền: `Jarvis.DDD.Domain.Shared`, `Jarvis.DDD.Domain`, `Jarvis.Mvc` trên ASP.NET Core.
 
 Hướng dẫn người dùng: [README.md](README.md).
 
@@ -21,7 +21,7 @@ Hướng dẫn người dùng: [README.md](README.md).
 
 ## Quy tắc cốt lõi
 
-- `Jarvis.Mvc` kéo transitive `Jarvis.Common`, `Jarvis.Domain.Shared`, `Jarvis.OpenTelemetry` — cân nhắc khi chỉ cần domain thuần.
+- `Jarvis.Mvc` kéo transitive `Jarvis.Common`, `Jarvis.DDD.Domain.Shared`, `Jarvis.OpenTelemetry` — cân nhắc khi chỉ cần domain thuần.
 - Thứ tự đăng ký: `AddCoreJson` → `AddCoreCors` → `AddCoreDomain` → `AddCoreWebApi`.
 - Pipeline: `UseCoreCors` → `UseCoreMiddleware<ApiResponseWrapperMiddleware>` → `MapControllers`.
 - Section `Middlewares:ApiResponseWrapper` — `Includes` regex path (vd. `^/api`).
@@ -31,8 +31,8 @@ Hướng dẫn người dùng: [README.md](README.md).
 
 | PackageId | Layer |
 |---|---|
-| `Jarvis.Domain.Shared` | Domain.Shared |
-| `Jarvis.Domain` | Host (enricher, WorkContext) |
+| `Jarvis.DDD.Domain.Shared` | Domain.Shared |
+| `Jarvis.DDD.Domain` | Host (enricher, WorkContext) |
 | `Jarvis.Mvc` | Host |
 
 ## Templates

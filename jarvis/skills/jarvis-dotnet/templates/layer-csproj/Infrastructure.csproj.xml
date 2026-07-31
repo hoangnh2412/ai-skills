@@ -12,9 +12,10 @@
   <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.*" />
   <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.*" />
 </ItemGroup>
-<!-- Monorepo Jarvis: -->
+<!-- Monorepo Jarvis — framework packages trong frameworks/: -->
 <!--
 <ItemGroup>
-  <ProjectReference Include="{JarvisRoot}/Jarvis.EntityFramework/Jarvis.EntityFramework.csproj" />
+  <ProjectReference Include="{JarvisRoot}/frameworks/Jarvis.EntityFramework/Jarvis.EntityFramework.csproj" />
+  <ProjectReference Include="{JarvisRoot}/frameworks/Jarvis.Caching/Jarvis.Caching.csproj" />
 </ItemGroup>
 -->

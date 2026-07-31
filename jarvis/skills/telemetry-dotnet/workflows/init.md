@@ -25,7 +25,7 @@
 ## Bước 2 — Packages
 
 ```xml
-<ProjectReference Include="..\Jarvis.OpenTelemetry\Jarvis.OpenTelemetry.csproj" />
+<ProjectReference Include="..\frameworks\Jarvis.OpenTelemetry\Jarvis.OpenTelemetry.csproj" />
 ```
 
 Tùy chọn (xem `providers/*/SKILL.md`):
