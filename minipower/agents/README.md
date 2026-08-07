@@ -9,6 +9,7 @@ Markdown thuần — **source of truth** cho Cursor, Claude Code và agent khác
 | [auto-routing.md](auto-routing.md) | Khi `@` file DOC — map phase, xử lý conflict (agent + hook) |
 | [project-state.md](project-state.md) | Suy giai đoạn dự án → phase → vai trò (lăng kính hỗ trợ) |
 | [context-load.md](context-load.md) | Khi tiền đề đủ — nạp chuỗi ngữ cảnh trước khi đề xuất |
+| [lark-work-assistant.md](lark-work-assistant.md) | Trợ lý công việc qua **Lark MCP** — đọc/tổng hợp/soạn nháp; ghi Lark qua cổng người (L3) |
 
 ## Cài trên workspace project docs
 

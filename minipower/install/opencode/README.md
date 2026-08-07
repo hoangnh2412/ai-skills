@@ -18,6 +18,7 @@ OpenCode dùng:
 MP=/path/to/ai-skills/minipower
 mkdir -p .opencode/rules
 ln -snf "$MP/agents/token-guard.md" .opencode/rules/minipower-token-guard.md
+ln -snf "$MP/install/opencode/rules/minipower-profile.md" .opencode/rules/minipower-profile.md
 ln -snf "$MP/install/opencode/rules/minipower-doc-editing.md" .opencode/rules/minipower-doc-editing.md
 ```
 
@@ -27,6 +28,8 @@ $MP = "D:\path\to\ai-skills\minipower"
 New-Item -ItemType Directory -Force -Path .opencode\rules
 New-Item -ItemType SymbolicLink -Force -Path .opencode\rules\minipower-token-guard.md `
   -Target "$MP\agents\token-guard.md"
+New-Item -ItemType SymbolicLink -Force -Path .opencode\rules\minipower-profile.md `
+  -Target "$MP\install\opencode\rules\minipower-profile.md"
 New-Item -ItemType SymbolicLink -Force -Path .opencode\rules\minipower-doc-editing.md `
   -Target "$MP\install\opencode\rules\minipower-doc-editing.md"
 ```
@@ -38,10 +41,13 @@ Merge [opencode.fragment.json](opencode.fragment.json) vào `opencode.json` (gi�
   "$schema": "https://opencode.ai/config.json",
   "instructions": [
     ".opencode/rules/minipower-token-guard.md",
+    ".opencode/rules/minipower-profile.md",
     ".opencode/rules/minipower-doc-editing.md"
   ]
 }
 ```
+
+> Rule `minipower-profile.md` là always-on: chưa có `memory/profile.json` → agent **chỉ** làm init / hoàn tất profile, chưa đòi khai `Phase:`. Thiếu rule này thì `/minipower Init project` bị agent đòi chọn phase (parity với Cursor).
 
 ## Plugins (hooks)
 
@@ -107,10 +113,11 @@ Nếu chưa cần: xoá block `tool.execute.before` trong [plugins/minipower.ts]
 ## Kiểm tra
 
 1. Khởi động lại OpenCode — plugin load không lỗi (xem log).
-2. Prompt thiếu scope: `/minipower` + `đồng bộ requirements` (không @ file) → cảnh báo token guard trong context.
-3. `@docs/` hoặc `@docs/03-modules/` không kèm file → bị chặn.
-4. Tag DOC-07 + DOC-16 cùng lúc → bị chặn (auto-routing).
-5. Agent `read` vào `docs/02-baseline/` → lỗi read guard (nếu bật).
+2. Dự án mới (chưa có `memory/profile.json`): `/minipower Init project HRM` → agent hỏi trọn gói 5 câu cá nhân hoá, **không** đòi khai `Phase:` (rule profile).
+3. Prompt thiếu scope: `/minipower` + `đồng bộ requirements` (không @ file) → cảnh báo token guard trong context.
+4. `@docs/` hoặc `@docs/03-modules/` không kèm file → bị chặn.
+5. Tag DOC-07 + DOC-16 cùng lúc → bị chặn (auto-routing).
+6. Agent `read` vào `docs/02-baseline/` → lỗi read guard (nếu bật).
 
 ## Bypass
 

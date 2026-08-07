@@ -46,6 +46,7 @@ Khi user ghi `Phase: …` hoặc intent rõ (vd. "phân tích yêu cầu", "thi�
 | change-control, CR, baseline | [skills/change-control/SKILL.md](skills/change-control/SKILL.md) |
 | init project, khởi tạo dự án, tạo folder dự án | Section [Khởi tạo](#khởi-tạo-cấu-trúc-dự-án-mặc-định) **trong file này** |
 | làm gì tiếp, làm thế nào, hướng dẫn, không biết, cần cung cấp gì | [`FAQ.md`](project-skeleton/FAQ.md) ở root dự án — FAQ thiết lập sẵn |
+| Lark, Feishu, task Lark, nhắn tin Lark, wiki Lark, Base/Bitable, trợ lý công việc MCP | [agents/lark-work-assistant.md](agents/lark-work-assistant.md) — wrap `user-lark-mcp`; đọc tự do, ghi qua cổng người |
 
 ## Phân tầng công việc (micro / light / full)
 
