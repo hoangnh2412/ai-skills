@@ -1,6 +1,6 @@
 ---
 name: blobstoring-dotnet-minio
-description: Đăng ký Jarvis BlobStoring MinIO — keyed IBlobStoringService MinioService với MinIOOption Endpoint và credentials. Dùng khi lưu file S3-compatible object storage.
+description: Đăng ký Jarvis BlobStoring MinIO — UseMinIO sau AddCoreBlobStoring. Dùng khi lưu file S3-compatible object storage.
 dependencies:
   - Jarvis.BlobStoring
   - Jarvis.BlobStoring.MinIO
@@ -14,13 +14,15 @@ S3-compatible; bucket = tên bucket MinIO, `fileName` = object key.
 
 ```json
 {
-  "MinIO": {
-    "Endpoint": "localhost:9000",
-    "AccessKey": "minioadmin",
-    "SecretKey": "minioadmin",
-    "Region": "",
-    "UseSsl": false,
-    "BucketName": ""
+  "BlobStoring": {
+    "DefaultProvider": "MinIO",
+    "MinIO": {
+      "Endpoint": "localhost:9000",
+      "AccessKey": "minioadmin",
+      "SecretKey": "minioadmin",
+      "UseSsl": false,
+      "AutoSelectPriority": 30
+    }
   }
 }
 ```
@@ -31,12 +33,16 @@ Production: secret qua env / vault — không commit file.
 
 ```csharp
 using Jarvis.BlobStoring;
-using Jarvis.BlobStoring.MinIO;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using Jarvis.BlobStoring.Extensions;
+using Jarvis.BlobStoring.MinIO.Extensions;
 
-builder.Services.Configure<MinIOOption>(builder.Configuration.GetSection("MinIO"));
-builder.Services.AddKeyedSingleton<IBlobStoringService, MinioService>("MinIO");
+builder.AddCoreBlobStoring(o => o.DefaultProvider = nameof(BlobStoringType.MinIO))
+    .UseMinIO(minio =>
+    {
+        minio.Endpoint = "localhost:9000";
+        minio.AccessKey = "minioadmin";
+        minio.SecretKey = "minioadmin";
+    });
 ```
 
 ## Inject
@@ -57,10 +63,8 @@ public sealed class DocumentService(
 
 - Bucket phải tồn tại (hoặc tạo qua MinIO console / policy auto-create).
 - `ViewAsync` — presigned URL (expire seconds).
-- Kết hợp [caching-dotnet](../../../caching-dotnet/README.md): cache byte[] hoặc URL ngắn TTL, không cache file lớn bừa bãi.
 
 ## Validate
 
 - `UploadAsync` → `DownloadAsync` bytes khớp
-- `DeleteAsync` → download lỗi / 404 tương đương
 - Endpoint reachable từ pod/container network

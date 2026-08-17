@@ -61,7 +61,7 @@ Agent sẽ đọc [SKILL.md](./SKILL.md) và **chỉ** mở file module/workflow
 | Solution + project Host/Application/Infrastructure đã có | — | Init |
 | `dotnet` SDK 9.x cài sẵn | Có | Có |
 
-**Lưu ý develop:** `Jarvis.EntityFramework` yêu cầu `AddJarvisCaching()` **trước** `AddEntityFramework()`. Template scaffold đã wiring đúng thứ tự; khi init/add EF thủ công phải tuân thủ.
+**Lưu ý develop:** `Jarvis.ORM.EntityFramework` yêu cầu `AddJarvisCaching()` **trước** `AddEntityFramework()`. Host bắt buộc `AddCurrentUser` + `AddCurrentTenant` + store. Template scaffold đã wiring đúng thứ tự.
 
 **PackageId:** folder repo `Jarvis.Authentication.*` → NuGet **`Jarvis.Authentications.*`** (có chữ **s**).
 
@@ -89,7 +89,8 @@ Sau khi xong: dotnet build và báo URL Swagger.
 Cài Jarvis vào solution MyApp:
 - Host: Jarvis.Mvc, Swashbuckle, HealthChecks, OpenTelemetry
 - Application: Jarvis.DDD.Application
-- Infrastructure: Jarvis.EntityFramework + Jarvis.Caching
+- Infrastructure: Jarvis.ORM.EntityFramework + Jarvis.Caching + Jarvis.BlobStoring
+- Host: AddCurrentUser + AddCurrentTenant + OTEL.DDD
 ```
 
 ### Add — thêm module
@@ -101,7 +102,7 @@ Thêm xác thực JWT vào MyApp.Host theo authentication-dotnet/providers/jwt/S
 ```
 
 ```text
-@.opencode/skills/entityframework-dotnet/patterns/single-db/SKILL.md
+@.opencode/skills/multitenancy-dotnet/patterns/single-db/SKILL.md
 
 Cấu hình EF multitenancy single DB cho MyApp.
 ```
@@ -117,7 +118,7 @@ Bật Redis distributed cache + memory invalidation cho MyApp.Host
 ```text
 @.opencode/skills/telemetry-dotnet/SKILL.md
 
-Thêm HostedService cron kế thừa BaseWorker; job EF multitenancy theo entityframework-dotnet/README.md
+Thêm HostedService cron kế thừa BaseWorker; job EF multitenancy theo multitenancy-dotnet/README.md
 ```
 
 ## Agent sẽ làm gì
@@ -159,16 +160,21 @@ Chỉ mở skill cần dùng — [workflows/add.md](./workflows/add.md):
 
 | Module | Skill | Ghi chú |
 |--------|-------|---------|
-| Foundation | [foundation-dotnet](../foundation-dotnet/README.md) | Json, CORS, WebApi, middleware |
+| Foundation | [foundation-dotnet](../foundation-dotnet/README.md) | Json, CORS, WebApi, CurrentUser/Tenant |
 | Application | [application-dotnet](../application-dotnet/README.md) | CQRS dispatcher |
-| Authentication | [authentication-dotnet](../authentication-dotnet/README.md) | JWT, API Key, Cognito |
-| Notification | [notification-dotnet](../notification-dotnet/README.md) | SMTP Mailkit |
-| Entity Framework | [entityframework-dotnet](../entityframework-dotnet/README.md) | **Caching trước EF** |
+| Authentication | [authentication-dotnet](../authentication-dotnet/README.md) | JWT, API Key, Cognito + AddCurrentUser |
+| Notification SMTP | [notification-dotnet](../notification-dotnet/README.md) | Mailkit — không inbox |
+| Inbox in-app | [notifications-module-dotnet](../notifications-module-dotnet/README.md) | Redis inbox + REST |
+| Setting | [setting-dotnet](../setting-dotnet/README.md) | Group/Key + HTTP |
+| Realtime | [realtime-dotnet](../realtime-dotnet/README.md) | SignalR transport |
+| Tenant + EF | [multitenancy-dotnet](../multitenancy-dotnet/README.md) | **Caching trước EF** |
 | Caching | [caching-dotnet](../caching-dotnet/README.md) | |
-| Blob storing | [blobstoring-dotnet](../blobstoring-dotnet/README.md) | |
+| Blob storing | [blobstoring-dotnet](../blobstoring-dotnet/README.md) | AddCoreBlobStoring |
 | Swashbuckle | [swashbuckle-dotnet](../swashbuckle-dotnet/README.md) | |
-| OpenTelemetry | [telemetry-dotnet](../telemetry-dotnet/README.md) | |
+| OpenTelemetry | [telemetry-dotnet](../telemetry-dotnet/README.md) | + OTEL.DDD |
 | Health checks | [healthcheck-dotnet](../healthcheck-dotnet/README.md) | |
+| Observability | [observability-dotnet](../observability-dotnet/README.md) | |
+| Troubleshooting | [troubleshooting-dotnet](../troubleshooting-dotnet/README.md) | |
 
 ## Catalog package (NuGet, develop)
 
@@ -178,13 +184,17 @@ Chỉ mở skill cần dùng — [workflows/add.md](./workflows/add.md):
 | `Jarvis.DDD.Domain` | 1.1.1 | Host |
 | `Jarvis.DDD.Application` | 1.2.1 | Application |
 | `Jarvis.DDD.Application.Contracts` | 1.2.1 | Application |
-| `Jarvis.EntityFramework` | 1.0.0 | Infrastructure |
+| `Jarvis.ORM.EntityFramework` | 1.0.0 | Infrastructure |
+| `Jarvis.Multitenancy` | 1.0.0 | Host |
+| `Jarvis.Multitenancy.EntityFramework` | 1.0.0 | Infrastructure (opt-in) |
 | `Jarvis.Caching` | 1.1.0 | Infrastructure |
 | `Jarvis.Caching.Redis` | 1.1.0 | Infrastructure (tùy chọn) |
+| `Jarvis.BlobStoring` | 1.0.0 | Infrastructure |
 | `Jarvis.Mvc` | 1.1.0 | Host |
 | `Jarvis.Swashbuckle` | 1.0.1 | Host |
 | `Jarvis.HealthChecks` | 1.0.0 | Host |
 | `Jarvis.OpenTelemetry` | 1.0.1 | Host |
+| `Jarvis.OpenTelemetry.DDD` | 1.0.0 | Host |
 | `Jarvis.Authentications.*` | 1.0.1 | Host |
 
 ## Sau khi chạy skill
@@ -203,10 +213,10 @@ Chỉ mở skill cần dùng — [workflows/add.md](./workflows/add.md):
 | [SKILL.md](./SKILL.md) | Orchestrator đầy đủ cho agent |
 | [reference/solution-structure.md](./reference/solution-structure.md) | Cây thư mục, DI, mapping layer |
 | [templates/](./templates/) | Code mẫu scaffold |
-| [entityframework-dotnet/README.md](../entityframework-dotnet/README.md) | EF multitenancy |
+| [multitenancy-dotnet/README.md](../multitenancy-dotnet/README.md) | EF multitenancy |
 | [caching-dotnet/README.md](../caching-dotnet/README.md) | Cache |
 | [swashbuckle-dotnet/README.md](../swashbuckle-dotnet/README.md) | Swagger |
-| [blobstoring-dotnet/README.md](../blobstoring-dotnet/README.md) | Blob FileSystem / MinIO |
+| [blobstoring-dotnet/README.md](../blobstoring-dotnet/README.md) | Blob FileSystem / MinIO / AwsS3 |
 | [telemetry-dotnet/README.md](../telemetry-dotnet/README.md) | OpenTelemetry — kiến trúc & workflow |
 | [healthcheck-dotnet/README.md](../healthcheck-dotnet/README.md) | Health endpoints & providers |
 | [code-review-dotnet/README.md](../code-review-dotnet/README.md) | Review PR |

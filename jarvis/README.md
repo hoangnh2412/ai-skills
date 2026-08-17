@@ -53,17 +53,21 @@ Chi tiết publish sang repo product: [Publish skill sang repo consumer](#publis
 | Skill | README | Mô tả |
 |-------|--------|--------|
 | **jarvis-dotnet** | [skills/jarvis-dotnet/README.md](./skills/jarvis-dotnet/README.md) | Scaffold / init / add solution Jarvis |
-| **foundation-dotnet** | [skills/foundation-dotnet/README.md](./skills/foundation-dotnet/README.md) | Json, CORS, WebApi, ApiResponseWrapper |
+| **foundation-dotnet** | [skills/foundation-dotnet/README.md](./skills/foundation-dotnet/README.md) | Json, CORS, WebApi, CurrentUser/Tenant |
 | **application-dotnet** | [skills/application-dotnet/README.md](./skills/application-dotnet/README.md) | CQRS Application layer |
 | **authentication-dotnet** | [skills/authentication-dotnet/README.md](./skills/authentication-dotnet/README.md) | JWT, API Key, Cognito |
 | **notification-dotnet** | [skills/notification-dotnet/README.md](./skills/notification-dotnet/README.md) | Email SMTP Mailkit |
+| **notifications-module-dotnet** | [skills/notifications-module-dotnet/README.md](./skills/notifications-module-dotnet/README.md) | Inbox in-app (không SMTP) |
 | **caching-dotnet** | [skills/caching-dotnet/README.md](./skills/caching-dotnet/README.md) | Memory + Redis cache |
-| **entityframework-dotnet** | [skills/entityframework-dotnet/README.md](./skills/entityframework-dotnet/README.md) | EF multitenancy |
+| **multitenancy-dotnet** | [skills/multitenancy-dotnet/README.md](./skills/multitenancy-dotnet/README.md) | Tenant + EF mặc định (UoW, dedicated DB) |
+| **setting-dotnet** | [skills/setting-dotnet/README.md](./skills/setting-dotnet/README.md) | Setting Group/Key + HTTP |
+| **realtime-dotnet** | [skills/realtime-dotnet/README.md](./skills/realtime-dotnet/README.md) | SignalR transport (không inbox) |
 | **swashbuckle-dotnet** | [skills/swashbuckle-dotnet/README.md](./skills/swashbuckle-dotnet/README.md) | Swagger / OpenAPI |
 | **healthcheck-dotnet** | [skills/healthcheck-dotnet/README.md](./skills/healthcheck-dotnet/README.md) | Health endpoints |
 | **telemetry-dotnet** | [skills/telemetry-dotnet/README.md](./skills/telemetry-dotnet/README.md) | OpenTelemetry |
 | **observability-dotnet** | [skills/observability-dotnet/README.md](./skills/observability-dotnet/README.md) | Thiết lập observability .NET — OTEL, Prometheus, Grafana, alert |
-| **blobstoring-dotnet** | [skills/blobstoring-dotnet/README.md](./skills/blobstoring-dotnet/README.md) | FileSystem / MinIO blob |
+| **blobstoring-dotnet** | [skills/blobstoring-dotnet/README.md](./skills/blobstoring-dotnet/README.md) | FileSystem / MinIO / AwsS3 blob |
+| **troubleshooting-dotnet** | [skills/troubleshooting-dotnet/README.md](./skills/troubleshooting-dotnet/README.md) | Troubleshoot metric / dashboard |
 | **code-review-dotnet** | [skills/code-review-dotnet/README.md](./skills/code-review-dotnet/README.md) | Review PR C#/.NET |
 
 ## Prompt nhanh
@@ -74,8 +78,8 @@ Scaffold backend .NET 9: Product=Acme, product=acme
 ```
 
 ```text
-@.opencode/skills/entityframework-dotnet/workflows/init.md
-Init Jarvis EF + single DB cho MyApp
+@.opencode/skills/multitenancy-dotnet/workflows/init.md
+Init tenant + EF single DB cho MyApp
 ```
 
 ```text
@@ -87,94 +91,73 @@ Framework overview: [README.md](../README.md) (repo gốc).
 
 ## Publish skill sang repo consumer
 
-**Nguồn chính (source of truth):** thư mục `.opencode/` trong repo **Jarvis framework** (repo này). Repo product (`{product}-backend`) **không** fork/sửa skill — chỉ nhận bản cập nhật từ Jarvis hoặc PR upstream.
+**Nguồn chính (source of truth):** pack **`ai-skills/jarvis/`** (repo `ai-skills`). Repo Jarvis framework **không** chứa `.opencode/`. Repo product **không** fork/sửa skill — symlink hoặc copy từ đây.
 
-### Cấu trúc bắt buộc trên consumer
+### Cấu trúc trên consumer
+
+Cursor:
 
 ```text
 {product}-backend/
-└── .opencode/
-    ├── README.md          # copy hoặc symlink từ Jarvis (file này)
-    └── skills/
-        ├── jarvis-dotnet/
-        ├── caching-dotnet/
-        └── ...
+└── .cursor/skills/{tên-skill}/   → ai-skills/jarvis/skills/{tên-skill}/
 ```
 
-Agent/Cursor gọi skill bằng path **tương đối repo product**:
+OpenCode (prompt `@.opencode/skills/...` vẫn hợp lệ nếu symlink):
 
 ```text
-@.opencode/skills/jarvis-dotnet/workflows/scaffold.md
+{product}-backend/
+└── .opencode/skills/   → ai-skills/jarvis/skills/
 ```
 
-### Cách đưa `.opencode/` vào repo product
+### Cách đưa skill vào repo product
 
 | Cách | Khi nào dùng | Ghi chú |
 |------|----------------|---------|
-| **Git submodule** | Nhiều team, cần pin version skill | Submodule trỏ repo Jarvis; consumer chỉ mount/copy `.opencode` (xem script dưới) |
-| **Symlink** | Dev local, Jarvis clone cạnh product repo | `ln -s ../../Jarvis/.opencode .opencode` — không commit symlink lên Windows CI |
-| **Copy (script/CI)** | Pin release, không phụ thuộc submodule path | Script copy tree `.opencode/` từ tag Jarvis — **khuyến nghị cho CI** |
-| **Monorepo** | Product và Jarvis cùng workspace | Một `.opencode/` ở root monorepo hoặc symlink như trên |
+| **Symlink** | Dev local | Xem lệnh ở đầu file này |
+| **Git submodule** | Nhiều team, pin version | Submodule trỏ **repo `ai-skills`**; mount `jarvis/skills` |
+| **Copy (script/CI)** | Pin release | `rsync` `ai-skills/jarvis/skills/` — **khuyến nghị cho CI** |
 
-**Không** commit nội dung skill đã chỉnh tay trong repo product — sửa tại repo Jarvis rồi sync lại.
+**Không** commit nội dung skill đã chỉnh tay trong repo product — sửa tại `ai-skills` rồi sync lại.
 
 ### Submodule (khuyến nghị team)
 
 ```bash
 # Trong repo {product}-backend (root)
-git submodule add <url-repo-jarvis> vendor/jarvis
+git submodule add <url-repo-ai-skills> vendor/ai-skills
 git submodule update --init --recursive
 
-# Đồng bộ .opencode từ submodule (chạy sau mỗi lần update submodule)
-rsync -a --delete vendor/jarvis/.opencode/ .opencode/
+mkdir -p .opencode
+ln -snf ../vendor/ai-skills/jarvis/skills .opencode/skills
+# Cursor: symlink từng thư mục skills/* → .cursor/skills/
 ```
 
-Hoặc chỉ submodule thư mục skills (sparse) nếu host Git hỗ trợ — mặc định submodule cả repo Jarvis rồi `rsync` `.opencode/`.
-
-Pin version: checkout tag/commit cố định trong `vendor/jarvis`, commit SHA submodule, chạy lại `rsync`.
-
-### Symlink (dev local)
-
-```bash
-cd /path/to/acme-backend
-ln -snf /path/to/Jarvis_2/.opencode .opencode
-```
-
-Thêm `.opencode` vào `.gitignore` nếu symlink chỉ dùng local; CI dùng copy/submodule.
+Pin version: checkout tag/commit cố định trong `vendor/ai-skills`, commit SHA submodule.
 
 ### Copy một lần / release script
 
 ```bash
-JARVIS_ROOT=/path/to/Jarvis_2
+AI_SKILLS=/path/to/ai-skills
 PRODUCT_ROOT=/path/to/acme-backend
 
 rsync -a --delete \
-  "$JARVIS_ROOT/.opencode/" \
-  "$PRODUCT_ROOT/.opencode/"
+  "$AI_SKILLS/jarvis/skills/" \
+  "$PRODUCT_ROOT/.opencode/skills/"
 ```
 
-Chạy trong pipeline khi bump `JARVIS_SKILLS_REF=v1.2.0` (tag trên repo Jarvis).
+Chạy trong pipeline khi bump `JARVIS_SKILLS_REF` (tag trên repo **ai-skills**).
 
 ### Quy ước cập nhật
 
-1. Thay đổi skill → PR trên **repo Jarvis** (review + merge `develop` / tag release).
-2. Repo product: `git submodule update` hoặc chạy script `rsync` theo tag mới.
+1. Thay đổi skill → PR trên **repo `ai-skills`** (pack `jarvis/`).
+2. Repo product: `git submodule update` hoặc `rsync` theo tag mới.
 3. PR product ghi dòng: `chore: sync Jarvis skills @ <tag hoặc commit short>` — không trộn thay đổi skill với feature app.
-4. Breaking skill (đổi workflow, package version bắt buộc): ghi trong PR Jarvis + tag semver skill (`skills-v1.3.0`) — consumer bump có chủ đích.
 
-### Product repo sau khi có `.opencode/`
-
-- README product: một dòng link `Skill AI: [.opencode/README.md](.opencode/README.md)`.
-- Không duplicate bảng skill — link hub Jarvis hoặc copy README hub khi `rsync` (file này đi kèm).
-- Scaffold mới: luôn dùng `@.opencode/skills/jarvis-dotnet/workflows/scaffold.md`.
-
-### Checklist publish (maintainer Jarvis)
+### Checklist publish (maintainer)
 
 ```text
-- [ ] Tag hoặc commit trên develop ổn định
+- [ ] Tag hoặc commit trên ai-skills ổn định
 - [ ] rsync/submodule update trên ít nhất một repo product thử
 - [ ] Smoke: @jarvis-dotnet scaffold, @authentication-dotnet jwt, @code-review-dotnet
 - [ ] Ghi tag/release note nếu breaking
 ```
 
-Chi tiết changelog skill: mục roadmap repo gốc [README.md](../README.md) (Việc cần làm tiếp theo).

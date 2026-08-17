@@ -41,6 +41,6 @@ Bật Redis distributed + memory invalidation cho MyApp.Host.
 
 ## Liên quan
 
-- [entityframework-dotnet/README.md](../entityframework-dotnet/README.md) — cache connection string resolver
+- [multitenancy-dotnet/README.md](../multitenancy-dotnet/README.md) — cache connection string resolver
 - [telemetry-dotnet/README.md](../telemetry-dotnet/README.md) — OTEL Redis instrumentation
 - [jarvis-dotnet/README.md](../jarvis-dotnet/README.md) — scaffold

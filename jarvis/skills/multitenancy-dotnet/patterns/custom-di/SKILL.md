@@ -1,8 +1,9 @@
 ---
-name: entityframework-dotnet-custom-di
+name: multitenancy-dotnet-custom-di
 description: Tùy biến Jarvis EF tenant resolution qua ITenantIdResolverFactory và ITenantConnectionStringResolver — không sửa thư viện Jarvis.
 dependencies:
-  - Jarvis.EntityFramework
+  - Jarvis.ORM.EntityFramework
+  - Jarvis.Multitenancy.EntityFramework
 ---
 
 # Custom DI (không sửa Jarvis)
@@ -32,7 +33,7 @@ builder.Services.AddCoreDbContext<AppDbContext, MinioTenantConnectionStringResol
     options.UseNpgsql(builder.Configuration.GetConnectionString("AppDbContext")!));
 ```
 
-Cần overload 2 generic + interceptor khi connection động theo tenant.
+Cần `AddMultitenancyEntityFramework()` + overload 2 generic (`Jarvis.Multitenancy.EntityFramework`) khi connection động theo tenant.
 
 ## Checklist
 

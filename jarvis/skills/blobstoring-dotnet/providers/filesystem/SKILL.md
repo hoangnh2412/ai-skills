@@ -1,12 +1,13 @@
 ---
 name: blobstoring-dotnet-filesystem
-description: Đăng ký Jarvis BlobStoring FileSystem — keyed IBlobStoringService FileSystemService với FileSystemOption RootPath. Dùng khi lưu file trên disk local hoặc volume mount.
+description: FileSystem built-in Jarvis.BlobStoring — AddCoreBlobStoring tự UseFileSystem. Dùng khi lưu file trên disk local hoặc volume mount.
 dependencies:
   - Jarvis.BlobStoring
-  - Jarvis.BlobStoring.FileSystem
 ---
 
 # FileSystem provider
+
+Nằm **trong** `Jarvis.BlobStoring` — không có package FileSystem riêng. `AddCoreBlobStoring()` đã gọi `UseFileSystem()`.
 
 Path vật lý: `{RootPath}/{SubPath}/{bucket}/{fileName}`.
 
@@ -14,11 +15,12 @@ Path vật lý: `{RootPath}/{SubPath}/{bucket}/{fileName}`.
 
 ```json
 {
-  "FileSystem": {
-    "RootPath": "/var/app/storage",
-    "SubPath": "uploads",
-    "BucketName": "",
-    "PartitionBy": 0
+  "BlobStoring": {
+    "FileSystem": {
+      "RootPath": "/var/app/storage",
+      "SubPath": "uploads",
+      "AutoSelectPriority": 10
+    }
   }
 }
 ```
@@ -27,19 +29,22 @@ Path vật lý: `{RootPath}/{SubPath}/{bucket}/{fileName}`.
 
 ```csharp
 using Jarvis.BlobStoring;
-using Jarvis.BlobStoring.FileSystem;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using Jarvis.BlobStoring.Extensions;
 
-builder.Services.Configure<FileSystemOption>(builder.Configuration.GetSection("FileSystem"));
-builder.Services.AddKeyedSingleton<IBlobStoringService, FileSystemService>("FileSystem");
+builder.AddCoreBlobStoring(o => o.DefaultProvider = nameof(BlobStoringType.FileSystem))
+    .UseFileSystem(fs =>
+    {
+        fs.RootPath = @"D:\uploads";
+        fs.SubPath = "tenant-1";
+    });
 ```
+
+**Không** `AddKeyedSingleton<IBlobStoringService, FileSystemService>`.
 
 ## Inject
 
 ```csharp
-public sealed class LocalFileService(
-    [FromKeyedServices("FileSystem")] IBlobStoringService storage)
+public sealed class LocalFileService(IBlobStoringService storage)
 {
     public Task UploadAsync(string path, byte[] data, CancellationToken ct = default)
         => storage.UploadAsync(bucket: "documents", fileName: path, data);
@@ -48,8 +53,7 @@ public sealed class LocalFileService(
 
 ## Lưu ý
 
-- `ViewAsync` trả chuỗi rỗng — không presigned URL; dùng API riêng nếu cần link tải.
-- `GetFileNames` hiện trả rỗng trên implementation mặc định — liệt kê file cần mở rộng hoặc dùng MinIO.
+- `ViewAsync` trả chuỗi rỗng — không presigned URL.
 - Đảm bảo process có quyền ghi `RootPath` (container: mount volume).
 
 ## Validate

@@ -131,7 +131,7 @@ flowchart LR
 
 ### 4.1 Chiều xuống (docs → code) — tại H4
 
-- SA **đóng băng** DOC-08/11/12 → repo code nhận qua **con trỏ có version**: `docs@<tag>` (submodule / rsync / release script). **Tái dùng đúng cơ chế publish Jarvis đã có** ([jarvis/README.md — publish](jarvis/README.md)) — không phát minh cơ chế mới.
+- SA **đóng băng** DOC-08/11/12 → repo code nhận qua **con trỏ có version**: `docs@<tag>` (submodule / rsync / release script). **Tái dùng cơ chế publish** trong [jarvis/README.md](jarvis/README.md): SSOT skill = **`ai-skills/jarvis/`**; consumer symlink `.cursor/skills` hoặc `.opencode/skills` — không phát minh cơ chế mới.
 - Không copy tay từng đoạn spec vào code. Chỉ pin version + đọc.
 
 ### 4.2 Chiều lên (code → docs) — tại H6

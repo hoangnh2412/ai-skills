@@ -124,14 +124,19 @@ Bản đồ skill: [jarvis-dotnet/templates/SKILLS.md](../jarvis-dotnet/template
 
 ### DI & thứ tự đăng ký
 
-* **`AddJarvisCaching()` trước `AddEntityFramework()`** — thiếu → EF connection resolver cache sai ([caching-dotnet](../caching-dotnet/SKILL.md), [entityframework-dotnet](../entityframework-dotnet/SKILL.md)).
-* `AddCoreDbContext` sau `AddEntityFramework`; overload 2 generic khi per-tenant connection.
+* **`AddJarvisCaching()` trước `AddEntityFramework()` / `AddMultitenancyEntityFramework()` / `AddCoreDbContext`** — thiếu → connection resolver cache sai ([caching-dotnet](../caching-dotnet/SKILL.md), [multitenancy-dotnet](../multitenancy-dotnet/SKILL.md)).
+* PackageId EF phải là `Jarvis.ORM.EntityFramework` (không dùng PackageId trước rename).
+* `AddCoreDbContext<T>` (ORM.EF) sau `AddEntityFramework`; dedicated DB: `AddMultitenancyEntityFramework` + overload 2 generic trên Multitenancy.EF.
+* Host: `AddCurrentUser<T>` + `AddCurrentTenant<T>` + store (`TryAddSingleton`) — thiếu → UoW / filter / OTEL.DDD không resolve.
 * `AddJarvisOpenTelemetry(..., configureServices)` **trước** `Build()`; plug-in trong callback, không sau `Build()` ([telemetry-dotnet](../telemetry-dotnet/SKILL.md)).
+* Blob: `AddCoreBlobStoring()` — **không** tự `AddKeyedSingleton` FileSystem.
 
 ### Multitenancy & UoW (EF)
 
-* Sau `SwitchDbContextAsync` → **`GetRepositoryAsync` lại** — repository cũ giữ DbContext/tenant sai ([entityframework-dotnet](../entityframework-dotnet/README.md)).
-* UoW `SetTenantId`: `_switchedTenantId` / `ITenantIdResolverFactory` — **không** đọc `ICurrentTenantAccessor` nhầm scope.
+* Sau `SwitchDbContextAsync` → **`GetRepositoryAsync` lại** — repository cũ giữ DbContext/tenant sai ([multitenancy-dotnet](../multitenancy-dotnet/README.md)).
+* `IStorageContext` chỉ `SetTenantId` — **không** đọc tenant từ context; tenant làm việc = `ICurrentTenant`.
+* UoW ctor 4 args (`ITenantIdResolverFactory`, `ICurrentTenantAccessor`).
+* Realtime transport ≠ inbox store — không nhét persistence inbox vào `Jarvis.Realtime`.
 * Batch Master + tenant: scope/UoW **riêng** mỗi tenant — không một UoW cho Master và tenant.
 * Job/background: `CreateAsyncScope` → `SwitchDbContextAsync` → repo lại khi không có HTTP tenant.
 

@@ -20,13 +20,17 @@
 | Foundation | [foundation-dotnet/SKILL.md](../../foundation-dotnet/SKILL.md) |
 | Application | [application-dotnet/SKILL.md](../../application-dotnet/SKILL.md) |
 | Authentication | [authentication-dotnet/SKILL.md](../../authentication-dotnet/SKILL.md) |
-| Notification | [notification-dotnet/SKILL.md](../../notification-dotnet/SKILL.md) |
+| Notification SMTP | [notification-dotnet/SKILL.md](../../notification-dotnet/SKILL.md) |
 | Caching | [caching-dotnet/SKILL.md](../../caching-dotnet/SKILL.md) |
-| Entity Framework | [entityframework-dotnet/SKILL.md](../../entityframework-dotnet/SKILL.md) |
+| Tenant + EF | [multitenancy-dotnet/SKILL.md](../../multitenancy-dotnet/SKILL.md) |
+| Setting | [setting-dotnet/SKILL.md](../../setting-dotnet/SKILL.md) |
+| Realtime | [realtime-dotnet/SKILL.md](../../realtime-dotnet/SKILL.md) |
+| Inbox in-app | [notifications-module-dotnet/SKILL.md](../../notifications-module-dotnet/SKILL.md) |
 | Swashbuckle | [swashbuckle-dotnet/SKILL.md](../../swashbuckle-dotnet/SKILL.md) |
 | Blob storing | [blobstoring-dotnet/SKILL.md](../../blobstoring-dotnet/SKILL.md) |
 | OpenTelemetry | [telemetry-dotnet/SKILL.md](../../telemetry-dotnet/SKILL.md) |
 | Health checks | [healthcheck-dotnet/SKILL.md](../../healthcheck-dotnet/SKILL.md) |
+| Dapper / Querying | Mục — chưa skill riêng |
 
 Không thêm package không dùng (giảm dependency surface).
 
@@ -48,7 +52,7 @@ Copy snippet từ skill `*-dotnet` (workflow hoặc provider) vào `Program.cs` 
 |---|---|
 | Caching | **`AddJarvisCaching()` trước EntityFramework** (Infrastructure) |
 | EntityFramework | sau `AddJarvisCaching()` |
-| Authentication | `builder.Services.AddAuthentication()` chain |
+| Authentication | `AddJarvisAuthentication(config, auth => { AddCore* })` — **không** gọi `AddAuthentication()` trực tiếp; `AddCurrentUser` thuộc foundation |
 | OpenTelemetry | đầu `Program.cs`, trước `Build()` |
 | HealthChecks | trước `Build()`, `UseHealthChecks()` cuối pipeline |
 | Swashbuckle | sau `AddCoreWebApi` |

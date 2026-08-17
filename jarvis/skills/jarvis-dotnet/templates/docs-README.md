@@ -35,7 +35,7 @@ Scaffold chỉ wire tối thiểu. Thêm module qua skill trong repo framework J
 |-------|--------|
 | `authentication-dotnet` | JWT, API Key |
 | `caching-dotnet` | Redis distributed |
-| `entityframework-dotnet` | Đổi pattern multitenancy |
+| `multitenancy-dotnet` | Tenant + EF (single / dedicated) |
 | `blobstoring-dotnet` | MinIO / FileSystem |
 | `notification-dotnet` | SMTP Mailkit |
 

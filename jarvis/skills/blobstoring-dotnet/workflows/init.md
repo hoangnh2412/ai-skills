@@ -1,51 +1,36 @@
 # Workflow: Khởi tạo Jarvis Blob Storing
 
-Áp dụng khi project **chưa** đăng ký `IBlobStoringService`.
+Áp dụng khi project **chưa** gọi `AddCoreBlobStoring()`.
 
 ## Checklist
 
 ```text
-- [ ] 1. Chọn provider(s): filesystem, minio, hoặc cả hai
-- [ ] 2. Package Jarvis.BlobStoring + provider packages
-- [ ] 3. Configure options từ appsettings
-- [ ] 4. AddKeyedSingleton IBlobStoringService
-- [ ] 5. Inject trong service/handler với FromKeyedServices
-- [ ] 6. Validate upload/download
+- [ ] 1. Package Jarvis.BlobStoring (+ MinIO / AwsS3 nếu cần)
+- [ ] 2. builder.AddCoreBlobStoring()
+- [ ] 3. appsettings section BlobStoring
+- [ ] 4. Inject IBlobStoringService
+- [ ] 5. Validate upload/download
 ```
 
 ## Bước 1 — Packages
 
 ```xml
 <PackageReference Include="Jarvis.BlobStoring" Version="1.0.0" />
-<!-- Chọn một hoặc cả hai -->
-<PackageReference Include="Jarvis.BlobStoring.FileSystem" Version="1.0.0" />
 <PackageReference Include="Jarvis.BlobStoring.MinIO" Version="1.0.0" />
+<PackageReference Include="Jarvis.BlobStoring.AwsS3" Version="1.0.0" />
 ```
+
+FileSystem **không** cần package riêng.
 
 ## Bước 2 — Extension
 
-Tạo `{App}BlobStoringExtension.cs` từ [templates/program-setup.cs](../templates/program-setup.cs):
+[templates/program-setup.cs](../templates/program-setup.cs):
 
 ```csharp
-public static IHostApplicationBuilder AddBlobStoring(this IHostApplicationBuilder builder)
-{
-    builder.Services.Configure<FileSystemOption>(builder.Configuration.GetSection("FileSystem"));
-    builder.Services.Configure<MinIOOption>(builder.Configuration.GetSection("MinIO"));
-
-    builder.Services.AddKeyedSingleton<IBlobStoringService, FileSystemService>("FileSystem");
-    builder.Services.AddKeyedSingleton<IBlobStoringService, MinioService>("MinIO");
-
-    return builder;
-}
+builder.AddCoreBlobStoring();
 ```
 
-Gọi trong `InfrastructureLayerExtension` hoặc `HostLayerExtension`:
-
-```csharp
-builder.AddBlobStoring();
-```
-
-Chỉ cần một provider → bỏ registration và package provider kia; đọc [providers/](../providers/).
+Gọi trong `InfrastructureLayerExtension` hoặc `HostLayerExtension`.
 
 ## Bước 3 — appsettings
 
@@ -59,8 +44,7 @@ Chỉ cần một provider → bỏ registration và package provider kia; đọ
 
 - `dotnet build`
 - Upload test file → `DownloadAsync` trả đúng bytes
-- MinIO: bucket tồn tại trên server (tạo bucket nếu policy yêu cầu)
 
 ## Sau init
 
-Thêm provider thứ hai → [workflows/add.md](add.md).
+Thêm MinIO / AwsS3 → [workflows/add.md](add.md).

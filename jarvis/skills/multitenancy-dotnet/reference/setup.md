@@ -4,32 +4,34 @@
 
 ## Thành phần Jarvis
 
-| Thành phần | Layer | Vai trò |
+| Thành phần | Package | Vai trò |
 |---|---|---|
-| `BaseStorageContext<T>` | EF | Global query filter `TenantId == context.TenantId` (`ITenantEntity`) |
-| `BaseUnitOfWork<T>` | EF | `IDbContextFactory`, `SetTenantId`, `SwitchDbContextAsync` |
-| `ITenantIdResolver` / `ITenantIdResolverFactory` | Domain | Tenant id (keyed: Header, User, Query, Host) |
+| `BaseStorageContext<T>` | ORM.EF | Global query filter theo snapshot tenant (`ITenantEntity`) |
+| `BaseUnitOfWork<T>` | ORM.EF | 4 args: `services`, `factory`, `ITenantIdResolverFactory`, `ICurrentTenantAccessor` |
+| `ITenantIdResolver` / `ITenantIdResolverFactory` | Domain + Multitenancy | Tenant id (keyed: Header, User, Query, Host) — đăng ký qua `AddCurrentTenant` |
 | `ITenantConnectionStringResolver` | Domain | `GetConnectionStringAsync(name)` |
-| `TenantConnectionStringResolverFactory` | Domain | Tenant id + keyed resolver |
 | `ConfigConnectionStringResolver` | Domain | `IConfiguration.GetConnectionString` |
-| `DbTenantConnectionStringResolver<TMaster, TTenant>` | EF | Lookup `ITenantManagementEntity` trên Master |
-| `TenantDbConnectionInterceptor` | EF | Ghi connection lúc mở (overload 2 generic) |
+| `DbTenantConnectionStringResolver<TMaster, TTenant>` | Multitenancy.EF | Lookup `ITenantManagementEntity` trên Master |
+| `TenantDbConnectionInterceptor` | Multitenancy.EF | Ghi connection lúc mở (overload 2 generic) |
 | `ITenantManagementEntity` | Domain | Registry Master: `Id`, `ConnectionString` |
+| `IStorageContext` | Domain | Chỉ `SetTenantId` — không public getter tenant |
 
-`AddJarvisCaching()` rồi `AddEntityFramework()` → repository + tenant resolvers. Mọi `ITenantConnectionStringResolver` được bọc cache (`Cache:Items:ConnectionString`, `conn:{dbid}`); memory/Redis qua `MemSeconds` / `DistributedSeconds`. Inner resolver = fallback tùy host (config, DB, API, …).
+`AddJarvisCaching()` rồi `AddEntityFramework()` → repository + cache wrapper cho `ConfigConnectionStringResolver`. **Không** interceptor. Dedicated DB: thêm `AddMultitenancyEntityFramework()`. Mọi `ITenantConnectionStringResolver` được bọc cache (`Cache:Items:ConnectionString`, `conn:{dbid}`).
 
 ## Luồng resolve tenant
 
-1. **UoW / filter:** `_switchedTenantId` → `ITenantIdResolverFactory` (không đọc `ICurrentTenantAccessor`).
-2. **Connection:** `ICurrentTenantAccessor` → `ITenantIdResolverFactory` → `TenantConnectionStringResolverFactory` → keyed resolver.
-3. Overload 2 generic: interceptor gán connection khi mở.
-4. `SetTenantId` cho `ITenantEntity`.
+1. **UoW / filter:** `_switchedTenantId` → `ITenantIdResolverFactory`. Snapshot vào context qua `SetTenantId`.
+2. **Connection (dedicated):** interceptor + `ITenantIdResolverFactory` → keyed `ITenantConnectionStringResolver`.
+3. Tenant làm việc ở app = `ICurrentTenant` — **không** đọc tenant từ `IStorageContext`.
 
 **Không có tenant:** `ConnectionStrings:{DbContextName}` (migrate, Master-only job).
 
 ## DbContext & UoW
 
 ```csharp
+using Jarvis.ORM.EntityFramework.DataStorages;
+using Jarvis.ORM.EntityFramework.Repositories;
+
 public class AppDbContext(DbContextOptions<AppDbContext> options)
     : BaseStorageContext<AppDbContext>(options)
 {
@@ -92,12 +94,14 @@ app.EnsureMigrateDb<IAppUnitOfWork>();
 
 ## API tham chiếu
 
-| API | Mục đích |
-|---|---|
-| `AddEntityFramework()` | Repository + multitenancy |
-| `AddCoreDbContext<TDb>(configure)` | Connection cố định |
-| `AddCoreDbContext<TDb, TResolver>(configure)` | Per-tenant connection |
-| `EnsureMigrateDb<TUnitOfWork>(app)` | Auto migrate |
-| `SwitchDbContextAsync(tenantId)` | Job: pin tenant + connection scope |
+| API | Package | Mục đích |
+|---|---|---|
+| `AddEntityFramework()` | ORM.EF | Repository + cache wrapper resolver |
+| `AddCoreDbContext<TDb>(configure)` | ORM.EF | Connection cố định |
+| `AddMultitenancyEntityFramework()` | Multitenancy.EF | Interceptor + factory — opt-in |
+| `AddCoreDbContext<TDb, TResolver>(configure)` | Multitenancy.EF | Per-tenant connection |
+| `AddCurrentTenant<T>()` | Multitenancy | HTTP resolvers + accessor |
+| `EnsureMigrateDb<TUnitOfWork>(app)` | ORM.EF | Auto migrate |
+| `SwitchDbContextAsync(tenantId)` | UoW | Job: pin tenant + connection scope |
 
 **Không** truyền `HeaderTenantIdResolver` vào `AddCoreDbContext` — đó là `ITenantIdResolver`.

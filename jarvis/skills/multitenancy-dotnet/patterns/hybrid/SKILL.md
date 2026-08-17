@@ -1,8 +1,9 @@
 ---
-name: entityframework-dotnet-hybrid
+name: multitenancy-dotnet-hybrid
 description: Jarvis EF hybrid multitenancy — Master registry với pool DB chung và dedicated DB per tenant. Dùng khi tenant chia sẻ hoặc tách database linh hoạt.
 dependencies:
-  - Jarvis.EntityFramework
+  - Jarvis.ORM.EntityFramework
+  - Jarvis.Multitenancy.EntityFramework
   - Npgsql.EntityFrameworkCore.PostgreSQL
 ---
 

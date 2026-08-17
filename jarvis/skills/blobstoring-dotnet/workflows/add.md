@@ -1,40 +1,26 @@
 # Workflow: Thêm blob provider
 
-Áp dụng khi **đã có** ít nhất một `IBlobStoringService` keyed và cần thêm FileSystem hoặc MinIO.
+Áp dụng khi **đã có** `AddCoreBlobStoring()` và cần thêm MinIO hoặc AwsS3.
 
 ## Checklist
 
 ```text
-- [ ] 1. Chọn provider: filesystem | minio
+- [ ] 1. Chọn provider: minio | awss3
 - [ ] 2. Đọc providers/<name>/SKILL.md
-- [ ] 3. Thêm PackageReference
-- [ ] 4. Configure<TOption> + AddKeyedSingleton
-- [ ] 5. appsettings section
+- [ ] 3. Thêm PackageReference satellite
+- [ ] 4. UseMinIO() / UseAwsS3() trên fluent builder
+- [ ] 5. appsettings BlobStoring:MinIO | AwsS3
 - [ ] 6. Validate
 ```
 
 ## Bước 1 — Chọn provider
 
-Chỉ đọc **một** file:
-
 - [providers/filesystem/SKILL.md](../providers/filesystem/SKILL.md)
 - [providers/minio/SKILL.md](../providers/minio/SKILL.md)
-
-## Bước 2 — Registration
-
-Thêm vào extension blob storing hiện có — không duplicate key.
-
-## Bước 3 — Consumer
-
-Service mới chọn key phù hợp:
-
-```csharp
-[FromKeyedServices("MinIO")] IBlobStoringService blobStorage
-```
+- [providers/awss3/SKILL.md](../providers/awss3/SKILL.md)
 
 ## Anti-patterns
 
-- Hai implementation cùng key `"MinIO"`
-- Hardcode đường dẫn thay vì `FileSystem:RootPath`
-- Commit `MinIO:SecretKey` vào repo
-- Dùng `MinIO` keyed service khi chưa cài package `Jarvis.BlobStoring.MinIO`
+- Tự `AddKeyedSingleton` FileSystem thay vì `AddCoreBlobStoring`
+- Package FileSystem riêng (không tồn tại)
+- Commit `SecretKey` vào repo

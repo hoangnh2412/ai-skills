@@ -1,8 +1,9 @@
 ---
-name: entityframework-dotnet-separate-tenant-db
+name: multitenancy-dotnet-separate-tenant-db
 description: Đăng ký Jarvis EF separate tenant database — Master DbContext + DbTenantConnectionStringResolver per tenant. Dùng khi mỗi tenant một database riêng.
 dependencies:
-  - Jarvis.EntityFramework
+  - Jarvis.ORM.EntityFramework
+  - Jarvis.Multitenancy.EntityFramework
   - Npgsql.EntityFrameworkCore.PostgreSQL
 ---
 
@@ -19,6 +20,8 @@ public static IHostApplicationBuilder AddAppDbContext(this IHostApplicationBuild
 {
     builder.Services.AddScoped<IMasterUnitOfWork, MasterUnitOfWork>();
     builder.Services.AddScoped<IAppUnitOfWork, AppUnitOfWork>();
+
+    builder.AddMultitenancyEntityFramework();
 
     builder.Services.AddCoreDbContext<MasterDbContext>(options =>
         options.UseNpgsql(builder.Configuration.GetConnectionString("MasterDbContext")!));

@@ -1,4 +1,4 @@
-using Jarvis.EntityFramework.DataStorages;
+using Jarvis.ORM.EntityFramework.DataStorages;
 using Microsoft.EntityFrameworkCore;
 
 namespace {Product}.Infrastructure.Persistence;

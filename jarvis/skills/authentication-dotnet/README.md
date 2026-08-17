@@ -45,6 +45,15 @@ builder.Services.AddJarvisAuthentication(configuration, auth =>
 | HTTP Basic | [providers/basic/SKILL.md](./providers/basic/SKILL.md) |
 | Cognito | [providers/cognito/SKILL.md](./providers/cognito/SKILL.md) |
 
+## Ambient user (bắt buộc khi dùng UoW / OTEL.DDD)
+
+```csharp
+builder.AddCurrentUser<CurrentUserInfo>();
+builder.Services.TryAddSingleton<ICurrentUserStore<CurrentUserInfo>, CurrentUserStore>();
+```
+
+Tenant: `AddCurrentTenant<T>()` trên `Jarvis.Multitenancy` ([foundation-dotnet](../foundation-dotnet/README.md)).
+
 ## Pipeline
 
 ```csharp

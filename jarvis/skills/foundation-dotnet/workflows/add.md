@@ -41,4 +41,5 @@ Section `Cors` — origins, methods, headers theo môi trường. Không hard-co
 ## Anti-patterns
 
 - `UseCoreMiddleware` sau `MapControllers` — middleware không chạy đúng
-- Bỏ `AddCoreDomain` khi app dùng `IWorkContext` / enricher tenant
+- Thiếu `AddCurrentUser` / `AddCurrentTenant` / store khi UoW hoặc OTEL.DDD cần ambient identity
+- Coi `AddCoreDomain` như đăng ký user/tenant — method là no-op

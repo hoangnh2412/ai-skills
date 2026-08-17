@@ -30,9 +30,9 @@
 
 Tùy chọn (xem `providers/*/SKILL.md`):
 
-- `Jarvis.OpenTelemetry.Instrumentation.StackExchangeRedis`
+- `Jarvis.OpenTelemetry.DDD` (`AddUserContextTelemetryEnrichment`)
+- `Jarvis.Caching.Redis` (Redis trace — `AddJarvisCachingDistributedRedisInstrumentation`)
 - `OpenTelemetry.Instrumentation.EntityFrameworkCore`
-- `OpenTelemetry.Instrumentation.StackExchangeRedis`
 
 ## Bước 3 — appsettings.json
 

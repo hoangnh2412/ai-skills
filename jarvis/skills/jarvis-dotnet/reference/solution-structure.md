@@ -45,8 +45,8 @@ Cross-cutting packages (Mvc, EF, Caching, Auth, Blob, Notification, OTEL, Health
 | Domain.Shared | `Jarvis.DDD.Domain.Shared` (tùy chọn — error/response base) |
 | Domain | *(không bắt buộc Jarvis — giữ domain thuần)* |
 | Application | `Jarvis.DDD.Application`, `Jarvis.DDD.Application.Contracts` |
-| Infrastructure | `Jarvis.EntityFramework`, `Jarvis.Caching` (bắt buộc trước EF), `Jarvis.Caching.Redis`, `Jarvis.BlobStoring.*`, `Jarvis.Notification.*` → `{JarvisRoot}/frameworks/...` |
-| Host | `Jarvis.Mvc`, `Jarvis.Swashbuckle`, `Jarvis.HealthChecks`, `Jarvis.OpenTelemetry`, `Jarvis.Authentications.*` → `{JarvisRoot}/frameworks/...`; `Jarvis.DDD.Domain` → `{JarvisRoot}/frameworks/` |
+| Infrastructure | `Jarvis.ORM.EntityFramework`, `Jarvis.Caching` (bắt buộc trước EF), `Jarvis.Caching.Redis`, `Jarvis.BlobStoring` (+ MinIO/AwsS3), `Jarvis.Notification.*` → `{JarvisRoot}/frameworks/...` |
+| Host | `Jarvis.Mvc`, `Jarvis.Swashbuckle`, `Jarvis.HealthChecks`, `Jarvis.OpenTelemetry`, `Jarvis.OpenTelemetry.DDD`, `Jarvis.Authentications.*`, `Jarvis.Multitenancy` → `{JarvisRoot}/frameworks/...`; `Jarvis.DDD.Domain` → `{JarvisRoot}/frameworks/` |
 
 ## DI convention
 
@@ -87,7 +87,7 @@ builder.AddEntityFramework();
 builder.AddCoreDbContext<AppDbContext, ...>(...);
 ```
 
-Chi tiết multitenancy + batch job: [entityframework-dotnet/README.md](../../entityframework-dotnet/README.md).
+Chi tiết multitenancy + batch job: [multitenancy-dotnet/README.md](../../multitenancy-dotnet/README.md).
 
 Bản đồ scaffold → skill: [templates/SKILLS.md](../templates/SKILLS.md).
 

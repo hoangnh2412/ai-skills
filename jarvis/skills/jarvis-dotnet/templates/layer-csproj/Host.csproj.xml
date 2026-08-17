@@ -6,7 +6,10 @@
   <PackageReference Include="Jarvis.Swashbuckle" Version="1.0.1" />
   <PackageReference Include="Jarvis.HealthChecks" Version="1.0.0" />
   <PackageReference Include="Jarvis.OpenTelemetry" Version="1.0.1" />
+  <PackageReference Include="Jarvis.OpenTelemetry.DDD" Version="1.0.0" />
   <PackageReference Include="Jarvis.DDD.Domain" Version="1.1.1" />
+  <PackageReference Include="Jarvis.Authentications" Version="1.0.1" />
+  <PackageReference Include="Jarvis.Multitenancy" Version="1.0.0" />
 </ItemGroup>
 <ItemGroup>
   <PackageReference Include="Asp.Versioning.Mvc" Version="8.1.0" />
@@ -20,13 +23,16 @@
   </PackageReference>
 </ItemGroup>
 <!-- Monorepo — thay PackageReference bằng: -->
-<!-- Framework packages (Mvc, Domain, DDD.Application, …) trong frameworks/ -->
+<!-- Framework packages trong frameworks/ -->
 <!--
 <ItemGroup>
   <ProjectReference Include="{JarvisRoot}/frameworks/Jarvis.Mvc/Jarvis.Mvc.csproj" />
   <ProjectReference Include="{JarvisRoot}/frameworks/Jarvis.Swashbuckle/Jarvis.Swashbuckle.csproj" />
   <ProjectReference Include="{JarvisRoot}/frameworks/Jarvis.HealthChecks/Jarvis.HealthChecks.csproj" />
   <ProjectReference Include="{JarvisRoot}/frameworks/Jarvis.OpenTelemetry/Jarvis.OpenTelemetry.csproj" />
+  <ProjectReference Include="{JarvisRoot}/frameworks/Jarvis.OpenTelemetry.DDD/Jarvis.OpenTelemetry.DDD.csproj" />
   <ProjectReference Include="{JarvisRoot}/frameworks/Jarvis.DDD.Domain/Jarvis.DDD.Domain.csproj" />
+  <ProjectReference Include="{JarvisRoot}/frameworks/Jarvis.Authentication/Jarvis.Authentication.csproj" />
+  <ProjectReference Include="{JarvisRoot}/frameworks/Jarvis.Multitenancy/Jarvis.Multitenancy.csproj" />
 </ItemGroup>
 -->

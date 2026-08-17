@@ -30,7 +30,7 @@ Folder trống → skill jarvis-dotnet → solution phân lớp + Jarvis → F5
 │   ├── {Product}.Domain.Shared
 │   ├── {Product}.Domain
 │   ├── {Product}.Application      → Jarvis.DDD.Application
-│   ├── {Product}.Infrastructure   → Jarvis.EntityFramework
+│   ├── {Product}.Infrastructure   → Jarvis.ORM.EntityFramework
 │   └── {Product}.Host             → Jarvis.Mvc, OTEL, HealthChecks, Swagger
 └── tests/
 ```
@@ -65,17 +65,21 @@ Phiên bản tham chiếu từ repo Jarvis (`develop`):
 | Module | PackageId | Version | Layer |
 |---|---|---|---|
 | Domain shared | `Jarvis.DDD.Domain.Shared` | 1.0.0 | Domain.Shared |
-| Domain | `Jarvis.DDD.Domain` | 1.1.1 | Host (enricher) |
+| Domain | `Jarvis.DDD.Domain` | 1.1.1 | Host (contracts) |
 | Application | `Jarvis.DDD.Application` | 1.2.1 | Application |
 | Application contracts | `Jarvis.DDD.Application.Contracts` | 1.2.1 | Application |
-| Entity Framework | `Jarvis.EntityFramework` | 1.0.0 | Infrastructure |
+| Entity Framework | `Jarvis.ORM.EntityFramework` | 1.0.0 | Infrastructure |
+| Multitenancy | `Jarvis.Multitenancy` | 1.0.0 | Host |
+| Multitenancy EF | `Jarvis.Multitenancy.EntityFramework` | 1.0.0 | Infrastructure (opt-in dedicated DB) |
 | Caching | `Jarvis.Caching` | 1.1.0 | Infrastructure (**bắt buộc trước EF**) |
 | Caching Redis | `Jarvis.Caching.Redis` | 1.1.0 | Infrastructure (tùy chọn) |
+| Blob | `Jarvis.BlobStoring` | 1.0.0 | Infrastructure (FileSystem built-in) |
 | MVC | `Jarvis.Mvc` | 1.1.0 | Host |
 | Swashbuckle | `Jarvis.Swashbuckle` | 1.0.1 | Host |
 | Health checks | `Jarvis.HealthChecks` | 1.0.0 | Host |
 | OpenTelemetry | `Jarvis.OpenTelemetry` | 1.0.1 | Host |
-| Authentication | `Jarvis.Authentications.*` | 1.0.1 | Host |
+| OTEL DDD | `Jarvis.OpenTelemetry.DDD` | 1.0.0 | Host |
+| Authentication | `Jarvis.Authentications` / `.*` | 1.0.1 | Host (`AddCurrentUser` + scheme) |
 
 Bảng đầy đủ / monorepo ProjectReference: [workflows/init.md](workflows/init.md), csproj repo Jarvis.
 
@@ -83,11 +87,12 @@ Bảng đầy đủ / monorepo ProjectReference: [workflows/init.md](workflows/i
 
 | Thứ tự | Lý do |
 |---|---|
-| `AddJarvisCaching()` → `AddEntityFramework()` | EF bọc `ITenantConnectionStringResolver` qua `ICacheService` |
-| `AddCoreDbContext` sau `AddEntityFramework` | Multitenancy + interceptor |
-| `AddJarvisOpenTelemetry` trước `Build()` | Plug-in trong callback `configureServices` |
+| `AddJarvisCaching()` → `AddEntityFramework()` | EF bọc resolver qua `ICacheService` |
+| `AddCurrentUser` + `AddCurrentTenant` + store trên Host | UoW / filter / OTEL.DDD |
+| `AddCoreDbContext<T>` sau `AddEntityFramework` | Shared DB; dedicated = Multitenancy.EF |
+| `AddJarvisOpenTelemetry` trước `Build()` | Plug-in + `AddUserContextTelemetryEnrichment` trong callback |
 
-Skill chuyên sâu: [entityframework-dotnet](../entityframework-dotnet/README.md) · [caching-dotnet](../caching-dotnet/README.md) · [telemetry-dotnet](../telemetry-dotnet/README.md)
+Skill chuyên sâu: [multitenancy-dotnet](../multitenancy-dotnet/README.md) · [caching-dotnet](../caching-dotnet/README.md) · [telemetry-dotnet](../telemetry-dotnet/README.md)
 
 ## Modules (atomic)
 
@@ -96,13 +101,18 @@ Skill chuyên sâu: [entityframework-dotnet](../entityframework-dotnet/README.md
 | Foundation | [foundation-dotnet](../foundation-dotnet/README.md) |
 | Application | [application-dotnet](../application-dotnet/README.md) |
 | Authentication | [authentication-dotnet](../authentication-dotnet/README.md) |
-| Notification | [notification-dotnet](../notification-dotnet/README.md) |
-| Entity Framework | [entityframework-dotnet](../entityframework-dotnet/README.md) |
+| Notification SMTP | [notification-dotnet](../notification-dotnet/README.md) — **không** inbox in-app |
+| Inbox in-app | [notifications-module-dotnet](../notifications-module-dotnet/README.md) |
+| Setting | [setting-dotnet](../setting-dotnet/README.md) |
+| Realtime | [realtime-dotnet](../realtime-dotnet/README.md) |
+| Tenant + EF | [multitenancy-dotnet](../multitenancy-dotnet/README.md) |
 | Caching | [caching-dotnet](../caching-dotnet/README.md) |
 | Blob storing | [blobstoring-dotnet](../blobstoring-dotnet/README.md) |
 | Swashbuckle | [swashbuckle-dotnet](../swashbuckle-dotnet/README.md) |
 | OpenTelemetry | [telemetry-dotnet](../telemetry-dotnet/README.md) |
 | Health checks | [healthcheck-dotnet](../healthcheck-dotnet/README.md) |
+| Observability | [observability-dotnet](../observability-dotnet/README.md) |
+| Troubleshooting | [troubleshooting-dotnet](../troubleshooting-dotnet/README.md) |
 
 Mở rộng module: dùng [templates/SKILLS.md](templates/SKILLS.md) và skill `*-dotnet` trong `.opencode/skills/`.
 

@@ -74,7 +74,7 @@ dotnet add "../tests/${PRODUCT}.Application.Tests" reference "${PRODUCT}.Applica
 
 **Host** — xem [templates/layer-csproj/Host.csproj.xml](../templates/layer-csproj/Host.csproj.xml).
 
-**Infrastructure** — [templates/layer-csproj/Infrastructure.csproj.xml](../templates/layer-csproj/Infrastructure.csproj.xml) (`Jarvis.EntityFramework` + **`Jarvis.Caching`** — bắt buộc cho EF).
+**Infrastructure** — [templates/layer-csproj/Infrastructure.csproj.xml](../templates/layer-csproj/Infrastructure.csproj.xml) (`Jarvis.ORM.EntityFramework` + **`Jarvis.Caching`** + `Jarvis.BlobStoring`).
 
 **Application** — [templates/layer-csproj/Application.csproj.xml](../templates/layer-csproj/Application.csproj.xml).
 
@@ -104,6 +104,8 @@ Copy từ `templates/layers/` → đúng project (đổi namespace `{Product}`):
 | `layers/IAppUnitOfWork.cs` | `{Product}.Domain/Repositories/` |
 | `layers/AppDbContext.cs` | `{Product}.Infrastructure/Persistence/` |
 | `layers/AppUnitOfWork.cs` | `{Product}.Infrastructure/Persistence/` |
+| `layers/CurrentUserStore.cs` | `{Product}.Host/Services/` |
+| `layers/CurrentTenantStore.cs` | `{Product}.Host/Services/` |
 | `layers/EnrichTraceService.cs` | `{Product}.Host/Services/` |
 | `layers/EnrichLogService.cs` | `{Product}.Host/Services/` |
 | `layers/HostLayerExtension.cs` | `{Product}.Host` |
@@ -148,7 +150,7 @@ dotnet run --project "${PRODUCT}.Host"
 | Entity / handler | Code product + [application-dotnet](../../application-dotnet/workflows/add.md) |
 | JWT / API Key | [authentication-dotnet](../../authentication-dotnet/README.md) |
 | Redis cache | [caching-dotnet](../../caching-dotnet/workflows/add.md) |
-| EF pattern | [entityframework-dotnet](../../entityframework-dotnet/README.md) |
+| EF pattern | [multitenancy-dotnet](../../multitenancy-dotnet/README.md) |
 | Readiness PostgreSQL | [healthcheck-dotnet](../../healthcheck-dotnet/SKILL.md) |
 | Blob / email | [blobstoring-dotnet](../../blobstoring-dotnet/README.md), [notification-dotnet](../../notification-dotnet/README.md) |
 

@@ -23,7 +23,7 @@ Nếu MST, MinIO, API connection → [patterns/custom-di/SKILL.md](../patterns/c
 ## Bước 3 — Đổi từ single → separate
 
 - Thêm `MasterDbContext`, `Tenant` entity `ITenantManagementEntity`
-- Đổi `AddCoreDbContext` sang overload 2 generic
+- Thêm `AddMultitenancyEntityFramework()` + overload 2 generic (`Jarvis.Multitenancy.EntityFramework`)
 - Migrate dữ liệu tenant sang DB riêng (ngoài Jarvis)
 
 ## Anti-patterns

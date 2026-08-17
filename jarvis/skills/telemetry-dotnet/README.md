@@ -30,7 +30,8 @@ Thêm Redis trace instrumentation + enrich header allowlist.
 | Thành phần | Vai trò |
 |------------|---------|
 | `Jarvis.OpenTelemetry` | Hosting, options, instrumentation mặc định, middleware |
-| `Jarvis.OpenTelemetry.Instrumentation.StackExchangeRedis` | Redis trace qua `ITraceInstrumentation` (tùy chọn) |
+| `Jarvis.OpenTelemetry.DDD` | `AddUserContextTelemetryEnrichment<TUser, TTenant>()` |
+| `Jarvis.Caching.Redis` | Redis trace: `AddJarvisCachingDistributedRedisInstrumentation` (không package OTEL Redis riêng) |
 
 ```
 Jarvis.OpenTelemetry/
@@ -90,7 +91,7 @@ public sealed class MyJobWorker(
 
 Đăng ký: `builder.Services.AddHostedService<MyJobWorker>()`.
 
-Job EF multitenancy: [entityframework-dotnet/README.md](../entityframework-dotnet/README.md) — `CreateAsyncScope` → `SwitchDbContextAsync` → `GetRepositoryAsync` lại.
+Job EF multitenancy: [multitenancy-dotnet/README.md](../multitenancy-dotnet/README.md) — `CreateAsyncScope` → `SwitchDbContextAsync` → `GetRepositoryAsync` lại.
 
 Scaffold Jarvis mặc định đã gọi `AddJarvisOpenTelemetry` trong `HostLayerExtension` — xem [jarvis-dotnet](../jarvis-dotnet/README.md).
 

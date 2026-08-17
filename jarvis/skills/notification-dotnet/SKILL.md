@@ -10,6 +10,8 @@ metadata:
 
 Skill điều phối `Jarvis.Notification` + `Jarvis.Notification.Mailkit` trên Host.
 
+**Phạm vi SMTP only.** Inbox in-app (`Jarvis.Modules.Notifications*`) là skill sóng 2 `notifications-module-dotnet` — không gộp vào đây.
+
 Hướng dẫn: [README.md](README.md).
 
 ## Khi nào dùng workflow nào

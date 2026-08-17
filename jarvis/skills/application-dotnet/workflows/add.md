@@ -25,4 +25,4 @@ Jarvis hỗ trợ async dispatcher — handler implement async method tương �
 
 ## Liên quan EF
 
-Handler inject `IAppUnitOfWork` / repository — xem [entityframework-dotnet](../../entityframework-dotnet/README.md). Job: `SwitchDbContextAsync` trước khi query.
+Handler inject `IAppUnitOfWork` / repository — xem [multitenancy-dotnet](../../multitenancy-dotnet/README.md). Job: `SwitchDbContextAsync` trước khi query.

@@ -20,8 +20,8 @@
 | Layer product | Jarvis packages (version develop) |
 |---|---|
 | Application | `Jarvis.DDD.Application` 1.2.1, `Jarvis.DDD.Application.Contracts` 1.2.1 |
-| Infrastructure | `Jarvis.EntityFramework` 1.0.0, **`Jarvis.Caching` 1.1.0** (trước EF) |
-| Host | `Jarvis.Mvc` 1.1.0, `Jarvis.Swashbuckle` 1.0.1, `Jarvis.HealthChecks` 1.0.0, `Jarvis.OpenTelemetry` 1.0.1, `Jarvis.DDD.Domain` 1.1.1 |
+| Infrastructure | `Jarvis.ORM.EntityFramework` 1.0.0, **`Jarvis.Caching` 1.1.0** (trước EF), `Jarvis.BlobStoring` 1.0.0 |
+| Host | `Jarvis.Mvc` 1.1.0, `Jarvis.Authentications` 1.0.1, `Jarvis.Multitenancy` 1.0.0, `Jarvis.Swashbuckle` 1.0.1, `Jarvis.HealthChecks` 1.0.0, `Jarvis.OpenTelemetry` 1.0.1, `Jarvis.OpenTelemetry.DDD` 1.0.0, `Jarvis.DDD.Domain` 1.1.1 |
 
 **Thứ tự Infrastructure:** `AddJarvisCaching()` → `AddEntityFramework()` → `AddCoreDbContext(...)`.
 

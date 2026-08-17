@@ -12,11 +12,11 @@
 
 ## Jarvis integration (scaffold mặc định)
 
-| Layer | Package / API | Skill mở rộng (repo Jarvis `.opencode/skills/`) |
-|-------|----------------|--------------------------------------------------|
+| Layer | Package / API | Skill mở rộng (`ai-skills/jarvis/skills/`) |
+|-------|----------------|---------------------------------------------|
 | Application | `Jarvis.DDD.Application` — CQRS | `application-dotnet` |
-| Infrastructure | `Jarvis.Caching` → `Jarvis.EntityFramework` | `caching-dotnet`, `entityframework-dotnet` |
-| Host | Mvc, Swashbuckle, HealthChecks, OpenTelemetry | `foundation-dotnet`, `swashbuckle-dotnet`, `healthcheck-dotnet`, `telemetry-dotnet` |
+| Infrastructure | `Jarvis.Caching` → `Jarvis.ORM.EntityFramework` | `caching-dotnet`, `multitenancy-dotnet` |
+| Host | Mvc, CurrentUser/Tenant, Swashbuckle, HealthChecks, OTEL + DDD | `foundation-dotnet`, `swashbuckle-dotnet`, `healthcheck-dotnet`, `telemetry-dotnet` |
 
 Chưa có trong scaffold — thêm khi cần: `authentication-dotnet`, `notification-dotnet`, `blobstoring-dotnet`.
 

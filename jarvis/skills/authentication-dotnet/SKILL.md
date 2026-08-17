@@ -23,7 +23,8 @@ Hướng dẫn: [README.md](README.md).
 
 ## Quy tắc cốt lõi
 
-- Entry point **bắt buộc**: `builder.Services.AddJarvisAuthentication(configuration, auth => { ... })` — bind section `Authentication`, validate `Type`, đăng ký `IPasswordPolicyValidator`, set Default Authenticate/Challenge scheme. **Không** gọi `services.AddAuthentication()` trực tiếp.
+- Identity ambient (nửa Host, khác scheme): `builder.AddCurrentUser<T>()` + `ICurrentUserStore<T>` — xem [foundation-dotnet](../foundation-dotnet/README.md). Scheme JWT/API Key **không** thay thế bước này.
+- Entry point scheme **bắt buộc**: `builder.Services.AddJarvisAuthentication(configuration, auth => { ... })` — bind section `Authentication`, validate `Type`, đăng ký `IPasswordPolicyValidator`, set Default Authenticate/Challenge scheme. **Không** gọi `services.AddAuthentication()` trực tiếp.
 - Satellite `AddCore*` đăng ký **trong callback**: `auth.AddCoreJwtBearer(...)` / `AddCoreApiKey<>` / `AddCoreBasic<>`.
 - ≥ 2 scheme → `auth.AddJarvisCompositeScheme(includeBasic: ...)` + `DefaultAuthenticateScheme = "Composite"` (forward theo header: API key → Basic → Bearer).
 - Pipeline: `UseAuthentication()` → `UseAuthorization()` **trước** `MapControllers`.

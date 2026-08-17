@@ -33,4 +33,4 @@ Mẫu: [templates/application-extension.cs](./templates/application-extension.cs
 ## Liên quan
 
 - [jarvis-dotnet](../jarvis-dotnet/README.md) — scaffold Application project
-- [entityframework-dotnet](../entityframework-dotnet/README.md) — handler dùng UoW/repository
+- [multitenancy-dotnet](../multitenancy-dotnet/README.md) — handler dùng UoW/repository

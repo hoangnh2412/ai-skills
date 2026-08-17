@@ -1,8 +1,8 @@
 ---
-name: entityframework-dotnet-single-db
+name: multitenancy-dotnet-single-db
 description: Đăng ký Jarvis EF single database — AddCoreDbContext một generic, ITenantEntity filter theo TenantId. Dùng khi SaaS dùng chung một DB.
 dependencies:
-  - Jarvis.EntityFramework
+  - Jarvis.ORM.EntityFramework
   - Npgsql.EntityFrameworkCore.PostgreSQL
 ---
 

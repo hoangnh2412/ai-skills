@@ -1,8 +1,12 @@
-using Jarvis.DDD.Domain.Services;
 using Jarvis.OpenTelemetry.Abstractions;
-using Microsoft.AspNetCore.Http;
 
 namespace {Product}.Host.Services;
 
-public sealed class EnrichTraceService(IHttpContextAccessor httpContextAccessor)
-  : EnrichDataService(httpContextAccessor), IEnrichTraceService;
+/// <summary>
+/// Enrich tùy chọn (tag ổn định). User/tenant mặc định: AddUserContextTelemetryEnrichment trên Host.
+/// </summary>
+public sealed class EnrichTraceService : IEnrichTraceService
+{
+  public Task<Dictionary<string, string>> ExtractAsync()
+    => Task.FromResult(new Dictionary<string, string>());
+}

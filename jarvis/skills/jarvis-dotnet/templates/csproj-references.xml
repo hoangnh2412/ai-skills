@@ -1,11 +1,12 @@
 <!-- ProjectReference đầy đủ — tham chiếu Sample/Sample.csproj -->
-<!-- Framework packages nằm trong frameworks/; Domain/Application vẫn ở root repo -->
+<!-- Framework packages nằm trong frameworks/ -->
 <!-- Chỉ copy module cần dùng, không bắt buộc reference hết -->
 
 <ItemGroup>
   <!-- Persistence -->
-  <ProjectReference Include="..\frameworks\Jarvis.EntityFramework\Jarvis.EntityFramework.csproj" />
-  <ProjectReference Include="..\frameworks\Jarvis.EntityFramework.PostgreSql\Jarvis.EntityFramework.PostgreSql.csproj" />
+  <ProjectReference Include="..\frameworks\Jarvis.ORM.EntityFramework\Jarvis.ORM.EntityFramework.csproj" />
+  <ProjectReference Include="..\frameworks\Jarvis.ORM.Dapper\Jarvis.ORM.Dapper.csproj" />
+  <ProjectReference Include="..\frameworks\Jarvis.Multitenancy.EntityFramework\Jarvis.Multitenancy.EntityFramework.csproj" />
 
   <!-- Web & API -->
   <ProjectReference Include="..\frameworks\Jarvis.Mvc\Jarvis.Mvc.csproj" />
@@ -13,22 +14,25 @@
 
   <!-- Cross-cutting -->
   <ProjectReference Include="..\frameworks\Jarvis.OpenTelemetry\Jarvis.OpenTelemetry.csproj" />
+  <ProjectReference Include="..\frameworks\Jarvis.OpenTelemetry.DDD\Jarvis.OpenTelemetry.DDD.csproj" />
   <ProjectReference Include="..\frameworks\Jarvis.HealthChecks\Jarvis.HealthChecks.csproj" />
-  <ProjectReference Include="..\frameworks\Jarvis.OpenTelemetry.Instrumentation.StackExchangeRedis\Jarvis.OpenTelemetry.Instrumentation.StackExchangeRedis.csproj" />
+  <ProjectReference Include="..\frameworks\Jarvis.Multitenancy\Jarvis.Multitenancy.csproj" />
 
-  <!-- Caching -->
+  <!-- Caching — Redis instrumentation nằm trong Jarvis.Caching.Redis -->
   <ProjectReference Include="..\frameworks\Jarvis.Caching.Redis\Jarvis.Caching.Redis.csproj" />
 
   <!-- Authentication -->
+  <ProjectReference Include="..\frameworks\Jarvis.Authentication\Jarvis.Authentication.csproj" />
   <ProjectReference Include="..\frameworks\Jarvis.Authentication.Jwt\Jarvis.Authentication.Jwt.csproj" />
   <ProjectReference Include="..\frameworks\Jarvis.Authentication.ApiKey\Jarvis.Authentication.ApiKey.csproj" />
   <ProjectReference Include="..\frameworks\Jarvis.Authentication.Cognito\Jarvis.Authentication.Cognito.csproj" />
 
-  <!-- Blob -->
-  <ProjectReference Include="..\frameworks\Jarvis.BlobStoring.FileSystem\Jarvis.BlobStoring.FileSystem.csproj" />
+  <!-- Blob — FileSystem built-in Jarvis.BlobStoring; satellite MinIO / AwsS3 -->
+  <ProjectReference Include="..\frameworks\Jarvis.BlobStoring\Jarvis.BlobStoring.csproj" />
   <ProjectReference Include="..\frameworks\Jarvis.BlobStoring.MinIO\Jarvis.BlobStoring.MinIO.csproj" />
+  <ProjectReference Include="..\frameworks\Jarvis.BlobStoring.AwsS3\Jarvis.BlobStoring.AwsS3.csproj" />
 
-  <!-- Notification -->
+  <!-- Notification SMTP -->
   <ProjectReference Include="..\frameworks\Jarvis.Notification.Mailkit\Jarvis.Notification.Mailkit.csproj" />
 </ItemGroup>
 

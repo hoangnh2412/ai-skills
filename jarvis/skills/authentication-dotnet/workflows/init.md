@@ -5,6 +5,7 @@
 ## Checklist
 
 ```text
+- [ ] 0. Host đã AddCurrentUser + store (foundation) — scheme không thay thế
 - [ ] 1. Chọn scheme (jwt | api-key | basic | cognito) — có thể ≥ 1
 - [ ] 2. Đọc providers/<name>/SKILL.md tương ứng
 - [ ] 3. Thêm package Jarvis.Authentications.* (core + satellite)

@@ -173,7 +173,7 @@ Review PR theo code-review; solution theo Jarvis layered architecture
 
 **Orchestrator chính** — scaffold solution phân lớp + cài Jarvis trên ASP.NET Core .NET 9.
 
-**Hướng dẫn:** [jarvis-dotnet/README.md](../.opencode/skills/jarvis-dotnet/README.md) · EF: [entityframework-dotnet](../.opencode/skills/entityframework-dotnet/README.md) · Cache: [caching-dotnet](../.opencode/skills/caching-dotnet/README.md) · Hub: [.opencode/README.md](../.opencode/README.md)
+**Hướng dẫn:** [jarvis-dotnet/README.md](../.opencode/skills/jarvis-dotnet/README.md) · EF: [multitenancy-dotnet](../.opencode/skills/multitenancy-dotnet/README.md) · Cache: [caching-dotnet](../.opencode/skills/caching-dotnet/README.md) · Hub: [.opencode/README.md](../.opencode/README.md)
 
 | Luồng | Workflow | Khi nào |
 |-------|----------|---------|
@@ -189,7 +189,7 @@ Review PR theo code-review; solution theo Jarvis layered architecture
 │   ├── {Product}.Domain.Shared
 │   ├── {Product}.Domain
 │   ├── {Product}.Application      → Jarvis.Application
-│   ├── {Product}.Infrastructure   → Jarvis.EntityFramework
+│   ├── {Product}.Infrastructure   → Jarvis.ORM.EntityFramework
 │   └── {Product}.Host             → Jarvis.Mvc, OTEL, HealthChecks, Swagger
 └── tests/
 ```
@@ -202,7 +202,7 @@ Review PR theo code-review; solution theo Jarvis layered architecture
 |--------|-------|
 | Foundation | [foundation-dotnet](../.opencode/skills/foundation-dotnet/README.md) |
 | Application (CQRS) | [application-dotnet](../.opencode/skills/application-dotnet/README.md) |
-| Entity Framework | [entityframework-dotnet](../.opencode/skills/entityframework-dotnet/README.md) |
+| Entity Framework | [multitenancy-dotnet](../.opencode/skills/multitenancy-dotnet/README.md) |
 | Caching | [caching-dotnet](../.opencode/skills/caching-dotnet/README.md) |
 | Authentication | [authentication-dotnet](../.opencode/skills/authentication-dotnet/README.md) |
 | Blob storing | [blobstoring-dotnet](../.opencode/skills/blobstoring-dotnet/README.md) |

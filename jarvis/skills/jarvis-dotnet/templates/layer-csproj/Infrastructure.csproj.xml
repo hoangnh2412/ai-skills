@@ -1,21 +1,24 @@
 <!-- Merge into {Product}.Infrastructure.csproj -->
-<!-- Skills: caching-dotnet, entityframework-dotnet, blobstoring-dotnet, notification-dotnet (tùy chọn) -->
+<!-- Skills: caching-dotnet, multitenancy-dotnet, blobstoring-dotnet, notification-dotnet (tùy chọn) -->
 <!-- Map: jarvis-dotnet/templates/SKILLS.md -->
 <ItemGroup>
   <FrameworkReference Include="Microsoft.AspNetCore.App" />
 </ItemGroup>
 <ItemGroup>
-  <PackageReference Include="Jarvis.EntityFramework" Version="1.0.0" />
+  <PackageReference Include="Jarvis.ORM.EntityFramework" Version="1.0.0" />
   <PackageReference Include="Jarvis.Caching" Version="1.1.0" />
+  <PackageReference Include="Jarvis.BlobStoring" Version="1.0.0" />
 </ItemGroup>
 <ItemGroup>
   <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.*" />
   <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.*" />
 </ItemGroup>
+<!-- Dedicated tenant DB (opt-in): Jarvis.Multitenancy.EntityFramework -->
 <!-- Monorepo Jarvis — framework packages trong frameworks/: -->
 <!--
 <ItemGroup>
-  <ProjectReference Include="{JarvisRoot}/frameworks/Jarvis.EntityFramework/Jarvis.EntityFramework.csproj" />
+  <ProjectReference Include="{JarvisRoot}/frameworks/Jarvis.ORM.EntityFramework/Jarvis.ORM.EntityFramework.csproj" />
   <ProjectReference Include="{JarvisRoot}/frameworks/Jarvis.Caching/Jarvis.Caching.csproj" />
+  <ProjectReference Include="{JarvisRoot}/frameworks/Jarvis.BlobStoring/Jarvis.BlobStoring.csproj" />
 </ItemGroup>
 -->

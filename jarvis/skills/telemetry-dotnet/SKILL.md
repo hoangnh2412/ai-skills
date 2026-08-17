@@ -23,7 +23,8 @@ Kiến trúc & hướng dẫn: [README.md](README.md).
 
 - `AddJarvisOpenTelemetry(configuration, configureServices)` → `.ConfigureResource()` → `.ConfigureLogging()` / `.ConfigureTrace()` / `.ConfigureMetric()`.
 - Plug-in (`ITraceInstrumentation`, enricher, …) đăng ký **trong** callback `configureServices` (trước `Build()`).
-- `app.UseJarvisOpenTelemetry()` khi cần tag trace / log scope từ `IEnrich*`.
+- User/tenant trên span/log: `services.AddUserContextTelemetryEnrichment<TUser, TTenant>()` (`Jarvis.OpenTelemetry.DDD`) trong callback — **không** kế thừa type Domain đã xóa.
+- `app.UseJarvisOpenTelemetry()` khi cần tag trace / log scope từ `IEnrich*` / `IEnrichmentSource`.
 - Config theo signal: `OTEL:Tracing`, `OTEL:Metric`, `OTEL:Logging`.
 - `HttpTraceEnrichment`: allowlist header — không capture toàn bộ header.
 - Không hard-code OTLP secrets; dùng env / secret store.
@@ -42,7 +43,7 @@ Chỉ đọc provider cần dùng:
 
 | Provider | Path |
 |---|---|
-| Enrich trace/log | [providers/enrich/SKILL.md](providers/enrich/SKILL.md) |
+| Enrich trace/log + OTEL.DDD | [providers/enrich/SKILL.md](providers/enrich/SKILL.md) |
 | Redis trace | [providers/redis/SKILL.md](providers/redis/SKILL.md) |
 | EF Core trace | [providers/entityframework/SKILL.md](providers/entityframework/SKILL.md) |
 | Custom trace plug-in | [providers/trace-plugin/SKILL.md](providers/trace-plugin/SKILL.md) |

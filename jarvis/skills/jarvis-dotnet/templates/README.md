@@ -13,4 +13,4 @@ Thay `{Product}`, `{product}`, `{JarvisRoot}` trước khi copy vào solution.
 
 Workflow: [workflows/scaffold.md](../workflows/scaffold.md).
 
-Dùng skill độc lập trong `.opencode/skills/<tên>-dotnet/` — xem [SKILLS.md](SKILLS.md).
+Dùng skill độc lập trong `ai-skills/jarvis/skills/<tên>-dotnet/` (consumer symlink `.cursor/skills` hoặc `.opencode/skills`) — xem [SKILLS.md](SKILLS.md).
