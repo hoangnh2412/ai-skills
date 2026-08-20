@@ -34,7 +34,7 @@ Repo này **là bản thân bộ pipeline** (source of truth của skill), khôn
 - **Pack:** `minipower/` (lõi pipeline BA+SA+TPM) · `jarvis/` (skill implementation .NET) · `SOPs/` (quy chuẩn dùng chung + `interview/`) · `ADRs/` (quyết định định hướng) · `COORDINATION.md` (hợp đồng liên-pack/liên-repo).
 - **Trong `minipower/`:** `skills/{phase}/SKILL.md` (6 phase + `deliberation`/`doc-review`/`readiness-gate`) · `agents/*.md` (guardrail markdown thuần) · `hooks/{bin,lib,test}/` (Node ESM) · `roles/*.md` (7 lăng kính) · `templates/` (DOC-01–18 + TPL phụ trợ) · `project-skeleton/` + `docs-skeleton/` (khung dự án đích) · `install/{cursor,claude,opencode}/`.
 - **ID artifact dự án đích:** `{MOD}-{UC|FR|BR|AC|NFR}-NNN`, `DEC-{PHASE}-NNN`, `ADR-NNN`, `DOC-NN`. Cross-ref bằng ID, **không** copy nội dung FR giữa module.
-- **ADR:** đặt tại `ADRs/`, tên `{status}_{yyyy-MM-dd}_{slug}.md` — status ∈ `proposed`/`accepted`/`superseded`/`paused`/`deferred`/`merged`. Mỗi ADR tự khai mục **Ảnh hưởng** (quyết định chi phối nội dung/file nào); file cụ thể **không** trỏ ngược về ADR. Đổi triết lý/phạm vi → ghi/đối chiếu ADR **trước**.
+- **ADR:** đặt tại `ADRs/`, tên `ADR-NNN-yyyy-MM-dd-slug.md` — **mã `ADR-NNN` bất biến**, cấp theo thứ tự thời gian, không đổi khi trạng thái đổi; **trạng thái KHÔNG nằm trong tên file** mà khai ở [`ADRs/README.md`](ADRs/README.md) (Pending 🔴 / Todo ⚪ / Doing 🟡 / Done 🟢 / Cancel 🟣). Thêm ADR = tạo file + thêm một dòng vào `ADRs/README.md` trong cùng commit. Mỗi ADR tự khai mục **Ảnh hưởng** (quyết định chi phối nội dung/file nào); file cụ thể **không** trỏ ngược về ADR. Đổi triết lý/phạm vi → ghi/đối chiếu ADR **trước**.
 
 ### Build / Test / Run
 Chạy trong `minipower/hooks/`:

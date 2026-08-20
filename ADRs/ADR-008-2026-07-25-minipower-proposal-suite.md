@@ -5,7 +5,7 @@
 | **Ngày** | 2026-07-25 |
 | **Trạng thái** | 📋 **Đề xuất** — chốt hướng; triển khai từng phần theo lộ trình R* (§6) |
 | **Phạm vi** | `minipower/` — 3 skill cross-phase + `proposal-scope.json` + tool ULNL/assembler |
-| **Nối tiếp** | [ADR 2026-07-20 định hướng](superseded_2026-07-20_dinh-huong-minipower-ai-ho-tro-ra-quyet-dinh.md) (§0, N5) · [ADR gated-fanout](paused_2026-07-20_minipower-gated-fanout-execution.md) |
+| **Nối tiếp** | [ADR 2026-07-20 định hướng](ADR-002-2026-07-20-dinh-huong-minipower-ai-ho-tro-ra-quyet-dinh.md) (§0, N5) · [ADR gated-fanout](ADR-003-2026-07-20-minipower-gated-fanout-execution.md) |
 | **Gộp từ** | ADR cha `proposal-skills` + 3 ADR con `proposal-quotation` / `-technical` / `-timeline` (2026-07-25) — xem §10 |
 | **Mục đích** | Một ADR tổng quát cho **gói chào khách hàng**: quyết định chung + chi tiết từng skill, thay cho cụm 4 ADR cha–con |
 
@@ -143,7 +143,7 @@ Chi_phí = Tổng_MD × rate_md      # + contingency, VAT (policy ngoài repo)
 7. Người duyệt trước gửi KH
 ```
 
-**Output KH** `DX-BaoGia-vX.Y.md`: (1) Phạm vi In/Out · (2) Tóm tắt MH theo nhóm (có thể ẩn GP/PT/KT) · (3) Phi chức năng/NFR · (4) Tổng MD + thành tiền + ROM · (5) Assumption · (6) Điều khoản ULNL lần 1. Nội bộ tùy chọn `PL-ChiTiet-MH-vX.Y.md` (bảng đầy đủ §9 ULNL). Schema `quotation-vX.Y.json` đầy đủ: xem [ADR merged](merged_2026-07-25_proposal-quotation.md) §4.
+**Output KH** `DX-BaoGia-vX.Y.md`: (1) Phạm vi In/Out · (2) Tóm tắt MH theo nhóm (có thể ẩn GP/PT/KT) · (3) Phi chức năng/NFR · (4) Tổng MD + thành tiền + ROM · (5) Assumption · (6) Điều khoản ULNL lần 1. Nội bộ tùy chọn `PL-ChiTiet-MH-vX.Y.md` (bảng đầy đủ §9 ULNL). Schema `quotation-vX.Y.json` đầy đủ: xem [ADR merged](ADR-005-2026-07-25-proposal-quotation.md) §4.
 
 **Golden test (R2):** ví dụ §12 ULNL — ba chức năng + TP → **77 MH**, **≈10.3 MD**.
 
@@ -323,10 +323,10 @@ Thêm vào `minipower/SKILL.md` và `rules.json` → `prereq_by_intent` khi đ�
 
 ADR này **gộp và thay** cụm 4 ADR cha–con (2026-07-25), nay giữ ở trạng thái `merged` làm lịch sử:
 
-- [merged — proposal-skills (ADR cha, chỉ mục & quyết định chung)](merged_2026-07-25_minipower-proposal-skills.md)
-- [merged — proposal-quotation (chi tiết Q, schema JSON đầy đủ)](merged_2026-07-25_proposal-quotation.md)
-- [merged — proposal-technical (chi tiết T, assembler)](merged_2026-07-25_proposal-technical.md)
-- [merged — proposal-timeline (chi tiết L)](merged_2026-07-25_proposal-timeline.md)
+- [merged — proposal-skills (ADR cha, chỉ mục & quyết định chung)](ADR-004-2026-07-25-minipower-proposal-skills.md)
+- [merged — proposal-quotation (chi tiết Q, schema JSON đầy đủ)](ADR-005-2026-07-25-proposal-quotation.md)
+- [merged — proposal-technical (chi tiết T, assembler)](ADR-006-2026-07-25-proposal-technical.md)
+- [merged — proposal-timeline (chi tiết L)](ADR-007-2026-07-25-proposal-timeline.md)
 
 **Tham chiếu:**
 - [`SOPs/ULNL.md`](../SOPs/ULNL.md) · [`SOPs/GiaiPhapKyThuat-KHUNG.md`](../SOPs/GiaiPhapKyThuat-KHUNG.md)

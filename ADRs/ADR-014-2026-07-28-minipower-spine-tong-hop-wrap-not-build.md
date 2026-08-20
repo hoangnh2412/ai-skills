@@ -5,9 +5,9 @@
 | **Ngày** | 2026-07-28 |
 | **Trạng thái** | 📋 **Phân tích — CHƯA quyết.** Kiểu `deliberation` (Premise Check → verdict → borrow plan). Người quyết đã khẳng định 3 định hướng (§5); còn câu hỏi §8 trước khi có ADR triển khai. |
 | **Phạm vi** | Định vị toàn `minipower/` — đối chiếu Superpowers · OpenSpec · BMAD · SpecKit; chốt "học lại cái gì, wrap cái gì, không xây lại cái gì". **Chưa** chạm code. |
-| **Nối tiếp** | [đánh giá 2026-07-17](accepted_2026-07-17_danh-gia-minipower-va-chien-luoc-phat-trien.md) (moat + "co lại trước khi mở rộng") · [định hướng 2026-07-20](superseded_2026-07-20_dinh-huong-minipower-ai-ho-tro-ra-quyet-dinh.md) (AI Project Intelligence) · [gated-fanout](paused_2026-07-20_minipower-gated-fanout-execution.md) · [orchestrator-analysis](proposed_2026-07-25_minipower-orchestrator-analysis.md) · [senior-junior](proposed_2026-07-26_minipower-senior-junior-execution.md) |
+| **Nối tiếp** | [đánh giá 2026-07-17](ADR-001-2026-07-17-danh-gia-minipower-va-chien-luoc-phat-trien.md) (moat + "co lại trước khi mở rộng") · [định hướng 2026-07-20](ADR-002-2026-07-20-dinh-huong-minipower-ai-ho-tro-ra-quyet-dinh.md) (AI Project Intelligence) · [gated-fanout](ADR-003-2026-07-20-minipower-gated-fanout-execution.md) · [orchestrator-analysis](ADR-009-2026-07-25-minipower-orchestrator-analysis.md) · [senior-junior](ADR-013-2026-07-26-minipower-senior-junior-execution.md) |
 | **Mục đích** | Trả lời dứt điểm "Minipower có đang làm lại cái đã có không"; chốt định vị tổng hợp; lập **bảng borrow cụ thể** từ 4 công cụ, ánh xạ vào `rules.json`/skill/gate; đối chiếu-revise các ADR execution đang treo. |
-| **Ảnh hưởng** *(nếu accepted)* | [AGENTS.md](../AGENTS.md) §0 (định vị "spine tổng hợp, wrap-not-build" bổ sung cho "AI Project Intelligence") · revise phần lộ trình của [gated-fanout §4](paused_2026-07-20_minipower-gated-fanout-execution.md) + [orchestrator §5/§9](proposed_2026-07-25_minipower-orchestrator-analysis.md) + [senior-junior §3](proposed_2026-07-26_minipower-senior-junior-execution.md) cho khớp mô hình "giao code, trợ lý theo vai". |
+| **Ảnh hưởng** *(nếu accepted)* | [AGENTS.md](../AGENTS.md) §0 (định vị "spine tổng hợp, wrap-not-build" bổ sung cho "AI Project Intelligence") · revise phần lộ trình của [gated-fanout §4](ADR-003-2026-07-20-minipower-gated-fanout-execution.md) + [orchestrator §5/§9](ADR-009-2026-07-25-minipower-orchestrator-analysis.md) + [senior-junior §3](ADR-013-2026-07-26-minipower-senior-junior-execution.md) cho khớp mô hình "giao code, trợ lý theo vai". |
 
 ---
 
@@ -137,7 +137,7 @@ Nguyên tắc: **mượn cơ chế, không mượn quy mô** (ADR 07-17: Superpo
 | ID | Cơ chế | Ánh xạ Minipower | Ưu tiên |
 |----|--------|------------------|:---:|
 | **B1** | **Sharded step-files**: Skill = `SKILL.md` entrypoint + `step-XX-name.md` + metadata; agent **chỉ nạp bước đang chạy** (chống "lost in the middle", giảm token) | Skill hiện monolithic → tách entrypoint + step rời; `rules.json` dispatch tới **step**, không chỉ phase. Cộng hưởng [token-guard](../minipower/docs/token-guard.md) | 🔴 Cao |
-| **B2** | **Story file = gói handoff hoàn chỉnh, mỗi story chạy fresh-context** | Trùng khít **hợp đồng 7-trường** senior→junior ([senior-junior §3.1](proposed_2026-07-26_minipower-senior-junior-execution.md)) + one-owner-per-module ([parallel-work](../minipower/docs/parallel-work.md)). Ép fresh-context mỗi junior | 🔴 Cao |
+| **B2** | **Story file = gói handoff hoàn chỉnh, mỗi story chạy fresh-context** | Trùng khít **hợp đồng 7-trường** senior→junior ([senior-junior §3.1](ADR-013-2026-07-26-minipower-senior-junior-execution.md)) + one-owner-per-module ([parallel-work](../minipower/docs/parallel-work.md)). Ép fresh-context mỗi junior | 🔴 Cao |
 | **B3** | **Handoff artifact-tên-rõ mỗi ranh giới** (Analyst→PM→Architect + **Implementation Readiness review**→Dev→Review) | = [COORDINATION.md](../COORDINATION.md) H1–H6 + [readiness-gate](../minipower/skills/readiness-gate/SKILL.md). BMAD xác nhận gate-model đúng | 🟡 Đối chiếu |
 | **B4** | **Scale-adaptive** depth theo cỡ dự án | Đã có [complexity-rubric](../minipower/skills/planning/complexity-rubric.md) + micro/light/full → nâng: tier quyết **step nào nạp** (nối B1) | 🟢 Nối B1 |
 
@@ -192,9 +192,9 @@ Nguyên tắc: **mượn cơ chế, không mượn quy mô** (ADR 07-17: Superpo
 
 | ADR | Hiện trạng | Revise theo định vị §3 |
 |-----|-----------|------------------------|
-| [gated-fanout](paused_2026-07-20_minipower-gated-fanout-execution.md) (paused) | Pivot §0 sang fan-out execution; 8 bước tới code+Lark; chờ SOP Lark | **Giữ** fan-out sinh DOC (B/C). Nhánh code (b7) = **wrap jarvis + review 2-tầng (P1/P2)**, không engine tự viết. Nhánh Lark (E) = **wrap MCP + cổng ghi (5.2)**, không adapter tự code |
-| [orchestrator-analysis](proposed_2026-07-25_minipower-orchestrator-analysis.md) (proposed) | RESHAPE; connector L3 = "nền tảng thứ tư", chờ Q1–Q6 | Q2 chốt: **connector = wrap MCP (5.2)**, không tự build → **hết** lo "nền tảng thứ tư". "Agent = role skill-pack" khớp **B1/B2 sharded** |
-| [senior-junior](proposed_2026-07-26_minipower-senior-junior-execution.md) (proposed) | PROCEED-reshape; DEV code-gen, junior model-free, QC loop ≤3 | Hợp đồng 7-trường = **story file B2**; QC loop = **review 2-tầng P1** + test-first **P2**; codegen = **jarvis (5.3)**, không tự sinh thô. Giữ **cổng người nghiệm thu cuối** |
+| [gated-fanout](ADR-003-2026-07-20-minipower-gated-fanout-execution.md) (paused) | Pivot §0 sang fan-out execution; 8 bước tới code+Lark; chờ SOP Lark | **Giữ** fan-out sinh DOC (B/C). Nhánh code (b7) = **wrap jarvis + review 2-tầng (P1/P2)**, không engine tự viết. Nhánh Lark (E) = **wrap MCP + cổng ghi (5.2)**, không adapter tự code |
+| [orchestrator-analysis](ADR-009-2026-07-25-minipower-orchestrator-analysis.md) (proposed) | RESHAPE; connector L3 = "nền tảng thứ tư", chờ Q1–Q6 | Q2 chốt: **connector = wrap MCP (5.2)**, không tự build → **hết** lo "nền tảng thứ tư". "Agent = role skill-pack" khớp **B1/B2 sharded** |
+| [senior-junior](ADR-013-2026-07-26-minipower-senior-junior-execution.md) (proposed) | PROCEED-reshape; DEV code-gen, junior model-free, QC loop ≤3 | Hợp đồng 7-trường = **story file B2**; QC loop = **review 2-tầng P1** + test-first **P2**; codegen = **jarvis (5.3)**, không tự sinh thô. Giữ **cổng người nghiệm thu cuối** |
 
 **Không** ADR nào bị abandon — chỉ **định hình lại engine từ "build" sang "wrap"**, và bổ sung các borrow §4.
 
@@ -240,7 +240,7 @@ Nguyên tắc: **mượn cơ chế, không mượn quy mô** (ADR 07-17: Superpo
 
 ## §10. Tham chiếu
 
-- ADR nội bộ: [đánh giá 2026-07-17](accepted_2026-07-17_danh-gia-minipower-va-chien-luoc-phat-trien.md) · [định hướng 2026-07-20](superseded_2026-07-20_dinh-huong-minipower-ai-ho-tro-ra-quyet-dinh.md) · [gated-fanout](paused_2026-07-20_minipower-gated-fanout-execution.md) · [orchestrator](proposed_2026-07-25_minipower-orchestrator-analysis.md) · [senior-junior](proposed_2026-07-26_minipower-senior-junior-execution.md)
+- ADR nội bộ: [đánh giá 2026-07-17](ADR-001-2026-07-17-danh-gia-minipower-va-chien-luoc-phat-trien.md) · [định hướng 2026-07-20](ADR-002-2026-07-20-dinh-huong-minipower-ai-ho-tro-ra-quyet-dinh.md) · [gated-fanout](ADR-003-2026-07-20-minipower-gated-fanout-execution.md) · [orchestrator](ADR-009-2026-07-25-minipower-orchestrator-analysis.md) · [senior-junior](ADR-013-2026-07-26-minipower-senior-junior-execution.md)
 - Máy Minipower: [rules.json](../minipower/hooks/lib/rules.json) · [deliberation](../minipower/skills/deliberation/SKILL.md) · [readiness-gate](../minipower/skills/readiness-gate/SKILL.md) · [doc-review](../minipower/skills/doc-review/SKILL.md) · [fan-out](../minipower/skills/fan-out/SKILL.md) · [token-guard](../minipower/docs/token-guard.md) · [parallel-work](../minipower/docs/parallel-work.md) · [COORDINATION.md](../COORDINATION.md)
 - Nghiên cứu ngoài (đọc source/doc, không dừng README):
   - BMAD — [Workflow Architecture (DeepWiki)](https://deepwiki.com/bmad-code-org/BMAD-METHOD/8.1-workflow-architecture) · [repo](https://github.com/bmad-code-org/BMAD-METHOD): sharded Skill (SKILL.md + step-XX), role-agent handoff, per-story fresh-context

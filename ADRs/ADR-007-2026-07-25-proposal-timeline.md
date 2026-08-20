@@ -3,13 +3,13 @@
 | | |
 |---|---|
 | **Ngày** | 2026-07-25 |
-| **Trạng thái** | 🗂️ **Đã gộp (merged)** → [proposal-suite §5](proposed_2026-07-25_minipower-proposal-suite.md). Giữ làm lịch sử — không cập nhật tiếp. |
-| **ADR cha** | [merged_2026-07-25_minipower-proposal-skills.md](merged_2026-07-25_minipower-proposal-skills.md) |
+| **Trạng thái** | 🗂️ **Đã gộp (merged)** → [proposal-suite §5](ADR-008-2026-07-25-minipower-proposal-suite.md). Giữ làm lịch sử — không cập nhật tiếp. |
+| **ADR cha** | [ADR-004-2026-07-25-minipower-proposal-skills.md](ADR-004-2026-07-25-minipower-proposal-skills.md) |
 | **Nguồn** | DOC-14 WBS · DOC-15 roadmap · GPKT III.3 |
 | **Skill (dự kiến)** | `minipower/skills/proposal-timeline/SKILL.md` |
 | **Mục đích** | Timeline milestone **KH-facing** + **mermaid Gantt** — distill, không thay `planning` |
 
-> 🗂️ **Đã gộp vào [proposed_2026-07-25_minipower-proposal-suite.md](proposed_2026-07-25_minipower-proposal-suite.md) §5** (2026-07-26). Bản lịch sử.
+> 🗂️ **Đã gộp vào [ADR-008-2026-07-25-minipower-proposal-suite.md](ADR-008-2026-07-25-minipower-proposal-suite.md) §5** (2026-07-26). Bản lịch sử.
 
 ---
 
@@ -162,7 +162,7 @@ gantt
 
 ## §9. Tham chiếu
 
-- [ADR cha](merged_2026-07-25_minipower-proposal-skills.md)
-- [proposal-technical](merged_2026-07-25_proposal-technical.md) · [proposal-quotation](merged_2026-07-25_proposal-quotation.md)
+- [ADR cha](ADR-004-2026-07-25-minipower-proposal-skills.md)
+- [proposal-technical](ADR-006-2026-07-25-proposal-technical.md) · [proposal-quotation](ADR-005-2026-07-25-proposal-quotation.md)
 - [`SOPs/GiaiPhapKyThuat-KHUNG.md`](../SOPs/GiaiPhapKyThuat-KHUNG.md) — III.3
 - [`minipower/skills/planning/SKILL.md`](../minipower/skills/planning/SKILL.md) — upstream DOC-15

@@ -3,16 +3,16 @@
 | | |
 |---|---|
 | **Ngày** | 2026-07-26 |
-| **Trạng thái** | 📋 **Phân tích — hướng đã chốt, implementation CHƯA mở.** Kiểu `deliberation`. Người đã chốt 3 nhánh bản lề (§0.1); còn câu hỏi §9 trước khi có ADR triển khai. |
+| **Trạng thái** | 🟣 **CANCEL** (2026-08-20) — cơ chế lõi là **QC loop chặn ≤3** + cổng người nghiệm thu, trái [ADR-019](ADR-019-2026-08-20-minipower-harness-khong-gate.md). **Kế thừa:** hợp đồng giao việc 7 trường (§3.1) + governance test-case (§3.2) như *khuyến nghị*, không phải cổng. Giữ làm lịch sử.<br>*(nguyên văn)* 📋 **Phân tích — hướng đã chốt, implementation CHƯA mở.** Kiểu `deliberation`. Người đã chốt 3 nhánh bản lề (§0.1); còn câu hỏi §9 trước khi có ADR triển khai. |
 | **Phạm vi** | `minipower/` — tinh chỉnh **cơ chế fan-out** (QĐ-2 của gated-fanout) + **mở lại một lát Giai đoạn E** (Bước 7: code + unit test). **Chưa** chạm code. |
-| **Nối tiếp** | [gated-fanout §0/QĐ-2/§4](paused_2026-07-20_minipower-gated-fanout-execution.md) (§0 đang hiệu lực) · [orchestrator-analysis](proposed_2026-07-25_minipower-orchestrator-analysis.md) (Trục A "role skill-pack") · [checkpoint tạm dừng E](accepted_2026-07-25_tam-dung-gated-fanout-checkpoint.md) |
+| **Nối tiếp** | [gated-fanout §0/QĐ-2/§4](ADR-003-2026-07-20-minipower-gated-fanout-execution.md) (§0 đang hiệu lực) · [orchestrator-analysis](ADR-009-2026-07-25-minipower-orchestrator-analysis.md) (Trục A "role skill-pack") · [checkpoint tạm dừng E](ADR-010-2026-07-25-tam-dung-gated-fanout-checkpoint.md) |
 | **Mục đích** | Ghi lại ý tưởng "Senior AI điều phối — Junior AI thực thi — Senior QC có vòng lặp chặn" và định hình nó **trong** §0 gated-fanout: người vẫn là người nghiệm thu cuối, không sinh nền tảng thứ tư. |
 
 ---
 
 ## §0. TL;DR — Verdict: **PROCEED-reshape (trong khuôn §0 gated-fanout)**
 
-- Ý tưởng **không phá §0 hiện hành.** §0 đã được pivot bởi [gated-fanout](paused_2026-07-20_minipower-gated-fanout-execution.md): *"Người quyết tại **mỗi cổng** · AI **fan-out sub-agent** thực thi song song **giữa hai cổng**."* Cấu trúc Senior→Junior chỉ là **một tinh chỉnh của cơ chế fan-out (QĐ-2)**, cộng ba thứ mới có giá trị.
+- Ý tưởng **không phá §0 hiện hành.** §0 đã được pivot bởi [gated-fanout](ADR-003-2026-07-20-minipower-gated-fanout-execution.md): *"Người quyết tại **mỗi cổng** · AI **fan-out sub-agent** thực thi song song **giữa hai cổng**."* Cấu trúc Senior→Junior chỉ là **một tinh chỉnh của cơ chế fan-out (QĐ-2)**, cộng ba thứ mới có giá trị.
 - **Ba đóng góp mới** (chưa có trong repo):
   1. **Hợp đồng giao việc 7 trường** (Senior → Junior) — formalize dispatch thành template chuẩn.
   2. **Phân tầng Senior/Junior + Junior chạy model free** — quyết định kinh tế học, hợp định vị model-agnostic.
@@ -38,7 +38,7 @@
 
 ## §2. Định vị trong §0 gated-fanout — vì sao KHÔNG phá triết lý
 
-Phản xạ thường gặp: "senior giao junior = agent-tự-bàn-giao-agent → trái §0". **Sai**, vì §0 hiện hành **không còn** cấm fan-out agent — [gated-fanout §0](paused_2026-07-20_minipower-gated-fanout-execution.md) đã supersede điều đó:
+Phản xạ thường gặp: "senior giao junior = agent-tự-bàn-giao-agent → trái §0". **Sai**, vì §0 hiện hành **không còn** cấm fan-out agent — [gated-fanout §0](ADR-003-2026-07-20-minipower-gated-fanout-execution.md) đã supersede điều đó:
 
 | §0 gated-fanout (đang hiệu lực) | Ý tưởng Senior/Junior khớp thế nào |
 |---|---|
@@ -47,7 +47,7 @@ Phản xạ thường gặp: "senior giao junior = agent-tự-bàn-giao-agent �
 | Q3: "mọi thứ AI thực hiện, **con người chỉ review**" | Senior QC = pre-filter; **người nghiệm thu cuối** (đúng §0.1). |
 | "Co lại trước khi mở rộng — dùng sub-agent harness sẵn có, **không nền tảng thứ tư**" | Junior = sub-agent harness; **không** thêm runtime multi-agent (LangGraph/CrewAI). |
 
-**Chốt:** ý tưởng là **evolution của QĐ-2** (sub-agent per-module), thêm lớp **persona 2 tầng + QC loop + dispatch contract**. Không phải hướng "autonomous multi-agent" mà [orchestrator-analysis §5 PA A](proposed_2026-07-25_minipower-orchestrator-analysis.md) đã loại.
+**Chốt:** ý tưởng là **evolution của QĐ-2** (sub-agent per-module), thêm lớp **persona 2 tầng + QC loop + dispatch contract**. Không phải hướng "autonomous multi-agent" mà [orchestrator-analysis §5 PA A](ADR-009-2026-07-25-minipower-orchestrator-analysis.md) đã loại.
 
 **Điểm phải canh (nếu trôi sẽ vượt §0):** nếu có lúc để **Senior AI nghiệm thu là chốt cuối** (bỏ người ở khâu đó) → *đó* mới là pivot §0 lần nữa. §0.1 đã khoá: **không** đi hướng đó.
 
@@ -127,14 +127,14 @@ flowchart TB
 | R2 | Senior chấm chính việc mình giao = **thiên kiến xác nhận** | doc-review "context sạch": agent chấm tách khỏi agent giao, hoặc **rubric cứng** (trường 6) |
 | R3 | Junior model-free yếu × 3 vòng = **đốt token sinh code trông-đúng-mà-sai** | token-guard + bound 3 + **cổng người cuối** làm kháng thể |
 | R4 | Ảo giác test-case (trùng/lệch/phủ định) | Governance §3.2: trần ≤10%, phủ 100%, trace về ID |
-| R5 | DevOps/Support/PM-tạo-ticket là **L2/L3 side-effect ra ngoài** | **Không** để junior tự chạy; dừng ở cổng người ([orchestrator-analysis §4/§8](proposed_2026-07-25_minipower-orchestrator-analysis.md)). Pattern này chỉ cho **role sinh artifact L1** (DEV code, BA/SA doc) |
+| R5 | DevOps/Support/PM-tạo-ticket là **L2/L3 side-effect ra ngoài** | **Không** để junior tự chạy; dừng ở cổng người ([orchestrator-analysis §4/§8](ADR-009-2026-07-25-minipower-orchestrator-analysis.md)). Pattern này chỉ cho **role sinh artifact L1** (DEV code, BA/SA doc) |
 | R6 | Trôi dần sang "Senior AI nghiệm thu cuối" | §0.1 khoá cứng; nếu muốn đổi → **phải pivot §0 bằng ADR mới**, không lặng lẽ |
 
 ---
 
 ## §6. Phạm vi đợt đầu — DEV code-gen & quan hệ với Giai đoạn E (đang tạm dừng)
 
-Đợt đầu đóng vào **DEV role** (Bước 7: *code + unit test*). Bước 7 nằm trong **Giai đoạn E — ⏸️ tạm dừng** ([checkpoint 2026-07-25](accepted_2026-07-25_tam-dung-gated-fanout-checkpoint.md)). Phải tách rạch ròi phần mở được:
+Đợt đầu đóng vào **DEV role** (Bước 7: *code + unit test*). Bước 7 nằm trong **Giai đoạn E — ⏸️ tạm dừng** ([checkpoint 2026-07-25](ADR-010-2026-07-25-tam-dung-gated-fanout-checkpoint.md)). Phải tách rạch ròi phần mở được:
 
 | Lát của Bước 7/8 | Lệ thuộc Lark? | Đợt này |
 |---|---|---|
@@ -154,12 +154,12 @@ flowchart TB
 | ❌ | Vì sao |
 |---|--------|
 | Senior AI nghiệm thu là chốt cuối (bỏ người) | Trái §0.1 · phải pivot §0 nếu muốn |
-| Junior tự chạy L2/L3 (deploy, tạo ticket, gửi mail) | Trái §0 · [orchestrator-analysis §8](proposed_2026-07-25_minipower-orchestrator-analysis.md) |
+| Junior tự chạy L2/L3 (deploy, tạo ticket, gửi mail) | Trái §0 · [orchestrator-analysis §8](ADR-009-2026-07-25-minipower-orchestrator-analysis.md) |
 | Thêm runtime multi-agent framework (LangGraph/CrewAI) | Trái "không nền tảng thứ tư" · dùng sub-agent harness |
-| Mở lại phần Lark của Giai đoạn E | Vẫn treo chờ SOP Lark ([checkpoint](accepted_2026-07-25_tam-dung-gated-fanout-checkpoint.md)) |
+| Mở lại phần Lark của Giai đoạn E | Vẫn treo chờ SOP Lark ([checkpoint](ADR-010-2026-07-25-tam-dung-gated-fanout-checkpoint.md)) |
 | Vòng lặp junior không chặn / > 3 lần | Trái bound §3.3 · đốt token |
 | Senior bổ sung test > 10% mà không escalate | Trái governance §3.2 |
-| Làm lại planning/requirements/architecture dưới tên "agent mới" | Trùng SSOT ([orchestrator-analysis §4](proposed_2026-07-25_minipower-orchestrator-analysis.md)) |
+| Làm lại planning/requirements/architecture dưới tên "agent mới" | Trùng SSOT ([orchestrator-analysis §4](ADR-009-2026-07-25-minipower-orchestrator-analysis.md)) |
 
 ---
 
@@ -209,8 +209,8 @@ flowchart TB
 
 ## §11. Tham chiếu
 
-- [gated-fanout §0/QĐ-2/§4](paused_2026-07-20_minipower-gated-fanout-execution.md) — §0 hiện hành, fan-out giữa hai cổng, lộ trình A→E
-- [checkpoint tạm dừng E](accepted_2026-07-25_tam-dung-gated-fanout-checkpoint.md) — lý do treo Giai đoạn D/E
-- [orchestrator-analysis](proposed_2026-07-25_minipower-orchestrator-analysis.md) — Trục A "role skill-pack", phân loại L1/L2/L3
+- [gated-fanout §0/QĐ-2/§4](ADR-003-2026-07-20-minipower-gated-fanout-execution.md) — §0 hiện hành, fan-out giữa hai cổng, lộ trình A→E
+- [checkpoint tạm dừng E](ADR-010-2026-07-25-tam-dung-gated-fanout-checkpoint.md) — lý do treo Giai đoạn D/E
+- [orchestrator-analysis](ADR-009-2026-07-25-minipower-orchestrator-analysis.md) — Trục A "role skill-pack", phân loại L1/L2/L3
 - [doc-review](../minipower/skills/doc-review/SKILL.md) · [readiness-gate](../minipower/skills/readiness-gate/SKILL.md) · [fan-out](../minipower/skills/fan-out/SKILL.md) · [token-guard](../minipower/docs/token-guard.md) · [parallel-work](../minipower/docs/parallel-work.md)
 - [roles/DEV.md](../minipower/roles/DEV.md) — lăng kính DEV, "chỉ bắt đầu khi tài liệu đủ rõ"

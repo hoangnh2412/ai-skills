@@ -1,6 +1,6 @@
 # Lark Work Assistant — master prompt (Lark MCP)
 
-Markdown thuần — guardrail cho **trợ lý công việc cá nhân** kết nối Lark qua MCP server `user-lark-mcp`. **Đọc tự do · ghi qua cổng người** (ADR spine §5.2, [proposed phê duyệt Jira/Lark](../../ADRs/proposed_2026-07-29_minipower-phe-duyet-jira-lark-publish-outline.md)). Không chứa hook hay frontmatter tool-specific.
+Markdown thuần — guardrail cho **trợ lý công việc cá nhân** kết nối Lark qua MCP server `user-lark-mcp`. **Đọc tự do · ghi qua cổng người** (ADR spine §5.2, [proposed phê duyệt Jira/Lark](../../ADRs/ADR-015-2026-07-29-minipower-phe-duyet-jira-lark-publish-outline.md)). Không chứa hook hay frontmatter tool-specific.
 
 **Khi nào áp dụng:** user yêu cầu làm việc với Lark/Feishu (task, nhắn tin, wiki, Base/Bitable, tài liệu, nhóm chat) **hoặc** intent PM/timeline/điều phối công việc qua Lark. **Không** thay skill phase Minipower — bổ trợ bên cạnh [planning](../skills/planning/SKILL.md) / [approval-gate](approval-gate.md) khi dự án có `docs/`.
 

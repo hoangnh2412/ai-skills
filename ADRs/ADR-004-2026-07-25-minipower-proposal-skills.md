@@ -3,12 +3,12 @@
 | | |
 |---|---|
 | **Ngày** | 2026-07-25 |
-| **Trạng thái** | 🗂️ **Đã gộp (merged)** → [proposal-suite](proposed_2026-07-25_minipower-proposal-suite.md). Giữ làm lịch sử — không cập nhật tiếp. |
+| **Trạng thái** | 🗂️ **Đã gộp (merged)** → [proposal-suite](ADR-008-2026-07-25-minipower-proposal-suite.md). Giữ làm lịch sử — không cập nhật tiếp. |
 | **Phạm vi** | `minipower/` — 3 skill cross-phase + `proposal-scope.json` + tool ULNL |
-| **Nối tiếp** | [ADR 2026-07-20 định hướng](superseded_2026-07-20_dinh-huong-minipower-ai-ho-tro-ra-quyet-dinh.md) (§0, N5) · [ADR gated-fanout](paused_2026-07-20_minipower-gated-fanout-execution.md) |
+| **Nối tiếp** | [ADR 2026-07-20 định hướng](ADR-002-2026-07-20-dinh-huong-minipower-ai-ho-tro-ra-quyet-dinh.md) (§0, N5) · [ADR gated-fanout](ADR-003-2026-07-20-minipower-gated-fanout-execution.md) |
 | **Mục đích** | ADR **cha** — quyết định bất biến chung; chi tiết từng skill → ADR con bên dưới |
 
-> 🗂️ **File này đã được gộp vào [proposed_2026-07-25_minipower-proposal-suite.md](proposed_2026-07-25_minipower-proposal-suite.md)** (2026-07-26). Nội dung dưới giữ nguyên làm bản lịch sử; mọi cập nhật mới thực hiện ở file hợp nhất.
+> 🗂️ **File này đã được gộp vào [ADR-008-2026-07-25-minipower-proposal-suite.md](ADR-008-2026-07-25-minipower-proposal-suite.md)** (2026-07-26). Nội dung dưới giữ nguyên làm bản lịch sử; mọi cập nhật mới thực hiện ở file hợp nhất.
 
 ---
 
@@ -16,9 +16,9 @@
 
 | Skill | ADR | SOP / nguồn | Deliverable chính |
 |-------|-----|-------------|-------------------|
-| `proposal-technical` | [merged_2026-07-25_proposal-technical.md](merged_2026-07-25_proposal-technical.md) | [`GiaiPhapKyThuat-KHUNG.md`](../SOPs/GiaiPhapKyThuat-KHUNG.md) | `assets/public/DX-GPKT-vX.Y.md` |
-| `proposal-quotation` | [merged_2026-07-25_proposal-quotation.md](merged_2026-07-25_proposal-quotation.md) | [`ULNL.md`](../SOPs/ULNL.md) | `quotation-vX.Y.json` + `DX-BaoGia-vX.Y.md` |
-| `proposal-timeline` | [merged_2026-07-25_proposal-timeline.md](merged_2026-07-25_proposal-timeline.md) | DOC-14/15 (+ GPKT III.3) | `DX-Timeline-vX.Y.md` + mermaid gantt |
+| `proposal-technical` | [ADR-006-2026-07-25-proposal-technical.md](ADR-006-2026-07-25-proposal-technical.md) | [`GiaiPhapKyThuat-KHUNG.md`](../SOPs/GiaiPhapKyThuat-KHUNG.md) | `assets/public/DX-GPKT-vX.Y.md` |
+| `proposal-quotation` | [ADR-005-2026-07-25-proposal-quotation.md](ADR-005-2026-07-25-proposal-quotation.md) | [`ULNL.md`](../SOPs/ULNL.md) | `quotation-vX.Y.json` + `DX-BaoGia-vX.Y.md` |
+| `proposal-timeline` | [ADR-007-2026-07-25-proposal-timeline.md](ADR-007-2026-07-25-proposal-timeline.md) | DOC-14/15 (+ GPKT III.3) | `DX-Timeline-vX.Y.md` + mermaid gantt |
 
 > Làm việc từng phần: mở ADR con tương ứng — mỗi file có workflow, output, lộ trình R*, câu hỏi mở riêng.
 
@@ -121,9 +121,9 @@ Schema tối thiểu — chi tiết field bổ sung trong từng ADR con khi imp
 | Phase | Nội dung | ADR / owner |
 |-------|----------|-------------|
 | **R1** | Bộ ADR (cha + 3 con) | File này |
-| **R2–R3** | Tool ULNL + skill `proposal-quotation` | [proposal-quotation](merged_2026-07-25_proposal-quotation.md) |
-| **R4** | Skill `proposal-timeline` + milestone → mermaid | [proposal-timeline](merged_2026-07-25_proposal-timeline.md) |
-| **R5** | TPL GPKT + assembler + skill `proposal-technical` | [proposal-technical](merged_2026-07-25_proposal-technical.md) |
+| **R2–R3** | Tool ULNL + skill `proposal-quotation` | [proposal-quotation](ADR-005-2026-07-25-proposal-quotation.md) |
+| **R4** | Skill `proposal-timeline` + milestone → mermaid | [proposal-timeline](ADR-007-2026-07-25-proposal-timeline.md) |
+| **R5** | TPL GPKT + assembler + skill `proposal-technical` | [proposal-technical](ADR-006-2026-07-25-proposal-technical.md) |
 | **R6** | Router `SKILL.md` + `prereq_by_intent` + README/FAQ | File này §5 |
 
 **Thứ tự ưu tiên implement:** R2 → R3 → R4 → R5 → R6.
@@ -149,12 +149,12 @@ Thêm vào `minipower/SKILL.md` và `rules.json` → `prereq_by_intent` khi đ�
 | ❌ | Vì sao |
 |---|--------|
 | DOC-20 trong baseline | Duplicate FR; phá SSOT DOC-06 |
-| LLM tự cộng MH/MD/tiền | Xem [proposal-quotation](merged_2026-07-25_proposal-quotation.md) |
+| LLM tự cộng MH/MD/tiền | Xem [proposal-quotation](ADR-005-2026-07-25-proposal-quotation.md) |
 | Commit đơn giá / margin | Nhạy cảm thương mại |
 | Skill cha `proposal` discoverable | Thêm lớp routing không cần |
 | Thay `planning` / `architecture` | Proposal chỉ distill |
 | Auto-gửi KH / auto-chốt giá | Trái §0 ADR định hướng |
-| Generate nguyên GPKT 600+ dòng bằng LLM | Xem [proposal-technical](merged_2026-07-25_proposal-technical.md) |
+| Generate nguyên GPKT 600+ dòng bằng LLM | Xem [proposal-technical](ADR-006-2026-07-25-proposal-technical.md) |
 
 ---
 
@@ -180,7 +180,7 @@ Câu hỏi riêng từng skill → ADR con tương ứng.
 
 ## §9. Tham chiếu
 
-- [proposal-technical](merged_2026-07-25_proposal-technical.md)
-- [proposal-quotation](merged_2026-07-25_proposal-quotation.md)
-- [proposal-timeline](merged_2026-07-25_proposal-timeline.md)
+- [proposal-technical](ADR-006-2026-07-25-proposal-technical.md)
+- [proposal-quotation](ADR-005-2026-07-25-proposal-quotation.md)
+- [proposal-timeline](ADR-007-2026-07-25-proposal-timeline.md)
 - [`minipower/SKILL.md`](../minipower/SKILL.md) · [`minipower/docs/pipeline.md`](../minipower/docs/pipeline.md)

@@ -3,9 +3,9 @@
 | | |
 |---|---|
 | **Ngày** | 2026-07-29 |
-| **Trạng thái** | 📝 **Proposed** — thiết kế trên giấy, chờ chốt các Quyết định mở (§6). **Chưa** đụng file pipeline. |
+| **Trạng thái** | 🟣 **CANCEL** (2026-08-20) — Jira/Lark rời lộ trình theo [ADR-017](ADR-017-2026-08-20-minipower-toolchain-openproject-github-outline-slack.md) QĐ-3; Q1 "Jira hay Lark" mất nghĩa. Mô hình **3 mặt phẳng** được viết lại tại [ADR-018](ADR-018-2026-08-20-minipower-phe-duyet-openproject-publish-outline.md). Giữ làm lịch sử — không cập nhật tiếp. |
 | **Phạm vi** | `minipower/` — cơ chế **cổng ký (chữ ký)** và **publish tài liệu**. Không đổi nội dung/luồng phase. |
-| **Nối tiếp** | [gated-fanout 2026-07-20](paused_2026-07-20_minipower-gated-fanout-execution.md) (§0 approval-gate, D/E chờ SOP Lark) · [checkpoint 2026-07-25](accepted_2026-07-25_tam-dung-gated-fanout-checkpoint.md) · [COORDINATION §4](../COORDINATION.md) (cross-repo bridge) |
+| **Nối tiếp** | [gated-fanout 2026-07-20](ADR-003-2026-07-20-minipower-gated-fanout-execution.md) (§0 approval-gate, D/E chờ SOP Lark) · [checkpoint 2026-07-25](ADR-010-2026-07-25-tam-dung-gated-fanout-checkpoint.md) · [COORDINATION §4](../COORDINATION.md) (cross-repo bridge) |
 | **Mục đích** | Bắt đầu định nghĩa "SOP Lark/Jira/Outline" cho **chiều phê duyệt + publish** — biến "chữ ký" từ tick-markdown thành **event duyệt trên công cụ quy trình thật**, rồi doc bump version + publish lên Outline. |
 | **Ảnh hưởng** (khi accepted) | [approval-gate.md](../minipower/agents/approval-gate.md) — "chữ ký" = event ngoài, không còn chỉ DEC-markdown · [doc-versioning.md](../minipower/docs-skeleton/00-governance/doc-versioning.md) — version bump kích bởi approval event · [doc-registry.md](../minipower/docs-skeleton/05-traceability/doc-registry.md) — đổi vai thành **bảng ánh xạ** DOC↔Jira↔Lark↔Outline · [parallel-work.md](../minipower/docs/parallel-work.md) — phân vai Author vs Approver. **Không** sửa `rules.json` trong ADR này (chỉ đề xuất; sửa khi có skill/adapter thật). |
 
@@ -141,8 +141,8 @@ flowchart LR
 | Tài liệu | Vai trò |
 |---|---|
 | [approval-gate.md](../minipower/agents/approval-gate.md) | 7 cổng người-chốt (nền để ánh xạ ra Jira/Lark) |
-| [gated-fanout ADR](paused_2026-07-20_minipower-gated-fanout-execution.md) §4 | Lộ trình D/E — nơi Lark integration đang paused |
-| [checkpoint 2026-07-25](accepted_2026-07-25_tam-dung-gated-fanout-checkpoint.md) | Ranh giới "không làm D/E thiếu SOP" |
+| [gated-fanout ADR](ADR-003-2026-07-20-minipower-gated-fanout-execution.md) §4 | Lộ trình D/E — nơi Lark integration đang paused |
+| [checkpoint 2026-07-25](ADR-010-2026-07-25-tam-dung-gated-fanout-checkpoint.md) | Ranh giới "không làm D/E thiếu SOP" |
 | [doc-versioning.md](../minipower/docs-skeleton/00-governance/doc-versioning.md) | Quy tắc version chỉ-sau-sign-off |
 | [parallel-work.md](../minipower/docs/parallel-work.md) | Fan-out theo module, một-owner |
 | [COORDINATION.md §4](../COORDINATION.md) | Cross-repo bridge — pin + back-reference |

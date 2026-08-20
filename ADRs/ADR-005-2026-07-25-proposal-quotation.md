@@ -3,13 +3,13 @@
 | | |
 |---|---|
 | **Ngày** | 2026-07-25 |
-| **Trạng thái** | 🗂️ **Đã gộp (merged)** → [proposal-suite §3](proposed_2026-07-25_minipower-proposal-suite.md). Giữ làm lịch sử — không cập nhật tiếp. |
-| **ADR cha** | [merged_2026-07-25_minipower-proposal-skills.md](merged_2026-07-25_minipower-proposal-skills.md) |
+| **Trạng thái** | 🗂️ **Đã gộp (merged)** → [proposal-suite §3](ADR-008-2026-07-25-minipower-proposal-suite.md). Giữ làm lịch sử — không cập nhật tiếp. |
+| **ADR cha** | [ADR-004-2026-07-25-minipower-proposal-skills.md](ADR-004-2026-07-25-minipower-proposal-skills.md) |
 | **SOP** | [`SOPs/ULNL.md`](../SOPs/ULNL.md) |
 | **Skill (dự kiến)** | `minipower/skills/proposal-quotation/SKILL.md` |
 | **Mục đích** | Báo giá có căn cứ MH/MD — **tool deterministic** + AI gán mã loại |
 
-> 🗂️ **Đã gộp vào [proposed_2026-07-25_minipower-proposal-suite.md](proposed_2026-07-25_minipower-proposal-suite.md) §3** (2026-07-26). Bản lịch sử; giữ schema JSON đầy đủ §4 để tra cứu.
+> 🗂️ **Đã gộp vào [ADR-008-2026-07-25-minipower-proposal-suite.md](ADR-008-2026-07-25-minipower-proposal-suite.md) §3** (2026-07-26). Bản lịch sử; giữ schema JSON đầy đủ §4 để tra cứu.
 
 ---
 
@@ -200,7 +200,7 @@ Cập nhật `type_code` trên scope → tái chạy calc + regenerate báo giá
 
 ## §10. Tham chiếu
 
-- [ADR cha](merged_2026-07-25_minipower-proposal-skills.md)
-- [proposal-technical](merged_2026-07-25_proposal-technical.md) · [proposal-timeline](merged_2026-07-25_proposal-timeline.md)
+- [ADR cha](ADR-004-2026-07-25-minipower-proposal-skills.md)
+- [proposal-technical](ADR-006-2026-07-25-proposal-technical.md) · [proposal-timeline](ADR-007-2026-07-25-proposal-timeline.md)
 - [`SOPs/ULNL.md`](../SOPs/ULNL.md)
 - [`minipower/skills/planning/SKILL.md`](../minipower/skills/planning/SKILL.md) — upstream DOC-14

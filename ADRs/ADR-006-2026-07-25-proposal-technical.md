@@ -3,13 +3,13 @@
 | | |
 |---|---|
 | **Ngày** | 2026-07-25 |
-| **Trạng thái** | 🗂️ **Đã gộp (merged)** → [proposal-suite §4](proposed_2026-07-25_minipower-proposal-suite.md). Giữ làm lịch sử — không cập nhật tiếp. |
-| **ADR cha** | [merged_2026-07-25_minipower-proposal-skills.md](merged_2026-07-25_minipower-proposal-skills.md) |
+| **Trạng thái** | 🗂️ **Đã gộp (merged)** → [proposal-suite §4](ADR-008-2026-07-25-minipower-proposal-suite.md). Giữ làm lịch sử — không cập nhật tiếp. |
+| **ADR cha** | [ADR-004-2026-07-25-minipower-proposal-skills.md](ADR-004-2026-07-25-minipower-proposal-skills.md) |
 | **SOP** | [`SOPs/GiaiPhapKyThuat-KHUNG.md`](../SOPs/GiaiPhapKyThuat-KHUNG.md) |
 | **Skill (dự kiến)** | `minipower/skills/proposal-technical/SKILL.md` |
 | **Mục đích** | Distill/assemble **Đề xuất Giải pháp Kỹ thuật** từ DOC đã có — hybrid code + LLM prose |
 
-> 🗂️ **Đã gộp vào [proposed_2026-07-25_minipower-proposal-suite.md](proposed_2026-07-25_minipower-proposal-suite.md) §4** (2026-07-26). Bản lịch sử.
+> 🗂️ **Đã gộp vào [ADR-008-2026-07-25-minipower-proposal-suite.md](ADR-008-2026-07-25-minipower-proposal-suite.md) §4** (2026-07-26). Bản lịch sử.
 
 ---
 
@@ -142,7 +142,7 @@ Cấu trúc: đúng Phần I–III + checklist cuối khung SOP.
 
 ## §9. Tham chiếu
 
-- [ADR cha — proposal skills](merged_2026-07-25_minipower-proposal-skills.md)
-- [proposal-quotation](merged_2026-07-25_proposal-quotation.md) · [proposal-timeline](merged_2026-07-25_proposal-timeline.md)
+- [ADR cha — proposal skills](ADR-004-2026-07-25-minipower-proposal-skills.md)
+- [proposal-quotation](ADR-005-2026-07-25-proposal-quotation.md) · [proposal-timeline](ADR-007-2026-07-25-proposal-timeline.md)
 - [`SOPs/GiaiPhapKyThuat-KHUNG.md`](../SOPs/GiaiPhapKyThuat-KHUNG.md)
 - [`minipower/skills/architecture/SKILL.md`](../minipower/skills/architecture/SKILL.md) — produce DOC-08 (upstream)

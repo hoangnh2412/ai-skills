@@ -3,9 +3,9 @@
 | | |
 |---|---|
 | **Ngày** | 2026-07-25 |
-| **Trạng thái** | 📋 **Phân tích — CHƯA quyết.** Kiểu `deliberation` (Premise Check → verdict). Cần người chốt §9 trước khi có bất kỳ ADR triển khai nào. |
+| **Trạng thái** | 🟣 **CANCEL** (2026-08-20) — câu hỏi §9 đã được [ADR-017](ADR-017-2026-08-20-minipower-toolchain-openproject-github-outline-slack.md) trả lời (Q2 = wrap MCP 4 công cụ · Q3 = cả 7 vai · Q6 = bỏ Calendar/Zoom). Phân loại **L1/L2/L3** (§4) và ranh giới §8 được ADR-017 kế thừa. Giữ làm lịch sử — không cập nhật tiếp.<br>*(nguyên văn)* 📋 **Phân tích — CHƯA quyết.** Kiểu `deliberation` (Premise Check → verdict). Cần người chốt §9 trước khi có bất kỳ ADR triển khai nào. |
 | **Phạm vi** | Định hướng toàn `minipower/` — chạm §0 (triết lý bất biến). **Chưa** chạm code. |
-| **Nối tiếp** | [ADR 2026-07-20 định hướng §0/§3.3](superseded_2026-07-20_dinh-huong-minipower-ai-ho-tro-ra-quyet-dinh.md) · [gated-fanout](paused_2026-07-20_minipower-gated-fanout-execution.md) · [proposal-suite](proposed_2026-07-25_minipower-proposal-suite.md) |
+| **Nối tiếp** | [ADR 2026-07-20 định hướng §0/§3.3](ADR-002-2026-07-20-dinh-huong-minipower-ai-ho-tro-ra-quyet-dinh.md) · [gated-fanout](ADR-003-2026-07-20-minipower-gated-fanout-execution.md) · [proposal-suite](ADR-008-2026-07-25-minipower-proposal-suite.md) |
 | **Mục đích** | Phản biện ý tưởng "Minipower = orchestrator điều phối các domain agent (Meeting/PM/BA/SA/Sale/QC/DEV…)", gợi ý thuật ngữ thị trường, và xác định: **có đáng làm không / làm ở hình dạng nào**. |
 
 ---
@@ -191,8 +191,8 @@ Cụm **connector L3** (Calendar, Zoom/Teams/Meet, Jira/Lark/OpenProject, mail, 
 
 ## §11. Tham chiếu
 
-- [ADR 2026-07-20 định hướng §0/§3.3/§5](superseded_2026-07-20_dinh-huong-minipower-ai-ho-tro-ra-quyet-dinh.md) — triết lý bất biến, roles = lăng kính
-- [ADR gated-fanout](paused_2026-07-20_minipower-gated-fanout-execution.md) · [proposal-suite](proposed_2026-07-25_minipower-proposal-suite.md) — precedent ADR gộp cha/con
+- [ADR 2026-07-20 định hướng §0/§3.3/§5](ADR-002-2026-07-20-dinh-huong-minipower-ai-ho-tro-ra-quyet-dinh.md) — triết lý bất biến, roles = lăng kính
+- [ADR gated-fanout](ADR-003-2026-07-20-minipower-gated-fanout-execution.md) · [proposal-suite](ADR-008-2026-07-25-minipower-proposal-suite.md) — precedent ADR gộp cha/con
 - [`minipower/docs/parallel-work.md`](../minipower/docs/parallel-work.md) — fan-out qua ID, con người điều phối
 - [`minipower/roles/`](../minipower/roles/) — 7 lăng kính vai trò (nền cho "role skill-pack")
 - Anthropic *Building Effective Agents* (orchestrator-workers, routing) · OpenAI *A Practical Guide to Building Agents* (manager vs decentralized) — thuật ngữ §2
