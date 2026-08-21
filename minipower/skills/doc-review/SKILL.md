@@ -31,6 +31,21 @@ description: >-
 | 4 | **Đầy đủ** | Thiếu nhóm NFR (security/audit/HA-DR) · thiếu edge/error case · assumption chưa được giải · happy-path-only |
 | 5 | **Nhất quán ID / version** | Sai quy ước ID (`{MOD}-FR-001`) · Version gán trước sign-off · Draft lẫn baseline |
 
+## Theo chế độ dự án
+
+Chế độ đọc từ `memory/profile.json`; định nghĩa ở [router § Chế độ dự án](../../SKILL.md#chế-độ-dự-án-project_mode) — **không lặp lại ở đây**.
+
+| | `standard` | `mvp` | `maintain` |
+|---|---|---|---|
+| Số chiều | **đủ 5** | rút còn **1 · 3 · 5** (trace · mơ hồ · ID) | 5 chiều nhưng **chỉ vùng chạm** |
+| Góc nhìn | ≥3 lăng kính | 1 là đủ | theo vai đang sửa |
+| Phạm vi | slice đích | slice đích | **chỉ phần CR động vào** — không review cả hệ cũ |
+| Blocker | chặn baseline | ghi `doc-debt.md`, chưa có baseline để chặn | **chặn merge** CR |
+
+Vì sao `mvp` giữ chiều 1 · 3 · 5: chúng canh thứ **không sửa lại được rẻ** — trace đứt và ID sai sẽ chặn đường lên `standard`, còn requirement mơ hồ thì lập trình sai ngay. Chiều 2 · 4 (mâu thuẫn chéo, đầy đủ) cần bộ DOC tương đối đủ mới soi được — ở `mvp` phần lớn DOC chưa tồn tại.
+
+`maintain` **không** hạ chiều mà **thu hẹp phạm vi**: hệ cũ vốn đầy vi phạm có sẵn; soi cả hệ chỉ tạo danh sách ai cũng biết mà không ai sửa. Chỉ soi vùng CR động vào.
+
 ## Mức nghiêm trọng
 
 | Mức | Nghĩa | Hành động |

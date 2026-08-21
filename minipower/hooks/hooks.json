@@ -17,6 +17,10 @@
           },
           {
             "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/bin/prereq-gate.js\""
+          },
+          {
+            "type": "command",
             "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/bin/decision-staleness.js\""
           }
         ]
@@ -24,11 +28,11 @@
     ],
     "PreToolUse": [
       {
-        "matcher": "Read",
+        "matcher": "Read|Write|Edit",
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/bin/token-guard-read.js\""
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/bin/baseline-guard.js\""
           }
         ]
       }

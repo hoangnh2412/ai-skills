@@ -25,6 +25,7 @@ import {
   PHASE_META,
   ROLES,
   PREREQ_BY_INTENT,
+  PROJECT_MODES,
   CONTEXT_CHAIN,
   APPROVAL_GATES,
   docsForPhase,
@@ -34,6 +35,13 @@ import {
 } from "./lib/rules.js"
 
 const rel = (p) => fileURLToPath(new URL(p, import.meta.url))
+
+/** Mô tả tình huống mỗi mode — chữ cho NGƯỜI, không phải luật máy (luật ở rules.json). */
+const MODE_NOTE = {
+  standard: "Sản phẩm mới / outsource; hoặc MVP lên đời",
+  mvp: "Chỉ cần chạy được, tài liệu cơ bản",
+  maintain: "Hệ chạy nhiều năm, tài liệu cũ rời rạc",
+}
 const marker = (id) =>
   `<!-- BEGIN generated: ${id} (nguồn: hooks/lib/rules.json — chạy \`npm run gen\`) -->`
 const END = (id) => `<!-- END generated: ${id} -->`
@@ -99,6 +107,24 @@ function approvalGateTable() {
   return rows.join("\n")
 }
 
+function projectModesTable() {
+  const rows = [
+    "| Chế độ | Tình huống | DOC cần điền (`docs_focus`) | prereq | `02-baseline` | `_legacy` |",
+    "|--------|------------|------------------------------|:------:|:-------------:|:---------:|",
+  ]
+  for (const [id, cfg] of Object.entries(PROJECT_MODES)) {
+    const focus =
+      cfg.docs_focus === "all"
+        ? "**tất cả 19 DOC**"
+        : `DOC-${formatDocRanges(cfg.docs_focus.map(Number))}`
+    const g = cfg.gates
+    rows.push(
+      `| **${cfg.label}** (\`${id}\`) | ${MODE_NOTE[id] || ""} | ${focus} | ${g.prereq} | ${g.baseline} | ${g.legacy_read} |`,
+    )
+  }
+  return rows.join("\n")
+}
+
 function rolesTable() {
   const rows = ["| Vai trò | Chức danh | Phase liên quan | File |", "|---------|-----------|-----------------|------|"]
   for (const r of ROLES) {
@@ -114,6 +140,7 @@ const TARGETS = [
   { file: rel("../skills/readiness-gate/SKILL.md"), id: "prereq-by-intent", build: prereqTable },
   { file: rel("../agents/approval-gate.md"), id: "approval-gates", build: approvalGateTable },
   { file: rel("../roles/README.md"), id: "roles-index", build: rolesTable },
+  { file: rel("../SKILL.md"), id: "project-modes", build: projectModesTable },
 ]
 
 function escape(s) {

@@ -34,11 +34,7 @@ claude --plugin-dir /path/to/ai-skills/minipower
 
 - **Skill namespaced:** gọi `/minipower:ba-discovery`, `/minipower:doc-review`, … (không phải `/minipower` gọn như đường project-skill ở trên).
 - **Hook tự nạp** từ `hooks/hooks.json` (sinh từ `settings.fragment.json` qua `npm run gen`). **KHÔNG** chạy `install.mjs` khi đã dùng plugin — nếu không hook chạy **hai lần** (settings + plugin).
-- **`permissions.deny` KHÔNG đi trong plugin.** Nếu dùng plugin, tự thêm 2 dòng deny vào `.claude/settings.json`:
-
-  ```json
-  { "permissions": { "deny": ["Read(docs/02-baseline/**)", "Read(docs/03-modules/_legacy/**)"] } }
-  ```
+- **Không còn phải tự thêm `permissions.deny`** (ADR-020 QĐ-4). Trước đây plugin không mang được `permissions.deny` nên phải chép tay 2 dòng vào `.claude/settings.json` — nay `bin/baseline-guard.js` cưỡng chế việc đó ở **cả hai kênh**, nên plugin và settings hành xử **giống hệt nhau**. Nếu bản cài cũ của bạn còn 2 dòng deny thì để nguyên cũng được (trùng chức năng, vô hại), xoá cũng được.
 
 > Chọn **một** kênh: **project-skill + install.mjs** (mục dưới) *hoặc* **plugin** — đừng dùng cả hai, tránh trùng skill/hook.
 
@@ -78,13 +74,13 @@ node "$MP/install/claude/install.mjs"          # resolve path + merge + smoke-te
 # node "$MP/install/claude/install.mjs" --print  # in JSON đã resolve ra stdout
 ```
 
-Script tự suy path pack (không cần gõ), **merge an toàn**: giữ nguyên hook/permission khác của bạn, idempotent (chạy lại không nhân đôi), backup `.claude/settings.json.bak` trước khi ghi đè, và **verify** bằng cách chạy thật 4 shim dưới `node` hiện tại. Yêu cầu **Node ≥ 18**.
+Script tự suy path pack (không cần gõ), **merge an toàn**: giữ nguyên hook/permission khác của bạn, idempotent (chạy lại không nhân đôi), backup `.claude/settings.json.bak` trước khi ghi đè, và **verify** bằng cách chạy thật 6 shim dưới `node` hiện tại. Yêu cầu **Node ≥ 18**.
 
 Fragment gồm:
 
-- **`permissions.deny`** — chặn đọc `02-baseline/` và `_legacy/`.
-- **`hooks.UserPromptSubmit`** — token-guard → auto-routing → decision-staleness (cùng logic Cursor).
-- **`hooks.PreToolUse`** (`Read`) — read guard baseline/_legacy.
+- **`hooks.UserPromptSubmit`** — token-guard → auto-routing → profile-guard → **prereq-gate** → decision-staleness (cùng logic Cursor).
+- **`hooks.PreToolUse`** (`Read|Write|Edit`) — **baseline-guard**: chặn `02-baseline/` ở mọi mode, `_legacy/` trừ mode `maintain`.
+- **Không còn `permissions.deny`** — dồn về `baseline-guard` để plugin và settings cùng hành vi (ADR-020 QĐ-4).
 
 > Cài tay: vẫn merge [settings.fragment.json](settings.fragment.json) rồi thay mọi `/ABSOLUTE/PATH/TO/ai-skills/minipower` bằng path thật. Script ở trên làm đúng việc đó, có kiểm tra.
 

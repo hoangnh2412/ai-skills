@@ -15,14 +15,18 @@
         "timeout": 5
       },
       {
+        "command": "node .cursor/skills/minipower/hooks/bin/prereq-gate.js",
+        "timeout": 5
+      },
+      {
         "command": "node .cursor/skills/minipower/hooks/bin/decision-staleness.js",
         "timeout": 10
       }
     ],
     "beforeReadFile": [
       {
-        "command": "node .cursor/skills/minipower/hooks/bin/token-guard-read.js",
-        "matcher": "Read"
+        "command": "node .cursor/skills/minipower/hooks/bin/baseline-guard.js",
+        "matcher": "Read|Write|Edit"
       }
     ]
   }

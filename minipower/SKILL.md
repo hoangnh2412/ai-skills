@@ -8,7 +8,9 @@ description: >-
   nên làm, nghị luận đa góc nhìn) · doc-review (QC đối kháng, kiểm tra chéo,
   trace, trước baseline) · readiness-gate (soát tiền đề trước khi thực thi) ·
   fan-out (sinh BR/Prototype/SRS song song theo module giữa hai cổng) ·
-  decision-log (lưu quyết định + phương án bị loại).
+  decision-log (lưu quyết định + phương án bị loại). Chế độ dự án
+  (project_mode): mvp | standard | maintain — chọn khi init, quyết định DOC nào
+  cần điền và gate nào chặn.
 ---
 
 # Minipower — Skill pack (BA + SA + TPM)
@@ -66,8 +68,38 @@ Khi user ghi `Phase: …` hoặc intent rõ (vd. "phân tích yêu cầu", "thi�
 
 **Ràng buộc cứng — không tầng nào phá được:**
 - `discovery` (scope dự án mới) và `change-control` (CR sau baseline) **luôn Full**.
-- Đụng `docs/02-baseline/` → **luôn Full**; read-guard chặn baseline ở **mọi** tầng.
+- Đụng `docs/02-baseline/` → **luôn Full**; baseline-guard chặn baseline ở **mọi** tầng và **mọi** chế độ.
 - Không chắc micro hay light → chọn **light** (an toàn hơn: micro sai bỏ mất gate).
+
+## Chế độ dự án (`project_mode`)
+
+**Chiều thứ hai, độc lập với phân tầng.** Tầng (micro/light/full) hỏi *"việc này to hay nhỏ"*; chế độ hỏi *"dự án này cần bao nhiêu tài liệu"*. Chế độ sống ở `memory/profile.json`, hỏi khi init (câu 6), đổi được nhưng phải kèm DEC.
+
+<!-- BEGIN generated: project-modes (nguồn: hooks/lib/rules.json — chạy `npm run gen`) -->
+
+| Chế độ | Tình huống | DOC cần điền (`docs_focus`) | prereq | `02-baseline` | `_legacy` |
+|--------|------------|------------------------------|:------:|:-------------:|:---------:|
+| **Chuẩn chỉnh** (`standard`) | Sản phẩm mới / outsource; hoặc MVP lên đời | **tất cả 19 DOC** | block | deny | deny |
+| **MVP** (`mvp`) | Chỉ cần chạy được, tài liệu cơ bản | DOC-01, 03, 06–07, 09, 17 | warn | deny | deny |
+| **Maintain legacy** (`maintain`) | Hệ chạy nhiều năm, tài liệu cũ rời rạc | DOC-04, 08–12, 17–18 | warn | deny | allow |
+
+<!-- END generated: project-modes -->
+
+**Một cấu trúc folder cho cả 3 chế độ.** Init luôn copy **đủ** 7 folder `docs/` + 6 folder `memory/` ở **mọi** chế độ; folder chưa dùng thì để rỗng kèm README nêu lý do. Chế độ chỉ đổi *điền gì trước*, **không** cắt khung — nhờ vậy `mvp`/`maintain` lên `standard` **không có bước di trú cấu trúc**, chỉ điền tiếp.
+
+**Chế độ × tầng:**
+
+| | `mvp` | `standard` | `maintain` |
+|---|---|---|---|
+| Tầng mặc định | light | full | light (theo vùng chạm) |
+| Trần tầng | full khi đụng baseline | — | full khi đụng baseline |
+| `prereq-gate` thiếu DOC | nhắc, vẫn chạy | **chặn** — gõ `BYPASS` để đi tiếp | nhắc, vẫn chạy |
+| doc-review | rút chiều | đủ 5 chiều, ≥3 góc nhìn | chỉ vùng chạm |
+| Nợ tài liệu | ghi `memory/doc-debt.md` | — | điền dần theo vùng chạm |
+
+**ID ổn định (`{MOD}-FR-`, `DEC-`, `ADR-`) dùng từ ngày đầu ở CẢ 3 chế độ** — rẻ lúc viết, và là thứ khiến bước lên `standard` khả thi.
+
+> Chế độ **không** nới hai thứ: `docs/02-baseline/` luôn deny, và `token-guard` luôn chặn `@` cả thư mục.
 
 ## Agent guardrails
 
@@ -88,8 +120,9 @@ Khi user yêu cầu **khởi tạo / init dự án** mới → agent **bắt bu�
 ├── README.md              ← Entry dự án
 ├── FAQ.md                  ← FAQ hướng dẫn thiết lập sẵn (làm gì / làm thế nào / thiếu gì)
 ├── memory/                ← Context nhanh — index theo chủ đề (đọc trước khi làm việc)
-│   ├── profile.json       ← SSOT cá nhân hoá (hook profile-guard validate)
+│   ├── profile.json       ← SSOT cá nhân hoá (hook profile-guard validate) — v2: + project_mode, approval_source
 │   ├── memory.md          ← Index gốc (chung) — link 6 chủ đề bên dưới
+│   ├── doc-debt.md        ← Sổ nợ tài liệu — thiếu gì & vì sao; điều kiện lên `standard`
 │   ├── discovery/         ← Phạm vi, stakeholder, khảo sát (→ DOC-01–03)
 │   ├── requirements/      ← UC, FR, SRS theo module (→ DOC-04–07, 13)
 │   ├── architecture/      ← SAD, ADR, tích hợp, API (→ DOC-08–12)
@@ -98,7 +131,8 @@ Khi user yêu cầu **khởi tạo / init dự án** mới → agent **bắt bu�
 │   └── change-control/    ← CR, delta baseline sau ký (→ DOC-18)
 ├── assets/                ← Tài liệu thô từ khách hàng / họp nội bộ
 │   ├── public/            ← Đã share với khách hàng
-│   └── internal/          ← Nội bộ — không gửi khách
+│   ├── internal/          ← Nội bộ — không gửi khách
+│   └── archive/           ← Tài liệu cũ, rời rạc — nguồn tham chiếu, CHƯA phải artifact
 ├── brainstorm/            ← Trao đổi & phân tích — file theo ngày (không chia folder con)
 └── docs/                  ← Artifact chính thức Minipower (DOC-01–18)
     ├── 00-governance/     ← Kế hoạch, CR register, lịch sử baseline (DOC-15, 18)
@@ -126,6 +160,8 @@ Khi user yêu cầu **khởi tạo / init dự án** mới → agent **bắt bu�
 |---------|---------|
 | `assets/public/` | Đã share / nhận từ khách hàng |
 | `assets/internal/` | Họp nội bộ — không gửi khách |
+| `assets/archive/` | Tài liệu cũ từ trước khi dùng minipower. **Không** copy thẳng sang `docs/` — phải có người xác nhận. README ghi **độ tin cậy** từng nguồn (còn đúng / nghi ngờ / đã lỗi thời) |
+| `memory/doc-debt.md` | Nợ tài liệu của `mvp`/`maintain`. Ghi khi `prereq-gate` nhắc mà vẫn quyết làm tiếp |
 | `brainstorm/` | File: `YYYY-MM-DD.md` hoặc `YYYY-MM-DD-<mo-ta>.md` — **không** tạo folder con |
 | `docs/03-modules/` | Copy `_template/` → `{module-id}/` khi mở module |
 | `memory/memory.md` | Index gốc — đọc **đầu session**, rồi mở `memory/{phase}/` |
@@ -150,22 +186,28 @@ Hook [profile-guard](agents/profile-guard.md) **chặn cứng** prompt làm vi�
 | 3 | Dự án làm về gì? | `project_summary` |
 | 4 | Dự án đang ở giai đoạn nào? | `current_phase` — discovery … change-control |
 | 5 | Đã từng dùng minipower chưa? | `minipower_experience` — `new` \| `returning` |
+| 6 | Dự án cần bao nhiêu tài liệu? — *chỉ cần chạy được* / *đầy đủ (outsource, sản phẩm mới)* / *tiếp quản hệ cũ* | `project_mode` — `mvp` \| `standard` \| `maintain` ([bảng](#chế-độ-dự-án-project_mode)) |
+| 7 | Phê duyệt và tài liệu sống ở đâu? — hỏi gọn cho **3 loại**: tài liệu · công việc · code | `approval_source` — `{docs, tasks, code}`, mặc định cả ba là `local` |
+
+**Câu 7 — mặc định là câu trả lời tốt.** Chưa nối MCP nào thì để `local` cả ba; hệ chạy đủ. Có OpenProject/Gitlab/Outline rồi thì đổi đúng trường đó, **không** phải cài lại gì.
 
 Sau khi user trả lời:
 
-1. Ghi `memory/profile.json` (schema v1 — [TPL-agent-profile](templates/TPL-agent-profile.md)).
+1. Ghi `memory/profile.json` (schema **v2** — [TPL-agent-profile](templates/TPL-agent-profile.md)). *Profile v1 của bản cài cũ vẫn hợp lệ, được đọc như `standard` + `local`; nâng lên v2 khi user chạy `Cập nhật profile`.*
 2. Sinh **`AGENTS.md`** và **`CLAUDE.md`** từ template (cùng persona; `CLAUDE.md` thêm `@import` pack).
 3. Copy skeleton + docs (bước dưới), điền `README.md`, `memory/memory.md`, `memory/{current_phase}/`.
 4. Nếu `new` → mỗi lần vào phase mới: nhắc skill + DOC + readiness-gate trọn gói.
 
-Lệnh cập nhật sau: `Reconfigure agent` / `Hoàn tất profile` / `Cập nhật profile` — hỏi lại 5 câu, ghi đè profile + markdown.
+Lệnh cập nhật sau: `Reconfigure agent` / `Hoàn tất profile` / `Cập nhật profile` — hỏi lại 7 câu, ghi đè profile + markdown.
+
+**Đổi `project_mode` không phải việc sửa một trường.** Nó là sự kiện có nghi thức, đi qua [change-control](skills/change-control/SKILL.md) và **phải kèm DEC** — nếu không, "tự nhận `mvp`" thành đường né gate. `approval_source` thì đổi tự do.
 
 ### Thao tác agent khi init
 
 1. Xác nhận `{project}/` path (hoặc tạo folder mới theo tên user cung cấp).
-2. **Cá nhân hoá** — hỏi 5 câu trên; chờ đủ trả lời.
+2. **Cá nhân hoá** — hỏi 7 câu trên; chờ đủ trả lời.
 3. Copy [`project-skeleton/`](project-skeleton/) → `{project}/` (README, memory, assets, brainstorm).
-4. Copy [`docs-skeleton/`](docs-skeleton/) → `{project}/docs/`.
+4. Copy [`docs-skeleton/`](docs-skeleton/) → `{project}/docs/` — **đủ khung ở mọi chế độ**, kể cả `mvp`/`maintain`. Folder ngoài `docs_focus` để **rỗng kèm README** ghi *"chưa điền vì đang ở chế độ {mode}"*. **Không** cắt folder theo chế độ.
 5. Ghi `memory/profile.json`, `AGENTS.md`, `CLAUDE.md` từ [TPL-agent-profile](templates/TPL-agent-profile.md).
 6. Điền `README.md`, `memory/memory.md` (chỉ meta chung), `memory/{current_phase}/` (bắt đầu phase).
 7. **Không** gom context dài vào `memory/memory.md` — cập nhật đúng `memory/{phase}/`.
@@ -183,10 +225,21 @@ cp -R "$MINIPOWER/docs-skeleton" "$PROJECT/docs"
 
 Nguồn skeleton: [project-skeleton/INIT.md](project-skeleton/INIT.md)
 
+### Init vào repo đã có sẵn
+
+Dự án đang chạy, chưa từng dùng minipower — **không** tạo folder mới, cài **tại chỗ**:
+
+1. Hỏi đủ 7 câu như trên. Repo có code chạy nhiều năm, tài liệu rời rạc → gợi ý chế độ **`maintain`**; sản phẩm mới đang code vội → **`mvp`**.
+2. Copy skeleton **không đè**: file nào đã tồn tại (`README.md`, `AGENTS.md`…) thì **giữ nguyên**, chỉ bổ sung phần thiếu và hỏi trước khi sửa file có sẵn.
+3. Tài liệu cũ rời rạc → đổ vào `assets/archive/`, **không** phải `docs/`. Chúng là **nguồn tham chiếu**, chưa phải artifact; kèm `archive/README.md` ghi độ tin cậy từng nguồn (*còn đúng / nghi ngờ / đã lỗi thời*).
+4. Code cũ đã có chỗ đứng riêng → `docs/03-modules/_legacy/` (chế độ `maintain` mở đọc; hai chế độ kia vẫn chặn).
+5. Ghi ngay `memory/doc-debt.md` — cái gì còn thiếu so với `docs_focus` của chế độ. Đây là **điều kiện vào** luồng lên `standard`.
+
 ### Exit init
 
-- [ ] `memory/profile.json` hợp lệ (v1) + `AGENTS.md` + `CLAUDE.md`
-- [ ] Đủ 4 nhánh: `memory/` (6 chủ đề), `assets/`, `brainstorm/`, `docs/` (7 folder) + `FAQ.md`
+- [ ] `memory/profile.json` hợp lệ (**v2**: có `project_mode` + `approval_source`) + `AGENTS.md` + `CLAUDE.md`
+- [ ] Đủ 4 nhánh: `memory/` (6 chủ đề), `assets/`, `brainstorm/`, `docs/` (7 folder) + `FAQ.md` — **đủ ở mọi chế độ**, folder chưa dùng thì rỗng kèm README
+- [ ] `mvp`/`maintain`: có `memory/doc-debt.md` ghi nợ so với `docs_focus`
 - [ ] `memory/memory.md` + 6 folder `memory/{phase}/` (README.md + decision-log.md)
 - [ ] `brainstorm/README.md` — **không** folder con trong `brainstorm/`
 

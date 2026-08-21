@@ -54,6 +54,20 @@ Yêu cầu thực thi
 
 **Mặc định vs cấu hình riêng (Q7):** đây là bộ **mặc định**. Đầu phiên gate hỏi *"Dùng bộ tiền đề mặc định, hay dự án có bộ riêng?"* — nếu riêng, đọc `memory/{phase}/` để lấy danh sách tiền đề của dự án thay cho bảng này.
 
+## Theo chế độ dự án
+
+Bảng trên là bộ của chế độ `standard`. Chế độ hiện tại đọc từ `memory/profile.json`; định nghĩa từng chế độ ở [router § Chế độ dự án](../../SKILL.md#chế-độ-dự-án-project_mode) — **không lặp lại ở đây** để khỏi lệch.
+
+| | `standard` | `mvp` | `maintain` |
+|---|---|---|---|
+| Bộ tiền đề | như bảng trên | rút theo `prereq_overrides` — nhẹ hơn | rút theo vùng chạm; `implement` không đòi gì |
+| Hook `prereq-gate` | **chặn** — người gõ `BYPASS` để đi tiếp | nhắc, vẫn chạy | nhắc, vẫn chạy |
+| Verdict "đủ tạm" | ghi `open-questions.md` | ghi **`memory/doc-debt.md`** — nợ so với `docs_focus` | ghi `doc-debt.md` theo vùng chạm |
+
+**Kiểm theo module.** Tiền đề cột *"theo module"* chỉ soát được khi biết module nào. Prompt không nêu module (`Module: {id}`, đường dẫn `03-modules/{id}/`, ID `{MOD}-FR-…`, hoặc tên folder có thật) → **bỏ qua các mục đó, không đoán**. Module chạy lệch nhịp là bình thường: `ORD` đủ tiền đề không có nghĩa `INV` cũng đủ.
+
+> Gate này **mềm** ở mọi chế độ — verdict cuối là của người. Phần cứng do hook `prereq-gate` làm, và cả nó cũng mở được bằng `BYPASS`.
+
 ## Sổ nợ tài liệu — `open-questions.md`
 
 Mỗi mục hoãn ghi 1 dòng vào `memory/{phase}/open-questions.md`:

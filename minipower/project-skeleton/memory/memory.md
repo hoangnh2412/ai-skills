@@ -11,6 +11,7 @@
 | **Tên** | *(điền)* |
 | **Khách hàng** | *(điền)* |
 | **Phase hiện tại** | *(điền)* |
+| **Chế độ** | *(điền)* — `mvp` \| `standard` \| `maintain`; SSOT ở [`profile.json`](profile.json) |
 | **Baseline** | — *(draft)* |
 
 ## Memory theo chủ đề
@@ -29,9 +30,11 @@
 | Folder / file | Vai trò |
 |---------------|---------|
 | [**`docs/05-traceability/overview.md`**](../docs/05-traceability/overview.md) | **Tổng quan 30s** — phase, module, pipeline, blocker, 2 tuần tới |
+| [`doc-debt.md`](doc-debt.md) | **Sổ nợ tài liệu** — thiếu gì, vì sao; điều kiện lên `standard` (`mvp`/`maintain`) |
 | [`../brainstorm/`](../brainstorm/) | Trao đổi chi tiết theo ngày |
 | [`../FAQ.md`](../FAQ.md) | FAQ hướng dẫn thiết lập sẵn |
 | [`../assets/`](../assets/) | Tài liệu gốc |
+| [`../assets/archive/`](../assets/archive/) | Tài liệu cũ, rời rạc — nguồn tham chiếu, **chưa** phải artifact |
 | [`../docs/`](../docs/) | Artifact baseline |
 
 ## Ghi chú agent

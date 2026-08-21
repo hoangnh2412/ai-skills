@@ -30,9 +30,17 @@ const args = new Set(process.argv.slice(2))
 const CHECK = args.has("--check")
 const PRINT = args.has("--print")
 
-/** Đọc fragment, thay placeholder bằng path pack thật. */
+/**
+ * Đọc fragment, thay placeholder bằng path pack thật.
+ *
+ * Thay trên VĂN BẢN JSON nên path phải được escape theo luật JSON trước — trên
+ * Windows `PACK_ROOT` là `D:\Working\…`, chèn thô vào sẽ thành escape không hợp lệ
+ * (`\W`) và `JSON.parse` ném. `JSON.stringify(...).slice(1,-1)` cho đúng dạng đã
+ * escape, bỏ hai dấu nháy bao ngoài.
+ */
 function resolvedFragment() {
-  const raw = readFileSync(FRAGMENT, "utf8").split(PLACEHOLDER).join(PACK_ROOT)
+  const packRoot = JSON.stringify(PACK_ROOT).slice(1, -1)
+  const raw = readFileSync(FRAGMENT, "utf8").split(PLACEHOLDER).join(packRoot)
   return JSON.parse(raw)
 }
 
@@ -53,12 +61,17 @@ function stripMinipower(groups) {
 function mergeSettings(cur, frag) {
   const next = { ...cur }
 
-  // permissions.deny — hợp nhất, khử trùng.
-  const curDeny = (cur.permissions && cur.permissions.deny) || []
+  // permissions — fragment KHÔNG còn khai deny (ADR-020 QĐ-4: dồn cưỡng chế về
+  // baseline-guard, một SSOT). Giữ nguyên permission RIÊNG của người dùng; chỉ
+  // hợp nhất nếu fragment có gì đó. Không tự xoá 2 dòng deny cũ của bản cài trước
+  // — chúng vô hại (trùng với baseline-guard), xoá hộ là đụng settings của người.
   const fragDeny = (frag.permissions && frag.permissions.deny) || []
-  next.permissions = {
-    ...(cur.permissions || {}),
-    deny: [...new Set([...curDeny, ...fragDeny])],
+  if (fragDeny.length) {
+    const curDeny = (cur.permissions && cur.permissions.deny) || []
+    next.permissions = {
+      ...(cur.permissions || {}),
+      deny: [...new Set([...curDeny, ...fragDeny])],
+    }
   }
 
   // hooks — mỗi event: giữ hook không phải minipower, rồi nối khối minipower.
@@ -76,8 +89,9 @@ function verify() {
     ["token-guard.js", { prompt: "@docs/" }],
     ["auto-routing.js", { prompt: "sửa DOC-06" }],
     ["profile-guard.js", { prompt: "Phase: requirements — DOC-06" }],
+    ["prereq-gate.js", { prompt: "phan tich yeu cau" }],
     ["decision-staleness.js", { prompt: "đánh giá lại quyết định" }],
-    ["token-guard-read.js", { file_path: "docs/02-baseline/x.md", prompt: "" }],
+    ["baseline-guard.js", { tool_input: { file_path: "docs/02-baseline/x.md" }, prompt: "" }],
   ]
   for (const [script, input] of cases) {
     const bin = join(BIN, script)
@@ -109,7 +123,7 @@ if (PRINT) {
 
 process.stdout.write(`Pack: ${PACK_ROOT}\n`)
 const n = verify()
-process.stdout.write(`✓ Verify: ${n}/4 shim chạy OK dưới ${process.execPath}\n`)
+process.stdout.write(`✓ Verify: ${n}/${n} shim chạy OK dưới ${process.execPath}\n`)
 
 if (CHECK) {
   process.stdout.write("(--check) Chỉ verify, không ghi settings.\n")

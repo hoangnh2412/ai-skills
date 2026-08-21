@@ -47,6 +47,27 @@ test("hooks.json: dùng ${CLAUDE_PLUGIN_ROOT}, không rò path tuyệt đối", 
   const cmds = []
   for (const ev of Object.values(hooks.hooks))
     for (const g of ev) for (const h of g.hooks || []) cmds.push(h.command)
-  assert.equal(cmds.length, 5, "kỳ vọng 5 command như fragment")
+  // ADR-020 việc #3: 5 UserPromptSubmit + 1 PreToolUse. Trước đó là 4 + 1.
+  assert.equal(cmds.length, 6, "kỳ vọng 6 command như fragment")
   for (const c of cmds) assert.ok(c.includes("${CLAUDE_PLUGIN_ROOT}"), `command thiếu root var: ${c}`)
+})
+
+test("hooks.json (ADR-020 #3): prereq-gate trong chuỗi prompt, baseline-guard canh tool", () => {
+  const prompt = hooks.hooks.UserPromptSubmit.flatMap((g) => g.hooks || []).map((h) => h.command)
+  assert.equal(prompt.length, 5, "UserPromptSubmit phải có 5 hook")
+  assert.ok(prompt.some((c) => c.includes("prereq-gate.js")), "thiếu prereq-gate")
+  // Thứ tự §4b: prereq-gate đứng TRƯỚC decision-staleness (chặn trước khi nhắc).
+  const iPrereq = prompt.findIndex((c) => c.includes("prereq-gate.js"))
+  const iStale = prompt.findIndex((c) => c.includes("decision-staleness.js"))
+  assert.ok(iPrereq < iStale, "prereq-gate phải chạy trước decision-staleness")
+
+  const pre = hooks.hooks.PreToolUse
+  assert.equal(pre.length, 1)
+  assert.equal(pre[0].matcher, "Read|Write|Edit", "baseline-guard canh cả Write/Edit, không chỉ Read")
+  const preCmds = pre.flatMap((g) => g.hooks || []).map((h) => h.command)
+  assert.ok(preCmds.some((c) => c.includes("baseline-guard.js")), "thiếu baseline-guard")
+  assert.ok(
+    !preCmds.some((c) => c.includes("token-guard-read.js")),
+    "token-guard-read đã bị baseline-guard thay ở tầng wiring (QĐ-4)",
+  )
 })

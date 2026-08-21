@@ -34,8 +34,9 @@ ln -snf "$MP/install/cursor/rules/minipower-profile.mdc" .cursor/rules/
 | Token guard | `bin/token-guard.js` | Thiếu scope, `@docs/` quá rộng, chặn baseline/_legacy |
 | Auto-routing DOC → phase | `bin/auto-routing.js` | Chèn `Phase:` / chặn conflict khi tag nhiều DOC |
 | Profile guard | `bin/profile-guard.js` | Chặn việc minipower khi thiếu `memory/profile.json` |
+| Prereq gate | `bin/prereq-gate.js` | Thiếu DOC tiền đề theo intent × mode × **module** — block ở `standard`, warn ở `mvp`/`maintain` |
 | Decision-log staleness | `bin/decision-staleness.js` | Advisory (không chặn), keyword-gated |
-| Read guard (`beforeReadFile`) | `bin/token-guard-read.js` | Tuỳ chọn — chặn Read `02-baseline/`, `_legacy/` |
+| Baseline guard (`beforeReadFile`) | `bin/baseline-guard.js` | Chặn `02-baseline/` mọi mode (không BYPASS); `_legacy/` mở ở mode `maintain` |
 
 **SSOT logic agent:** [agents/auto-routing.md](../../agents/auto-routing.md).
 

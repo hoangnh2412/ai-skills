@@ -7,13 +7,15 @@
 import test from "node:test"
 import assert from "node:assert/strict"
 import { execFileSync } from "node:child_process"
+import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from "node:fs"
+import { tmpdir } from "node:os"
 import { fileURLToPath } from "node:url"
 import { dirname, join } from "node:path"
 
 const BIN = join(dirname(fileURLToPath(import.meta.url)), "..", "bin")
 
-/** Chạy shim với input JSON. Trả {code, json, stdout}. */
-function run(script, input) {
+/** Chạy shim với input JSON. `env` để trỏ MP_PROJECT_ROOT vào fixture. Trả {code, json, stdout}. */
+function run(script, input, env) {
   let stdout = ""
   let code = 0
   try {
@@ -21,6 +23,7 @@ function run(script, input) {
       input: JSON.stringify(input),
       encoding: "utf8",
       stdio: ["pipe", "pipe", "ignore"],
+      env: env ? { ...process.env, ...env } : process.env,
     })
   } catch (e) {
     stdout = e.stdout || ""
@@ -176,4 +179,181 @@ test("shim decision-staleness", async (t) => {
     assert.equal(r.code, 0)
     assert.equal(r.json.continue, true)
   })
+})
+
+// ─── ADR-020 việc #3 — shim mới ─────────────────────────────────────────────
+
+/** Dự án minipower giả để shim có mode thật mà đọc. */
+function fixture(mode) {
+  const root = mkdtempSync(join(tmpdir(), "mp-shim-"))
+  mkdirSync(join(root, "memory"), { recursive: true })
+  mkdirSync(join(root, "docs", "01-project"), { recursive: true })
+  mkdirSync(join(root, "docs", "03-modules", "ORD"), { recursive: true })
+  writeFileSync(join(root, "memory", "memory.md"), "# Memory\n", "utf8")
+  writeFileSync(
+    join(root, "memory", "profile.json"),
+    JSON.stringify({
+      version: 2,
+      user_name: "H",
+      honorific: "anh",
+      roles: ["BA"],
+      project_name: "d",
+      project_summary: "d",
+      current_phase: "requirements",
+      minipower_experience: "returning",
+      project_mode: mode,
+      approval_source: { docs: "local", tasks: "local", code: "local" },
+    }),
+    "utf8",
+  )
+  return root
+}
+
+test("shim prereq-gate", async (t) => {
+  const root = fixture("standard")
+  const env = { MP_PROJECT_ROOT: root }
+  try {
+    await t.test("thiếu DOC-03 @ standard → {continue:false} exit 2", () => {
+      const r = run("prereq-gate.js", { prompt: "phan tich yeu cau" }, env)
+      assert.equal(r.code, 2)
+      assert.equal(r.json.continue, false)
+      assert.match(r.json.user_message, /DOC-03/)
+    })
+
+    await t.test("có DOC-03 → {continue:true} exit 0", () => {
+      writeFileSync(join(root, "docs", "01-project", "DOC-03-brd.md"), "# BRD\n", "utf8")
+      const r = run("prereq-gate.js", { prompt: "phan tich yeu cau" }, env)
+      assert.equal(r.code, 0)
+      assert.equal(r.json.continue, true)
+    })
+
+    await t.test("BYPASS → allow, không chặn", () => {
+      const r = run("prereq-gate.js", { prompt: "BYPASS ve prototype cho Module: ORD" }, env)
+      assert.equal(r.code, 0)
+      assert.equal(r.json.continue, true)
+    })
+
+    await t.test("module thiếu DOC-04 → block, nêu tên module", () => {
+      const r = run("prereq-gate.js", { prompt: "ve prototype cho Module: ORD" }, env)
+      assert.equal(r.code, 2)
+      assert.match(r.json.user_message, /ORD/)
+    })
+
+    await t.test("attachments → nhận diện module", () => {
+      const r = run(
+        "prereq-gate.js",
+        { prompt: "ve prototype", attachments: [{ file_path: "docs/03-modules/ORD/DOC-06.md" }] },
+        env,
+      )
+      assert.equal(r.code, 2, "biết module ORD qua attachment nên phát hiện thiếu DOC-04")
+    })
+
+    await t.test("prompt không khớp intent → allow", () => {
+      const r = run("prereq-gate.js", { prompt: "chào bạn" }, env)
+      assert.equal(r.code, 0)
+      assert.equal(r.json.continue, true)
+    })
+
+    await t.test("stdin rỗng → allow, không crash", () => {
+      const r = run("prereq-gate.js", {}, env)
+      assert.equal(r.code, 0)
+      assert.equal(r.json.continue, true)
+    })
+  } finally {
+    rmSync(root, { recursive: true, force: true })
+  }
+})
+
+test("shim prereq-gate — mvp warn kèm additionalContext", async (t) => {
+  const root = fixture("mvp")
+  try {
+    await t.test("warn → {continue:true} exit 0 + additional_context", () => {
+      const r = run("prereq-gate.js", { prompt: "phan tich yeu cau" }, { MP_PROJECT_ROOT: root })
+      assert.equal(r.code, 0, "mvp không được chặn")
+      assert.equal(r.json.continue, true)
+      assert.match(r.json.additional_context, /DOC-03/)
+      assert.equal(r.json.hookSpecificOutput.hookEventName, "UserPromptSubmit")
+    })
+  } finally {
+    rmSync(root, { recursive: true, force: true })
+  }
+})
+
+test("shim baseline-guard", async (t) => {
+  const root = fixture("standard")
+  const env = { MP_PROJECT_ROOT: root }
+  try {
+    await t.test("file thường → {permission:allow} exit 0", () => {
+      const r = run("baseline-guard.js", { tool_input: { file_path: "src/a.ts" } }, env)
+      assert.equal(r.code, 0)
+      assert.equal(r.json.permission, "allow")
+    })
+
+    await t.test("baseline → deny, exit 0 (không chặn hard)", () => {
+      const r = run("baseline-guard.js", { tool_input: { file_path: "docs/02-baseline/v1/x.md" } }, env)
+      assert.equal(r.code, 0)
+      assert.equal(r.json.permission, "deny")
+    })
+
+    await t.test("BYPASS trong prompt KHÔNG mở baseline (C4)", () => {
+      const r = run(
+        "baseline-guard.js",
+        { tool_input: { file_path: "docs/02-baseline/v1/x.md" }, prompt: "BYPASS" },
+        env,
+      )
+      assert.equal(r.json.permission, "deny")
+    })
+
+    await t.test("field top-level 'file_path' (không bọc tool_input) vẫn nhận", () => {
+      const r = run("baseline-guard.js", { file_path: "docs/02-baseline/v1/x.md" }, env)
+      assert.equal(r.json.permission, "deny")
+    })
+
+    await t.test("field 'path' thay cho 'file_path'", () => {
+      const r = run("baseline-guard.js", { tool_input: { path: "docs/02-baseline/v1/x.md" } }, env)
+      assert.equal(r.json.permission, "deny")
+    })
+
+    await t.test("_legacy @ standard: deny; kèm migrate: allow", () => {
+      const f = { file_path: "docs/03-modules/_legacy/old.md" }
+      assert.equal(run("baseline-guard.js", { tool_input: f }, env).json.permission, "deny")
+      assert.equal(
+        run("baseline-guard.js", { tool_input: f, prompt: "migrate" }, env).json.permission,
+        "allow",
+      )
+    })
+
+    await t.test("stdin rỗng → allow", () => {
+      const r = run("baseline-guard.js", {}, env)
+      assert.equal(r.code, 0)
+      assert.equal(r.json.permission, "allow")
+    })
+  } finally {
+    rmSync(root, { recursive: true, force: true })
+  }
+})
+
+test("shim baseline-guard — mode maintain mở _legacy (C5)", async (t) => {
+  const root = fixture("maintain")
+  try {
+    await t.test("không cần nhắc migrate", () => {
+      const r = run(
+        "baseline-guard.js",
+        { tool_input: { file_path: "docs/03-modules/_legacy/old.md" } },
+        { MP_PROJECT_ROOT: root },
+      )
+      assert.equal(r.json.permission, "allow")
+    })
+
+    await t.test("nhưng baseline vẫn deny", () => {
+      const r = run(
+        "baseline-guard.js",
+        { tool_input: { file_path: "docs/02-baseline/v1/x.md" } },
+        { MP_PROJECT_ROOT: root },
+      )
+      assert.equal(r.json.permission, "deny")
+    })
+  } finally {
+    rmSync(root, { recursive: true, force: true })
+  }
 })

@@ -1,5 +1,6 @@
 /**
- * Minipower — OpenCode plugin (token guard + auto-routing + read guard + decision staleness).
+ * Minipower — OpenCode plugin (token guard + auto-routing + prereq gate + baseline guard
+ * + decision staleness).
  *
  * SSOT logic: minipower/hooks/lib/*.js (dùng chung với Cursor/Claude qua Node).
  * OpenCode chạy Bun → import .js trực tiếp, không build. Chỉ phần glue OpenCode
@@ -9,7 +10,8 @@
 
 import { checkAutoRouting } from "../../../hooks/lib/auto-routing.js"
 import { checkTokenGuard } from "../../../hooks/lib/token-guard.js"
-import { checkReadGuard } from "../../../hooks/lib/token-guard-read.js"
+import { checkBaselineGuard } from "../../../hooks/lib/baseline-guard.js"
+import { checkPrereqGate } from "../../../hooks/lib/prereq-gate.js"
 import { checkProfileGuard } from "../../../hooks/lib/profile-guard.js"
 import { checkDecisionStaleness } from "../../../hooks/lib/decision-staleness.js"
 import {
@@ -83,6 +85,14 @@ export const MinipowerPlugin = async () => {
       const profile = checkProfileGuard(prompt, filePaths(parts))
       if (profile.action === "block") blockMessage(output, profile.message)
 
+      // Tiền đề DOC theo intent × mode × module (ADR-020 C2).
+      const prereq = checkPrereqGate(prompt, filePaths(parts))
+      if (prereq.action === "block") blockMessage(output, prereq.message)
+      if (prereq.action === "warn") {
+        log("warn", "minipower-prereq-gate", prereq.message)
+        pushContext(parts, prereq.message)
+      }
+
       const route = checkAutoRouting(prompt, filePaths(parts))
       if (route.action === "block") blockMessage(output, route.message)
       if (route.action === "warn") {
@@ -109,9 +119,9 @@ export const MinipowerPlugin = async () => {
         ""
 
       const sessionPrompt = promptBySession[input.sessionID] || ""
-      const result = checkReadGuard(filePath, sessionPrompt)
+      const result = checkBaselineGuard(filePath, sessionPrompt)
       if (result.action === "deny") {
-        log("error", "minipower-token-guard-read", result.message)
+        log("error", "minipower-baseline-guard", result.message)
         throw new Error(result.message)
       }
     },

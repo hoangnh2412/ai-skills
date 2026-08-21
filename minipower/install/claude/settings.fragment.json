@@ -1,10 +1,4 @@
 {
-  "permissions": {
-    "deny": [
-      "Read(docs/02-baseline/**)",
-      "Read(docs/03-modules/_legacy/**)"
-    ]
-  },
   "hooks": {
     "UserPromptSubmit": [
       {
@@ -23,6 +17,10 @@
           },
           {
             "type": "command",
+            "command": "node \"/ABSOLUTE/PATH/TO/ai-skills/minipower/hooks/bin/prereq-gate.js\""
+          },
+          {
+            "type": "command",
             "command": "node \"/ABSOLUTE/PATH/TO/ai-skills/minipower/hooks/bin/decision-staleness.js\""
           }
         ]
@@ -30,11 +28,11 @@
     ],
     "PreToolUse": [
       {
-        "matcher": "Read",
+        "matcher": "Read|Write|Edit",
         "hooks": [
           {
             "type": "command",
-            "command": "node \"/ABSOLUTE/PATH/TO/ai-skills/minipower/hooks/bin/token-guard-read.js\""
+            "command": "node \"/ABSOLUTE/PATH/TO/ai-skills/minipower/hooks/bin/baseline-guard.js\""
           }
         ]
       }

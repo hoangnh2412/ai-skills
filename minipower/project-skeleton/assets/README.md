@@ -6,3 +6,4 @@ Giữ **bản gốc** khảo sát, checklist, biên bản — **không sửa fil
 |--------|--------|
 | [`public/`](public/) | Đã share / nhận từ khách hàng |
 | [`internal/`](internal/) | Nội bộ — không gửi khách |
+| [`archive/`](archive/README.md) | **Tài liệu cũ, rời rạc** từ trước khi dùng minipower — nguồn tham chiếu, **chưa** phải artifact; README ghi độ tin cậy từng nguồn |
