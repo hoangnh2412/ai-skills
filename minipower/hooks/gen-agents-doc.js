@@ -30,6 +30,7 @@ import {
   docsForPhase,
   formatDocRanges,
   docLabel,
+  docScope,
 } from "./lib/rules.js"
 
 const rel = (p) => fileURLToPath(new URL(p, import.meta.url))
@@ -70,10 +71,19 @@ function contextChainTable() {
 }
 
 function prereqTable() {
-  const rows = ["| Intent | Tiền đề cần có |", "|--------|----------------|"]
+  const rows = [
+    "| Intent | Tiền đề cần có | Kiểm ở đâu |",
+    "|--------|----------------|------------|",
+  ]
   for (const it of PREREQ_BY_INTENT) {
     const reqs = it.requires.map(docLabel).join(" · ")
-    rows.push(`| **${it.label}** | ${reqs} |`)
+    const scopes = new Set(it.requires.map(docScope))
+    const where = scopes.has("module")
+      ? scopes.has("project")
+        ? "module + dự án"
+        : "theo module"
+      : "cấp dự án"
+    rows.push(`| **${it.label}** | ${reqs} | ${where} |`)
   }
   return rows.join("\n")
 }

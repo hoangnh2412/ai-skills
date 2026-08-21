@@ -41,14 +41,14 @@ Yêu cầu thực thi
 
 <!-- BEGIN generated: prereq-by-intent (nguồn: hooks/lib/rules.json — chạy `npm run gen`) -->
 
-| Intent | Tiền đề cần có |
-|--------|----------------|
-| **Phân tích yêu cầu (UC, FR, SRS, AC)** | DOC-03 (BRD) |
-| **Vẽ prototype / wireframe** | DOC-04 (Business Rules) |
-| **Thiết kế kiến trúc / giải pháp / module** | DOC-03 (BRD) · DOC-06 (SRS) · DOC-13 (NFR) |
-| **Viết code / hiện thực module** | DOC-06 (SRS) · DOC-07 (Acceptance Criteria) · DOC-08 (SAD) · DOC-11 (Data Model) · DOC-12 (API Spec) · DOC-19 (Prototype / Wireframe) |
-| **Kiểm thử / viết test case** | DOC-06 (SRS) · DOC-07 (Acceptance Criteria) · DOC-16 (Test Strategy) |
-| **Triển khai / go-live / release** | DOC-15 (Project Plan) · DOC-17 (Deployment Guide) |
+| Intent | Tiền đề cần có | Kiểm ở đâu |
+|--------|----------------|------------|
+| **Phân tích yêu cầu (UC, FR, SRS, AC)** | DOC-03 (BRD) | cấp dự án |
+| **Vẽ prototype / wireframe** | DOC-04 (Business Rules) | theo module |
+| **Thiết kế kiến trúc / giải pháp / module** | DOC-03 (BRD) · DOC-06 (SRS) · DOC-13 (NFR) | module + dự án |
+| **Viết code / hiện thực module** | DOC-06 (SRS) · DOC-07 (Acceptance Criteria) · DOC-08 (SAD) · DOC-11 (Data Model) · DOC-12 (API Spec) · DOC-19 (Prototype / Wireframe) | module + dự án |
+| **Kiểm thử / viết test case** | DOC-06 (SRS) · DOC-07 (Acceptance Criteria) · DOC-16 (Test Strategy) | theo module |
+| **Triển khai / go-live / release** | DOC-15 (Project Plan) · DOC-17 (Deployment Guide) | cấp dự án |
 
 <!-- END generated: prereq-by-intent -->
 

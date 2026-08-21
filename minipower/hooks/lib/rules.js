@@ -20,8 +20,12 @@ import { readFileSync } from "node:fs"
  *   edit_verbs: string[],
  *   breadth_words: string[],
  *   doc_short: Record<string,string>,
+ *   doc_scope: Record<string,"project"|"module">,
  *   phase_meta: Record<string,{state:string,role:string}>,
  *   roles: {id:string,title:string,phase:string,file:string}[],
+ *   project_modes: Record<string,{label:string,docs_focus:"all"|string[],prereq_overrides?:Record<string,string[]>,gates:Record<string,string>}>,
+ *   default_project_mode: string,
+ *   approval_source_kinds: string[],
  *   prereq_by_intent: {id:string,label:string,keywords:string[],requires:string[]}[],
  *   context_chain: {label:string,doc?:string,path?:string}[],
  *   approval_gates: {id:string,label:string,approve:string,unlocks:string}[]
@@ -109,6 +113,20 @@ export function docLabel(num) {
   return short ? `DOC-${key} (${short})` : `DOC-${key}`
 }
 
+/**
+ * @type {Record<string,"project"|"module">}
+ * DOC sống ở đâu trong cây `docs/` (ADR-020 §2b): DOC-04·05·06·07·16·19 nằm trong
+ * `03-modules/{mod}/` → **module**; còn lại ở `01-project/` · `04-platform/` … → **project**.
+ * Đây là chiều `prereq-gate` cần để kiểm tiền đề **theo module** (QĐ-13): các module
+ * chạy lệch nhịp là bình thường, nên "có ≥1 file DOC-06 đâu đó" KHÔNG đủ kết luận.
+ */
+export const DOC_SCOPE = RULES.doc_scope
+
+/** "06" → "module"; DOC lạ → "project" (mặc định an toàn: kiểm ở cấp dự án). */
+export function docScope(num) {
+  return DOC_SCOPE[pad(Number(num))] || "project"
+}
+
 /** @type {Record<string,{state:string,role:string}>} phase → giai đoạn vòng đời + vai trò chính (N2). */
 export const PHASE_META = RULES.phase_meta
 
@@ -125,8 +143,47 @@ export function roleForPhase(phase) {
 /** @type {{id:string,title:string,phase:string,file:string}[]} Danh mục vai trò (N3). */
 export const ROLES = RULES.roles
 
+// ─── ADR-020 — chiều thứ hai: project_mode ──────────────────────────────────
+
+/**
+ * @type {Record<string,{label:string,docs_focus:"all"|string[],prereq_overrides?:Record<string,string[]>,gates:Record<string,string>}>}
+ * Ba chế độ dự án (QĐ-1). Mode **không** đổi cấu trúc folder (QĐ-2) — chỉ đổi
+ * *DOC nào cần điền* (`docs_focus`), *tiền đề nào áp cho intent nào*
+ * (`prereq_overrides`) và *gate nào bật ở mức nào* (`gates`).
+ */
+export const PROJECT_MODES = RULES.project_modes
+
+/** @type {string} Mode dùng khi profile chưa khai / không đọc được (fail-open — R2). */
+export const DEFAULT_PROJECT_MODE = RULES.default_project_mode
+
+/** @type {string[]} Ba loại nguồn phê duyệt tách rời (QĐ-12). */
+export const APPROVAL_SOURCE_KINDS = RULES.approval_source_kinds
+
+/** Mode name → config; mode lạ/thiếu → config của DEFAULT_PROJECT_MODE. */
+export function modeConfig(mode) {
+  return PROJECT_MODES[String(mode)] || PROJECT_MODES[DEFAULT_PROJECT_MODE]
+}
+
+/** Mức của một gate ở mode đã cho, vd gateLevel("mvp","prereq") → "warn". */
+export function gateLevel(mode, gate) {
+  return modeConfig(mode).gates[String(gate)] || "off"
+}
+
 /** @type {{id:string,label:string,keywords:string[],requires:string[]}[]} Bộ tiền đề theo intent (N1). */
 export const PREREQ_BY_INTENT = RULES.prereq_by_intent
+
+/**
+ * Tiền đề thực tế của một intent **sau khi áp `prereq_overrides` của mode**.
+ * `mvp`/`maintain` nhẹ tay hơn `standard` (mảng rỗng = intent đó không đòi gì).
+ * @returns {string[]} danh sách DOC number ("06"…); intent lạ → []
+ */
+export function requiresForIntent(intentId, mode) {
+  const cfg = modeConfig(mode)
+  const ov = cfg.prereq_overrides
+  if (ov && Object.prototype.hasOwnProperty.call(ov, String(intentId))) return ov[String(intentId)]
+  const it = PREREQ_BY_INTENT.find((x) => x.id === String(intentId))
+  return it ? it.requires : []
+}
 
 /**
  * Nhận diện intent từ prompt đã chuẩn hoá (strip+lower). Keyword lưu KHÔNG dấu

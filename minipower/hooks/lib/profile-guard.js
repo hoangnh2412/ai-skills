@@ -14,12 +14,19 @@ import { RULES, stripDiacritics } from "./rules.js"
 
 /** @typedef {{action:"allow"}|{action:"block",message:string}} ProfileGuardResult */
 
-export const PROFILE_VERSION = 1
+/**
+ * Schema hiện hành. **v1 vẫn hợp lệ** — dự án cài bản cũ không bị chặn oan
+ * (tương thích ngược, ADR-020 QĐ-2a); profile v1 được đọc như `project_mode`
+ * mặc định + mọi `approval_source` = "local" (xem `readProjectMode`).
+ */
+export const PROFILE_VERSION = 2
+const SUPPORTED_VERSIONS = new Set([1, 2])
 
 const VALID_PHASES = new Set(RULES.phase_order)
 const VALID_ROLES = new Set(RULES.roles.map((r) => r.id))
 const VALID_EXPERIENCE = new Set(["new", "returning"])
 const VALID_HONORIFIC = new Set(["anh", "chi"])
+const VALID_MODES = new Set(Object.keys(RULES.project_modes))
 
 const EXEMPT_RE =
   /\b(init project|khoi tao|khoi tao du an|tao folder du an|reconfigure agent|cap nhat profile|ca nhan hoa|hoan tat profile|personalize profile)\b/
@@ -56,7 +63,7 @@ export function validateProfile(obj) {
   }
   const p = /** @type {Record<string, unknown>} */ (obj)
 
-  if (p.version !== PROFILE_VERSION) errors.push("version phải là 1")
+  if (!SUPPORTED_VERSIONS.has(p.version)) errors.push("version phải là 1 hoặc 2")
 
   for (const key of ["user_name", "project_name", "project_summary"]) {
     if (typeof p[key] !== "string" || !String(p[key]).trim()) errors.push(`thiếu ${key}`)
@@ -80,7 +87,54 @@ export function validateProfile(obj) {
   const exp = String(p.minipower_experience || "")
   if (!VALID_EXPERIENCE.has(exp)) errors.push("minipower_experience phải là new hoặc returning")
 
+  // v2 — chiều project_mode + approval_source (ADR-020 QĐ-1, QĐ-12).
+  // Chỉ bắt buộc từ v2 trở đi; v1 đọc bằng mặc định, không phạt.
+  if (p.version === 2) {
+    if (!VALID_MODES.has(String(p.project_mode || ""))) {
+      errors.push(`project_mode phải là một trong: ${[...VALID_MODES].join(", ")}`)
+    }
+    const src = p.approval_source
+    if (!src || typeof src !== "object" || Array.isArray(src)) {
+      errors.push("approval_source phải là object { docs, tasks, code }")
+    } else {
+      for (const kind of RULES.approval_source_kinds) {
+        const v = /** @type {Record<string, unknown>} */ (src)[kind]
+        if (typeof v !== "string" || !v.trim()) errors.push(`approval_source.${kind} thiếu`)
+      }
+    }
+  }
+
   return { valid: errors.length === 0, errors }
+}
+
+/**
+ * Đọc `project_mode` + `approval_source` từ profile, có mặc định an toàn.
+ * **Fail-open (R2):** không có profile / v1 / trường thiếu → mode mặc định và
+ * mọi nguồn phê duyệt = "local". Hook gọi hàm này không bao giờ ném.
+ * @param {string} root
+ * @returns {{mode:string, approvalSource:Record<string,string>, legacy:boolean}}
+ */
+export function readProjectMode(root) {
+  const fallback = {
+    mode: RULES.default_project_mode,
+    approvalSource: Object.fromEntries(RULES.approval_source_kinds.map((k) => [k, "local"])),
+    legacy: true,
+  }
+  const data = loadProfile(root)
+  if (!data || data.version !== 2) return fallback
+
+  const mode = VALID_MODES.has(String(data.project_mode))
+    ? String(data.project_mode)
+    : RULES.default_project_mode
+  const src = { ...fallback.approvalSource }
+  const raw = data.approval_source
+  if (raw && typeof raw === "object" && !Array.isArray(raw)) {
+    for (const kind of RULES.approval_source_kinds) {
+      const v = /** @type {Record<string, unknown>} */ (raw)[kind]
+      if (typeof v === "string" && v.trim()) src[kind] = v.trim()
+    }
+  }
+  return { mode, approvalSource: src, legacy: false }
 }
 
 /**

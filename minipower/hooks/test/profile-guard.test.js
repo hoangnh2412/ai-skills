@@ -13,6 +13,8 @@ import {
   isMinipowerProject,
   isProfileComplete,
   validateProfile,
+  readProjectMode,
+  PROFILE_VERSION,
 } from "../lib/profile-guard.js"
 
 function makeProject() {
@@ -52,6 +54,134 @@ test("validateProfile", async (t) => {
     const r = validateProfile({ ...VALID_PROFILE, roles: ["CEO"] })
     assert.equal(r.valid, false)
   })
+})
+
+// ─── ADR-020 — schema v2 (project_mode + approval_source) ───────────────────
+
+const VALID_PROFILE_V2 = {
+  ...VALID_PROFILE,
+  version: 2,
+  project_mode: "standard",
+  approval_source: { docs: "local", tasks: "local", code: "local" },
+}
+
+test("profile v2 (QĐ-1, QĐ-12)", async (t) => {
+  await t.test("schema hiện hành là v2", () => {
+    assert.equal(PROFILE_VERSION, 2)
+  })
+
+  await t.test("v2 đầy đủ → hợp lệ", () => {
+    assert.equal(validateProfile(VALID_PROFILE_V2).valid, true)
+  })
+
+  await t.test("v1 vẫn hợp lệ — không chặn oan dự án cài bản cũ (QĐ-2a)", () => {
+    assert.equal(validateProfile(VALID_PROFILE).valid, true)
+  })
+
+  await t.test("version lạ → không hợp lệ", () => {
+    assert.equal(validateProfile({ ...VALID_PROFILE_V2, version: 3 }).valid, false)
+  })
+
+  await t.test("v2 thiếu project_mode → không hợp lệ", () => {
+    const r = validateProfile({ ...VALID_PROFILE_V2, project_mode: undefined })
+    assert.equal(r.valid, false)
+    assert.ok(r.errors.some((e) => e.includes("project_mode")))
+  })
+
+  await t.test("v2 project_mode lạ → không hợp lệ", () => {
+    assert.equal(validateProfile({ ...VALID_PROFILE_V2, project_mode: "turbo" }).valid, false)
+  })
+
+  await t.test("v2 mode mvp / maintain đều hợp lệ", () => {
+    for (const m of ["mvp", "maintain"]) {
+      assert.equal(validateProfile({ ...VALID_PROFILE_V2, project_mode: m }).valid, true, m)
+    }
+  })
+
+  await t.test("v2 approval_source thiếu một loại → không hợp lệ", () => {
+    const r = validateProfile({
+      ...VALID_PROFILE_V2,
+      approval_source: { docs: "local", tasks: "local" },
+    })
+    assert.equal(r.valid, false)
+    assert.ok(r.errors.some((e) => e.includes("approval_source.code")))
+  })
+
+  await t.test("v2 approval_source nhận tên MCP, không chỉ 'local'", () => {
+    const r = validateProfile({
+      ...VALID_PROFILE_V2,
+      approval_source: { docs: "outline", tasks: "openproject", code: "gitlab" },
+    })
+    assert.equal(r.valid, true)
+  })
+})
+
+test("readProjectMode — fail-open (R2)", async (t) => {
+  const root = makeProject()
+  try {
+    await t.test("chưa có profile → standard + local, legacy=true, không ném", () => {
+      const r = readProjectMode(root)
+      assert.equal(r.mode, "standard")
+      assert.deepEqual(r.approvalSource, { docs: "local", tasks: "local", code: "local" })
+      assert.equal(r.legacy, true)
+    })
+
+    await t.test("root không tồn tại → vẫn trả mặc định", () => {
+      const r = readProjectMode(join(root, "khong-ton-tai"))
+      assert.equal(r.mode, "standard")
+      assert.equal(r.legacy, true)
+    })
+
+    await t.test("profile v1 → đọc như standard + local (legacy)", () => {
+      writeFileSync(
+        join(root, "memory", "profile.json"),
+        JSON.stringify(VALID_PROFILE, null, 2),
+        "utf8",
+      )
+      const r = readProjectMode(root)
+      assert.equal(r.mode, "standard")
+      assert.equal(r.legacy, true)
+    })
+
+    await t.test("profile v2 → đọc đúng mode + nguồn phê duyệt", () => {
+      writeFileSync(
+        join(root, "memory", "profile.json"),
+        JSON.stringify(
+          {
+            ...VALID_PROFILE_V2,
+            project_mode: "maintain",
+            approval_source: { docs: "outline", tasks: "openproject", code: "local" },
+          },
+          null,
+          2,
+        ),
+        "utf8",
+      )
+      const r = readProjectMode(root)
+      assert.equal(r.mode, "maintain")
+      assert.equal(r.legacy, false)
+      assert.equal(r.approvalSource.docs, "outline")
+      assert.equal(r.approvalSource.code, "local")
+    })
+
+    await t.test("v2 mode lạ → rơi về standard, không ném", () => {
+      writeFileSync(
+        join(root, "memory", "profile.json"),
+        JSON.stringify({ ...VALID_PROFILE_V2, project_mode: "turbo" }, null, 2),
+        "utf8",
+      )
+      assert.equal(readProjectMode(root).mode, "standard")
+    })
+
+    await t.test("profile.json hỏng JSON → mặc định, không ném", () => {
+      writeFileSync(join(root, "memory", "profile.json"), "{ khong phai json", "utf8")
+      const r = readProjectMode(root)
+      assert.equal(r.mode, "standard")
+      assert.equal(r.legacy, true)
+    })
+  } finally {
+    rmSync(root, { recursive: true, force: true })
+  }
 })
 
 test("isMinipowerProject", async (t) => {
