@@ -20,8 +20,10 @@ Skill điều phối `Jarvis.EntityFramework` trên ASP.NET Core. Hướng dẫn
 ## Quy tắc cốt lõi
 
 - **`AddJarvisCaching()` trước `AddEntityFramework()`** — `CachingTenantConnectionStringResolver`.
-- `AddEntityFramework()` → repository + keyed `ITenantIdResolver`.
-- App đăng ký `ITenantConnectionStringResolver` qua `AddCoreDbContext`.
+- `AddCurrentTenant()` / `AddTenantIdResolvers()` → keyed `ITenantIdResolver` + factory (`Platform.Multitenancy`).
+- `AddEntityFramework()` → repository + shared/master `AddCoreDbContext<T>` (không interceptor).
+- `AddMultitenancyEntityFramework()` + `AddCoreDbContext<TDb, TResolver>()` → dedicated tenant DB (`Platform.Multitenancy.EntityFramework`).
+- App đăng ký inner `ITenantConnectionStringResolver` qua overload 2 generic.
 - Sau `SwitchDbContextAsync` → **`GetRepositoryAsync` lại**.
 - UoW không đọc `ICurrentTenantAccessor` khi `SetTenantId` — tránh nhầm tenant.
 
@@ -29,8 +31,9 @@ Skill điều phối `Jarvis.EntityFramework` trên ASP.NET Core. Hướng dẫn
 
 | PackageId | Layer |
 |---|---|
-| `Jarvis.EntityFramework` | Infrastructure |
-| `Jarvis.Caching` | Infrastructure (trước EF) |
+| `Jarvis.EntityFramework` / `Platform.EntityFramework` | Infrastructure (foundation) |
+| `Platform.Multitenancy.EntityFramework` | Infrastructure (tenant–EF satellite) |
+| `Jarvis.Caching` / `Platform.Caching` | Infrastructure (trước EF) |
 | `Npgsql.EntityFrameworkCore.PostgreSQL` (hoặc MySQL provider) | Infrastructure |
 
 ## Patterns (atomic)
@@ -48,8 +51,8 @@ Skill điều phối `Jarvis.EntityFramework` trên ASP.NET Core. Hướng dẫn
 
 | Overload | Interceptor | Khi dùng |
 |---|---|---|
-| `AddCoreDbContext<TDb>(configure)` | Không | Single DB, Master cố định |
-| `AddCoreDbContext<TDb, TResolver>(configure)` | `TenantDbConnectionInterceptor` | Per-tenant connection |
+| `AddCoreDbContext<TDb>(configure)` | Không | Single DB, Master cố định — `Platform.EntityFramework` |
+| `AddCoreDbContext<TDb, TResolver>(configure)` | `TenantDbConnectionInterceptor` | Per-tenant connection — `Platform.Multitenancy.EntityFramework` |
 
 ## Templates
 

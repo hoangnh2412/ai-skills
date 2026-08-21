@@ -41,14 +41,19 @@ Cấu hình EF single DB multitenancy cho MyApp.
 
 ```csharp
 builder.AddJarvisCaching();   // bắt buộc trước EF
+builder.AddCurrentTenant<CurrentTenantInfo>(); // hoặc AddTenantIdResolvers()
 builder.AddEntityFramework();
-builder.Services.AddCoreDbContext<AppDbContext, ConfigConnectionStringResolver>(options =>
+builder.AddMultitenancyEntityFramework(); // opt-in dedicated tenant DB
+builder.Services.AddCoreDbContext<MasterDbContext>(options =>
+    options.UseNpgsql(configuration.GetConnectionString("MasterDbContext")));
+builder.Services.AddCoreDbContext<TenantDbContext, DbTenantConnectionStringResolver<MasterDbContext, Tenant>>(options =>
     options.UseNpgsql("Host=localhost;Database=placeholder"));
 ```
 
-- `AddMultitenancy` chỉ đăng ký keyed `ITenantIdResolver` — **không** đăng ký `ITenantConnectionStringResolver` (app tự chọn).
-- Mọi resolver đăng ký qua `AddCoreDbContext` / `AddEntityFramework` được bọc **`CachingTenantConnectionStringResolver`** (`Cache:Items:ConnectionString`).
-- `AddCoreDbContext<TDb,TConn>`: `AddDbContextFactory` + `TenantDbConnectionInterceptor`.
+- `AddTenantIdResolvers` / `AddCurrentTenant` đăng ký keyed `ITenantIdResolver`.
+- `AddMultitenancyEntityFramework` + `AddCoreDbContext<TDb,TConn>`: interceptor + cached keyed connection resolver.
+- Shared/master: `AddCoreDbContext<TDb>` trên `Platform.EntityFramework` (không interceptor).
+- Mọi keyed connection resolver được bọc **`CachingTenantConnectionStringResolver`** (`Cache:Items:ConnectionString`).
 
 ## Unit of work
 

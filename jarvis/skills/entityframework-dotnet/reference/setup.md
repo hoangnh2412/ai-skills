@@ -6,17 +6,19 @@
 
 | Thành phần | Layer | Vai trò |
 |---|---|---|
-| `BaseStorageContext<T>` | EF | Global query filter `TenantId == context.TenantId` (`ITenantEntity`) |
+| `BaseStorageContext` | EF | Global query filter `TenantId == context.TenantId` (`ITenantEntity`); snapshot private + `SetTenantId` |
 | `BaseUnitOfWork<T>` | EF | `IDbContextFactory`, `SetTenantId`, `SwitchDbContextAsync` |
-| `ITenantIdResolver` / `ITenantIdResolverFactory` | Domain | Tenant id (keyed: Header, User, Query, Host) |
+| `ITenantIdResolver` / `ITenantIdResolverFactory` | Domain (ports) | Tenant id contracts |
+| `HeaderTenantIdResolver` … + `TenantIdResolverFactory` | Multitenancy | Impl HTTP chain; `AddCurrentTenant` / `AddTenantIdResolvers` |
 | `ITenantConnectionStringResolver` | Domain | `GetConnectionStringAsync(name)` |
 | `TenantConnectionStringResolverFactory` | Domain | Tenant id + keyed resolver |
 | `ConfigConnectionStringResolver` | Domain | `IConfiguration.GetConnectionString` |
-| `DbTenantConnectionStringResolver<TMaster, TTenant>` | EF | Lookup `ITenantManagementEntity` trên Master |
-| `TenantDbConnectionInterceptor` | EF | Ghi connection lúc mở (overload 2 generic) |
+| `CachingTenantConnectionStringResolver` | EF foundation | Cache decorator (shared + tenant keys) |
+| `DbTenantConnectionStringResolver<TMaster, TTenant>` | Multitenancy.EF | Lookup `ITenantManagementEntity` trên Master |
+| `TenantDbConnectionInterceptor` | Multitenancy.EF | Ghi connection lúc mở (overload 2 generic) |
 | `ITenantManagementEntity` | Domain | Registry Master: `Id`, `ConnectionString` |
 
-`AddJarvisCaching()` rồi `AddEntityFramework()` → repository + tenant resolvers. Mọi `ITenantConnectionStringResolver` được bọc cache (`Cache:Items:ConnectionString`, `conn:{dbid}`); memory/Redis qua `MemSeconds` / `DistributedSeconds`. Inner resolver = fallback tùy host (config, DB, API, …).
+`AddJarvisCaching()` → `AddCurrentTenant` / `AddTenantIdResolvers` → `AddEntityFramework()` → (opt-in) `AddMultitenancyEntityFramework()` → `AddCoreDbContext*`. Mọi `ITenantConnectionStringResolver` keyed được bọc cache (`Cache:Items:ConnectionString`, `conn:{dbid}`).
 
 ## Luồng resolve tenant
 
@@ -31,7 +33,7 @@
 
 ```csharp
 public class AppDbContext(DbContextOptions<AppDbContext> options)
-    : BaseStorageContext<AppDbContext>(options)
+    : BaseStorageContext(options)
 {
     public DbSet<Order> Orders => Set<Order>();
 }
