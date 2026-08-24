@@ -7,7 +7,8 @@ description: >-
   delivery | change-control. Skill cross-phase: deliberation (premise check, có
   nên làm, nghị luận đa góc nhìn) · doc-review (QC đối kháng, kiểm tra chéo,
   trace, trước baseline) · readiness-gate (soát tiền đề trước khi thực thi) ·
-  fan-out (sinh BR/Prototype/SRS song song theo module giữa hai cổng) ·
+  fan-out (sinh BR/Prototype/SRS song song theo module, mỗi module một nhịp) ·
+  as-built (khai quật hệ cũ thành tài liệu — bản vẽ hoàn công, chế độ maintain) ·
   decision-log (lưu quyết định + phương án bị loại). Chế độ dự án
   (project_mode): mvp | standard | maintain — chọn khi init, quyết định DOC nào
   cần điền và gate nào chặn.
@@ -39,7 +40,8 @@ Khi user ghi `Phase: …` hoặc intent rõ (vd. "phân tích yêu cầu", "thi�
 | deliberation, có nên làm, premise, nghị luận, đánh giá lại | [skills/deliberation/SKILL.md](skills/deliberation/SKILL.md) — **chạy trước** khi vào phase |
 | doc-review, review DOC, QC, soi tài liệu, kiểm tra chéo, trước baseline | [skills/doc-review/SKILL.md](skills/doc-review/SKILL.md) — QC đối kháng, một slice |
 | readiness-gate, thực thi, viết code, thiết kế module, kiểm thử, triển khai | [skills/readiness-gate/SKILL.md](skills/readiness-gate/SKILL.md) — soát tiền đề **trước khi thực thi**; đủ rồi → [context-load](agents/context-load.md) |
-| fan-out, sinh song song, viết BR/Prototype/SRS cho các module, sinh hàng loạt theo module | [skills/fan-out/SKILL.md](skills/fan-out/SKILL.md) — điều phối per-module **giữa hai cổng**; kiểm [approval-gate](agents/approval-gate.md) trước |
+| fan-out, sinh song song, viết BR/Prototype/SRS cho các module, sinh hàng loạt theo module | [skills/fan-out/SKILL.md](skills/fan-out/SKILL.md) — pipeline per-module, **mỗi module một nhịp**; người quyết từng nhánh |
+| as-built, khai quật hệ cũ, tiếp quản, code đang làm gì, tài liệu thất lạc, legacy | [skills/as-built/SKILL.md](skills/as-built/SKILL.md) — bản vẽ hoàn công; **người trigger**, một vùng chạm, đầu ra là nháp + câu hỏi |
 | discovery, scope, brainstorm | [skills/discovery/SKILL.md](skills/discovery/SKILL.md) |
 | requirements, UC, FR, SRS, AC | [skills/requirements/SKILL.md](skills/requirements/SKILL.md) |
 | architecture, SAD, ADR, API | [skills/architecture/SKILL.md](skills/architecture/SKILL.md) |
@@ -142,6 +144,7 @@ Khi user yêu cầu **khởi tạo / init dự án** mới → agent **bắt bu�
     ├── 04-platform/       ← SAD, tích hợp, NFR, triển khai (DOC-08–14, 17)
     ├── 05-traceability/   ← Overview, ma trận trace, doc registry
     └── 06-changes/        ← CR và delta thay đổi (DOC-18)
+        └── incident/      ← Báo cáo sự cố + postmortem (hệ đang vận hành)
 ```
 
 ### Quy ước folder
