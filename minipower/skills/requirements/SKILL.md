@@ -26,7 +26,7 @@ description: >-
 | 8 | NFR | DOC-13 |
 | 9 | Acceptance Criteria | DOC-07 |
 
-> **Cổng chốt (A2):** sau DOC-04 người chốt Business Rules → mới sinh Prototype; sau DOC-19 người chốt Prototype → mới viết SRS. AI soạn DEC nháp, người duyệt — xem [agents/approval-gate.md](../../agents/approval-gate.md). Wireframe HTML sinh qua MCP ngoài (hoãn).
+> **Thứ tự khuyến nghị:** DOC-04 Business Rules → DOC-19 Prototype → DOC-06 SRS. Đây là **thứ tự tốt**, không phải cổng chặn ([ADR-020](../../../ADRs/ADR-020-2026-08-20-minipower-3-che-do-du-an-gate-bang-hook.md) QĐ-11). `prereq-gate` nhắc khi thiếu DOC upstream **của đúng module đó**; ở `standard` nó chặn và bạn gõ `BYPASS` để đi tiếp — **người quyết cuối**. Chốt bước nào thì ghi DEC làm bản ghi ([approval-gate](../../agents/approval-gate.md) — dữ liệu tham chiếu). Wireframe HTML sinh qua MCP ngoài (hoãn).
 
 **NFR:** Performance · SLA · Security · Audit · HA/DR
 

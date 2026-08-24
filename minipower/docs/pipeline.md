@@ -80,7 +80,7 @@ flowchart LR
   AC -.-> TM
 ```
 
-> **Cổng người-chốt (A2, ADR gated-fanout):** giữa các bước có cổng — người chốt DOC trước (ghi DEC) thì AI mới fan-out bước sau theo module. Bảng cổng: [agents/approval-gate.md](../agents/approval-gate.md). Prototype (DOC-19) sinh HTML wireframe qua MCP ngoài (hoãn).
+> **Điểm chốt của người ([ADR-020](../../ADRs/ADR-020-2026-08-20-minipower-3-che-do-du-an-gate-bang-hook.md) QĐ-11):** giữa các bước có những điểm **nên** có người chốt và ghi DEC — nhưng **không hook nào chặn trên chữ ký**. Cái chặn được bằng máy là *tồn tại DOC tiền đề* (`prereq-gate`, theo module), và cả nó cũng mở bằng `BYPASS`. Bảng điểm chốt: [agents/approval-gate.md](../agents/approval-gate.md) — **dữ liệu tham chiếu**, không phải rào. Mỗi module đi theo nhịp riêng (QĐ-14). Prototype (DOC-19) sinh HTML wireframe qua MCP ngoài (hoãn).
 
 ## Luồng kiến trúc (SA)
 

@@ -54,6 +54,8 @@ Vì sao `mvp` giữ chiều 1 · 3 · 5: chúng canh thứ **không sửa lại 
 | 🟡 **Major** | Rủi ro cao (mơ hồ, thiếu negative case) | Sửa trong phase, ghi vào backlog |
 | ⚪ **Minor** | Hình thức, nhất quán nhỏ | Gộp sửa cuối phase |
 
+> **Gate này mềm — verdict cuối là của người** ([ADR-020](../../../ADRs/ADR-020-2026-08-20-minipower-3-che-do-du-an-gate-bang-hook.md) QĐ-11). Không hook nào chặn trên PASS/BLOCK: chất lượng nội dung là **phán đoán ngữ nghĩa**, máy không kiểm được. "Blocker chặn baseline" nghĩa là *người review không ký* — không phải máy khoá lại. Thứ máy kiểm được đứng cạnh gate này là `trace:check` (ID trỏ sai / trùng) và `prereq-gate` (DOC tiền đề có tồn tại không).
+
 ## Cơ chế subagent
 
 1. **Dispatch** subagent **context sạch** — chỉ đưa 1 DOC/module đích + trace-matrix liên quan (không đưa cả lịch sử chat).

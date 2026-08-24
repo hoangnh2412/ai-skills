@@ -1,19 +1,21 @@
 ---
 name: fan-out
 description: >-
-  [minipower] Điều phối sinh artifact SONG SONG theo module giữa hai cổng
-  người-chốt. Sau khi người chốt DOC trước (BRD/BR/Prototype/SRS), fan-out mỗi
-  module một luồng → tổng hợp về trace-matrix. Dùng khi: viết Business Rules /
-  Prototype / SRS cho tất cả module, sinh hàng loạt theo module, làm song song.
+  [minipower] Điều phối sinh artifact SONG SONG theo module. Mỗi module chạy
+  chuỗi riêng theo nhịp riêng — module xong trước đi tiếp trước, không chờ module
+  khác. Dùng khi: viết Business Rules / Prototype / SRS cho nhiều module, sinh
+  hàng loạt theo module, làm song song.
 ---
 
 # Fan-out — sinh artifact song song theo module
 
 **Pack:** minipower · **Loại:** skill cross-phase (điều phối, **không** thay phase con) · **Không** tự sáng tác nội dung — **điều phối** phase skill + template sinh cho từng module.
 
-Đây là cơ chế cốt lõi của **Gated Fan-out Execution**. Ranh giới bất biến: **fan-out chỉ chạy GIỮA hai cổng người-chốt.** Trước cổng chưa chốt → không fan-out; xem [approval-gate](../../agents/approval-gate.md).
+**Mô hình: pipeline theo module, không phải barrier** ([ADR-020](../../../ADRs/ADR-020-2026-08-20-minipower-3-che-do-du-an-gate-bang-hook.md) QĐ-14). Mỗi module đi chuỗi của nó theo nhịp của nó. `ORD` xong Business Rules thì làm SRS cho `ORD` **ngay**, trong khi `INV` còn đang khảo sát. Module lệch nhịp là trạng thái **đúng**, không phải lỗi cần đồng bộ.
 
-> **Không phải người chọn skill** (Q6). Router ([SKILL.md](../../SKILL.md)) tự gọi khi intent là "sinh {BR/Prototype/SRS} cho các module".
+> **Người quyết từng nhánh.** Không hook nào, không skill nào tự phán module đã "đủ để chảy tiếp". `prereq-gate` chỉ **nhắc** khi thiếu DOC tiền đề *của đúng module đó* — bạn xác nhận là chạy. Không có agent bàn giao cho agent.
+
+> **Không phải người chọn skill.** Router ([SKILL.md](../../SKILL.md)) tự gọi khi intent là "sinh {BR/Prototype/SRS} cho các module".
 
 ---
 
@@ -25,60 +27,76 @@ description: >-
 | C | Prototype / Wireframe | DOC-19 | [requirements](../requirements/SKILL.md) + template DOC-19 |
 | B2 | SRS (FR) | DOC-06 | [requirements](../requirements/SKILL.md) |
 
-> Mở rộng sau (cùng khung): test case (DOC-16), code+unit test — giai đoạn D/E.
+> Mở rộng cùng khung: test case (DOC-16), code + unit test.
 
 ## Sơ đồ
 
 ```mermaid
-flowchart TB
-  GATE{{"🔒 Cổng trước đã chốt<br/>(DEC duyệt)"}}:::gate --> CHK{"DEC hợp lệ?"}
-  CHK -->|Chưa| STOP["⛔ Dừng → approval-gate<br/>(không fan-out)"]:::stop
-  CHK -->|Rồi| MODS["Đọc module in-scope<br/>từ DOC-03 BRD"]:::doc
-  MODS --> A["⚙️ Module A"]:::ai & B["⚙️ Module B"]:::ai & C["⚙️ Module C"]:::ai
-  A --> TM["Tổng hợp:<br/>trace-matrix · doc-registry · memory/{phase}"]:::doc
-  B --> TM
-  C --> TM
-  TM --> NEXT["Trình cổng kế:<br/>AI soạn DEC nháp → người duyệt"]:::gate
+flowchart LR
+  MODS["Module in-scope<br/>từ DOC-03 BRD"]:::doc
 
-  classDef gate fill:#fde68a,stroke:#b45309,color:#111
+  MODS --> A1["⚙️ ORD — BR"]:::ai --> A2["⚙️ ORD — Prototype"]:::ai --> A3["⚙️ ORD — SRS"]:::ai --> A4["→ SA / DEV nhận ORD"]:::done
+  MODS --> B1["⚙️ INV — BR"]:::ai --> B2["⚙️ INV — Prototype"]:::ai
+  MODS --> C1["⚙️ PAY — khảo sát"]:::ai
+
+  A3 -.-> TM["Tổng hợp (khi lead muốn):<br/>trace-matrix · doc-registry · BRD đầy đủ"]:::doc
+  B2 -.-> TM
+  C1 -.-> TM
+
   classDef ai fill:#bfdbfe,stroke:#1e40af,color:#111
   classDef doc fill:#e5e7eb,stroke:#374151,color:#111
-  classDef stop fill:#fecaca,stroke:#b91c1c,color:#111
+  classDef done fill:#bbf7d0,stroke:#15803d,color:#111
 ```
+
+Ba nhánh **không** gặp nhau ở vạch đích nào. Mũi tên đứt tới "Tổng hợp" là **tuỳ lúc** — lead gom khi cần bức tranh chung, không phải điều kiện chặn nhánh nào.
 
 ## Quy trình
 
-1. **Xác định target.** Từ intent → bước nào (BR / Prototype / SRS) → DOC target + cổng trước cần chốt (tra [approval-gate](../../agents/approval-gate.md)).
-2. **Kiểm cổng (bắt buộc).** Có **DEC "đã chốt"** cho DOC upstream trong `memory/{phase}/decision-log.md`? Chưa → **dừng**, không sinh gì, trỏ người qua approval-gate. (Đây là ranh giới §0 — không được bỏ.)
-3. **Lấy danh sách module.** Đọc module index in-scope trong `docs/01-project/DOC-03-brd.md`. Không có module nào đăng ký → hỏi người bổ sung DOC-03 trước (quy tắc parallel-work #6).
-4. **Fan-out — một artifact, một owner.** Mỗi module một luồng độc lập sinh/cập nhật DOC target trong `docs/03-modules/{module-id}/`, theo phase skill + template tương ứng. Nếu host hỗ trợ sub-agent → chạy **song song thật**; nếu không → tuần tự từng module, **vẫn giữ ranh giới owner** (không trộn context giữa module).
-5. **Tuân quy tắc song song** ([parallel-work.md](../../docs/parallel-work.md)): chỉ owner sửa DOC-04–07/19 của module mình; **tránh** sửa đồng thời file chung (DOC-03, `overview.md`, `trace-matrix.md`, `doc-registry.md`) — mỗi module chỉ **thêm dòng của mình**; prefix ID cố định `{MOD}-…`.
-6. **Tổng hợp.** Sau khi các module xong: cập nhật `05-traceability/trace-matrix.md` (UC→FR→AC), `doc-registry.md` (version/owner), `overview.md` (pipeline module), và tóm tắt vào `memory/{phase}/`.
-7. **Trình cổng kế.** AI **soạn DEC nháp** (đã làm gì mỗi module · điểm cần người quyết · assumption/TBD/rủi ro) → người duyệt (giao thức [approval-gate](../../agents/approval-gate.md)). Duyệt → mở khoá bước sau; chưa → hoàn thiện tiếp, **không tự qua cổng**.
+1. **Xác định target.** Từ intent → bước nào (BR / Prototype / SRS) → DOC target.
+2. **Lấy danh sách module.** Đọc module index in-scope trong `docs/01-project/DOC-03-brd.md`. Chưa module nào đăng ký → hỏi người bổ sung DOC-03 trước (quy tắc [parallel-work](../../docs/parallel-work.md) #6).
+3. **Xác định nhịp từng module.** Mỗi module đang ở đâu trong chuỗi `BR → Prototype → SRS`? Trả bảng trạng thái để **người** nhìn và quyết nhánh nào chạy tiếp:
 
-## Đặc thù Prototype (C) — HTML wireframe HOÃN
+   | Module | BR | Prototype | SRS | Chạy tiếp được? |
+   |--------|:--:|:---------:|:---:|-----------------|
+   | ORD | ✅ | ✅ | — | SRS |
+   | INV | ✅ | — | — | Prototype |
+   | PAY | — | — | — | BR (đang khảo sát) |
 
-- Fan-out DOC-19 hiện chỉ sinh **khung**: danh sách màn hình, luồng điều hướng (mermaid), trace về BR/UC — **chừa chỗ** nhúng wireframe ở mục 3 của template.
-- **Bản vẽ HTML wireframe do MCP ngoài** đảm nhận (tích hợp sau). Chưa có MCP → ghi `TBD: wireframe (chờ MCP)` vào `memory/requirements/open-questions.md`, đi tiếp bằng mô tả text/mermaid (hoãn có ghi nợ — khớp readiness-gate).
+4. **Fan-out — một artifact, một owner.** Mỗi module một luồng độc lập sinh/cập nhật DOC target trong `docs/03-modules/{module-id}/`. Host hỗ trợ sub-agent → chạy **song song thật**; không thì tuần tự, **vẫn giữ ranh giới owner** (không trộn context giữa module).
+5. **Thiếu tiền đề thì nói ra, đừng tự chặn.** Module thiếu DOC upstream → báo rõ *"`INV` chưa có DOC-04"* và hỏi người: bổ sung trước, hay chạy tiếp và ghi nợ vào `memory/doc-debt.md`. **Không** tự dừng cả mẻ vì một module chưa sẵn sàng.
+6. **Tuân quy tắc song song** ([parallel-work.md](../../docs/parallel-work.md)): chỉ owner sửa DOC-04–07/19 của module mình; **tránh** sửa đồng thời file chung (DOC-03, `overview.md`, `trace-matrix.md`, `doc-registry.md`) — mỗi module chỉ **thêm dòng của mình**; prefix ID cố định `{MOD}-…`.
+7. **Tổng hợp — bước riêng, khi lead muốn.** Cập nhật `05-traceability/trace-matrix.md`, `doc-registry.md`, `overview.md`, tóm tắt vào `memory/{phase}/`; hợp nhất BRD đầy đủ nếu đến lúc. **Không** phải điều kiện để module nào đó đi tiếp.
+
+## Theo chế độ dự án
+
+Chế độ đọc từ `memory/profile.json`; định nghĩa ở [router § Chế độ dự án](../../SKILL.md#chế-độ-dự-án-project_mode) — **không lặp lại ở đây**.
+
+| | `standard` | `mvp` | `maintain` |
+|---|---|---|---|
+| Chuỗi mỗi module | BR → Prototype → SRS | FR catalog + AC (bỏ Prototype nếu không cần) | theo **vùng chạm** của CR |
+| Thiếu tiền đề | `prereq-gate` **chặn** — gõ `BYPASS` để đi tiếp | nhắc, ghi `doc-debt.md` | nhắc, ghi `doc-debt.md` |
+| Tổng hợp | trước baseline | khi lên `standard` | theo CR |
 
 ## Ranh giới (KHÔNG làm)
 
-- **Không** fan-out khi cổng trước chưa có DEC chốt (vi phạm §0).
-- **Không** tự sang cổng kế — chỉ soạn DEC nháp để người duyệt.
+- **Không** tự sang bước kế cho một module khi người chưa xác nhận — AI đề xuất, người mở đường.
+- **Không** bắt module đã sẵn sàng chờ module chưa xong (đó là barrier — QĐ-14 bỏ).
 - **Không** để một luồng module ghi đè DOC/trace của module khác.
 - **Không** bịa module không có trong DOC-03; thiếu thì xin bổ sung scope trước.
+- **Không** đoán module từ tên tiếng Việt mơ hồ — nêu `Module: {id}` hoặc đường dẫn cho chắc.
 
 ## Exit criteria
 
-- [ ] DEC cổng trước đã chốt (đã kiểm, không bỏ qua)
-- [ ] Mỗi module in-scope có DOC target (hoặc TBD ghi nợ rõ)
+- [ ] Bảng trạng thái nhịp từng module đã trình người (bước 3)
+- [ ] Mỗi module **được chọn chạy** có DOC target (hoặc TBD ghi nợ rõ)
+- [ ] Module thiếu tiền đề đã được **nêu tên**, không im lặng bỏ qua
 - [ ] `trace-matrix.md` + `doc-registry.md` cập nhật, không xung đột file chung
-- [ ] DEC nháp cho cổng kế đã soạn, trình người duyệt
 - [ ] (Prototype) mục wireframe = link MCP **hoặc** `TBD: wireframe (chờ MCP)` trong open-questions
 
 ## Anti-patterns
 
-- Fan-out "chui" khi người chưa chốt cổng trước · tự động qua cổng kế không chờ duyệt
+- Bắt cả mẻ dừng vì một module chưa đủ tiền đề (barrier — QĐ-14 bỏ)
+- Tự quyết module đã "đủ" rồi chạy tiếp mà không hỏi người
 - Nhồi mọi module vào một luồng/context (mất ranh giới owner, dễ lệch trace)
-- Sinh SRS trước khi Prototype được chốt (sai thứ tự `BR → Prototype → SRS`)
 - Sửa `trace-matrix.md` đồng thời nhiều module gây conflict (đúng: mỗi module thêm dòng, sync cuối)
+- Coi "tổng hợp" là cổng — nó là bước dọn dẹp, không phải điều kiện

@@ -4,7 +4,9 @@
 
 Dự án lớn thường chia **theo bounded context (module)** và **theo vai trò**. Minipower hỗ trợ song song khi có **hợp đồng tại biên** (integration spec, entity dùng chung, API contract).
 
-> **Hai kiểu song song:** (1) **nhiều người** (multi-BA/SA/PM) — trang này; (2) **AI fan-out** giữa hai cổng người-chốt — điều phối bởi [skills/fan-out](../skills/fan-out/SKILL.md) (ADR gated-fanout). Cả hai **dùng chung** quy tắc bên dưới: một module = một owner, tránh sửa file chung đồng thời.
+> **Hai kiểu song song:** (1) **nhiều người** (multi-BA/SA/PM) — trang này; (2) **AI fan-out** theo module — điều phối bởi [skills/fan-out](../skills/fan-out/SKILL.md). Cả hai **dùng chung** quy tắc bên dưới: một module = một owner, tránh sửa file chung đồng thời.
+>
+> **Mỗi module một nhịp riêng** ([ADR-020](../../ADRs/ADR-020-2026-08-20-minipower-3-che-do-du-an-gate-bang-hook.md) QĐ-14): module xong trước đi tiếp trước, **không** chờ nhau ở vạch đích nào. Con người quyết từng nhánh đã đủ thông tin để chảy tiếp chưa — đó chính là mô hình cả trang này mô tả.
 
 ## Phân vai mẫu
 
