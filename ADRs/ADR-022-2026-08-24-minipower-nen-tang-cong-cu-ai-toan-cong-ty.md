@@ -70,19 +70,96 @@ minipower-backend-entityframework-dotnet          40
 minipower-backend-healthcheck-dotnet-postgresql   47   (provider dài nhất)
 ```
 
-Cây repo đích:
+### §2a. Cấu trúc repo sau đợt
 
 ```text
-minipower/  (repo)
-├── AGENTS.md · README.md · COORDINATION.md · ADRs/ · fundamentals/
-├── sdlc/         ┃ CORE — router-gộp `minipower-sdlc`; 6 phase + gate + roles
-│                 ┃ + templates + hooks (rules.json SSOT) + skeletons + install/
-├── backend/      ┃ MODULE .NET — 15 lá `minipower-backend-*-dotnet` (ADR-021)
-├── frontend/     ⏳ chưa tạo (QĐ-7 luật 2)
-└── autotest/ · design/ · slide/ …   ⏳ khi có skill thật
+minipower/                                  ← REPO (thương hiệu — QĐ-2)
+│
+├── AGENTS.md                               luật cho agent, nạp mỗi phiên
+├── CLAUDE.md                               → @AGENTS.md
+├── README.md                               bản đồ toàn repo
+├── COORDINATION.md                         hợp đồng liên-pack (§5 = schema PACK.md — QĐ-10)
+├── ADRs/                                   quyết định định hướng + README index
+├── fundamentals/                           kiến thức nền + interview/ (giữ tên — ADR-021 QĐ-8)
+│
+├── sdlc/                                   ┃ CORE — Role Intelligence Layer (QĐ-3)
+│   ├── SKILL.md                            ┃ ★ ROUTER — đăng ký `minipower-sdlc`, cửa vào duy nhất
+│   ├── PACK.md                             ┃ manifest máy-đọc (QĐ-8)
+│   ├── README.md · INSTALL.md · CHANGELOG.md
+│   ├── skills/                             ┃ 11 skill NỘI BỘ — loader KHÔNG thấy, router dẫn bằng Read
+│   │   ├── discovery/ requirements/ architecture/      ─┐
+│   │   ├── planning/ delivery/ change-control/          ┘ 6 phase
+│   │   ├── deliberation/ readiness-gate/ doc-review/    ─ 3 gate mềm
+│   │   ├── fan-out/  as-built/                          ─ cross-phase (as-built wrap codegraph)
+│   │   └── (doc-map/ — tương lai, §4)
+│   ├── agents/                             ┃ 8 guardrail markdown
+│   ├── roles/                              ┃ 7 lăng kính BA·PM·SA·DEV·QC·DevOps·Support
+│   ├── templates/                          ┃ DOC-01…19 + TPL-* (khuôn, không phải đất sét — QĐ-1)
+│   ├── hooks/                              ┃ Node ESM — rules.json SSOT · bin/ · test/ · link-check.js
+│   ├── docs-skeleton/ · project-skeleton/  ┃ khung dự án đích
+│   ├── install/{claude,cursor,opencode}/   ┃ 6 hook × 3 kênh; nâng `--with` sau (QĐ-6)
+│   └── .claude-plugin/                     ┃ plugin.json "name": "minipower" (giữ — ADR-011)
+│
+├── backend/                                ┃ MODULE .NET — cây chi tiết: ADR-021 §2a
+│   ├── README.md · PACK.md
+│   └── skills/                             ┃ 15 lá — loader THẤY TỪNG CÁI
+│       └── minipower-backend-{scaffold|foundation|application|authentication|
+│            entityframework|caching|notification|blobstoring|realtime|
+│            swashbuckle|healthcheck|telemetry|observability|
+│            troubleshooting|review}-dotnet/
+│
+├── frontend/                               ⏳ CHƯA TẠO (QĐ-7 luật 2)
+└── autotest/ · design/ · slide/ …          ⏳ khi có skill thật (§4)
 ```
 
 `install/` và `hooks/` hiện toàn khái niệm pipeline nên ở trong `sdlc/` là đúng; khi installer thành tầng sản phẩm thật (cài nhiều module) thì cân nhắc nâng lên root — **để lúc đó**, không làm trước.
+
+### §2b. Cách dùng skill sau đợt
+
+**Menu người dùng thấy** (mọi loader — gõ `minipower` là ra tất cả, QĐ-4):
+
+```text
+minipower-sdlc                            ← 1 dòng = cả pipeline (router-gộp)
+minipower-backend-scaffold-dotnet         ┐
+minipower-backend-caching-dotnet          │ 15 dòng, mỗi lá tự đứng
+minipower-backend-review-dotnet           │ với description sắc (lá-rời)
+…                                         ┘
+```
+
+**Ba luồng sử dụng:**
+
+```text
+Ⓐ PIPELINE TÀI LIỆU (router-gộp — một cửa, có gác)
+   "viết SRS cho module đơn hàng"
+   → hook auto-routing gợi ý phase → kích hoạt `minipower-sdlc`
+   → router áp mode (mvp/standard/maintain) + tier (micro/light/full)
+     + prereq theo module → Read skills/requirements/SKILL.md → làm việc
+   Gate mềm (deliberation · readiness-gate · doc-review) nằm trên đường này.
+
+Ⓑ ĐỒ NGHỀ CODE (lá-rời — vào thẳng, không thứ tự)
+   "service đơn hàng cần cache Redis, invalidate khi update"
+   → khớp description `minipower-backend-caching-dotnet` → nạp thẳng
+   → workflows/init.md (chưa có module) hoặc add.md (thêm provider)
+   Không qua router nào; 6 hook (prereq/baseline/token…) vẫn nổ độc lập.
+
+Ⓒ CHUYỂN TIẾP DOCS → CODE (điểm nối hai mô hình)
+   `minipower-sdlc` xong architecture cho một module → bảng trigger router
+   chỉ đường: "DOC-08/11/12 đủ → sang `minipower-backend-scaffold-dotnet`"
+   Người mở đường từng nhánh (per-module — ADR-020 QĐ-14), không agent bàn giao agent.
+```
+
+**Cài đặt — ai cần gì cài nấy (QĐ-6):**
+
+```bash
+# Core (repo dự án bất kỳ): 6 hook + skill minipower-sdlc
+node sdlc/install/claude/install.mjs
+
+# Module backend (repo code sản phẩm): hiện tại symlink/rsync từng lá như cũ;
+# sau khi QĐ-6 thi hành:
+node sdlc/install/claude/install.mjs --with backend
+```
+
+Repo tài liệu chỉ cần core · repo code cài core + `backend` · máy marketing mai này cài core + `design`.
 
 ---
 

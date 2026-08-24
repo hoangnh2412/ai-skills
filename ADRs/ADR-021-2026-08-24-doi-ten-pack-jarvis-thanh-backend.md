@@ -65,6 +65,73 @@ QĐ-1 tách đúng chỗ đau: **cái nào là bao bì thì đổi, cái nào l�
 
 **Provider skill con** (`providers/*/SKILL.md`, `patterns/*/SKILL.md`) theo quy ước cũ là `<skill>-<provider>` — sau đổi tên thành `minipower-backend-healthcheck-dotnet-postgresql` (**47 ký tự**, vẫn dưới 64).
 
+### §2a. Cây thư mục pack sau đổi tên
+
+Giải phẫu từng skill **giữ nguyên** theo [fundamentals/template-skill.md](../fundamentals/template-skill.md) — chỉ tên thư mục lá và `name:` đổi:
+
+```text
+backend/                                        ← pack (một từ — ADR-022 QĐ-2)
+├── README.md                                   hub người dùng: bảng 15 skill, prompt mẫu, publish
+├── PACK.md                                     manifest máy-đọc (ADR-022 QĐ-8)
+└── skills/                                     15 lá — loader đăng ký TỪNG CÁI (lá-rời)
+    │
+    │  ── dựng nền ──────────────────────────────────────────
+    ├── minipower-backend-scaffold-dotnet/      ★ điểm vào: dựng solution .NET 9 + cài Jarvis
+    │   ├── SKILL.md                            (name: minipower-backend-scaffold-dotnet)
+    │   ├── README.md
+    │   ├── workflows/  scaffold.md
+    │   └── templates/  docs-README.md · docs-Architecture.md · SKILLS.md
+    ├── minipower-backend-foundation-dotnet/    Domain.Shared · Mvc · Json/CORS · ApiResponseWrapper
+    ├── minipower-backend-application-dotnet/   CQRS Application layer
+    │
+    │  ── tích hợp theo nhu cầu ───────────────────────────── (mỗi skill cùng giải phẫu:
+    ├── minipower-backend-authentication-dotnet/    JWT · API Key · Cognito        SKILL.md + README.md
+    ├── minipower-backend-entityframework-dotnet/   EF multitenancy                + workflows/{init,add}.md
+    ├── minipower-backend-caching-dotnet/           Memory + Redis                 + providers|patterns/
+    ├── minipower-backend-notification-dotnet/      Email SMTP Mailkit             + templates/)
+    ├── minipower-backend-blobstoring-dotnet/       FileSystem / MinIO
+    ├── minipower-backend-realtime-dotnet/
+    ├── minipower-backend-swashbuckle-dotnet/       Swagger / OpenAPI
+    │
+    │  ── vận hành ──────────────────────────────────────────
+    ├── minipower-backend-healthcheck-dotnet/       /health/live · /health/ready
+    │   └── providers/postgresql/SKILL.md           (name: minipower-backend-healthcheck-dotnet-postgresql)
+    ├── minipower-backend-telemetry-dotnet/         OpenTelemetry
+    ├── minipower-backend-observability-dotnet/     OTEL → Prometheus → Grafana → alert
+    ├── minipower-backend-troubleshooting-dotnet/   xử sự cố (+ tools/)
+    │
+    │  ── chất lượng ────────────────────────────────────────
+    └── minipower-backend-review-dotnet/            review PR C#/.NET trước khi mở
+```
+
+15 lá phục vụ **4 vai** qua lăng kính `roles/` của pack lõi: DEV (dựng nền + tích hợp) · QC (review) · DevOps (vận hành) · Support (troubleshooting) — khai ở trường `roles:` trong `PACK.md`, không chia thư mục theo vai.
+
+### §2b. Cách dùng sau đổi tên
+
+**Đường chính — tự kích hoạt theo ngữ cảnh** (giá trị của lá-rời): người dùng mô tả việc, agent khớp `description` của lá:
+
+```text
+"Dựng backend mới cho sản phẩm Acme"        → minipower-backend-scaffold-dotnet
+"API cần xác thực JWT + API key"            → minipower-backend-authentication-dotnet
+"cache Redis, invalidate khi update stock"  → minipower-backend-caching-dotnet
+"thêm readiness check cho PostgreSQL"       → minipower-backend-healthcheck-dotnet
+"review PR này trước khi merge"             → minipower-backend-review-dotnet
+```
+
+**Đường phụ — gọi đích danh** (prompt mẫu trong `backend/README.md`, path đổi theo tên mới):
+
+```text
+@.opencode/skills/minipower-backend-scaffold-dotnet/workflows/scaffold.md
+Scaffold backend .NET 9: Product=Acme, product=acme
+
+@.opencode/skills/minipower-backend-entityframework-dotnet/workflows/init.md
+Init Jarvis EF + single DB cho MyApp
+```
+
+**Thứ tự khuyên khi dựng mới** (khuyến nghị trong README, không hook nào ép — lá-rời không có thứ tự cưỡng chế): `scaffold → foundation → application → (auth / EF / cache / … theo nhu cầu) → review trước khi mở PR`.
+
+**Cài vào repo product:** cơ chế publish giữ nguyên (QĐ-5) — symlink/rsync từng lá như [backend/README.md] hiện hành, chỉ đổi path nguồn `jarvis/skills/*` → `backend/skills/*`; tương lai `install.mjs --with backend` (ADR-022 QĐ-6).
+
 ---
 
 ## §3. Ranh giới "đổi tên, không đổi nội dung" (QĐ-5)
