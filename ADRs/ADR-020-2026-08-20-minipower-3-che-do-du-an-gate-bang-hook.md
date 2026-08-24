@@ -367,6 +367,46 @@ Danh sách di sản: ADR này khai tử / mượn từ ADR nào, và **giữ l�
 | 11 | 🟢 | [`lib/trace-check.js`](../minipower/hooks/lib/trace-check.js) + [`bin/trace-check.js`](../minipower/hooks/bin/trace-check.js) + npm script `trace:check` + [`.gitlab-ci.yml`](../minipower/project-skeleton/.gitlab-ci.yml) (chỉ chạy khi `docs/**` đổi). **FAIL**: `unknown-id` · `duplicate-id`. **WARN**: `fr-no-ac` · `ac-no-test`. Bỏ qua `02-baseline` · `_template` · `_legacy`; placeholder `{MOD}-FR-001` không tính là ID | ✅ **17 test.** Quan trọng nhất: **không phạt vì tài liệu chưa viết** — chưa có DOC-07 nào thì im lặng, chỉ WARN khi đã có AC ở nơi khác mà FR này bị bỏ quên. Shim: `exit 1` khi FAIL, **`exit 0` khi chỉ WARN** |
 | 12 | 🟢 | [AGENTS.md](../AGENTS.md): 3 gate **đều mềm** · **phép thử** "cái gì FAIL được bằng máy?" trước khi viết chữ *bắt buộc* · 7 điều kiện cứng hiện hành · `project_mode` · QĐ-14 · bỏ `permissions.deny`, 6 hook · lệnh `trace:check`. [COORDINATION.md](../COORDINATION.md): mục **§2.0 handoff là per-module** — `ORD` qua H4 trong khi `INV` chưa qua H2 là **đúng**, không có vạch đích chung. [README](../README.md): bảng use-case 3 chế độ cho người mới | ✅ Test [`docs-consistency.test.js`](../minipower/hooks/test/docs-consistency.test.js) — 11 test canh 3 file gốc repo, thứ trước giờ chỉ dựa vào trí nhớ người sửa |
 
+### 8a. Test nào phủ việc nào *(đối chiếu 2026-08-21)*
+
+**151 khối `test()` cấp trên · 407 test case** (Node đếm cả subtest) trong 18 file. Bảng này để lần sau khỏi phải dò lại từ đầu.
+
+| # | File test | Khối | Khoá cái gì |
+|---|-----------|:----:|-------------|
+| **1** | [`rules.test.js`](../minipower/hooks/test/rules.test.js) *(6 khối cuối)* | 6 | `doc_scope` phủ đủ 19 DOC & khớp cây §2b · intent trộn hai cấp diễn đạt được · 3 mode đủ `label`/`docs_focus`/`gates` · **cấm tái sinh `skeleton_skip`** (QĐ-2) + **cấm khoá `dec`** (QĐ-11) · `gateLevel` · `requiresForIntent` · `approval_source_kinds` |
+| **1** | [`profile-guard.test.js`](../minipower/hooks/test/profile-guard.test.js) *(2 khối mới)* | 2 | v2 đủ/thiếu/lạ · **v1 vẫn hợp lệ** (QĐ-2a) · `approval_source` nhận tên MCP · `readProjectMode` fail-open 6 nhánh |
+| **2** | [`prereq-gate.test.js`](../minipower/hooks/test/prereq-gate.test.js) + [`baseline-guard.test.js`](../minipower/hooks/test/baseline-guard.test.js) | 15 | *Hai file này **là** deliverable của #2 — viết đỏ trước hook* |
+| **3** | hai file trên (nay xanh) | 15 | `extractModuleId` 5 pattern (Q9) · block@`standard`/warn@`mvp`·`maintain` · **module lệch nhịp** (QĐ-13) · fail-open R2 · C4 deny 3 mode **không BYPASS** · C5 mở `_legacy` ở `maintain` mà **không kéo theo C4** |
+| **3** | [`bin.test.js`](../minipower/hooks/test/bin.test.js) *(4 khối mới)* | 4 | Shim thật: `exit 2` + `continue:false` · `additional_context` khi warn · `tool_input` lồng / `file_path` / `path` |
+| **3** | [`plugin-hooks.test.js`](../minipower/hooks/test/plugin-hooks.test.js) *(1 khối mới)* | 1 | 5→**6** command · `prereq-gate` **trước** `decision-staleness` · matcher `Read\|Write\|Edit` |
+| **4** | [`install-parity.test.js`](../minipower/hooks/test/install-parity.test.js) | 7 | 3 kênh **cùng bộ 6 guard** · fragment không còn `permissions` · thứ tự chuỗi hook · `install.mjs` resolve path Windows |
+| **5** | [`router.test.js`](../minipower/hooks/test/router.test.js) | 7 | Mọi mode ở init câu 6 · mọi `approval_source` ở câu 7 · **schema khớp `PROFILE_VERSION`** · luồng init-vào-repo-có-sẵn · **mọi anchor nội bộ trỏ heading thật** |
+| **6** | [`skeleton.test.js`](../minipower/hooks/test/skeleton.test.js) | 6 | `doc-debt.md` ở **gốc** `memory/` (§3c) · `archive/README` đủ 3 mức tin cậy · **`docs-skeleton` đúng 7 folder** (QĐ-2) · README folder rỗng |
+| **7** | [`soft-layer.test.js`](../minipower/hooks/test/soft-layer.test.js) *(3 khối đầu)* | 3 | Mỗi gate phủ 3 mode · **trỏ** router chứ không **chép** bảng · tự khai là mềm |
+| **7b** | `soft-layer.test.js` *(4 khối sau)* | 4 | `fan-out` khai pipeline + QĐ-14 · không còn kiểm DEC · quét **mọi** `skills/*/SKILL.md` + 4 markdown, cấm 4 câu sai cũ · `approval-gate.md` tự khai advisory |
+| **8** | [`templates.test.js`](../minipower/hooks/test/templates.test.js) | 7 | Mỗi DOC có **cả hai** mức · nhãn chỉ ở heading · DOC-17 giữ *bước/rollback/xác minh* ở lõi · `_template` đủ mọi DOC `scope=module` · mọi `TPL-*` trong README |
+| **9** | [`as-built.test.js`](../minipower/hooks/test/as-built.test.js) | 8 | Ranh giới R5 · codegraph tuỳ chọn (R6) · Q4 · **`hooks/lib`+`hooks/bin`+fragment không được nhắc `as-built`/`codegraph`** · **mọi skill router trỏ tới phải tồn tại** |
+| **10** | [`docs-consistency.test.js`](../minipower/hooks/test/docs-consistency.test.js) *(3 khối)* | 3 | Đủ 2 luồng lên · nhắc DEC (chặn R3) · `trace:check` là điều kiện · **cột `doc-debt` ở skill khớp file skeleton thật** |
+| **11** | [`trace-check.test.js`](../minipower/hooks/test/trace-check.test.js) | 15 | FAIL `unknown-id`/`duplicate-id` · **WARN không được fail** · **không phạt vì chưa viết** · bỏ qua baseline/`_template`/`_legacy` · placeholder không tính · shim `exit 1`/`exit 0` · `.gitlab-ci.yml` · npm script |
+| **11** | `docs-consistency.test.js` *(1 khối)* | 1 | Mọi file ADR này hứa đều tồn tại thật |
+| **12** | `docs-consistency.test.js` *(7 khối)* | 7 | 3 gate mềm · **phép thử "FAIL được bằng máy"** · 3 mode · QĐ-14 · lệnh `trace:check` khớp `package.json` · handoff per-module · README use-case |
+
+**Không thuộc §8 — canh quyết định cũ, vẫn còn giá trị:** `token-guard` (8) · `auto-routing` (7) · `token-guard-read` (5 — còn giá trị vì `baseline-guard` **wrap** nó) · `rules.test.js` 16 khối đầu (N1–N4, A2/A3, `gen --check`) · `profile-guard` 3 khối (C1) · `plugin-hooks` 5 khối · `bypass` + `decision-staleness` (6).
+
+#### Năm tiêu chí §8 mà test KHÔNG phủ được
+
+Ghi ra để không ai tưởng "407 test xanh" nghĩa là mọi tiêu chí đã xác minh:
+
+| # | Tiêu chí | Vì sao |
+|---|----------|--------|
+| **3** | *"smoke 3 nền tảng"* | Chỉ Claude chạy thật (`install.mjs --check`). Cursor/OpenCode chỉ assert **tĩnh**; `minipower.ts` là TypeScript, **chưa test nào thực thi nó** |
+| **4** | *"Cài thử: plugin và settings cùng hành vi"* | Parity so **văn bản cấu hình**, không chạy hai kênh rồi so kết quả |
+| **5** | *"Init thử 3 mode → ra cùng một cây"* | Init là hành vi **agent** theo markdown, không phải code — `node --test` không chạm tới |
+| **9** | *"có và không có codegraph"* | Chỉ chạy được đường **degrade**; codegraph chưa cài |
+| **10** | *"`mvp → standard` thử: nợ → backfill → baseline v1.0"* | Chỉ assert **tài liệu mô tả đúng luồng**, không có test end-to-end chạy luồng đó |
+
+**Kết luận thẳng:** tầng cứng phủ tốt — cái gì FAIL được bằng máy đều có test. Tầng mềm chỉ phủ được *"văn bản nói đúng"*, **không** phủ được *"agent làm đúng"*. Đó là giới hạn cố hữu của QĐ-3, không phải thiếu sót vá được bằng thêm test.
+
 ---
 
 ## §9. Câu hỏi mở — **Q1–Q8 đã chốt (2026-08-21) · Q9 mức triển khai**
