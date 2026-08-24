@@ -25,11 +25,11 @@ Hướng dẫn maintainer & agent khi **Init project** / **Reconfigure agent**.
 
 ---
 
-## `memory/profile.json` (schema v1)
+## `memory/profile.json` (schema v2)
 
 ```json
 {
-  "version": 1,
+  "version": 2,
   "user_name": "Hoàng",
   "honorific": "anh",
   "agent_pronoun": "em",
@@ -38,16 +38,23 @@ Hướng dẫn maintainer & agent khi **Init project** / **Reconfigure agent**.
   "project_summary": "Hệ thống quản lý hóa đơn điện tử",
   "current_phase": "discovery",
   "minipower_experience": "new",
+  "project_mode": "standard",
+  "approval_source": { "docs": "local", "tasks": "local", "code": "local" },
   "completed_at": "2026-07-25"
 }
 ```
 
 | Field | Quy tắc |
 |-------|---------|
+| `version` | `2` cho bản mới. **`1` vẫn hợp lệ** — dự án cài bản cũ không bị chặn; hook đọc v1 như `standard` + `local`, nâng lên v2 khi chạy `Cập nhật profile` |
 | `honorific` | `anh` hoặc `chị` (hook chuẩn hoá bỏ dấu → `chi`) |
 | `roles` | Một hoặc nhiều: `BA`, `PM`, `SA`, `DEV`, `QC`, `DevOps`, `Support` |
 | `current_phase` | `discovery` · `requirements` · `architecture` · `planning` · `delivery` · `change-control` |
 | `minipower_experience` | `new` · `returning` |
+| `project_mode` | `mvp` · `standard` · `maintain` — [bảng chế độ](../SKILL.md#chế-độ-dự-án-project_mode). Đổi mode **phải kèm DEC** (nghi thức qua `change-control`) |
+| `approval_source` | Object **3 loại**: `docs` · `tasks` · `code`. Mặc định cả ba là `local`; đổi sang tên MCP khi có (vd `outline`, `openproject`, `gitlab`). Đổi tự do, không cần DEC |
+
+> **v2 bắt buộc cả `project_mode` và `approval_source`** — thiếu một trong hai thì `profile-guard` báo không hợp lệ. Không chắc chọn gì → `standard` + cả ba `local` là mặc định an toàn.
 
 ---
 

@@ -8,8 +8,12 @@
 
 ---
 
-## 1. Giới thiệu
+> **Hai mức điền —「lõi」và「full」.** Heading **không** đánh dấu = **lõi**: điền ở mọi chế độ dự án.
+> Heading có **`▸ full`** = chỉ cần ở chế độ `standard`.
+> Bỏ mục `▸ full` ở `mvp`/`maintain` là **có chủ đích**, không phải làm ẩu — nhưng phải ghi nợ vào
+> `memory/doc-debt.md`. **Không xoá heading**: giữ chỗ để lên `standard` chỉ việc điền tiếp.
 
+## 1. Giới thiệu
 ### 1.1 Mục đích
 
 ### 1.2 Phạm vi
@@ -26,21 +30,18 @@
 
 [Tóm tắt 1 trang: style, pattern, key decisions]
 
-## 2. Mục tiêu & Ràng buộc kiến trúc
-
+## 2. Mục tiêu & Ràng buộc kiến trúc ▸ full
 | ID | Goal / Constraint | NFR trace |
 |----|-------------------|-----------|
 | AG-001 | | NFR-xxx |
 
-## 3. Stakeholder & Mối quan tâm
-
+## 3. Stakeholder & Mối quan tâm ▸ full
 | Stakeholder | Concern | View addressing |
 |-------------|---------|-----------------|
 | Dev team | Maintainability | Module / Component |
 | Ops | Deployability | Deployment |
 
 ## 4. Các góc nhìn kiến trúc
-
 ### 4.1 Góc nhìn logic (Component)
 
 ```text
@@ -75,8 +76,7 @@
 |----------|----------------|-----------|
 | UC-001 login flow | Logical + Process + Deployment | NFR security |
 
-## 5. Mối quan tâm xuyên suốt
-
+## 5. Mối quan tâm xuyên suốt ▸ full
 | Concern | Approach | ADR ref |
 |---------|----------|---------|
 | Security | RBAC + ABAC | ADR-001 |
@@ -84,21 +84,18 @@
 | Error handling | | |
 
 ## 6. Tóm tắt quyết định kiến trúc
-
 → Chi tiết **DOC-09 ADR**
 
 | ADR ID | Decision | Status |
 |--------|----------|--------|
 | ADR-001 | | Accepted |
 
-## 7. Rủi ro & Nợ kỹ thuật
-
+## 7. Rủi ro & Nợ kỹ thuật ▸ full
 | ID | Rủi ro | Mitigation |
 |----|--------|------------|
 | | | |
 
-## 8. Phê duyệt
-
+## 8. Phê duyệt ▸ full
 | Vai trò | Họ tên | Ngày |
 |---------|--------|------|
 | Solution Architect | | |

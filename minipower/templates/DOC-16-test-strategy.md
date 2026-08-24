@@ -12,14 +12,17 @@
 
 ---
 
-## 1. Mục đích
+> **Hai mức điền —「lõi」và「full」.** Heading **không** đánh dấu = **lõi**: điền ở mọi chế độ dự án.
+> Heading có **`▸ full`** = chỉ cần ở chế độ `standard`.
+> Bỏ mục `▸ full` ở `mvp`/`maintain` là **có chủ đích**, không phải làm ẩu — nhưng phải ghi nợ vào
+> `memory/doc-debt.md`. **Không xoá heading**: giữ chỗ để lên `standard` chỉ việc điền tiếp.
 
+## 1. Mục đích
 [Mô tả phạm vi test module — trace [`DOC-06-srs.md`](DOC-06-srs.md) (N FR) và [`DOC-07-acceptance-criteria.md`](DOC-07-acceptance-criteria.md) (N AC).]
 
 ---
 
 ## 2. Danh mục test case
-
 > Business glossary — [Trạng thái thực thi TC](../docs-skeleton/00-governance/business-glossary.md#4-doc-16--trạng-thái-thực-thi-tc) · [Cột catalog](../docs-skeleton/00-governance/business-glossary.md#8-doc-16--cột-catalog) · [Layer, Path, Priority](../docs-skeleton/00-governance/business-glossary.md#9-doc-16--layer-path-priority).
 
 ### 2.1 [Nhóm chức năng — ví dụ: Happy path chính]
@@ -37,8 +40,7 @@
 
 ---
 
-## 3. Chi tiết test case
-
+## 3. Chi tiết test case ▸ full
 ### {MOD}-TC-001 — [Tiêu đề]
 
 | Mục | Nội dung |
@@ -53,7 +55,6 @@
 ---
 
 ## 4. Ma trận truy vết
-
 | TC ID | FR ID | AC ID | BR ID | UC ID | Coverage |
 |-------|-------|-------|-------|-------|----------|
 | {MOD}-TC-001 | {MOD}-FR-001 | {MOD}-AC-001 | {MOD}-BR-001 | {MOD}-UC-001 | ✅ |
@@ -63,8 +64,7 @@
 
 ---
 
-## 5. Phương pháp kiểm thử
-
+## 5. Phương pháp kiểm thử ▸ full
 | Loại | Mô tả |
 |------|-------|
 | **Unit Test** | Kiểm thử từng hàm/service |
@@ -74,8 +74,7 @@
 
 ---
 
-## 6. Môi trường kiểm thử
-
+## 6. Môi trường kiểm thử ▸ full
 | Môi trường | Mục đích |
 |------------|----------|
 | **Local/Dev** | Unit, integration cơ bản |
@@ -84,14 +83,12 @@
 
 ---
 
-## 7. Mức độ nghiêm trọng lỗi
-
+## 7. Mức độ nghiêm trọng lỗi ▸ full
 → [DOC-16 — Defect severity](../docs-skeleton/00-governance/business-glossary.md#10-doc-16--defect-severity).
 
 ---
 
-## 8. Nhật ký thay đổi
-
+## 8. Nhật ký thay đổi ▸ full
 > Quy tắc versioning: [`doc-versioning.md`](../docs-skeleton/00-governance/doc-versioning.md).
 
 | Phiên bản | Thay đổi | Tác giả |
@@ -100,8 +97,7 @@
 
 ---
 
-## 9. Phê duyệt
-
+## 9. Phê duyệt ▸ full
 | Vai trò | Họ tên | Ngày | Baseline |
 |---------|--------|------|----------|
 | REQ owner (sign-off) | | | ☐ |

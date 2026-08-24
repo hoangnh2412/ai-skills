@@ -8,8 +8,12 @@
 
 ---
 
-## 1. Giới thiệu
+> **Hai mức điền —「lõi」và「full」.** Heading **không** đánh dấu = **lõi**: điền ở mọi chế độ dự án.
+> Heading có **`▸ full`** = chỉ cần ở chế độ `standard`.
+> Bỏ mục `▸ full` ở `mvp`/`maintain` là **có chủ đích**, không phải làm ẩu — nhưng phải ghi nợ vào
+> `memory/doc-debt.md`. **Không xoá heading**: giữ chỗ để lên `standard` chỉ việc điền tiếp.
 
+## 1. Giới thiệu ▸ full
 ### 1.1 Mục đích
 
 [Mục đích tài liệu, đối tượng đọc]
@@ -34,8 +38,7 @@
 
 [Cấu trúc phần còn lại của SRS]
 
-## 2. Mô tả tổng quan
-
+## 2. Mô tả tổng quan ▸ full
 ### 2.1 Bối cảnh sản phẩm
 
 [Context hệ thống, interface với hệ thống khác]
@@ -71,7 +74,6 @@
 | | |
 
 ## 3. Yêu cầu chức năng
-
 > Chi tiết NFR → **DOC-13**. AC → **DOC-07**.
 
 | FR ID | Mô tả | Priority | Source (UC/BRQ) | Verification method |
@@ -90,8 +92,7 @@
 | **Postconditions** | |
 | **Error handling** | |
 
-## 4. Yêu cầu giao diện bên ngoài
-
+## 4. Yêu cầu giao diện bên ngoài ▸ full
 ### 4.1 Giao diện người dùng
 
 [Màn hình, UX constraint — hoặc tham chiếu wireframe]
@@ -108,24 +109,21 @@
 
 [Protocol, format]
 
-## 5. Yêu cầu phi chức năng khác (tóm tắt)
-
+## 5. Yêu cầu phi chức năng khác (tóm tắt) ▸ full
 → Chi tiết **DOC-13**
 
 | NFR ID | Category | Tóm tắt |
 |--------|----------|---------|
 | NFR-001 | Performance | |
 
-## 6. Phụ lục
-
+## 6. Phụ lục ▸ full
 ### 6.1 Ma trận truy vết (tóm tắt)
 
 | FR ID | UC | BR | AC | Test |
 |-------|----|----|----|------|
 | FR-001 | UC-001 | BR-001 | AC-001 | TC-001 |
 
-## 7. Phê duyệt / Baseline
-
+## 7. Phê duyệt / Baseline ▸ full
 | Vai trò | Họ tên | Ngày | Version baseline |
 |---------|--------|------|------------------|
 | Business Owner | | | v1.0 |

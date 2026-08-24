@@ -8,18 +8,20 @@
 
 ---
 
-## 1. Giới thiệu
+> **Hai mức điền —「lõi」và「full」.** Heading **không** đánh dấu = **lõi**: điền ở mọi chế độ dự án.
+> Heading có **`▸ full`** = chỉ cần ở chế độ `standard`.
+> Bỏ mục `▸ full` ở `mvp`/`maintain` là **có chủ đích**, không phải làm ẩu — nhưng phải ghi nợ vào
+> `memory/doc-debt.md`. **Không xoá heading**: giữ chỗ để lên `standard` chỉ việc điền tiếp.
 
+## 1. Giới thiệu
 [Phạm vi; tham chiếu DOC-06 SRS §5, DOC-08 SAD]
 
 ## 2. Ma trận tóm tắt NFR
-
 | NFR ID | Category | Requirement (measurable) | Priority | Verification | Owner |
 |--------|----------|--------------------------|----------|--------------|-------|
 | NFR-001 | Performance | Response ≤ 2s @ 100 concurrent users | Must | Load test | |
 
-## 3. Phân loại
-
+## 3. Phân loại ▸ full
 ### 3.1 Hiệu năng
 
 | NFR ID | Metric | Target | Measurement method | Environment |
@@ -70,8 +72,7 @@
 |--------|-------------|
 | NFR-U01 | WCAG 2.1 AA (nếu áp dụng) |
 
-## 4. Mẫu chi tiết NFR
-
+## 4. Mẫu chi tiết NFR ▸ full
 ### NFR-[ID] — [Tên]
 
 | Mục | Nội dung |
@@ -82,14 +83,12 @@
 | **Architectural impact** | → DOC-08, ADR-xxx |
 | **Test approach** | Load / Pen test / Audit |
 
-## 5. Truy vết
-
+## 5. Truy vết ▸ full
 | NFR ID | SAD section | AC ID | Test (DOC-16) | Monitoring |
 |--------|-------------|-------|---------------|------------|
 | NFR-001 | Deployment view | AC-NFR-001 | TC-perf-001 | APM dashboard |
 
-## 6. Phê duyệt
-
+## 6. Phê duyệt ▸ full
 | Vai trò | Ngày |
 |---------|------|
 | Architect | |

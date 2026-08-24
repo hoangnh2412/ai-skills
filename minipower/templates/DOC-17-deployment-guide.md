@@ -8,8 +8,12 @@
 
 ---
 
-## 1. Tổng quan
+> **Hai mức điền —「lõi」và「full」.** Heading **không** đánh dấu = **lõi**: điền ở mọi chế độ dự án.
+> Heading có **`▸ full`** = chỉ cần ở chế độ `standard`.
+> Bỏ mục `▸ full` ở `mvp`/`maintain` là **có chủ đích**, không phải làm ẩu — nhưng phải ghi nợ vào
+> `memory/doc-debt.md`. **Không xoá heading**: giữ chỗ để lên `standard` chỉ việc điền tiếp.
 
+## 1. Tổng quan
 | Mục | Giá trị |
 |-----|---------|
 | **System / Release** | vX.Y |
@@ -18,7 +22,6 @@
 | **Rollback decision maker** | |
 
 ## 2. Môi trường
-
 | Env | URL | Purpose | Infra |
 |-----|-----|---------|-------|
 | DEV | | Development | |
@@ -26,7 +29,6 @@
 | PROD | | Production | |
 
 ## 3. Điều kiện tiên quyết
-
 | # | Item | Owner | Status |
 |---|------|-------|--------|
 | 1 | UAT sign-off (DOC-16) | Business | ☐ |
@@ -36,8 +38,7 @@
 | 5 | Rollback script tested | DevOps | ☐ |
 | 6 | Communication sent to users | PM | ☐ |
 
-## 4. Kiến trúc triển khai
-
+## 4. Kiến trúc triển khai ▸ full
 → **DOC-08 SAD** Deployment View
 
 ```text
@@ -45,7 +46,6 @@
 ```
 
 ## 5. Các bước triển khai
-
 | Step | Action | Command / Link | Owner | Verify |
 |------|--------|----------------|-------|--------|
 | 1 | Enable maintenance mode | `...` | DevOps | Page shows banner |
@@ -55,14 +55,12 @@
 | 5 | Smoke test | TC-smoke-001 … | QA | All pass |
 | 6 | Disable maintenance | | DevOps | Users can login |
 
-## 6. Di chuyển dữ liệu (nếu có)
-
+## 6. Di chuyển dữ liệu (nếu có) ▸ full
 | Step | Action | Reconcile rule | Rollback |
 |------|--------|----------------|----------|
 | 1 | Export source | Row count match | Restore backup |
 
 ## 7. Xác minh sau triển khai
-
 | Check | Expected | Actual | Pass |
 |-------|----------|--------|------|
 | Health endpoint | 200 OK | | ☐ |
@@ -71,7 +69,6 @@
 | APM / logs | No error spike | | ☐ |
 
 ## 8. Quy trình rollback
-
 | Trigger | Action |
 |---------|--------|
 | Smoke fail | Execute rollback within X min |
@@ -86,22 +83,19 @@
 | 3 | Verify rollback smoke | QA |
 | 4 | Notify stakeholders | PM |
 
-## 9. Hypercare (sau go-live)
-
+## 9. Hypercare (sau go-live) ▸ full
 | Period | Support model | Escalation |
 |--------|---------------|------------|
 | Day 1–7 | War room 24/7 | On-call roster |
 
-## 10. Liên hệ
-
+## 10. Liên hệ ▸ full
 | Role | Name | Phone / Slack |
 |------|------|---------------|
 | DevOps on-call | | |
 | DBA | | |
 | PM | | |
 
-## 11. Ký duyệt
-
+## 11. Ký duyệt ▸ full
 | Vai trò | Go / No-go | Ngày |
 |---------|------------|------|
 | DevOps Lead | | |

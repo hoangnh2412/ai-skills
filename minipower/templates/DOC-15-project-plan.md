@@ -8,8 +8,12 @@
 
 ---
 
-## 1. Giới thiệu
+> **Hai mức điền —「lõi」và「full」.** Heading **không** đánh dấu = **lõi**: điền ở mọi chế độ dự án.
+> Heading có **`▸ full`** = chỉ cần ở chế độ `standard`.
+> Bỏ mục `▸ full` ở `mvp`/`maintain` là **có chủ đích**, không phải làm ẩu — nhưng phải ghi nợ vào
+> `memory/doc-debt.md`. **Không xoá heading**: giữ chỗ để lên `standard` chỉ việc điền tiếp.
 
+## 1. Giới thiệu
 ### 1.1 Tổng quan dự án
 
 [Tên dự án, sponsor, PM, timeline tổng]
@@ -28,8 +32,7 @@
 | DOC-06 SRS | |
 | DOC-14 WBS | |
 
-## 2. Tổ chức dự án
-
+## 2. Tổ chức dự án ▸ full
 ### 2.1 Vai trò & Trách nhiệm
 
 | Role | Name | Responsibility |
@@ -43,8 +46,7 @@
 
 → **DOC-02**
 
-## 3. Quy trình quản lý dự án
-
+## 3. Quy trình quản lý dự án ▸ full
 | Process | Approach |
 |---------|----------|
 | Scope | Baseline DOC-06; change via DOC-18 |
@@ -56,7 +58,6 @@
 | Change control | DOC-18 |
 
 ## 4. WBS & Lịch trình
-
 ### 4.1 Giai đoạn / Cột mốc
 
 | Phase | Milestone | Deliverables | Start | End |
@@ -71,47 +72,40 @@
 |--------|------|----------|------------|-------|
 | | | | FS / SS | |
 
-## 5. Kế hoạch nguồn lực
-
+## 5. Kế hoạch nguồn lực ▸ full
 | Role | FTE | Phase 1 | Phase 2 | Notes |
 |------|-----|---------|---------|-------|
 | Dev | | | | |
 
-## 6. Ngân sách (nếu áp dụng)
-
+## 6. Ngân sách (nếu áp dụng) ▸ full
 | Category | Estimated | Actual | Variance |
 |----------|-----------|--------|------------|
 | Labor | | | |
 | License / Infra | | | |
 
-## 7. Đăng ký rủi ro
-
+## 7. Đăng ký rủi ro ▸ full
 | ID | Risk | Prob | Impact | Mitigation | Owner | Status |
 |----|------|------|--------|------------|-------|--------|
 | RK-001 | | H/M/L | H/M/L | | | Open |
 
-## 8. Đăng ký phụ thuộc
-
+## 8. Đăng ký phụ thuộc ▸ full
 | ID | Dependency | Type | Impact if delayed |
 |----|------------|------|-------------------|
 | | External team / vendor | | |
 
-## 9. Chất lượng & Chấp nhận
-
+## 9. Chất lượng & Chấp nhận ▸ full
 | Gate | Criteria | Sign-off |
 |------|----------|----------|
 | G1 Discovery | DOC-01–03 | |
 | G2 Build complete | Unit + integration pass | |
 | G3 Go-live | UAT + DOC-17 dry-run | |
 
-## 10. Phụ lục
-
+## 10. Phụ lục ▸ full
 - Communication plan
 - Training plan
 - Hypercare plan (post go-live)
 
-## 11. Phê duyệt
-
+## 11. Phê duyệt ▸ full
 | Vai trò | Họ tên | Ngày |
 |---------|--------|------|
 | PM | | |
