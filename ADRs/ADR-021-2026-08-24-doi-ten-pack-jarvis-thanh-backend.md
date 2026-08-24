@@ -1,0 +1,201 @@
+# Đổi tên pack `jarvis` → `backend` — áp dụng hệ tên ADR-022
+
+| | |
+|---|---|
+| **Ngày** | 2026-08-24 |
+| **Trạng thái** | ⚪ **Todo** — phương án đã chốt (Q1–Q4 §7 đóng hết), **chưa thực thi dòng nào**. Thi hành trong **đợt duy nhất** do [ADR-022 §6](ADR-022-2026-08-24-minipower-nen-tang-cong-cu-ai-toan-cong-ty.md) điều phối |
+| **Phạm vi** | Tên **pack / thư mục / skill** của pack `jarvis/`. **Không** đụng nội dung kỹ thuật .NET, **không** đụng pack lõi (việc `minipower/` → `sdlc/` thuộc [ADR-022](ADR-022-2026-08-24-minipower-nen-tang-cong-cu-ai-toan-cong-ty.md) QĐ-3; `rules.json` 0 hit `"jarvis"`), **không** đụng framework Jarvis hay repo code của nó |
+| **Nối tiếp** | **Tuân theo hệ tên [ADR-022](ADR-022-2026-08-24-minipower-nen-tang-cong-cu-ai-toan-cong-ty.md)** (QĐ-2 hai tầng · QĐ-4 tiền tố `minipower-{module}-…`) · **Giữ** [ADR-020](ADR-020-2026-08-20-minipower-3-che-do-du-an-gate-bang-hook.md) · **Giữ** [ADR-011](ADR-011-2026-07-26-minipower-claude-code-plugin.md) (plugin — việc SAU) · **Kế thừa bài học** [ADR-001](ADR-001-2026-07-17-danh-gia-minipower-va-chien-luoc-phat-trien.md) §2.2 + §3.1 (bốn bản cài lệch nhau; parity đa nền tảng là bẫy) |
+| **Mục đích** | Tách bạch **tên sản phẩm ngoài** (framework Jarvis) khỏi **tên gói skill trong repo**; đặt tên pack theo **chức năng** (`backend`) và tên skill theo hệ `minipower-backend-*`, để repo mở sang stack khác không phải đổi tên lần hai và gõ `minipower` là thấy toàn bộ |
+| **Ảnh hưởng** | `jarvis/` (→ `backend/`, 15 skill `minipower-backend-*`) · [README.md](../README.md) §bản đồ pack · [AGENTS.md](../AGENTS.md) §Quy ước đặt tên & thư mục · [COORDINATION.md](../COORDINATION.md) §3 anatomy · §5.3 pack manifest · §7 việc còn lại · [fundamentals/template-skill.md](../fundamentals/template-skill.md) · [fundamentals/tutorial-index.md](../fundamentals/tutorial-index.md). **Không ảnh hưởng:** ruột pack lõi · 7 điều kiện cứng · `rules.json` · CI hooks |
+
+---
+
+## §0. Quyết định
+
+| # | Nội dung |
+|---|---|
+| **QĐ-1** | **"Jarvis" là hai thứ — chỉ đổi một.** Framework .NET tên **Jarvis** giữ nguyên tuyệt đối: package (`Jarvis.Caching`, `Jarvis.DDD.Application`), API (`AddJarvisAuthentication`), repo code, biến CI (`JARVIS_SKILLS_REF`), `vendor/jarvis`. Chỉ đổi thứ chỉ **pack / thư mục / tên skill trong repo `ai-skills`** |
+| **QĐ-2** | **Pack `jarvis/` → `backend/`.** Tên pack theo **chức năng**, không theo framework; một từ, đồng bộ các module tương lai (`autotest`·`design`·`slide` — [ADR-022](ADR-022-2026-08-24-minipower-nen-tang-cong-cu-ai-toan-cong-ty.md) QĐ-2/QĐ-4, bỏ "code-"). Một pack `backend` chứa được nhiều stack; `-dotnet` hôm nay, `-node`/`-java` mai sau sống cạnh nhau |
+| **QĐ-3** | **15 skill lá mang tiền tố `minipower-backend-`, giữ nguyên hậu tố stack.** `authentication-dotnet` → `minipower-backend-authentication-dotnet`. Gõ "minipower" trong ô search của mọi công cụ → toàn bộ hiện ra, kể cả loader chỉ liệt kê phẳng |
+| **QĐ-4** | **Phân cấp bằng gạch nối, không bằng dấu hai chấm.** `name:` frontmatter là kebab-case; `:` không hợp lệ trong đó. Namespace `plugin:skill` **chỉ Claude Code hiểu** — Cursor, OpenCode, Codex, Antigravity đều quét phẳng. Đóng gói plugin để lấy `minipower:` là **việc SAU**, không nằm trong ADR này |
+| **QĐ-5** | **Chỉ đổi tên, không đổi nội dung.** Sửa: đường dẫn, tên thư mục, `name:` frontmatter, link trỏ tới path cũ. **Không** sửa: `description`, quy tắc trong `SKILL.md`, workflow, template, cơ chế publish (rsync/submodule) |
+| **QĐ-6** | **`frontend/` chưa tạo.** Không tạo thư mục rỗng, không tạo placeholder. Bổ sung khi có skill đầu tiên thật — đúng nguyên tắc *"co lại trước khi mở rộng"* |
+| **QĐ-7** | **ADR đã ban hành: chữ giữ nguyên, href sửa máy móc** ([ADR-022](ADR-022-2026-08-24-minipower-nen-tang-cong-cu-ai-toan-cong-ty.md) QĐ-11). [ADR-003](ADR-003-2026-07-20-minipower-gated-fanout-execution.md) · [ADR-014](ADR-014-2026-07-28-minipower-spine-tong-hop-wrap-not-build.md) · [ADR-017](ADR-017-2026-08-20-minipower-toolchain-openproject-github-outline-slack.md) có nhắc `jarvis` — chữ đó là **bản ghi lịch sử**, để nguyên; chỉ đường dẫn markdown trỏ file đã di chuyển được hàn lại cho hết gãy |
+| **QĐ-8** | **`fundamentals/` giữ tên.** [AGENTS.md](../AGENTS.md) §Quy ước đang khai pack `SOPs/` — thư mục đó **không tồn tại**. Sửa AGENTS.md cho khớp thực tế, không đổi tên thư mục |
+
+---
+
+## §1. Vì sao đổi — và vì sao không đổi phần còn lại
+
+Pack đang mang tên một **framework nội bộ**. Ba hệ quả:
+
+| Vấn đề | Biểu hiện |
+|---|---|
+| Tên pack ≠ chức năng pack | Người mới đọc `jarvis/` không đoán được đây là skill backend. Phải mở README mới biết |
+| Không mở rộng được | Thêm backend Node/Java thì đặt ở đâu? `jarvis/` sai nghĩa, tạo pack mới thì phân mảnh |
+| Trộn hai không gian tên | "Jarvis" vừa là pack ở repo này, vừa là framework + repo code ở [COORDINATION.md §4](../COORDINATION.md) — cầu H4/H6 trỏ sang repo **khác**, không nằm trong tay lần refactor này |
+
+QĐ-1 tách đúng chỗ đau: **cái nào là bao bì thì đổi, cái nào là sản phẩm thì giữ.** Nội dung 15 skill vẫn dạy Jarvis framework, vẫn gọi `AddJarvisAuthentication` — chỉ cái hộp đựng đổi tên.
+
+---
+
+## §2. Bảng đổi tên (15 skill)
+
+| Cũ | Mới |
+|---|---|
+| `jarvis/` | `backend/` |
+| `jarvis/skills/application-dotnet/` | `backend/skills/minipower-backend-application-dotnet/` |
+| `jarvis/skills/authentication-dotnet/` | `backend/skills/minipower-backend-authentication-dotnet/` |
+| `jarvis/skills/blobstoring-dotnet/` | `backend/skills/minipower-backend-blobstoring-dotnet/` |
+| `jarvis/skills/caching-dotnet/` | `backend/skills/minipower-backend-caching-dotnet/` |
+| `jarvis/skills/code-review-dotnet/` | `backend/skills/minipower-backend-review-dotnet/` ✅ **Q1 chốt** — bỏ chữ "code" lặp |
+| `jarvis/skills/entityframework-dotnet/` | `backend/skills/minipower-backend-entityframework-dotnet/` |
+| `jarvis/skills/foundation-dotnet/` | `backend/skills/minipower-backend-foundation-dotnet/` |
+| `jarvis/skills/healthcheck-dotnet/` | `backend/skills/minipower-backend-healthcheck-dotnet/` |
+| `jarvis/skills/jarvis-dotnet/` | `backend/skills/minipower-backend-scaffold-dotnet/` ✅ **Q2 chốt** — tên theo **việc nó làm**, không theo framework |
+| `jarvis/skills/notification-dotnet/` | `backend/skills/minipower-backend-notification-dotnet/` |
+| `jarvis/skills/observability-dotnet/` | `backend/skills/minipower-backend-observability-dotnet/` |
+| `jarvis/skills/realtime-dotnet/` | `backend/skills/minipower-backend-realtime-dotnet/` |
+| `jarvis/skills/swashbuckle-dotnet/` | `backend/skills/minipower-backend-swashbuckle-dotnet/` |
+| `jarvis/skills/telemetry-dotnet/` | `backend/skills/minipower-backend-telemetry-dotnet/` |
+| `jarvis/skills/troubleshooting-dotnet/` | `backend/skills/minipower-backend-troubleshooting-dotnet/` |
+
+**Ràng buộc kiểm được:** `name:` frontmatter **trùng tên thư mục lá** (quy ước sẵn có tại [fundamentals/template-skill.md](../fundamentals/template-skill.md) §2). Tên dài nhất `minipower-backend-entityframework-dotnet` = **40 ký tự**, dưới ngưỡng 64.
+
+**Provider skill con** (`providers/*/SKILL.md`, `patterns/*/SKILL.md`) theo quy ước cũ là `<skill>-<provider>` — sau đổi tên thành `minipower-backend-healthcheck-dotnet-postgresql` (**47 ký tự**, vẫn dưới 64).
+
+---
+
+## §3. Ranh giới "đổi tên, không đổi nội dung" (QĐ-5)
+
+| Làm | Không làm |
+|---|---|
+| Đổi tên thư mục pack + 15 thư mục skill | Sửa `description` trong frontmatter |
+| Cập nhật `name:` frontmatter cho khớp thư mục | Viết lại quy tắc / workflow trong `SKILL.md` |
+| Sửa link trỏ path cũ ở README, AGENTS, COORDINATION, fundamentals | Gộp / tách / thêm / bớt skill |
+| Sửa bảng skill ở `backend/README.md` | Đụng chữ `Jarvis` khi nó chỉ framework, package, API, repo ngoài |
+| Sửa `pack: jarvis` → `pack: backend` ở COORDINATION §5.3 | Mở install channel riêng cho `backend` |
+| Sửa AGENTS.md `SOPs/` → `fundamentals/` (QĐ-8) | Đụng ruột pack lõi (đổi vỏ `minipower/`→`sdlc/` thuộc ADR-022) |
+
+**Lý do tách bạch:** trộn hai loại thay đổi thì khi hỏng không phân biệt được do đổi tên hay do sửa nội dung. Refactor đổi tên phải kiểm được bằng mệnh đề *"trước sau giống hệt, trừ đường dẫn"*.
+
+---
+
+## §4. COORDINATION.md — sửa gì, giữ gì
+
+Phân biệt hai trục dễ lẫn:
+
+| Trường | Nghĩa | Hành động |
+|---|---|---|
+| `pack:` | Tên **gói skill** trong repo này | `jarvis` → **`backend`** |
+| `roles:` | **Vai trò con người** trong công ty | `backend-dotnet` — **giữ** |
+
+| Vị trí | Nội dung | Hành động |
+|---|---|---|
+| [§3 bảng anatomy](../COORDINATION.md) — `jarvis + minipower` | Tên pack | Đổi → `backend + sdlc` |
+| [§5.3](../COORDINATION.md) — `pack: jarvis` | Tên pack | Đổi → `pack: backend`; `roles: [backend-dotnet]` giữ |
+| §2 dòng 70, 85 — *"repo code (Jarvis)"*, *"repo consumer (Jarvis)"* | **Repo ngoài** | **Giữ** — QĐ-1 |
+| §4 + mermaid dòng 126, 136 — `subgraph CODE["repo code (Jarvis)"]` | **Repo ngoài** | **Giữ** |
+| §4.1 dòng 149 — link `jarvis/README.md — publish` | Path trong repo này | Đổi path → `backend/README.md`; chữ "Jarvis" trong câu giữ (chỉ cơ chế publish của framework) |
+| §4.3 dòng 159 — `JARVIS_SKILLS_REF` | Biến CI repo ngoài | **Giữ** |
+| §7 dòng 251, 254 — checklist `PACK.md` cho `jarvis` | Tên pack | Đổi → `backend` |
+| §5.4 — khung `pack: frontend-react` | Pack tương lai | ✅ **Q3 chốt**: đổi → `pack: frontend` cho khớp hệ tên; folder `frontend/` vẫn **chưa tạo** (QĐ-6) |
+
+---
+
+## §5. Cái này **không** động tới
+
+Kiểm chứng bằng grep, không phải bằng phỏng đoán:
+
+- **`rules.json` (SSOT, trong pack lõi): 0 lần xuất hiện `"jarvis"`.** SSOT sạch.
+- **7 điều kiện cứng** (`profile-guard` · `prereq-gate` · `baseline-guard` · `token-guard` · `auto-routing` · `trace:check`) — không tham chiếu pack `jarvis`.
+- **`npm run gen` / `npm test` / `npm run gen:check`** — không có vùng generated nào nhắc `jarvis`.
+
+**Hệ quả quan trọng:** ba lệnh trên **xanh không chứng minh được gì** cho refactor này. Chúng phủ `hooks/`, còn thứ đang đổi là markdown. Cần cơ chế kiểm riêng — §6.
+
+---
+
+## §6. Verify — vì sao cần thứ khác ngoài `npm test`
+
+**649** lượt xuất hiện `jarvis` trong `.md`/`.json`/`.js`. Không test nào canh link markdown. Success criteria đề xuất:
+
+```
+1. Đổi tên + cập nhật ref
+   → verify: grep -ri "jarvis/" còn 0 match dạng đường dẫn
+              (match còn lại phải là framework/package/repo ngoài — QĐ-1)
+2. Link check
+   → verify: mọi link markdown tương đối resolve tới file có thật
+3. Không hồi quy hooks
+   → verify: npm run gen && npm test && npm run gen:check (cả ba xanh)
+4. Nội dung bất biến
+   → verify: diff nội dung SKILL.md trước/sau = rỗng, trừ dòng `name:`
+```
+
+Bước 2 cần script dò link (~30 dòng Node, không dependency). Xem **§6a**.
+
+### §6a. Script dò link là gì, và "giữ hay bỏ" nghĩa là gì (giải thích Q4)
+
+**Vấn đề nó giải.** Markdown link kiểu `[COORDINATION](../COORDINATION.md)` là **chuỗi ký tự thường** — không compiler nào kiểm. Đổi tên `jarvis/` → `backend/` sẽ làm mọi link trỏ `jarvis/...` chết **im lặng**: file vẫn mở được, link vẫn hiện màu xanh, bấm vào mới ra 404. Repo có ~649 chỗ nhắc `jarvis` (và ~937 chỗ nhắc `minipower` — đợt chung với ADR-022), không soi tay hết được.
+
+**Script làm gì.** Quét mọi `.md`, bóc link tương đối, kiểm file đích có thật không, in ra cái nào gãy:
+
+```text
+README.md:64        → skills/template-skill.md          ✗ KHÔNG TỒN TẠI
+COORDINATION.md:149 → jarvis/README.md                  ✗ KHÔNG TỒN TẠI
+```
+
+Khoảng 30 dòng Node thuần, không dependency — cùng kiểu với `hooks/` sẵn có.
+
+**Hai lựa chọn khác nhau ở chỗ nào:**
+
+| | **Chạy một lần rồi bỏ** | **Giữ lại trong repo** |
+|---|---|---|
+| Viết script | Có (vẫn phải viết) | Có |
+| Nơi để | Thư mục tạm | `hooks/bin/link-check.js` (pack lõi) + `npm run link:check` |
+| Bắt được lần này | ✅ | ✅ |
+| Bắt được **lần sau** | ❌ — mỗi lần đổi tên/di chuyển file lại viết lại | ✅ — chạy một lệnh |
+| Vào CI được | ❌ | ✅ — link gãy làm đỏ PR |
+| Chi phí thêm | 0 | ~15 phút wire `package.json` + 1 test |
+
+**Nói gọn:** cùng một script, khác nhau ở chỗ **có cất vào hộp đồ nghề hay vứt đi sau khi dùng**.
+
+**Đề xuất: giữ lại.** Hai lý do:
+1. Đây không phải lần cuối repo đổi tên/di chuyển file — `frontend/`·`autotest/`·`design/`·`slide/` sẽ thêm vào sau ([ADR-022 §4](ADR-022-2026-08-24-minipower-nen-tang-cong-cu-ai-toan-cong-ty.md)), và mọi lần tách/gộp pack đều sinh ra đúng loại link gãy im lặng này.
+2. Đúng nguyên tắc repo đã tự chốt: *"mọi thứ mới phải có SSOT + test/CI, **không dựa vào kỷ luật con người**"* — và [ADR-001 §3.6](ADR-001-2026-07-17-danh-gia-minipower-va-chien-luoc-phat-trien.md) đã ghi bài học *"invariant duy trì bằng kỷ luật thay vì bằng check — ít nhất 2 cái đã lệch rồi"*.
+
+**Phản biện công bằng:** thêm script = thêm thứ phải bảo trì, và [ADR-001 §3.3](ADR-001-2026-07-17-danh-gia-minipower-va-chien-luoc-phat-trien.md) cảnh báo đúng chuyện "code chết được test giữ sống". Khác biệt ở đây: script này **có consumer thật** (chạy mỗi lần đổi cấu trúc, và CI), không phải tài liệu nằm im.
+
+---
+
+## §7. Câu hỏi chặn — cần chủ repo quyết
+
+| # | Câu hỏi | Kết quả |
+|---|---|---|
+| **Q1** | Tên skill review — lặp chữ "code" | ✅ **Chốt 2026-08-24: bỏ chữ lặp → `minipower-backend-review-dotnet`** (tiền tố theo ADR-022 QĐ-4). Provider skill giữ quy tắc `<skill>-<provider>` |
+| **Q2** | Skill scaffold `jarvis-dotnet` đặt tên gì | ✅ **Chốt 2026-08-24: tên theo việc nó làm → `minipower-backend-scaffold-dotnet`.** *Nội dung skill vẫn scaffold đúng framework Jarvis, không đổi một chữ (QĐ-5)* |
+| **Q3** | [COORDINATION.md](../COORDINATION.md) §5.4 khai `pack: frontend-react` vs tên module tương lai | ✅ **Chốt 2026-08-24: đổi thành `frontend`** (hệ tên ADR-022). File giữ nguyên vị trí và vai trò; chỉ sửa tên pack ở §5.3 (`jarvis`→`backend`) và §5.4 (`frontend-react`→`frontend`) |
+| **Q4** | Script dò link markdown: giữ lại trong repo hay chạy một lần rồi bỏ | ✅ **Chốt 2026-08-24: giữ lại** — `hooks/bin/link-check.js` + `npm run link:check`, lý do §6a. Là bước 1 của đợt thi hành ([ADR-022 §6](ADR-022-2026-08-24-minipower-nen-tang-cong-cu-ai-toan-cong-ty.md)) |
+
+**Giả định đang áp** (nói nếu sai): việc đổi **tên thư mục repo và remote Git** do chủ repo tự làm. ADR này chỉ đổi **nội dung và cách xưng hô trong tài liệu** — theo quy ước Git của repo, agent không tự thao tác đổi trạng thái Git.
+
+---
+
+## §8. Việc phải làm (theo thứ tự)
+
+Các bước dưới lồng trong đợt chung [ADR-022 §6](ADR-022-2026-08-24-minipower-nen-tang-cong-cu-ai-toan-cong-ty.md) (script dò link = bước 1 của đợt, dùng chung):
+
+| # | Việc | Xong khi |
+|---|---|---|
+| **1** | ~~Chốt Q1–Q4 §7~~ | ✅ Đóng 2026-08-24 |
+| **2** | Đổi tên `jarvis/` → `backend/` + 15 thư mục skill theo bảng §2; cập nhật `name:` frontmatter | Tên thư mục lá ≡ `name:` ở cả 15 skill |
+| **3** | Cập nhật `backend/README.md` — bảng 15 skill, path prompt mẫu | Bảng khớp thư mục thật |
+| **4** | Cập nhật [README.md](../README.md) (6 chỗ) · [AGENTS.md](../AGENTS.md) (+ QĐ-8) · [COORDINATION.md](../COORDINATION.md) (theo §4 ADR này) | grep bước 1 §6 sạch |
+| **5** | Cập nhật [fundamentals/template-skill.md](../fundamentals/template-skill.md) + [tutorial-index.md](../fundamentals/tutorial-index.md) | Quy ước đặt tên trong template khớp QĐ-3 |
+| **6** | Chạy trọn 4 bước verify §6 | Cả 4 xanh |
+
+**Phát hiện phụ trong lúc khảo sát** (không sửa nếu chưa được đồng ý): [README.md:64](../README.md) trỏ `skills/template-skill.md` — path này **không tồn tại**, file thật ở `fundamentals/template-skill.md`. Link gãy có sẵn, và nằm đúng dòng nói về "Skill Jarvis mới" nên sẽ chạm tới ở bước 5.
+
+---
+
+*Liên quan:* [ADR-022](ADR-022-2026-08-24-minipower-nen-tang-cong-cu-ai-toan-cong-ty.md) (ADR chủ — hệ tên + đợt thi hành) · [AGENTS.md](../AGENTS.md) §Quy ước đặt tên & thư mục · [COORDINATION.md](../COORDINATION.md) §5 pack manifest · [ADR-011](ADR-011-2026-07-26-minipower-claude-code-plugin.md) (plugin — việc sau) · [ADR-020](ADR-020-2026-08-20-minipower-3-che-do-du-an-gate-bang-hook.md) (định hướng hiện hành)

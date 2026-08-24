@@ -24,7 +24,6 @@ Repo này **là bản thân bộ pipeline** (source of truth của skill), khôn
   - Chữ ký (DEC) **không** còn là điều kiện máy kiểm — DEC là **bản ghi** + đầu vào `trace:check`.
 - **Chế độ dự án (`project_mode`) — chiều thứ hai bên cạnh phân tầng.** `mvp` · `standard` · `maintain`, khai ở `memory/profile.json` (schema v2). Mode chỉ đổi *DOC nào cần điền* và *gate nào bật ở mức nào*; **không cắt cấu trúc folder** (QĐ-2). Bảng chế độ **sinh tự động** từ `rules.json` vào [minipower/SKILL.md](minipower/SKILL.md#chế-độ-dự-án-project_mode) — đừng viết tay ở chỗ khác.
 - **Mỗi module một nhịp riêng (QĐ-14).** Fan-out là **pipeline theo module**, không phải barrier: module xong trước đi tiếp trước, không chờ nhau. `prereq-gate` kiểm tiền đề **theo từng module** (QĐ-13) — `ORD` đủ không có nghĩa `INV` đủ. Con người mở đường từng nhánh; **không** có agent bàn giao cho agent.
-  - **Handoff H1–H6** ([COORDINATION.md](COORDINATION.md)): mỗi boundary có **một producer owner** và **input tối thiểu** là hợp đồng — consumer bắt đầu khi đủ tối thiểu, không chờ "xong hết".
 - **AI fan-out song song — 3 trục:**
   - **Theo module** ([parallel-work](minipower/docs/parallel-work.md)): 1 module = 1 owner; SA chỉ sửa `04-platform/`, thiếu FR thì ghi `TBD`, không đè lên `03-modules/` của BA.
   - **Theo phase:** sau khi có scope (DOC-03), nhiều phase tiến song song; SA/PM không chờ SRS hoàn chỉnh.
@@ -36,7 +35,7 @@ Repo này **là bản thân bộ pipeline** (source of truth của skill), khôn
 - **Co lại trước khi mở rộng:** không thêm "nền tảng thứ tư"; mọi thứ mới phải có SSOT + test/CI, không dựa vào kỷ luật con người.
 
 ### Quy ước đặt tên & thư mục
-- **Pack:** `minipower/` (lõi pipeline BA+SA+TPM) · `jarvis/` (skill implementation .NET) · `SOPs/` (quy chuẩn dùng chung + `interview/`) · `ADRs/` (quyết định định hướng) · `COORDINATION.md` (hợp đồng liên-pack/liên-repo).
+- **Pack:** `minipower/` (lõi pipeline BA+SA+TPM) · `jarvis/` (skill implementation .NET) · `SOPs/` (quy chuẩn dùng chung + `interview/`) · `ADRs/` (quyết định định hướng).
 - **Trong `minipower/`:** `skills/{phase}/SKILL.md` (6 phase + `deliberation`/`doc-review`/`readiness-gate`) · `agents/*.md` (guardrail markdown thuần) · `hooks/{bin,lib,test}/` (Node ESM) · `roles/*.md` (7 lăng kính) · `templates/` (DOC-01–18 + TPL phụ trợ) · `project-skeleton/` + `docs-skeleton/` (khung dự án đích) · `install/{cursor,claude,opencode}/`.
 - **ID artifact dự án đích:** `{MOD}-{UC|FR|BR|AC|NFR}-NNN`, `DEC-{PHASE}-NNN`, `ADR-NNN`, `DOC-NN`. Cross-ref bằng ID, **không** copy nội dung FR giữa module.
 - **ADR:** đặt tại `ADRs/`, tên `ADR-NNN-yyyy-MM-dd-slug.md` — **mã `ADR-NNN` bất biến**, cấp theo thứ tự thời gian, không đổi khi trạng thái đổi; **trạng thái KHÔNG nằm trong tên file** mà khai ở [`ADRs/README.md`](ADRs/README.md) (Pending 🔴 / Todo ⚪ / Doing 🟡 / Done 🟢 / Cancel 🟣). Thêm ADR = tạo file + thêm một dòng vào `ADRs/README.md` trong cùng commit. Mỗi ADR tự khai mục **Ảnh hưởng** (quyết định chi phối nội dung/file nào); file cụ thể **không** trỏ ngược về ADR. Đổi triết lý/phạm vi → ghi/đối chiếu ADR **trước**.
@@ -60,7 +59,7 @@ Chạy trong `minipower/hooks/`:
 - `minipower/SKILL.md` — router kỹ thuật (routing intent→phase, init dự án, phân tầng chi phí).
 - `minipower/docs/` — `pipeline.md` (luồng artifact), `parallel-work.md` (fan-out song song), `token-guard.md`, `decision-log.md`.
 - `ADRs/` — quyết định định hướng; mỗi file tự khai mục **Ảnh hưởng** (chi phối nội dung/file nào). Đọc **trước** khi đổi định hướng.
-- `COORDINATION.md` — trace spine, handoff H1–H6, pack manifest cho phối hợp liên-repo.
+- `COORDINATION.md` — 🚫 **không nạp mặc định.** Draft v0.1, chưa áp dụng vào pack nào (§7 của chính nó: 6 mục, 0 tick). **Không** tự dẫn chiếu H1–H6 / pack manifest vào skill, DOC hay câu trả lời — chủ repo bảo đọc thì mới đọc.
 - `minipower/hooks/lib/rules.json` — SSOT; generator: `minipower/hooks/gen-agents-doc.js`.
 
 Khi được yêu cầu thêm/sửa feature: xác định đúng skill/hook/template chịu trách nhiệm, kiểm tra tài liệu liên quan trong `ADRs/` + `minipower/docs/`, tôn trọng triết lý §0 và mô hình gatekeeper + fan-out trước khi viết. Kéo repo về phía "agent tự động hoá" → **dừng và hỏi tôi**.
