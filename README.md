@@ -30,6 +30,22 @@ Cursor nhận skill tại **`.cursor/skills/{tên}/SKILL.md`**. Repo này là **
 
 ---
 
+## Ba chế độ dự án — dùng minipower cho tình huống nào
+
+Không dự án nào cũng cần đủ 19 tài liệu. Minipower có **`project_mode`**, chọn khi khởi tạo, quyết định *tài liệu nào cần điền* và *cảnh báo nào bật* — nhưng **dùng chung một cấu trúc thư mục**, nên đổi chế độ về sau không phải di trú gì.
+
+| Chế độ | Khi nào chọn | Điền gì | Lên đời |
+|--------|--------------|---------|---------|
+| **`mvp`** | *"3 tuần nữa demo, làm chạy được trước"* | BRD + FR + AC + hướng dẫn triển khai rút gọn | Trả nợ theo `doc-debt.md` → chốt baseline → `standard` |
+| **`standard`** | Outsource, sản phẩm mới, khách nghiệm thu theo tài liệu | Đủ 19 DOC, có baseline, sau baseline đổi gì cũng qua CR | Bàn giao / vận hành |
+| **`maintain`** | Tiếp quản hệ chạy nhiều năm, tài liệu thất lạc | Khai quật cái **đang có**: business rule, kiến trúc, data model, runbook | As-built đủ → chốt baseline → `standard` |
+
+Chỉ `standard` có cảnh báo **chặn** (và luôn mở được bằng `BYPASS`); hai chế độ kia chỉ nhắc. Ở mọi chế độ, **con người là người ra lệnh** — hệ cảnh báo, bạn xác nhận là chạy.
+
+Chi tiết: [minipower/SKILL.md § Chế độ dự án](minipower/SKILL.md#chế-độ-dự-án-project_mode) · [ADR-020](ADRs/ADR-020-2026-08-20-minipower-3-che-do-du-an-gate-bang-hook.md)
+
+---
+
 ## Nguyên tắc chung
 
 | Nguyên tắc | Mô tả |

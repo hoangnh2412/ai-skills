@@ -69,6 +69,21 @@ Tổng quát bảng *"Mức tối thiểu để dev bắt đầu"* của [parall
 
 **H4** và **H6** là hai điểm nối liên repo — chỗ Minipower (repo docs) bắt tay Jarvis (repo code). Xem [§4](#4-cross-repo-bridge).
 
+### 2.0 Handoff là **per-module**, không phải per-project
+
+Sau [ADR-020](ADRs/ADR-020-2026-08-20-minipower-3-che-do-du-an-gate-bang-hook.md) QĐ-14, mỗi boundary xảy ra **cho từng module một**, theo nhịp riêng của module đó:
+
+> `ORD` qua **H4** sang code trong khi `INV` còn chưa qua **H2**. Đó là trạng thái **đúng**, không phải lệch pha cần đồng bộ.
+
+| | |
+|---|---|
+| **Đơn vị bàn giao** | Một module, không phải cả dự án. "Input tối thiểu" ở bảng trên đọc là *"tối thiểu **cho module đang bàn giao**"* |
+| **Ai mở cổng** | **Người**. Không hook nào phán module đã đủ để qua boundary — `prereq-gate` chỉ nhắc khi thiếu DOC tiền đề *của đúng module đó* (QĐ-13), và ở `standard` nó chặn với lối thoát `BYPASS` |
+| **Không có vạch đích chung** | Không boundary nào chờ "mọi module xong". Tổng hợp (trace-matrix, BRD đầy đủ) là **bước riêng** do lead làm khi cần |
+| **Chế độ dự án** | `mvp`/`maintain` hạ *input tối thiểu* theo `prereq_overrides`, **không** bỏ boundary. Cái hụt ghi `memory/doc-debt.md` |
+
+**Hệ quả cho repo consumer (Jarvis):** nhận bàn giao theo module, không chờ trọn bộ docs. Thiếu gì thì nêu tên module + DOC cụ thể, đừng trả lại cả lô.
+
 ### 2.1 Quy tắc boundary
 
 | # | Quy tắc |

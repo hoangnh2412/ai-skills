@@ -15,10 +15,15 @@ Repo này **là bản thân bộ pipeline** (source of truth của skill), khôn
 
 ## Kiến trúc & quy ước (phải tuân thủ)
 
-- **Con người làm gatekeeper — 3 gate + boundary có tên.** AI chuẩn bị, con người mở cổng:
+- **Con người làm gatekeeper — 3 gate + boundary có tên.** AI chuẩn bị, con người mở cổng. **Cả ba gate đều MỀM** — không hook nào chặn trên verdict của chúng ([ADR-020](ADRs/ADR-020-2026-08-20-minipower-3-che-do-du-an-gate-bang-hook.md) QĐ-11): verdict là phán đoán ngữ nghĩa, máy không kiểm được:
   - **Premise gate** — [deliberation](minipower/skills/deliberation/SKILL.md): verdict PROCEED / RESHAPE / STOP ("có đáng làm không").
-  - **Execution gate** — [readiness-gate](minipower/skills/readiness-gate/SKILL.md): soát tiền đề trước khi thực thi. Bắt buộc **hỏi trọn gói một lượt** (liệt kê TẤT CẢ thiếu sót cùng lúc, không hỏi nhỏ giọt), ngưỡng "đủ chấp nhận được" do người quyết, cho **hoãn có ghi nợ** vào `memory/{phase}/open-questions.md`.
-  - **QC gate** — [doc-review](minipower/skills/doc-review/SKILL.md): đối kháng 5 chiều, verdict PASS / BLOCK baseline.
+  - **Execution gate** — [readiness-gate](minipower/skills/readiness-gate/SKILL.md): soát tiền đề trước khi thực thi. Bắt buộc **hỏi trọn gói một lượt** (liệt kê TẤT CẢ thiếu sót cùng lúc, không hỏi nhỏ giọt), ngưỡng "đủ chấp nhận được" do người quyết, cho **hoãn có ghi nợ** vào `memory/{phase}/open-questions.md` hoặc `memory/doc-debt.md`.
+  - **QC gate** — [doc-review](minipower/skills/doc-review/SKILL.md): đối kháng 5 chiều, verdict PASS / BLOCK baseline. "BLOCK baseline" = **người review không ký**, không phải máy khoá.
+- **"Cứng bằng máy, mềm bằng lời" (QĐ-3).** Chỉ thứ máy kiểm được mà không cần phán đoán mới là điều kiện cứng: **tồn tại file DOC · đường dẫn · ID**. Bảy điều kiện cứng hiện hành — `profile-guard` · `prereq-gate` · `baseline-guard` (baseline + `_legacy`) · `token-guard` · `auto-routing` · `trace:check` (CI). Mọi thứ khác là **advisory**.
+  - **Phép thử trước khi viết chữ "bắt buộc" vào markdown:** *cái gì FAIL được bằng máy khi người dùng làm sai?* Không trả lời được → đừng viết "bắt buộc", viết "khuyến nghị".
+  - Chữ ký (DEC) **không** còn là điều kiện máy kiểm — DEC là **bản ghi** + đầu vào `trace:check`.
+- **Chế độ dự án (`project_mode`) — chiều thứ hai bên cạnh phân tầng.** `mvp` · `standard` · `maintain`, khai ở `memory/profile.json` (schema v2). Mode chỉ đổi *DOC nào cần điền* và *gate nào bật ở mức nào*; **không cắt cấu trúc folder** (QĐ-2). Bảng chế độ **sinh tự động** từ `rules.json` vào [minipower/SKILL.md](minipower/SKILL.md#chế-độ-dự-án-project_mode) — đừng viết tay ở chỗ khác.
+- **Mỗi module một nhịp riêng (QĐ-14).** Fan-out là **pipeline theo module**, không phải barrier: module xong trước đi tiếp trước, không chờ nhau. `prereq-gate` kiểm tiền đề **theo từng module** (QĐ-13) — `ORD` đủ không có nghĩa `INV` đủ. Con người mở đường từng nhánh; **không** có agent bàn giao cho agent.
   - **Handoff H1–H6** ([COORDINATION.md](COORDINATION.md)): mỗi boundary có **một producer owner** và **input tối thiểu** là hợp đồng — consumer bắt đầu khi đủ tối thiểu, không chờ "xong hết".
 - **AI fan-out song song — 3 trục:**
   - **Theo module** ([parallel-work](minipower/docs/parallel-work.md)): 1 module = 1 owner; SA chỉ sửa `04-platform/`, thiếu FR thì ghi `TBD`, không đè lên `03-modules/` của BA.
@@ -42,7 +47,8 @@ Chạy trong `minipower/hooks/`:
 - Test: `npm test` (`node --test`, Node ≥ 18)
 - Kiểm tra đồng bộ (CI gate): `npm run gen:check` — fail nếu bất kỳ bảng lệch `rules.json`
 - **Vòng lặp bắt buộc khi chạm `rules.json` / `lib/*.js`:** sửa → `npm run gen` → `npm test` → `npm run gen:check` (cả ba xanh) trước khi coi là xong. CI: [.github/workflows/minipower-hooks.yml](.github/workflows/minipower-hooks.yml).
-- Cài pipeline lên dự án đích: `minipower/install/{cursor,claude,opencode}/` (Claude Code có `permissions.deny` chặn đọc baseline/legacy + hook `UserPromptSubmit`/`PreToolUse`).
+- Kiểm trace ID dự án đích (CI): `npm run trace:check` — FAIL khi ID trỏ sai/trùng, WARN khi FR thiếu AC. **Không** phạt vì tài liệu chưa viết.
+- Cài pipeline lên dự án đích: `minipower/install/{cursor,claude,opencode}/` — **6 hook** (5 `UserPromptSubmit` + 1 `PreToolUse` matcher `Read|Write|Edit`). **Không còn `permissions.deny` tĩnh**: dồn về `baseline-guard` để kênh plugin và kênh settings cùng hành vi (QĐ-4). Ba kênh phải khai **cùng bộ guard** — có test parity canh.
 
 ### Quy tắc Git (bắt buộc)
 - **Mọi thao tác làm THAY ĐỔI trạng thái Git đều phải được tôi đồng ý rõ ràng trước khi thực hiện.** Bao gồm nhưng không giới hạn: `git commit`, `git push`, `git checkout`/`git switch` sang branch khác, tạo/xoá/đổi tên branch, tạo tag, `merge`, `rebase`, `reset`, `stash`, `cherry-pick`, sửa lịch sử. Không tự publish / cài đặt lên dự án ngoài repo.
