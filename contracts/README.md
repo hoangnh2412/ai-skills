@@ -26,7 +26,7 @@ Tách từ `COORDINATION.md` (draft v0.1) ngày 2026-08-25 — **mỗi chủ đ�
 
 ## Việc còn lại
 
-- [ ] `PACK.md` cho `sdlc` và `backend` (theo [pack-manifest.md](pack-manifest.md)) — *đang làm trong đợt ADR-022*
+- [x] `PACK.md` cho `sdlc` và `backend` (theo [pack-manifest.md](pack-manifest.md)) — *xong 2026-08-25*
 - [ ] Mở rộng trace spine trong `sdlc`: thêm `CMP/TEST/DEPLOY` vào trace-matrix template
 - [ ] Ghi boundary H4/H6 vào `sdlc/skills/architecture` + `delivery`
 - [ ] `traceability/from-docs.md` mẫu ở phía repo code
