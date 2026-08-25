@@ -8,6 +8,7 @@
     "test": "node --test",
     "gen": "node gen-agents-doc.js",
     "gen:check": "node gen-agents-doc.js --check",
-    "trace:check": "node bin/trace-check.js"
+    "trace:check": "node bin/trace-check.js",
+    "link:check": "node bin/link-check.js"
   }
 }
