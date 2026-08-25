@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Ngày** | 2026-08-25 |
-| **Trạng thái** | 🟡 **Chủ repo duyệt 5 QĐ + thi hành xong 2026-08-25** (sau khi đợt [ADR-023](ADR-023-2026-08-25-tach-module-ops-tu-backend-troubleshooting.md) commit tại `b262581`). Verify §2 **3/3 PASS**: grep tàn dư (`repo Jarvis` · `Jarvis_2` · `JARVIS_SKILLS_REF` · `code-backend` · `vendor/jarvis`) = 0, "Jarvis" còn lại chỉ framework · 432/432 test · link:check 0 MỚI. Chuyển 🟢 khi chủ repo xác nhận |
+| **Trạng thái** | 🟢 **DONE — chủ repo xác nhận 2026-08-25.** Duyệt 5 QĐ + thi hành cùng ngày (sau đợt [ADR-023](ADR-023-2026-08-25-tach-module-ops-tu-backend-troubleshooting.md) tại `b262581`). Verify §2 **3/3 PASS**: grep tàn dư (`repo Jarvis` · `Jarvis_2` · `JARVIS_SKILLS_REF` · `code-backend` · `vendor/jarvis`) = 0, "Jarvis" còn lại chỉ framework · 432/432 test · link:check 0 MỚI |
 | **Phạm vi** | Một file: `backend/README.md` (hub module). **Không** đụng skill, không đụng cơ chế cài Cursor/OpenCode (đã đúng), không đụng nội dung kỹ thuật .NET |
 | **Nối tiếp** | **Thi hành nốt** [ADR-021](ADR-021-2026-08-24-doi-ten-pack-jarvis-thanh-backend.md) QĐ-1 — đợt đổi tên đã tách "Jarvis = framework" khỏi "pack trong repo" ở *tên*, nhưng mục Publish của hub còn nguyên *cơ chế* thời skill sống trong repo Jarvis · **Tuân theo** [ADR-022](ADR-022-2026-08-24-minipower-nen-tang-cong-cu-ai-toan-cong-ty.md) QĐ-2 (hệ tên) |
 | **Mục đích** | Hết mâu thuẫn nội bộ "source of truth là repo nào"; consumer sync skill từ đúng nguồn; hub theo khuôn module như `sdlc/README.md` |

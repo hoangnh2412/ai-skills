@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Ngày** | 2026-08-25 |
-| **Trạng thái** | 🟡 **Doing — chủ repo duyệt cả 5 QĐ 2026-08-25, đợt §2 thi hành 6/6 bước cùng ngày.** Verify: 432 test xanh (+5 test `ops-pack`) · `gen:check` đồng bộ · `link:check` 0 link gãy mới · grep tên cũ 0 hit ngoài ADR. Chuyển 🟢 khi chủ repo xác nhận |
+| **Trạng thái** | 🟢 **DONE — chủ repo xác nhận 2026-08-25.** Duyệt cả 5 QĐ + đợt §2 thi hành 6/6 bước cùng ngày. Verify: 432 test xanh (+5 test `ops-pack`) · `gen:check` đồng bộ · `link:check` 0 link gãy mới · grep tên cũ 0 hit ngoài ADR |
 | **Phạm vi** | `backend/skills/minipower-backend-troubleshooting-dotnet/` → module mới `ops/`; quy ước tên skill nội bộ router-gộp `sdlc/` |
 | **Nối tiếp** | Áp dụng [ADR-022](ADR-022-2026-08-24-minipower-nen-tang-cong-cu-ai-toan-cong-ty.md) QĐ-2/QĐ-4 (hệ tên hai tầng) + QĐ-7 (quy tắc 3 câu hỏi) + QĐ-8 (PACK.md manifest) · khuôn thi hành đổi-tên-không-đổi-nội-dung của [ADR-021](ADR-021-2026-08-24-doi-ten-pack-jarvis-thanh-backend.md) QĐ-5 · không đụng [ADR-020](ADR-020-2026-08-20-minipower-3-che-do-du-an-gate-bang-hook.md) (ruột `sdlc/` giữ nguyên) |
 | **Mục đích** | Kỹ năng vận hành (chẩn đoán sự cố, tương lai: cài server, CI/CD) là của người DevOps — người dùng khác hẳn dev .NET → module ngang hàng theo ADR-022 QĐ-7 câu 2. Đồng thời chốt quy ước tên cho skill nội bộ router-gộp để hết di sản `ba-*` |
