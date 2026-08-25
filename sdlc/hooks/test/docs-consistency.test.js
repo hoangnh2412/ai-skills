@@ -131,3 +131,28 @@ test("#11 — mọi file ADR-020 hứa đều tồn tại thật", () => {
     assert.ok(existsSync(join(ROOT, ...p)), `thiếu ${p.join("/")}`)
   }
 })
+
+// ─── #13 — ADR-022: router name + contracts/ + index AGENTS ─────────────────
+
+test("#13 — router sdlc đăng ký đúng tên minipower-sdlc (ADR-022 QĐ-3)", () => {
+  const t = readFileSync(join(PACK, "SKILL.md"), "utf8")
+  const name = (t.match(/^name:\s*(\S+)/m) || [])[1]
+  assert.equal(name, "minipower-sdlc", "đổi name router là đổi tên đăng ký với mọi loader — mọi hướng dẫn install sai theo")
+})
+
+test("#13 — contracts/ đủ 5 file chủ đề + README; mỗi file chủ đề tự khai Trạng thái (QĐ-10)", () => {
+  const topics = ["trace-spine", "handoff", "lingua-franca", "cross-repo-bridge", "pack-manifest"]
+  assert.ok(existsSync(join(ROOT, "contracts", "README.md")), "thiếu contracts/README.md")
+  for (const f of topics) {
+    const p = join(ROOT, "contracts", `${f}.md`)
+    assert.ok(existsSync(p), `thiếu contracts/${f}.md`)
+    assert.match(readFileSync(p, "utf8"), /\*\*Trạng thái:\*\*/, `contracts/${f}.md thiếu dòng Trạng thái — QĐ-10: mỗi file tự khai`)
+  }
+})
+
+test("#13 — AGENTS.md index đủ 5 link contracts (QĐ-10: thay 3 chỗ đã gỡ)", () => {
+  const t = read("AGENTS.md")
+  for (const f of ["trace-spine", "handoff", "lingua-franca", "cross-repo-bridge", "pack-manifest"]) {
+    assert.ok(t.includes(`contracts/${f}.md`), `AGENTS.md thiếu link contracts/${f}.md`)
+  }
+})
