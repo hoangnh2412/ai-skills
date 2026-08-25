@@ -6,7 +6,7 @@ Khung khởi tạo dự án mặc định. Agent/user copy vào `{project}/` the
 
 ```bash
 PROJECT=my-project
-MINIPOWER=/path/to/ai-skills/minipower
+MINIPOWER=/path/to/minipower/sdlc
 
 mkdir -p "$PROJECT"
 cp -R "$MINIPOWER/project-skeleton/"* "$PROJECT/"

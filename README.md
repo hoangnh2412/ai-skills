@@ -4,8 +4,6 @@
 
 Hệ tên: **`minipower`** = thương hiệu (repo · tiền tố skill · plugin); **tên module** = chức năng một-từ; skill đăng ký dạng `minipower-{module}-{capability}[-{stack}]` — gõ "minipower" trong ô search là thấy toàn bộ.
 
-> Thư mục repo hiện có thể còn mang tên cũ `ai-skills` — sẽ đổi thành `minipower` sau; tài liệu viết theo tên đích.
-
 **License:** [MIT](LICENSE) · Copyright (c) 2026 Hoàng Nguyễn
 
 ---

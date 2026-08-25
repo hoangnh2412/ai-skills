@@ -3,7 +3,7 @@
 Hướng dẫn maintainer & agent khi **Init project** / **Reconfigure agent**.
 
 - Agent **bắt buộc** sinh **`AGENTS.md`** và **`CLAUDE.md`** — cùng nội dung persona; `CLAUDE.md` thêm block `@import` pack (cuối file).
-- Cấu trúc file output **bám** [AGENTS.md](../../AGENTS.md) / [CLAUDE.md](../../CLAUDE.md) ở repo pack — phần đầu cá nhân hoá theo profile, phần sau là quy ước Minipower cho **dự án đích** (không copy nguyên văn doc maintain pipeline `ai-skills`).
+- Cấu trúc file output **bám** [AGENTS.md](../../AGENTS.md) / [CLAUDE.md](../../CLAUDE.md) ở repo pack — phần đầu cá nhân hoá theo profile, phần sau là quy ước Minipower cho **dự án đích** (không copy nguyên văn doc maintain pipeline `minipower`).
 - SSOT máy đọc: **`memory/profile.json`** — hook [profile-guard](../agents/profile-guard.md) validate; không parse markdown.
 
 ---

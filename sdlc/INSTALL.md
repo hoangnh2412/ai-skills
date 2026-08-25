@@ -13,9 +13,9 @@ Có **2 phần độc lập**:
 
 ### Cursor
 
-Cursor chỉ nhận skill tại **`.cursor/skills/{tên}/SKILL.md`**. Tạo **symbolic link** từ folder `sdlc/` trong repo `ai-skills` sang `.cursor/skills/minipower-sdlc` của workspace.
+Cursor chỉ nhận skill tại **`.cursor/skills/{tên}/SKILL.md`**. Tạo **symbolic link** từ folder `sdlc/` trong repo `minipower` sang `.cursor/skills/minipower-sdlc` của workspace.
 
-Chạy lệnh **từ root workspace** đang mở trong Cursor. Nếu `ai-skills` nằm ngoài workspace, thay path nguồn bằng **đường dẫn tuyệt đối** tới `…/minipower/sdlc`.
+Chạy lệnh **từ root workspace** đang mở trong Cursor. Nếu `minipower` nằm ngoài workspace, thay path nguồn bằng **đường dẫn tuyệt đối** tới `…/minipower/sdlc`.
 
 **macOS / Linux**
 
