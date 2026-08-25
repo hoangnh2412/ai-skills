@@ -42,4 +42,4 @@ Lưu vào runbook hoặc dashboard annotation — dùng thay placeholder `$BASEL
 
 ## Handoff troubleshooting
 
-Khi cần số liệu chi tiết từ dashboard cho AI phân tích → [minipower-backend-troubleshooting-dotnet](../../minipower-backend-troubleshooting-dotnet/SKILL.md).
+Khi cần số liệu chi tiết từ dashboard cho AI phân tích → [minipower-ops-metrics](../../../../ops/skills/minipower-ops-metrics/SKILL.md).

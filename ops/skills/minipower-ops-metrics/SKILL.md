@@ -1,6 +1,6 @@
 ---
-name: minipower-backend-troubleshooting-dotnet
-description: Troubleshoot .NET services bằng metrics Grafana/Prometheus — lấy panel PromQL, thay biến dashboard, query 24h, chuẩn hóa JSON cho AI. Dùng khi sự cố production, spike CPU/memory, panel Grafana trống, hoặc cần số liệu thực từ Prometheus.
+name: minipower-ops-metrics
+description: Thu thập metrics từ Grafana/Prometheus — lấy panel PromQL, thay biến dashboard, query 24h, chuẩn hóa JSON cho AI. Dùng khi sự cố production, spike CPU/memory, panel Grafana trống, hoặc cần số liệu thực từ Prometheus để chẩn đoán.
 metadata:
   audience: hoangnh
   workflow: github
@@ -31,7 +31,7 @@ Thư mục: [tools/](tools/)
 **Quy tắc biến dashboard:** mỗi dashboard Grafana đặt tên biến khác nhau (`exported_job`, `job`, `service_name`, …). **Không hardcode tên biến** — luôn gọi `list-dashboard-vars.js` trước, rồi truyền `--var <name>=<value>` theo output.
 
 ```bash
-cd backend/skills/minipower-backend-troubleshooting-dotnet/tools
+cd ops/skills/minipower-ops-metrics/tools
 
 # 1. Liệt kê dashboard
 node list-dashboards.js
@@ -112,5 +112,5 @@ Agent đọc `summary` trước, drill-down `series` khi cần chi tiết theo t
 
 | Skill | Khi nào |
 |---|---|
-| [minipower-backend-telemetry-dotnet](../minipower-backend-telemetry-dotnet/README.md) | Cài OTEL metric cho app .NET |
-| [minipower-backend-healthcheck-dotnet](../minipower-backend-healthcheck-dotnet/README.md) | Readiness/liveness, khác pipeline Prometheus scrape |
+| [minipower-backend-telemetry-dotnet](../../../backend/skills/minipower-backend-telemetry-dotnet/README.md) | Cài OTEL metric cho app .NET |
+| [minipower-backend-healthcheck-dotnet](../../../backend/skills/minipower-backend-healthcheck-dotnet/README.md) | Readiness/liveness, khác pipeline Prometheus scrape |

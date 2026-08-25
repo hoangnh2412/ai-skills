@@ -44,7 +44,7 @@ Chi tiết kiến trúc: [reference/pipeline.md](reference/pipeline.md).
 - **Cardinality:** tránh tag high-cardinality (user id, request id) trên metric.
 - **Dashboard trước alert:** có panel + baseline 7 ngày rồi mới gắn rule `> N× baseline`.
 - **Jarvis app:** cài OTEL trong code → dùng thêm [minipower-backend-telemetry-dotnet](../minipower-backend-telemetry-dotnet/SKILL.md); skill này bao **hạ tầng** scrape/visualize/alert.
-- **Troubleshoot sự cố:** sau khi pipeline sẵn sàng → [minipower-backend-troubleshooting-dotnet](../minipower-backend-troubleshooting-dotnet/SKILL.md) để lấy số liệu thực.
+- **Troubleshoot sự cố:** sau khi pipeline sẵn sàng → [minipower-ops-metrics](../../../ops/skills/minipower-ops-metrics/SKILL.md) để lấy số liệu thực.
 
 ## Họ metric khuyến nghị (.NET web API)
 
@@ -78,5 +78,5 @@ Chi tiết: [reference/metric-families.md](reference/metric-families.md).
 | Skill | Khi nào |
 |---|---|
 | [minipower-backend-telemetry-dotnet](../minipower-backend-telemetry-dotnet/SKILL.md) | Gắn Jarvis.OpenTelemetry vào Host |
-| [minipower-backend-troubleshooting-dotnet](../minipower-backend-troubleshooting-dotnet/SKILL.md) | Đọc metrics từ dashboard khi sự cố |
+| [minipower-ops-metrics](../../../ops/skills/minipower-ops-metrics/SKILL.md) | Đọc metrics từ dashboard khi sự cố |
 | [minipower-backend-healthcheck-dotnet](../minipower-backend-healthcheck-dotnet/README.md) | Health probe — tách khỏi metric business |

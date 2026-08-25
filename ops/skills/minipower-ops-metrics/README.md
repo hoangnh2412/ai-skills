@@ -1,4 +1,4 @@
-# minipower-backend-troubleshooting-dotnet
+# minipower-ops-metrics
 
 Skill AI hỗ trợ **troubleshooting service .NET** bằng metrics từ Grafana/Prometheus.
 
@@ -9,26 +9,26 @@ Agent đọc [SKILL.md](./SKILL.md) khi thực thi.
 | Tình huống | Hành động |
 |---|---|
 | Sự cố production, cần số liệu thực từ dashboard | Chạy tool [tools/fetch-dashboard-metrics.js](./tools/fetch-dashboard-metrics.js) |
-| Thiết lập pipeline observability OTEL → Grafana → alert | [minipower-backend-observability-dotnet](../minipower-backend-observability-dotnet/README.md) |
+| Thiết lập pipeline observability OTEL → Grafana → alert | [minipower-backend-observability-dotnet](../../../backend/skills/minipower-backend-observability-dotnet/README.md) |
 | Panel trống, query lỗi | `--dry-run` kiểm tra PromQL + biến dashboard |
 
 ## Cách gọi
 
-Gọi skill bằng `@backend/skills/minipower-backend-troubleshooting-dotnet/SKILL.md`, kèm **ngữ cảnh đủ để agent tự chạy tool** (Grafana/Prometheus URL, dashboard, biến, khung thời gian).
+Gọi skill bằng `@ops/skills/minipower-ops-metrics/SKILL.md`, kèm **ngữ cảnh đủ để agent tự chạy tool** (Grafana/Prometheus URL, dashboard, biến, khung thời gian).
 
 ### Prompt mẫu — dashboard `.Net Leak memory`
 
 Tương đương lệnh terminal:
 
 ```bash
-cd backend/skills/minipower-backend-troubleshooting-dotnet/tools
+cd ops/skills/minipower-ops-metrics/tools
 source .env && node fetch-dashboard-metrics.js --uid dfoxo2zt2lkaof
 ```
 
 **Prompt gợi ý (copy vào chat):**
 
 ```text
-@backend/skills/minipower-backend-troubleshooting-dotnet/SKILL.md
+@ops/skills/minipower-ops-metrics/SKILL.md
 
 Troubleshoot service .NET — lấy metrics 24h từ Grafana
 Chạy fetch-dashboard-metrics, đọc file JSON trong artifacts/, phân tích RAM/GC/latency/RPS và gợi ý bước tiếp theo.
@@ -44,7 +44,7 @@ Agent sẽ:
 Khi chưa biết UID hoặc tên biến:
 
 ```text
-@backend/skills/minipower-backend-troubleshooting-dotnet/SKILL.md
+@ops/skills/minipower-ops-metrics/SKILL.md
 
 Grafana localhost:3000, Prometheus :9090.
 Tìm dashboard "Dotnet Runtime Metrics", lấy metrics 6h gần nhất.
@@ -85,7 +85,7 @@ Output mặc định: `artifacts/{uid}-{timestamp}.json` — agent đọc file n
 ## Tool Node.js
 
 ```bash
-cd backend/skills/minipower-backend-troubleshooting-dotnet/tools
+cd ops/skills/minipower-ops-metrics/tools
 
 # Liệt kê dashboard
 node list-dashboards.js
@@ -106,7 +106,7 @@ Cấu hình mặc định test: xem [tools/.env.example](./tools/.env.example).
 ## Cấu trúc
 
 ```text
-minipower-backend-troubleshooting-dotnet/
+minipower-ops-metrics/
 ├── SKILL.md
 ├── README.md
 ├── artifacts/                       # Output JSON mặc định (gitignore *.json)

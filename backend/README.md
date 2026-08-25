@@ -65,7 +65,6 @@ Chi tiết publish sang repo product: [Publish skill sang repo consumer](#publis
 | **minipower-backend-observability-dotnet** | [skills/minipower-backend-observability-dotnet/README.md](./skills/minipower-backend-observability-dotnet/README.md) | Thiết lập observability .NET — OTEL, Prometheus, Grafana, alert |
 | **minipower-backend-blobstoring-dotnet** | [skills/minipower-backend-blobstoring-dotnet/README.md](./skills/minipower-backend-blobstoring-dotnet/README.md) | FileSystem / MinIO blob |
 | **minipower-backend-realtime-dotnet** | [skills/minipower-backend-realtime-dotnet/README.md](./skills/minipower-backend-realtime-dotnet/README.md) | Jarvis.Realtime + SignalR, Redis backplane |
-| **minipower-backend-troubleshooting-dotnet** | [skills/minipower-backend-troubleshooting-dotnet/README.md](./skills/minipower-backend-troubleshooting-dotnet/README.md) | Troubleshoot production bằng Grafana/Prometheus |
 | **minipower-backend-review-dotnet** | [skills/minipower-backend-review-dotnet/README.md](./skills/minipower-backend-review-dotnet/README.md) | Review PR C#/.NET |
 
 ## Prompt nhanh

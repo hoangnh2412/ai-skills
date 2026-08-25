@@ -38,7 +38,7 @@ Tạo dashboard Grafana với biến service_name / job / instance cho service b
 |---|---|
 | **minipower-backend-observability-dotnet** (skill này) | Pipeline hạ tầng + dashboard + alert + vận hành |
 | [minipower-backend-telemetry-dotnet](../minipower-backend-telemetry-dotnet/README.md) | Code Jarvis.OpenTelemetry trong Host |
-| [minipower-backend-troubleshooting-dotnet](../minipower-backend-troubleshooting-dotnet/README.md) | Lấy & phân tích metric khi sự cố |
+| [minipower-ops-metrics](../../../ops/skills/minipower-ops-metrics/README.md) | Lấy & phân tích metric khi sự cố |
 
 ## Cấu trúc
 

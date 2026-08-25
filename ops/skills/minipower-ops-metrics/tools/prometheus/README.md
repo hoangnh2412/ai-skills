@@ -58,7 +58,7 @@ Chuyển thành:
 
 ```bash
 node fetch-dashboard-metrics.js --uid <uid> --hours 24 --step 300
-# Mặc định ghi: backend/skills/minipower-backend-troubleshooting-dotnet/artifacts/{uid}-{timestamp}.json
+# Mặc định ghi: ops/skills/minipower-ops-metrics/artifacts/{uid}-{timestamp}.json
 
 # Override biến dashboard (tên lấy từ list-dashboard-vars.js)
 node fetch-dashboard-metrics.js \

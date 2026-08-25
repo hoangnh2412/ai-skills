@@ -1,5 +1,5 @@
 {
-  "name": "@jarvis/troubleshooting-dotnet-tools",
+  "name": "@minipower/ops-metrics-tools",
   "version": "1.0.0",
   "private": true,
   "description": "Fetch Grafana dashboard panels and query Prometheus metrics for AI troubleshooting",

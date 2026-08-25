@@ -27,7 +27,7 @@ Hub: [.opencode/README.md](../../../README.md) (repo Jarvis gốc).
 | Swagger security scheme | [minipower-backend-swashbuckle-dotnet](../../minipower-backend-swashbuckle-dotnet/README.md) | `providers/jwt-security`, `api-key-security` |
 | OTEL Redis / EF trace | [minipower-backend-telemetry-dotnet](../../minipower-backend-telemetry-dotnet/README.md) | `providers/redis`, `entityframework` |
 | Observability pipeline OTEL → Grafana → alert | [minipower-backend-observability-dotnet](../../minipower-backend-observability-dotnet/README.md) | `workflows/setup.md` |
-| Troubleshoot metric từ dashboard | [minipower-backend-troubleshooting-dotnet](../../minipower-backend-troubleshooting-dotnet/README.md) | `SKILL.md` |
+| Troubleshoot metric từ dashboard | [minipower-ops-metrics](../../../../ops/skills/minipower-ops-metrics/README.md) | `SKILL.md` |
 
 ## Prompt sau scaffold (copy)
 

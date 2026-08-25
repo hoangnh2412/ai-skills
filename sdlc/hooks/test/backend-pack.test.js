@@ -32,7 +32,7 @@ function frontmatter(path) {
 const fmField = (fm, key) => (fm.match(new RegExp(`^${key}:\\s*(.+)$`, "m")) || [])[1]
 
 test("backend: mỗi skill lá có SKILL.md, name ≡ tên thư mục", () => {
-  assert.ok(skillDirs.length >= 15, `chỉ thấy ${skillDirs.length} skill — thiếu?`)
+  assert.ok(skillDirs.length >= 14, `chỉ thấy ${skillDirs.length} skill — thiếu?`)
   for (const dir of skillDirs) {
     const p = join(SKILLS, dir, "SKILL.md")
     assert.ok(existsSync(p), `${dir} thiếu SKILL.md`)

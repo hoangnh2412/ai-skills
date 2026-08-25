@@ -53,4 +53,4 @@ PromQL mẫu theo họ metric: [reference/metric-families.md](../reference/metri
 
 ## Liên quan troubleshooting
 
-Sau khi dashboard ổn định, agent có thể dùng [minipower-backend-troubleshooting-dotnet](../../minipower-backend-troubleshooting-dotnet/SKILL.md) để export JSON metrics theo UID dashboard.
+Sau khi dashboard ổn định, agent có thể dùng [minipower-ops-metrics](../../../../ops/skills/minipower-ops-metrics/SKILL.md) để export JSON metrics theo UID dashboard.
