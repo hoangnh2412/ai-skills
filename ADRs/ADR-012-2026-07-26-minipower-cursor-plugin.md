@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Ngày** | 2026-07-26 |
-| **Trạng thái** | ⏸️ **Chấp nhận: HOÃN** (người chốt 2026-07-26). Giữ adapter Cursor cũ; mở lại khi đủ điều kiện tái xét §4 |
+| **Trạng thái** | 🔁 **MỞ LẠI 2026-08-25** — docs Cursor đã có local-dev install (giải một nửa M1) ⇒ điều kiện tái xét §4.2 đạt vế đầu; chủ repo quyết làm **plugin đầy đủ skill + rule + hook** theo phương án §7. Quyết định HOÃN 2026-07-26 hết hiệu lực |
 | **Phạm vi** | `minipower/` — có nên đóng plugin Cursor song song [plugin Claude Code](ADR-011-2026-07-26-minipower-claude-code-plugin.md) không |
 | **Nối tiếp** | [ADR plugin Claude Code 2026-07-26](ADR-011-2026-07-26-minipower-claude-code-plugin.md) · adapter Cursor hiện có `minipower/install/cursor/` |
 | **Mục đích** | Ghi lại cơ chế plugin Cursor đã xác minh + ma sát, và quyết định làm/hoãn |
@@ -61,3 +61,54 @@ Câu hỏi: sau khi có plugin Claude Code, có nên đóng **plugin Cursor** so
 - **Bây giờ:** không thêm gì cho Cursor; adapter cũ vẫn là đường chính thức. Zero mặt bảo trì mới.
 - Plugin Claude Code (ADR song song) **không bị ảnh hưởng**.
 - Triết lý §0 (gatekeeper + fan-out) không đổi.
+
+---
+
+## §7. Điều chỉnh 2026-08-25 — MỞ LẠI: plugin Cursor đầy đủ skill + rule + hook
+
+### §7a. Vì sao mở lại (đối chiếu docs cursor.com/docs/plugins + reference, đọc 2026-08-25)
+
+| # | Trạng thái 2026-07-26 | Trạng thái 2026-08-25 |
+|---|---|---|
+| M1 | Không có local install — chỉ marketplace (repo public + review) | **Giải một nửa:** local-dev install chính thức — đặt/symlink plugin vào `~/.cursor/plugins/local/<name>/` + Reload Window, **không cần marketplace**. Phân phối public vẫn qua marketplace; enterprise có thêm team marketplaces |
+| M2 | Không có biến plugin-root, CWD hook không rõ | **Vẫn treo** — docs không có `${CURSOR_PLUGIN_ROOT}`; ví dụ hook dùng path tương đối (`"./scripts/…"`) nhưng **không nói CWD**. Chuyển từ "chờ docs" sang **tự xác minh bằng thực nghiệm** (V1, §7c) — local install đã cho phép test thật |
+| M3 | Trùng `hooks/hooks.json` với plugin Claude | Vẫn đúng — custom hooks path là **bắt buộc** |
+| M4 | Namespace gọi skill chưa tài liệu hoá | Vẫn chưa — xác minh thực nghiệm (V2) |
+| M5 | `agents: []` chặn scan chưa xác nhận | Vẫn chưa — xác minh thực nghiệm (V3) |
+
+Điều kiện tái xét §4.2 mới đạt **vế đầu** (local-dev install ✅, biến plugin-root ❌). Cái mở khoá thực sự: **có đường test thật** — 3 ẩn số còn lại (M2/M4/M5) không cần chờ docs nữa, tự đóng bằng thực nghiệm như đã smoke plugin Claude (ADR-011).
+
+### §7b. Quyết định
+
+**Làm plugin Cursor đầy đủ 3 component: skills + rules + hooks** (thay phương án C "bỏ hook" đã loại ở §3). Nguyên tắc giữ nguyên từ ADR-011:
+
+- **Manifest mỏng thêm tại chỗ** — gốc plugin = `sdlc/`, manifest `.cursor-plugin/plugin.json`. **Không dời file**, không đổi pipeline/skill logic.
+- **Hooks sinh-từ-SSOT** — `hooks/hooks.cursor.json` **generated** từ `install/cursor/hooks/hooks.fragment.json` (đã đúng event Cursor: `beforeSubmitPrompt` ×5 + `beforeReadFile` baseline-guard), chỉ viết lại path command theo kết quả V1. Vào vòng `gen → test → gen:check`.
+- **Ba kênh cùng bộ guard** (QĐ-4 ADR-020) — hooks.cursor.json vào **test parity** cùng settings.fragment.json (Claude) + hooks.json (plugin Claude): cùng 6 hook, chỉ khác event-name/path.
+- **Chọn một kênh** — người dùng dùng plugin thì **không** chạy adapter symlink cũ (hook chạy hai lần — cùng rủi ro §6 ADR-011). Adapter `install/cursor/` giữ nguyên làm đường thay thế cho ai chưa dùng plugin.
+
+### §7c. Việc triển khai (thứ tự bắt buộc — V trước, W sau)
+
+**Vòng V — thực nghiệm đóng ẩn số** (plugin nháp tối thiểu, symlink vào `~/.cursor/plugins/local/`, chủ repo chạy Cursor thật):
+1. **V1 (M2 — chặn W2):** hook `echo`/`node -e` in `process.cwd()` + `__dirname` → xác định CWD và cách trỏ `node hooks/bin/*.js` chắc chắn (path tương đối gốc plugin? workspace? cần wrapper?).
+2. **V2 (M4):** skill nháp → xem tên gọi thực tế (`/minipower:skill` hay bare) → viết vào doc install.
+3. **V3 (M5):** `agents: []` trong manifest → xác nhận `agents/*.md` guardrail **không** bị scan làm subagent; nếu empty-array không được hỗ trợ → chuyển `agents` sang custom path trỏ folder rỗng.
+
+**Vòng W — triển khai thật** (sau khi V1–V3 có kết quả):
+4. **W1:** `sdlc/.cursor-plugin/plugin.json` — `name: "minipower"`, `agents` theo V3, `hooks: "./hooks/hooks.cursor.json"` (tránh M3), `rules: "./install/cursor/rules/"` (3 file `.mdc` hiện có), skills mặc định `skills/`.
+5. **W2:** generator sinh `hooks/hooks.cursor.json` từ fragment SSOT (path command theo V1) + test khớp fragment + đưa vào `gen:check` + test parity 3 kênh. Đụng `lib`/gen ⇒ vòng bắt buộc `gen → test → gen:check` cả ba xanh.
+6. **W3:** doc `install/cursor/README.md` — thêm mục "Cài bằng plugin (local)": symlink `~/.cursor/plugins/local/minipower` → `sdlc/`, Reload Window; ghi rõ **chọn một kênh** (plugin XOR adapter symlink); ghi kết quả M4 (tên gọi skill).
+7. **W4:** smoke của chủ repo trên Cursor thật (định nghĩa xong §7d) + cập nhật `ADRs/README.md`.
+
+### §7d. Xác minh (định nghĩa xong)
+
+- `npm run gen` → `npm test` → `npm run gen:check` cả ba xanh; parity 3 kênh có test canh.
+- Smoke Cursor: plugin local nạp — skill thấy được và gọi được, 3 rule `.mdc` hiện ở Customize, **hook bắn thật** (gõ prompt thấy output token-guard/auto-routing; Read file baseline thấy baseline-guard chặn).
+- `agents/*.md` không xuất hiện thành subagent.
+- `npm run link:check` 0 gãy mới.
+
+### §7e. Rủi ro còn lại
+
+- **V1 ra kết quả xấu** (CWD không ổn định, không có cách trỏ path tin được): hooks trong plugin **không khả thi** → rơi về plugin skills + rules, hook tiếp tục đi đường adapter symlink; ghi lại tại đây và giữ điều kiện chờ `${CURSOR_PLUGIN_ROOT}`.
+- Cursor local plugin là **per-machine persistent** (khác `--plugin-dir` per-session của Claude) — dev sửa hook xong phải Reload Window; ghi vào doc.
+- Docs Cursor đổi nhanh (3.9 mới ra 06/2026) — mỗi kết quả V ghi kèm ngày + version Cursor đã test.
