@@ -1,6 +1,8 @@
-# Minipower Backend — skill implementation .NET (framework Jarvis)
+# Code backend .NET (backend) — framework Jarvis
 
-Bản đồ skill code-backend của minipower — nội dung dạy framework Jarvis .NET. Mỗi skill có **README** (người dùng) và **SKILL.md** (agent).
+Module `backend` của **Minipower** — 14 skill **lá-rời** dạy dựng backend .NET theo framework Jarvis chuẩn công ty. Lá-rời nghĩa là: mô tả việc bằng lời (*"thêm cache Redis"*, *"API cần JWT"*) là skill tương ứng **tự kích hoạt** — không cần nhớ tên. Trong quy trình chung, module này nhận bàn giao từ **Quy trình phát triển** (`sdlc`) tại H4: DOC-08 (SAD) · DOC-11 (data model) · DOC-12 (API) + FR/AC theo module — xem [PACK.md](PACK.md).
+
+Mỗi skill có **README** (người dùng) và **SKILL.md** (agent).
 
 ## Cài vào Cursor
 
@@ -84,18 +86,18 @@ Init Jarvis EF + single DB cho MyApp
 Thiết lập observability OTEL → Prometheus → Grafana → alert cho service {Product}
 ```
 
-Framework overview: [README.md](../README.md) (repo gốc).
+Bản đồ Minipower: [README.md](../README.md).
 
 ## Publish skill sang repo consumer
 
-**Nguồn chính (source of truth):** thư mục `.opencode/` trong repo **Jarvis framework** (repo này). Repo product (`{product}-backend`) **không** fork/sửa skill — chỉ nhận bản cập nhật từ Jarvis hoặc PR upstream.
+**Nguồn chính (source of truth):** thư mục `backend/skills/` trong repo **minipower** (repo này). Repo product (`{product}-backend`) **không** fork/sửa skill — chỉ nhận bản cập nhật từ minipower hoặc PR upstream.
 
 ### Cấu trúc bắt buộc trên consumer
 
 ```text
 {product}-backend/
 └── .opencode/
-    ├── README.md          # copy hoặc symlink từ Jarvis (file này)
+    ├── README.md          # copy từ minipower (file này)
     └── skills/
         ├── minipower-backend-scaffold-dotnet/
         ├── minipower-backend-caching-dotnet/
@@ -112,33 +114,34 @@ Agent/Cursor gọi skill bằng path **tương đối repo product**:
 
 | Cách | Khi nào dùng | Ghi chú |
 |------|----------------|---------|
-| **Git submodule** | Nhiều team, cần pin version skill | Submodule trỏ repo Jarvis; consumer chỉ mount/copy `.opencode` (xem script dưới) |
-| **Symlink** | Dev local, Jarvis clone cạnh product repo | `ln -s ../../Jarvis/.opencode .opencode` — không commit symlink lên Windows CI |
-| **Copy (script/CI)** | Pin release, không phụ thuộc submodule path | Script copy tree `.opencode/` từ tag Jarvis — **khuyến nghị cho CI** |
-| **Monorepo** | Product và Jarvis cùng workspace | Một `.opencode/` ở root monorepo hoặc symlink như trên |
+| **Git submodule** | Nhiều team, cần pin version skill | Submodule trỏ repo minipower; consumer copy `backend/skills/` → `.opencode/skills/` (xem script dưới) |
+| **Symlink** | Dev local, minipower clone cạnh product repo | `ln -s ../../minipower/backend/skills .opencode/skills` — không commit symlink lên Windows CI |
+| **Copy (script/CI)** | Pin release, không phụ thuộc submodule path | Script copy `backend/skills/` từ tag minipower — **khuyến nghị cho CI** |
+| **Monorepo** | Product và minipower cùng workspace | Một `.opencode/` ở root monorepo hoặc symlink như trên |
 
-**Không** commit nội dung skill đã chỉnh tay trong repo product — sửa tại repo Jarvis rồi sync lại.
+**Không** commit nội dung skill đã chỉnh tay trong repo product — sửa tại repo minipower rồi sync lại.
 
 ### Submodule (khuyến nghị team)
 
 ```bash
 # Trong repo {product}-backend (root)
-git submodule add <url-repo-jarvis> vendor/jarvis
+git submodule add <url-repo-minipower> vendor/minipower
 git submodule update --init --recursive
 
-# Đồng bộ .opencode từ submodule (chạy sau mỗi lần update submodule)
-rsync -a --delete vendor/jarvis/.opencode/ .opencode/
+# Đồng bộ skill từ submodule (chạy sau mỗi lần update submodule)
+mkdir -p .opencode
+rsync -a --delete vendor/minipower/backend/skills/ .opencode/skills/
+cp vendor/minipower/backend/README.md .opencode/README.md
 ```
 
-Hoặc chỉ submodule thư mục skills (sparse) nếu host Git hỗ trợ — mặc định submodule cả repo Jarvis rồi `rsync` `.opencode/`.
-
-Pin version: checkout tag/commit cố định trong `vendor/jarvis`, commit SHA submodule, chạy lại `rsync`.
+Pin version: checkout tag/commit cố định trong `vendor/minipower`, commit SHA submodule, chạy lại `rsync`.
 
 ### Symlink (dev local)
 
 ```bash
 cd /path/to/acme-backend
-ln -snf /path/to/Jarvis_2/.opencode .opencode
+mkdir -p .opencode
+ln -snf /path/to/minipower/backend/skills .opencode/skills
 ```
 
 Thêm `.opencode` vào `.gitignore` nếu symlink chỉ dùng local; CI dùng copy/submodule.
@@ -146,30 +149,31 @@ Thêm `.opencode` vào `.gitignore` nếu symlink chỉ dùng local; CI dùng co
 ### Copy một lần / release script
 
 ```bash
-JARVIS_ROOT=/path/to/Jarvis_2
+MINIPOWER_ROOT=/path/to/minipower
 PRODUCT_ROOT=/path/to/acme-backend
 
 rsync -a --delete \
-  "$JARVIS_ROOT/.opencode/" \
-  "$PRODUCT_ROOT/.opencode/"
+  "$MINIPOWER_ROOT/backend/skills/" \
+  "$PRODUCT_ROOT/.opencode/skills/"
+cp "$MINIPOWER_ROOT/backend/README.md" "$PRODUCT_ROOT/.opencode/README.md"
 ```
 
-Chạy trong pipeline khi bump `JARVIS_SKILLS_REF=v1.2.0` (tag trên repo Jarvis).
+Chạy trong pipeline khi bump `MINIPOWER_SKILLS_REF=v1.2.0` (tag trên repo minipower).
 
 ### Quy ước cập nhật
 
-1. Thay đổi skill → PR trên **repo Jarvis** (review + merge `develop` / tag release).
+1. Thay đổi skill → PR trên **repo minipower** (review + merge `develop` / tag release).
 2. Repo product: `git submodule update` hoặc chạy script `rsync` theo tag mới.
-3. PR product ghi dòng: `chore: sync Jarvis skills @ <tag hoặc commit short>` — không trộn thay đổi skill với feature app.
-4. Breaking skill (đổi workflow, package version bắt buộc): ghi trong PR Jarvis + tag semver skill (`skills-v1.3.0`) — consumer bump có chủ đích.
+3. PR product ghi dòng: `chore: sync minipower skills @ <tag hoặc commit short>` — không trộn thay đổi skill với feature app.
+4. Breaking skill (đổi workflow, package version bắt buộc): ghi trong PR minipower + tag semver skill (`minipower-skills-v1.3.0`) — consumer bump có chủ đích.
 
 ### Product repo sau khi có `.opencode/`
 
 - README product: một dòng link `Skill AI: [.opencode/README.md](.opencode/README.md)`.
-- Không duplicate bảng skill — link hub Jarvis hoặc copy README hub khi `rsync` (file này đi kèm).
+- Không duplicate bảng skill — link hub `backend` của minipower hoặc copy README hub khi `rsync` (file này đi kèm).
 - Scaffold mới: luôn dùng `@.opencode/skills/minipower-backend-scaffold-dotnet/workflows/scaffold.md`.
 
-### Checklist publish (maintainer Jarvis)
+### Checklist publish (maintainer minipower)
 
 ```text
 - [ ] Tag hoặc commit trên develop ổn định
@@ -178,4 +182,4 @@ Chạy trong pipeline khi bump `JARVIS_SKILLS_REF=v1.2.0` (tag trên repo Jarvis
 - [ ] Ghi tag/release note nếu breaking
 ```
 
-Chi tiết changelog skill: mục roadmap repo gốc [README.md](../README.md) (Việc cần làm tiếp theo).
+Chi tiết thay đổi skill: lịch sử Git của `backend/` + tag `minipower-skills-*`.
