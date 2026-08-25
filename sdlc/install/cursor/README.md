@@ -1,12 +1,12 @@
 # Cài Minipower — Cursor (rules + hooks)
 
-Chạy từ **root workspace project docs**. Thay `$MP` bằng path tới pack `minipower/`.
+Chạy từ **root workspace project docs**. Thay `$MP` bằng path tới pack `sdlc/`.
 
 ## Rules
 
 ```powershell
 # Windows PowerShell
-$MP = "D:\path\to\ai-skills\minipower"
+$MP = "D:\path\to\minipower\sdlc"
 New-Item -ItemType Directory -Force -Path .cursor\rules
 New-Item -ItemType SymbolicLink -Force -Path .cursor\rules\minipower-token-guard.mdc `
   -Target "$MP\install\cursor\rules\minipower-token-guard.mdc"
@@ -16,7 +16,7 @@ New-Item -ItemType SymbolicLink -Force -Path .cursor\rules\minipower-doc-editing
 
 ```bash
 # macOS / Linux
-MP=/path/to/ai-skills/minipower
+MP=/path/to/minipower/sdlc
 mkdir -p .cursor/rules
 ln -snf "$MP/install/cursor/rules/minipower-token-guard.mdc" .cursor/rules/
 ln -snf "$MP/install/cursor/rules/minipower-doc-editing.mdc" .cursor/rules/
@@ -45,11 +45,11 @@ ln -snf "$MP/install/cursor/rules/minipower-profile.mdc" .cursor/rules/
 | Tình huống | Hành vi |
 |------------|---------|
 | Tag 1 DOC, đúng `Phase:` | Cho gửi |
-| Tag 1 DOC, thiếu `Phase:` | Cho gửi + **chèn** `/minipower`, `Phase:`, `@skill` (`updated_input` + `additional_context`) |
+| Tag 1 DOC, thiếu `Phase:` | Cho gửi + **chèn** `/minipower-sdlc`, `Phase:`, `@skill` (`updated_input` + `additional_context`) |
 | Tag DOC khác phase (vd. DOC-07 + DOC-16) | **Chặn** + gợi ý tách prompt |
 | `Phase:` sai so với file DOC | **Chặn** |
 
-Biến môi trường tuỳ chọn: `MINIPOWER_ROOT` (mặc định `ai-skills/minipower`) — path gợi ý skill trong message hook.
+Biến môi trường tuỳ chọn: `MINIPOWER_ROOT` (mặc định `minipower/sdlc`) — path gợi ý skill trong message hook.
 
 ### Decision-log staleness (advisory)
 
@@ -57,16 +57,16 @@ Biến môi trường tuỳ chọn: `MINIPOWER_ROOT` (mặc định `ai-skills/m
 
 ### Cài đặt
 
-Pack đã được symlink tại `.cursor/skills/minipower/` (xem [README chính](../../README.md)) → bin + lib đi kèm sẵn, **không cần symlink script riêng**. Chỉ cần merge một fragment.
+Pack đã được symlink tại `.cursor/skills/minipower-sdlc/` (xem [README chính](../../README.md)) → bin + lib đi kèm sẵn, **không cần symlink script riêng**. Chỉ cần merge một fragment.
 
-Merge [hooks.fragment.json](hooks/hooks.fragment.json) vào `.cursor/hooks.json` (giữ hook khác nếu đã có). Fragment gọi `node .cursor/skills/minipower/hooks/bin/*.js` — giống hệt trên Windows/macOS/Linux.
+Merge [hooks.fragment.json](hooks/hooks.fragment.json) vào `.cursor/hooks.json` (giữ hook khác nếu đã có). Fragment gọi `node .cursor/skills/minipower-sdlc/hooks/bin/*.js` — giống hệt trên Windows/macOS/Linux.
 
-> Nếu pack **không** nằm ở `.cursor/skills/minipower/` (vd. Claude/khác), sửa path trong fragment thành đường dẫn tới `…/minipower/hooks/bin/`.
+> Nếu pack **không** nằm ở `.cursor/skills/minipower-sdlc/` (vd. Claude/khác), sửa path trong fragment thành đường dẫn tới `…/sdlc/hooks/bin/`.
 
 ### Kiểm tra
 
 1. **Settings → Hooks** — hook hiển thị, không lỗi path.
-2. Prompt thiếu scope: `/minipower` + `đồng bộ requirements` (không @ file) → cảnh báo token guard.
+2. Prompt thiếu scope: `/minipower-sdlc` + `đồng bộ requirements` (không @ file) → cảnh báo token guard.
 3. `@docs/` hoặc `@docs/03-modules/` không kèm file → bị chặn.
 4. `@` DOC-07 + DOC-16 cùng lúc → bị chặn (auto-routing).
 5. Nhắc `DOC-16` + `DOC-04` trong text → bị chặn (delivery vs requirements).
@@ -76,7 +76,7 @@ Merge [hooks.fragment.json](hooks/hooks.fragment.json) vào `.cursor/hooks.json`
 ### Smoke test (mọi OS, giống hệt nhau)
 
 ```bash
-MP=/path/to/ai-skills/minipower
+MP=/path/to/minipower/sdlc
 
 echo '{"prompt":"@docs/03-modules/"}' | node "$MP/hooks/bin/token-guard.js"
 # Kỳ vọng: exit 2, {"continue":false,...}

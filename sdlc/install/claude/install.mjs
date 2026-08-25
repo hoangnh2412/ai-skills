@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Minipower — cài hook Claude Code (R5). Thay `/ABSOLUTE/PATH/TO/ai-skills/minipower`
+ * Minipower — cài hook Claude Code (R5). Thay `/ABSOLUTE/PATH/TO/minipower/sdlc`
  * bằng path THẬT (tự suy từ vị trí script), merge vào `.claude/settings.json` của
  * project (thư mục đang đứng), rồi VERIFY bằng smoke-test 4 shim.
  *
@@ -22,7 +22,7 @@ import { execFileSync } from "node:child_process"
 
 const HERE = dirname(fileURLToPath(import.meta.url)) // install/claude
 const PACK_ROOT = resolve(HERE, "..", "..") // …/minipower
-const PLACEHOLDER = "/ABSOLUTE/PATH/TO/ai-skills/minipower"
+const PLACEHOLDER = "/ABSOLUTE/PATH/TO/minipower/sdlc"
 const FRAGMENT = join(HERE, "settings.fragment.json")
 const BIN = join(PACK_ROOT, "hooks", "bin")
 
@@ -44,10 +44,12 @@ function resolvedFragment() {
   return JSON.parse(raw)
 }
 
-const MINIPOWER_MARK = join("minipower", "hooks", "bin") // nhận diện hook của ta để idempotent
+// nhận diện hook của ta để idempotent — cả path mới (sdlc) lẫn cũ (minipower,
+// trước ADR-022 QĐ-3) để bản cài trước không bị nhân đôi sau khi đổi tên pack
+const MINIPOWER_MARKS = [join("sdlc", "hooks", "bin"), join("minipower", "hooks", "bin")]
 
 function isMinipowerHook(h) {
-  return h && typeof h.command === "string" && h.command.includes(MINIPOWER_MARK)
+  return h && typeof h.command === "string" && MINIPOWER_MARKS.some((m) => h.command.includes(m))
 }
 
 /** Bỏ mọi hook minipower cũ trong 1 event (idempotent); group rỗng thì loại. */

@@ -12,7 +12,7 @@
  * Khác biệt API có chủ đích so với .py (xem ADR §7b):
  *   - Trả `prefix` (các dòng cần chèn), KHÔNG ghép sẵn — mỗi nền tảng ghép khác nhau.
  *   - `opts.root` thay cho đọc thẳng process.env → test không phụ thuộc global state.
- *     Ưu tiên: opts.root → process.env.MINIPOWER_ROOT → "ai-skills/minipower".
+ *     Ưu tiên: opts.root → process.env.MINIPOWER_ROOT → "ai-skills/sdlc".
  */
 
 import { shouldBypass } from "./bypass.js"
@@ -29,7 +29,7 @@ const EXPLICIT_PHASE =
   /Phase:\s*(discovery|requirements|architecture|planning|delivery|change-control)/i
 
 function resolveRoot(opts) {
-  const root = (opts && opts.root) || process.env.MINIPOWER_ROOT || "ai-skills/minipower"
+  const root = (opts && opts.root) || process.env.MINIPOWER_ROOT || "ai-skills/sdlc"
   return root.replace(/[/\\]+$/, "")
 }
 
@@ -89,7 +89,7 @@ function parseExplicitPhase(prompt) {
 
 function buildRoutePrefix(prompt, phase, skill, docLabels) {
   const lines = []
-  if (!prompt.includes("/minipower")) lines.push("/minipower")
+  if (!prompt.includes("/minipower-sdlc")) lines.push("/minipower-sdlc")
   if (!new RegExp(`Phase:\\s*${phase}\\b`, "i").test(prompt)) lines.push(`Phase: ${phase}`)
   if (!prompt.includes(skill)) lines.push(`@${skill}`)
   for (const doc of docLabels) {
@@ -115,7 +115,7 @@ function handleSinglePhase(byPhase, explicit, prompt, root) {
         "",
         "Sửa prompt thành:",
         `Phase: ${detected}`,
-        "/minipower",
+        "/minipower-sdlc",
         "@<file DOC>",
         "",
         `Hoặc bỏ dòng Phase: và chỉ tag file thuộc phase ${explicit}.`,
@@ -156,7 +156,7 @@ function handleMultiPhase(byPhase, explicit, root) {
     const sample = byPhase[phase][0]
     lines.push(
       `${idx + 1}) Phase: ${phase}`,
-      "   /minipower",
+      "   /minipower-sdlc",
       `   @${sample}`,
       `   @${skillPath(phase, root)}`,
       "   <mô tả task cho phase này>",

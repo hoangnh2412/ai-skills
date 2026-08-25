@@ -77,3 +77,16 @@ test("smoke — chạy trên repo thật không throw, có quét file", () => {
   assert.ok(r.filesScanned > 50, `quét được ${r.filesScanned} file — quá ít, walk hỏng?`)
   assert.ok(r.linksChecked > 100)
 })
+
+test("baseline — chỉ fail khi gãy MỚI; nợ đã lành được báo", async () => {
+  const { parseBaseline, diffBaseline, toBaseline } = await import("../lib/link-check.js")
+  const result = { broken: [
+    { file: "a.md", line: 3, target: "x.md" },
+    { file: "b.md", line: 9, target: "y.md" },
+  ] }
+  const base = parseBaseline("# chú thích\na.md → x.md\nc.md → z.md\n")
+  const { fresh, resolved } = diffBaseline(result, base)
+  assert.deepEqual(fresh.map((b) => b.file), ["b.md"])   // y.md là gãy mới
+  assert.deepEqual(resolved, ["c.md → z.md"])            // z.md đã lành
+  assert.match(toBaseline(result), /a\.md → x\.md\nb\.md → y\.md\n$/)
+})

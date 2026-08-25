@@ -1,0 +1,41 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/ABSOLUTE/PATH/TO/minipower/sdlc/hooks/bin/token-guard.js\""
+          },
+          {
+            "type": "command",
+            "command": "node \"/ABSOLUTE/PATH/TO/minipower/sdlc/hooks/bin/auto-routing.js\""
+          },
+          {
+            "type": "command",
+            "command": "node \"/ABSOLUTE/PATH/TO/minipower/sdlc/hooks/bin/profile-guard.js\""
+          },
+          {
+            "type": "command",
+            "command": "node \"/ABSOLUTE/PATH/TO/minipower/sdlc/hooks/bin/prereq-gate.js\""
+          },
+          {
+            "type": "command",
+            "command": "node \"/ABSOLUTE/PATH/TO/minipower/sdlc/hooks/bin/decision-staleness.js\""
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Read|Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/ABSOLUTE/PATH/TO/minipower/sdlc/hooks/bin/baseline-guard.js\""
+          }
+        ]
+      }
+    ]
+  }
+}

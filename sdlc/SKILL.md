@@ -1,9 +1,9 @@
 ---
-name: minipower
+name: minipower-sdlc
 description: >-
-  Minipower — bộ skill BA + Solution Architect + TPM (6 phase con). Pipeline 13
-  bước, 19 DOC, enterprise systems. Khởi tạo dự án: init project. Gõ /minipower
-  hoặc @minipower. Phase: discovery | requirements | architecture | planning |
+  Minipower SDLC — bộ skill BA + Solution Architect + TPM (6 phase con). Pipeline 13
+  bước, 19 DOC, enterprise systems. Khởi tạo dự án: init project. Gõ /minipower-sdlc
+  hoặc @minipower-sdlc. Phase: discovery | requirements | architecture | planning |
   delivery | change-control. Skill cross-phase: deliberation (premise check, có
   nên làm, nghị luận đa góc nhìn) · doc-review (QC đối kháng, kiểm tra chéo,
   trace, trước baseline) · readiness-gate (soát tiền đề trước khi thực thi) ·
@@ -25,7 +25,7 @@ description: >-
 | Cách | Thao tác |
 |------|----------|
 | **A — `/` + phase** | `/minipower` rồi ghi `Phase: requirements` (hoặc discovery / architecture / planning / delivery / change-control) → agent **đọc file skill con** tương ứng trước khi trả lời |
-| **B — `@` file con** | `@skills/requirements/SKILL.md` (path đầy đủ trong `.cursor/skills/minipower/…`) |
+| **B — `@` file con** | `@skills/requirements/SKILL.md` (path đầy đủ trong `.cursor/skills/minipower-sdlc/…`) |
 | **C — overview** | `/minipower` không chỉ phase → router hỏi/đề xuất bước |
 | **D — khởi tạo dự án** | `/minipower` + `Init project` / `Khởi tạo dự án` → agent thực hiện [Khởi tạo cấu trúc dự án](#khởi-tạo-cấu-trúc-dự-án-mặc-định) |
 

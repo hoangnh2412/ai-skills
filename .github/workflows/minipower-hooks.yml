@@ -7,14 +7,16 @@ name: minipower-hooks
 on:
   push:
     paths:
-      - "minipower/hooks/**"
-      - "minipower/agents/auto-routing.md"
+      - "sdlc/hooks/**"
+      - "sdlc/agents/auto-routing.md"
       - ".github/workflows/minipower-hooks.yml"
+      - "**/*.md"
   pull_request:
     paths:
-      - "minipower/hooks/**"
-      - "minipower/agents/auto-routing.md"
+      - "sdlc/hooks/**"
+      - "sdlc/agents/auto-routing.md"
       - ".github/workflows/minipower-hooks.yml"
+      - "**/*.md"
 
 jobs:
   test:
@@ -25,7 +27,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     defaults:
       run:
-        working-directory: minipower/hooks
+        working-directory: sdlc/hooks
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -33,3 +35,18 @@ jobs:
           node-version: "22"
       - name: Run tests (node --test)
         run: node --test
+
+  # Link markdown tương đối phải trỏ file có thật (ADR-022 §6 bước 1).
+  # Chỉ FAIL khi có link gãy MỚI ngoài hooks/link-check.baseline.txt.
+  link-check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: sdlc/hooks
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Check markdown links (npm run link:check)
+        run: npm run link:check

@@ -13,8 +13,8 @@ import { fileURLToPath } from "node:url"
 import { dirname, join } from "node:path"
 
 const HERE = dirname(fileURLToPath(import.meta.url)) // hooks/test
-const PACK = join(HERE, "..", "..") // minipower/
-const PLACEHOLDER = "/ABSOLUTE/PATH/TO/ai-skills/minipower"
+const PACK = join(HERE, "..", "..") // sdlc/
+const PLACEHOLDER = "/ABSOLUTE/PATH/TO/minipower/sdlc"
 
 const plugin = JSON.parse(readFileSync(join(PACK, ".claude-plugin", "plugin.json"), "utf8"))
 const hooksFile = readFileSync(join(PACK, "hooks", "hooks.json"), "utf8")

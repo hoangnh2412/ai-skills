@@ -76,3 +76,33 @@ export function formatReport({ broken, filesScanned, linksChecked }) {
   )
   return lines.join("\n")
 }
+
+// ── Baseline — nợ link gãy đã biết (ADR-021 §6a: đợt chỉ phải không sinh gãy MỚI) ──
+// Format file baseline: mỗi dòng `file → target`, bỏ số dòng (số dòng trôi khi sửa file
+// không liên quan); dòng bắt đầu `#` là chú thích.
+
+const key = (b) => `${b.file} → ${b.target}`
+
+export function parseBaseline(text) {
+  return new Set(
+    text.split("\n").map((l) => l.trim()).filter((l) => l && !l.startsWith("#")),
+  )
+}
+
+/** So kết quả quét với baseline. → { fresh: gãy MỚI (fail), resolved: nợ đã lành (nên cập nhật baseline) } */
+export function diffBaseline({ broken }, baselineSet) {
+  const current = new Set(broken.map(key))
+  return {
+    fresh: broken.filter((b) => !baselineSet.has(key(b))),
+    resolved: [...baselineSet].filter((k) => !current.has(k)),
+  }
+}
+
+export function toBaseline({ broken }) {
+  const uniq = [...new Set(broken.map(key))]
+  return (
+    "# Nợ link gãy đã biết — link:check chỉ FAIL khi có gãy NGOÀI danh sách này.\n" +
+    "# Cập nhật (sau khi soát diff bằng mắt): npm run link:check -- --update-baseline\n" +
+    uniq.join("\n") + "\n"
+  )
+}

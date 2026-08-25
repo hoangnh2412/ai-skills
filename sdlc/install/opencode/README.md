@@ -1,13 +1,13 @@
 # Cài Minipower — OpenCode (instructions + plugins)
 
-Chạy từ **root workspace project docs**. Thay `$MP` bằng path tới pack `minipower/`.
+Chạy từ **root workspace project docs**. Thay `$MP` bằng path tới pack `sdlc/`.
 
 OpenCode dùng:
 
 | Cursor | OpenCode |
 |--------|----------|
 | `.cursor/rules/*.mdc` | `instructions` trong `opencode.json` + `.opencode/rules/*.md` |
-| `.cursor/hooks.json` → `node hooks/bin/*.js` | `.opencode/plugins/minipower.ts` (hook `chat.message`, `tool.execute.before`) |
+| `.cursor/hooks.json` → `node hooks/bin/*.js` | `.opencode/plugins/minipower-sdlc.ts` (hook `chat.message`, `tool.execute.before`) |
 
 **SSOT logic guard:** [hooks/lib/*.js](../../hooks/) — dùng chung Cursor/Claude/OpenCode. Plugin OpenCode (`minipower.ts`) là glue mỏng: import thẳng lib `.js` (Bun chạy `.ts` + `.js` trực tiếp, không build).
 
@@ -15,7 +15,7 @@ OpenCode dùng:
 
 ```bash
 # macOS / Linux
-MP=/path/to/ai-skills/minipower
+MP=/path/to/minipower/sdlc
 mkdir -p .opencode/rules
 ln -snf "$MP/agents/token-guard.md" .opencode/rules/minipower-token-guard.md
 ln -snf "$MP/install/opencode/rules/minipower-profile.md" .opencode/rules/minipower-profile.md
@@ -24,7 +24,7 @@ ln -snf "$MP/install/opencode/rules/minipower-doc-editing.md" .opencode/rules/mi
 
 ```powershell
 # Windows PowerShell
-$MP = "D:\path\to\ai-skills\minipower"
+$MP = "D:\path\to\minipower\sdlc"
 New-Item -ItemType Directory -Force -Path .opencode\rules
 New-Item -ItemType SymbolicLink -Force -Path .opencode\rules\minipower-token-guard.md `
   -Target "$MP\agents\token-guard.md"
@@ -47,7 +47,7 @@ Merge [opencode.fragment.json](opencode.fragment.json) vào `opencode.json` (gi�
 }
 ```
 
-> Rule `minipower-profile.md` là always-on: chưa có `memory/profile.json` → agent **chỉ** làm init / hoàn tất profile, chưa đòi khai `Phase:`. Thiếu rule này thì `/minipower Init project` bị agent đòi chọn phase (parity với Cursor).
+> Rule `minipower-profile.md` là always-on: chưa có `memory/profile.json` → agent **chỉ** làm init / hoàn tất profile, chưa đòi khai `Phase:`. Thiếu rule này thì `/minipower-sdlc Init project` bị agent đòi chọn phase (parity với Cursor).
 
 ## Plugins (hooks)
 
@@ -59,26 +59,26 @@ Plugin gói **một file entry** (`minipower.ts`) + `lib/parts.ts` (glue OpenCod
 | `chat.message` (message **đầu phiên**) | Claude SessionStart | Decision-log staleness advisory (không chặn) |
 | `tool.execute.before` (`read`) | `beforeReadFile` | Chặn `02-baseline/`, `_legacy/` (tuỳ chọn) |
 
-Biến môi trường tuỳ chọn: `MINIPOWER_ROOT` (mặc định `ai-skills/minipower`) — path gợi ý skill trong auto-route.
+Biến môi trường tuỳ chọn: `MINIPOWER_ROOT` (mặc định `minipower/sdlc`) — path gợi ý skill trong auto-route.
 
 ### Symlink plugin
 
 **macOS / Linux:**
 
 ```bash
-MP=/path/to/ai-skills/minipower
+MP=/path/to/minipower/sdlc
 mkdir -p .opencode/plugins
-ln -snf "$MP/install/opencode/plugins/minipower.ts" .opencode/plugins/
+ln -snf "$MP/install/opencode/plugins/minipower-sdlc.ts" .opencode/plugins/
 ln -snf "$MP/install/opencode/plugins/lib" .opencode/plugins/lib
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
-$MP = "D:\path\to\ai-skills\minipower"
+$MP = "D:\path\to\minipower\sdlc"
 New-Item -ItemType Directory -Force -Path .opencode\plugins
-New-Item -ItemType SymbolicLink -Force -Path .opencode\plugins\minipower.ts `
-  -Target "$MP\install\opencode\plugins\minipower.ts"
+New-Item -ItemType SymbolicLink -Force -Path .opencode\plugins\minipower-sdlc.ts `
+  -Target "$MP\install\opencode\plugins\minipower-sdlc.ts"
 New-Item -ItemType SymbolicLink -Force -Path .opencode\plugins\lib `
   -Target "$MP\install\opencode\plugins\lib"
 ```
@@ -94,7 +94,7 @@ Chạy trong `chat.message` **sau** token guard:
 | Tình huống | Hành vi |
 |------------|---------|
 | Tag 1 DOC, đúng `Phase:` | Cho gửi |
-| Tag 1 DOC, thiếu `Phase:` | Cho gửi + **chèn** `/minipower`, `Phase:`, `@skill` vào prompt |
+| Tag 1 DOC, thiếu `Phase:` | Cho gửi + **chèn** `/minipower-sdlc`, `Phase:`, `@skill` vào prompt |
 | Tag DOC khác phase (vd. DOC-07 + DOC-16) | **Chặn** + gợi ý tách prompt |
 | `Phase:` sai so với file DOC | **Chặn** |
 
@@ -108,13 +108,13 @@ Chạy trong `chat.message` **sau** token guard:
 
 `tool.execute.before` chặn tool `read` tới `docs/02-baseline/` và `docs/03-modules/_legacy/` (trừ khi prompt có `_legacy` / `MIGRATION` / `migrate`).
 
-Nếu chưa cần: xoá block `tool.execute.before` trong [plugins/minipower.ts](plugins/minipower.ts) bản local (hoặc fork plugin).
+Nếu chưa cần: xoá block `tool.execute.before` trong [plugins/minipower-sdlc.ts](plugins/minipower-sdlc.ts) bản local (hoặc fork plugin).
 
 ## Kiểm tra
 
 1. Khởi động lại OpenCode — plugin load không lỗi (xem log).
-2. Dự án mới (chưa có `memory/profile.json`): `/minipower Init project HRM` → agent hỏi trọn gói 5 câu cá nhân hoá, **không** đòi khai `Phase:` (rule profile).
-3. Prompt thiếu scope: `/minipower` + `đồng bộ requirements` (không @ file) → cảnh báo token guard trong context.
+2. Dự án mới (chưa có `memory/profile.json`): `/minipower-sdlc Init project HRM` → agent hỏi trọn gói 5 câu cá nhân hoá, **không** đòi khai `Phase:` (rule profile).
+3. Prompt thiếu scope: `/minipower-sdlc` + `đồng bộ requirements` (không @ file) → cảnh báo token guard trong context.
 4. `@docs/` hoặc `@docs/03-modules/` không kèm file → bị chặn.
 5. Tag DOC-07 + DOC-16 cùng lúc → bị chặn (auto-routing).
 6. Agent `read` vào `docs/02-baseline/` → lỗi read guard (nếu bật).
@@ -125,4 +125,4 @@ Giống Cursor: prefix `BYPASS` hoặc `@{skill} BYPASS` trong prompt để bỏ
 
 ## Skill Minipower
 
-Symlink skill pack (nếu chưa có) — xem [README.md](../../README.md). Trong chat: `/minipower` hoặc attach `SKILL.md`, kèm `Phase: discovery` (hoặc requirements, architecture, …).
+Symlink skill pack (nếu chưa có) — xem [README.md](../../README.md). Trong chat: `/minipower-sdlc` hoặc attach `SKILL.md`, kèm `Phase: discovery` (hoặc requirements, architecture, …).

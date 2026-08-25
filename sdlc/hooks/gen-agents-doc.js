@@ -153,7 +153,7 @@ function escape(s) {
 // chạy `npm run gen`, hooks.json tự cập nhật (ADR 2026-07-26 plugin §1.4).
 const FRAGMENT = rel("../install/claude/settings.fragment.json")
 const PLUGIN_HOOKS = rel("hooks.json")
-const INSTALL_PLACEHOLDER = "/ABSOLUTE/PATH/TO/ai-skills/minipower"
+const INSTALL_PLACEHOLDER = "/ABSOLUTE/PATH/TO/minipower/sdlc"
 
 function pluginHooksJson() {
   const frag = JSON.parse(readFileSync(FRAGMENT, "utf8"))
@@ -180,7 +180,7 @@ let drift = false
 
 for (const target of TARGETS) {
   const { current, next } = render(target)
-  const name = target.file.split("/minipower/")[1] || target.file
+  const name = target.file.split("/sdlc/")[1] || target.file
   if (check) {
     if (next !== current) {
       drift = true

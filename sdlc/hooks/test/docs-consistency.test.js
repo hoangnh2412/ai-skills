@@ -119,13 +119,13 @@ test("#10 — change-control khai per-mode và tự nhận là mềm", () => {
 
 test("#11 — mọi file ADR-020 hứa đều tồn tại thật", () => {
   const must = [
-    ["minipower", "hooks", "lib", "trace-check.js"],
-    ["minipower", "hooks", "bin", "trace-check.js"],
-    ["minipower", "project-skeleton", ".gitlab-ci.yml"],
-    ["minipower", "project-skeleton", "memory", "doc-debt.md"],
-    ["minipower", "project-skeleton", "assets", "archive", "README.md"],
-    ["minipower", "skills", "as-built", "SKILL.md"],
-    ["minipower", "docs-skeleton", "06-changes", "incident", "README.md"],
+    ["sdlc", "hooks", "lib", "trace-check.js"],
+    ["sdlc", "hooks", "bin", "trace-check.js"],
+    ["sdlc", "project-skeleton", ".gitlab-ci.yml"],
+    ["sdlc", "project-skeleton", "memory", "doc-debt.md"],
+    ["sdlc", "project-skeleton", "assets", "archive", "README.md"],
+    ["sdlc", "skills", "as-built", "SKILL.md"],
+    ["sdlc", "docs-skeleton", "06-changes", "incident", "README.md"],
   ]
   for (const p of must) {
     assert.ok(existsSync(join(ROOT, ...p)), `thiếu ${p.join("/")}`)

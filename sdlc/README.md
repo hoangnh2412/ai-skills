@@ -226,7 +226,7 @@ Phase: architecture — shared data model + API contract giữa {module-a} và {
 ## Cấu trúc pack
 
 ```text
-minipower/
+sdlc/
 ├── README.md          ← File này — giới thiệu & Q&A theo giai đoạn
 ├── INSTALL.md         ← Hướng dẫn cài đặt
 ├── SKILL.md           ← Router kỹ thuật (menu / của Cursor)

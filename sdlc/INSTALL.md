@@ -4,7 +4,7 @@ Hướng dẫn cài Minipower vào IDE. Xem giới thiệu & cách dùng: [READM
 
 Có **2 phần độc lập**:
 
-1. **Đăng ký skill** — để gõ `/minipower` / `@minipower` (bắt buộc).
+1. **Đăng ký skill** — để gõ `/minipower-sdlc` / `@minipower-sdlc` (bắt buộc).
 2. **Rules + hooks** — token guard, auto-route, scope prompt (khuyến nghị, cài riêng).
 
 ---
@@ -13,19 +13,19 @@ Có **2 phần độc lập**:
 
 ### Cursor
 
-Cursor chỉ nhận skill tại **`.cursor/skills/{tên}/SKILL.md`**. Tạo **symbolic link** từ folder `minipower/` trong repo `ai-skills` sang `.cursor/skills/minipower` của workspace.
+Cursor chỉ nhận skill tại **`.cursor/skills/{tên}/SKILL.md`**. Tạo **symbolic link** từ folder `sdlc/` trong repo `ai-skills` sang `.cursor/skills/minipower-sdlc` của workspace.
 
-Chạy lệnh **từ root workspace** đang mở trong Cursor. Nếu `ai-skills` nằm ngoài workspace, thay path nguồn bằng **đường dẫn tuyệt đối** tới `…/ai-skills/minipower`.
+Chạy lệnh **từ root workspace** đang mở trong Cursor. Nếu `ai-skills` nằm ngoài workspace, thay path nguồn bằng **đường dẫn tuyệt đối** tới `…/minipower/sdlc`.
 
 **macOS / Linux**
 
 ```bash
 mkdir -p .cursor/skills
-ln -snf "$(pwd)/ai-skills/minipower" .cursor/skills/minipower
+ln -snf "$(pwd)/minipower/sdlc" .cursor/skills/minipower-sdlc
 
 # Kiểm tra
-ls -la .cursor/skills/minipower
-test -f .cursor/skills/minipower/SKILL.md && echo "OK"
+ls -la .cursor/skills/minipower-sdlc
+test -f .cursor/skills/minipower-sdlc/SKILL.md && echo "OK"
 ```
 
 > macOS: không dùng `ln` thiếu `-s` — không hard link được thư mục (`Is a directory`). Cờ `-n` tránh follow link cũ; `-f` ghi đè nếu đã tồn tại.
@@ -34,39 +34,39 @@ test -f .cursor/skills/minipower/SKILL.md && echo "OK"
 
 ```powershell
 New-Item -ItemType Directory -Force -Path .cursor\skills
-$source = Join-Path (Get-Location) "ai-skills\minipower"
-New-Item -ItemType SymbolicLink -Force -Path .cursor\skills\minipower -Target $source
+$source = Join-Path (Get-Location) "minipower\sdlc"
+New-Item -ItemType SymbolicLink -Force -Path .cursor\skills\minipower-sdlc -Target $source
 
 # Hoặc path tuyệt đối:
-# New-Item -ItemType SymbolicLink -Force -Path .cursor\skills\minipower -Target "C:\path\to\ai-skills\minipower"
+# New-Item -ItemType SymbolicLink -Force -Path .cursor\skills\minipower-sdlc -Target "C:\path\to\minipower\sdlc"
 
 # Kiểm tra
-Test-Path .cursor\skills\minipower\SKILL.md
+Test-Path .cursor\skills\minipower-sdlc\SKILL.md
 ```
 
 **Windows — CMD**
 
 ```cmd
 mkdir .cursor\skills
-mklink /J "%CD%\.cursor\skills\minipower" "%CD%\ai-skills\minipower"
+mklink /J "%CD%\.cursor\skills\minipower-sdlc" "%CD%\minipower\sdlc"
 ```
 
-Sau khi link: trong chat gõ `/minipower` hoặc `@minipower`, kèm `Phase: discovery` (hoặc requirements, architecture, …).
+Sau khi link: trong chat gõ `/minipower-sdlc` hoặc `@minipower-sdlc`, kèm `Phase: discovery` (hoặc requirements, architecture, …).
 
 > Skill con trong `skills/` **không** xuất hiện trong menu `/` — đó là hành vi bình thường của Cursor (chỉ nhận skill một cấp), không phải lỗi. Gọi phase con bằng `Phase:` hoặc `@skills/{phase}/SKILL.md`.
 
 ### Claude Code
 
-Claude Code nhận skill tại **`.claude/skills/{tên}/SKILL.md`**. Symlink cả pack `minipower/` vào — `SKILL.md` ở gốc pack là router.
+Claude Code nhận skill tại **`.claude/skills/{tên}/SKILL.md`**. Symlink cả pack `sdlc/` vào — `SKILL.md` ở gốc pack là router.
 
 ```bash
-MP=/path/to/ai-skills/minipower
+MP=/path/to/minipower/sdlc
 mkdir -p .claude/skills
-ln -snf "$MP" .claude/skills/minipower
-test -f .claude/skills/minipower/SKILL.md && echo "OK"
+ln -snf "$MP" .claude/skills/minipower-sdlc
+test -f .claude/skills/minipower-sdlc/SKILL.md && echo "OK"
 ```
 
-Sau khi link: gõ `/minipower` kèm `Phase: discovery` (hoặc requirements, architecture, …). Rules + hooks (permissions, token guard) cài riêng — xem [install/claude/README.md](install/claude/README.md).
+Sau khi link: gõ `/minipower-sdlc` kèm `Phase: discovery` (hoặc requirements, architecture, …). Rules + hooks (permissions, token guard) cài riêng — xem [install/claude/README.md](install/claude/README.md).
 
 ### OpenCode
 
@@ -99,14 +99,14 @@ Guardrails agent (nguồn chung): [agents/README.md](agents/README.md) · Token 
 Trong Cursor / Claude Code / OpenCode, gõ:
 
 ```text
-/minipower
+/minipower-sdlc
 Init project {tên-dự-án}
 ```
 
 Ví dụ:
 
 ```text
-/minipower
+/minipower-sdlc
 Init project billing-demo
 ```
 
@@ -146,7 +146,7 @@ Chỉ dùng khi không có agent hoặc CI/script:
 
 ```bash
 PROJECT=my-project
-MINIPOWER=/path/to/ai-skills/minipower
+MINIPOWER=/path/to/minipower/sdlc
 mkdir -p "$PROJECT"
 cp -R "$MINIPOWER/project-skeleton/"* "$PROJECT/"
 cp -R "$MINIPOWER/docs-skeleton" "$PROJECT/docs"

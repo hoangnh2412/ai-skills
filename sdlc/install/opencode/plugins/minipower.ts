@@ -2,7 +2,7 @@
  * Minipower — OpenCode plugin (token guard + auto-routing + prereq gate + baseline guard
  * + decision staleness).
  *
- * SSOT logic: minipower/hooks/lib/*.js (dùng chung với Cursor/Claude qua Node).
+ * SSOT logic: sdlc/hooks/lib/*.js (dùng chung với Cursor/Claude qua Node).
  * OpenCode chạy Bun → import .js trực tiếp, không build. Chỉ phần glue OpenCode
  * (parts.ts) là .ts riêng nền tảng. Đường dẫn ../../../hooks/lib resolve theo
  * realpath của pack (yêu cầu symlink pack, không copy rời file này).

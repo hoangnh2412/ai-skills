@@ -14,7 +14,7 @@
  *   - .py trả prompt đã ghép sẵn; ở đây trả `prefix` + để caller ghép (theo bản .ts).
  *     Lý do: caller mỗi nền tảng ghép khác nhau (Cursor updated_input, OpenCode prependText).
  *   - `opts.root` thay cho đọc thẳng process.env.MINIPOWER_ROOT → test không cần global state.
- *     Mặc định vẫn là env, rồi tới "ai-skills/minipower".
+ *     Mặc định vẫn là env, rồi tới "ai-skills/sdlc".
  */
 
 import test from "node:test"
@@ -22,7 +22,7 @@ import assert from "node:assert/strict"
 
 import { checkAutoRouting } from "../lib/auto-routing.js"
 
-const ROOT = "ai-skills/minipower"
+const ROOT = "ai-skills/sdlc"
 const opts = { root: ROOT }
 const route = (prompt, filePaths = []) => checkAutoRouting(prompt, filePaths, opts)
 
@@ -83,15 +83,15 @@ test("auto-routing: ENRICH — một phase, prompt chưa khai Phase", async (t) 
     const r = route("sửa DOC-06")
     assert.equal(r.action, "enrich")
     assert.equal(r.phase, "requirements")
-    assert.match(r.prefix, /^\/minipower$/m)
+    assert.match(r.prefix, /^\/minipower-sdlc$/m)
     assert.match(r.prefix, /^Phase: requirements$/m)
     assert.match(r.prefix, new RegExp(`^@${ROOT}/skills/requirements/SKILL\\.md$`, "m"))
   })
 
   await t.test("không chèn lại /minipower nếu prompt đã có", () => {
-    const r = route("/minipower sửa DOC-06")
+    const r = route("/minipower-sdlc sửa DOC-06")
     assert.equal(r.action, "enrich")
-    assert.doesNotMatch(r.prefix, /^\/minipower$/m)
+    assert.doesNotMatch(r.prefix, /^\/minipower-sdlc$/m)
     assert.match(r.prefix, /^Phase: requirements$/m)
   })
 
