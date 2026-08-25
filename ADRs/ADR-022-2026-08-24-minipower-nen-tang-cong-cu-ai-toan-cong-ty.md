@@ -7,7 +7,7 @@
 | **Phạm vi** | **Toàn repo** — định vị sản phẩm, hệ tên, cấu trúc module, đổi `minipower/` → `sdlc/`. ADR **chủ**: [ADR-021](ADR-021-2026-08-24-doi-ten-pack-jarvis-thanh-backend.md) áp dụng hệ tên này cho pack `jarvis` |
 | **Nối tiếp** | **Giữ** [ADR-020](ADR-020-2026-08-20-minipower-3-che-do-du-an-gate-bang-hook.md) (ruột `sdlc/` không đổi: 3 mode, gate mềm, hook cứng) · **Giữ** [ADR-011](ADR-011-2026-07-26-minipower-claude-code-plugin.md) (plugin `"name": "minipower"` giữ nguyên — tên plugin không buộc theo tên folder) · **Nền tảng** [ADR-014](ADR-014-2026-07-28-minipower-spine-tong-hop-wrap-not-build.md) wrap-not-build (→ QĐ-9, QĐ-12) · **Kế thừa bài học** [ADR-001](ADR-001-2026-07-17-danh-gia-minipower-va-chien-luoc-phat-trien.md) §2–3 (parity đa kênh là bẫy; invariant phải có check) |
 | **Mục đích** | Chốt định vị *"minipower = bộ công cụ AI của toàn công ty"* (Role Intelligence Layer); hệ tên hai tầng thương-hiệu/chức-năng; quy tắc phân loại module để mở rộng không đụng lõi; chuẩn bị dữ liệu cho mô hình nâng cao (Skill Registry, MCP Gateway) mà **không xây nền tảng** |
-| **Ảnh hưởng** | [AGENTS.md](../AGENTS.md) §0 định vị + danh sách pack + khôi phục 3 chỗ COORDINATION (QĐ-10) · [README.md](../README.md) bản đồ · `minipower/` → `sdlc/` (folder + `install/{claude,cursor,opencode}` 6 hook path + [.github/workflows/minipower-hooks.yml](../.github/workflows/minipower-hooks.yml) 8 ref + `.claude-plugin/` path) · [COORDINATION.md](../COORDINATION.md) §5 pack manifest · [ADR-021](ADR-021-2026-08-24-doi-ten-pack-jarvis-thanh-backend.md) (bảng tên viết theo hệ này) · ADRs cũ (**chỉ href** — QĐ-11) · [fundamentals/template-skill.md](../fundamentals/template-skill.md) |
+| **Ảnh hưởng** | [AGENTS.md](../AGENTS.md) §0 định vị + danh sách pack + index `contracts/` (QĐ-10) + chữ "ai-skills"→"minipower" · [README.md](../README.md) bản đồ · `minipower/` → `sdlc/` (folder + `install/{claude,cursor,opencode}` 6 hook path + [.github/workflows/minipower-hooks.yml](../.github/workflows/minipower-hooks.yml) 8 ref bên trong, giữ tên file + `.claude-plugin/` path) · [COORDINATION.md](../COORDINATION.md) → tách `contracts/` ×5 (QĐ-10, kèm test `#12`) · [ADR-021](ADR-021-2026-08-24-doi-ten-pack-jarvis-thanh-backend.md) (bảng tên viết theo hệ này) · ADRs cũ (**chỉ href** — QĐ-11) · [fundamentals/template-skill.md](../fundamentals/template-skill.md) |
 
 ---
 
@@ -22,9 +22,9 @@
 | **QĐ-5** | **Hai mô hình đăng ký, chọn theo "từ vựng kích hoạt".** (a) **`sdlc` = router-gộp**: loader thấy MỘT skill `minipower-sdlc`, 11 skill con là file nội bộ router dẫn — một cửa, gác một chỗ, đúng cho quy trình có thứ tự. (b) **Module kỹ thuật = lá-rời**: mỗi skill tự đứng trên menu với description sắc (Redis, JWT, multitenancy…) — agent tự kích hoạt theo ngữ cảnh. (c) Router mỏng per-module (tuỳ chọn) **sinh từ manifest** (QĐ-8), không viết tay — chống bệnh "bảng quên skill" (ADR-001 §3.3). (d) Skill module **không thêm phase** vào `rules.json` — cắm kiểu **cross-phase** qua bảng trigger router, như tiền lệ `deliberation`/`doc-review`/`fan-out` |
 | **QĐ-6** | **Đơn vị cài = module.** `install.mjs` nâng cấp nhận `--with <module>` (đọc manifest QĐ-8); ai cần gì cài nấy, không cài cả bộ. Chưa nâng cấp xong thì cơ chế hiện hành (symlink/rsync) vẫn dùng — không chặn đợt đổi tên |
 | **QĐ-7** | **Quy tắc phân loại việc mới — 3 câu hỏi, hỏi theo thứ tự:** (1) *Tác động lên chính tài liệu/pipeline minipower sở hữu?* → skill core trong `sdlc/` (thường cross-phase). (2) *Gắn framework/stack có vòng đời riêng, hoặc người dùng khác hẳn?* → module mới ngang hàng. (3) *Chỉ là năng lực của skill đã có?* → workflow/provider bên trong. Kèm 2 luật bất biến: **tên theo việc nó làm, không theo công cụ** (công cụ là thứ được wrap) · **chưa có skill thật thì chưa tạo thư mục** |
-| **QĐ-8** | **PACK.md manifest máy-đọc-được cho mỗi module** — schema [COORDINATION.md §5](../COORDINATION.md) (`pack · version · owner · roles · stage · consumes · produces · handoff · mcp`). Một artifact, **bốn consumer**: installer `--with` · bảng router sinh tự động · trace liên-pack · **hạt giống Skill Registry** của mô hình nâng cao. Đúng khuôn rules-as-data: registry tương lai *sinh từ* manifest, như bảng generated sinh từ `rules.json` |
+| **QĐ-8** | **PACK.md manifest máy-đọc-được cho mỗi module** — file `.md` chứa **một khối yaml** theo schema `contracts/pack-manifest.md` (tách từ COORDINATION §5 — QĐ-10): `pack · version · owner · roles · stage · consumes · produces · handoff · mcp`. Một artifact, **bốn consumer**: installer `--with` · bảng router sinh tự động · trace liên-pack · **hạt giống Skill Registry** của mô hình nâng cao. Đúng khuôn rules-as-data: registry tương lai *sinh từ* manifest, như bảng generated sinh từ `rules.json` |
 | **QĐ-9** | **MCP bằng con trỏ tên, không bằng endpoint.** Skill chỉ viết tên trừu tượng — `tasks` · `docs` · `code` (mở rộng đúng khuôn `approval_source {docs,tasks,code}` đã có trong `rules.json`, thêm khi cần: `code-intel`, `runtime`); ánh xạ `tên → MCP server` nằm **một chỗ** trong `profile.json`/`rules.json`. MCP Gateway của mô hình nâng cao xuất hiện → **đổi một ánh xạ, không sửa một skill** |
-| **QĐ-10** | **`COORDINATION.md` trở lại đường đọc của agent.** Hoàn lại 3 chỗ đã gỡ ở AGENTS.md (phiên 2026-08-24). Lý do đảo chiều — hai giả định cũ đã đổ: chủ repo xác nhận **tài liệu đi ra dạng repo riêng/submodule** (đúng §4.3 của nó) và **PACK.md cần schema §5 của nó**. File từ "draft không consumer" thành **load-bearing** |
+| **QĐ-10** | **Tách `COORDINATION.md` thành `contracts/` ×5, index ở AGENTS.md.** File cũ ôm 5 loại nội dung (luật · giao thức · quy ước · cơ chế · schema) — khó đặt tên vì làm quá nhiều việc. Tách: `contracts/{trace-spine, handoff, lingua-franca, cross-repo-bridge, pack-manifest}.md` + `contracts/README.md` (nguyên tắc nền + index + việc còn lại); xoá file gốc. **Mỗi chủ đề một nhà duy nhất** — tách file, không tách SSOT. **Mỗi file tự khai trạng thái** (per-module handoff ĐÃ SỐNG từ ADR-020 QĐ-13/14 · bridge kích hoạt khi docs tách repo submodule · pack-manifest load-bearing từ bước 7) — hết cảnh cả khối đeo nhãn "draft chưa áp dụng". Index viết ở **AGENTS.md §Tham chiếu** (thay 3 chỗ đã gỡ phiên 2026-08-24); **CLAUDE.md không đụng** — nó là con trỏ `@AGENTS.md`, tự thừa hưởng. Kéo theo: sửa test `#12` đang pin `COORDINATION.md` → `contracts/handoff.md` (vòng gen/test) |
 | **QĐ-11** | **ADR đã ban hành: CHỮ giữ nguyên, HREF sửa máy móc.** "minipower"/"jarvis" trong câu văn là bản ghi lịch sử — không đụng. Đường dẫn markdown trỏ file đã di chuyển là ống nước — gãy thì hàn, không tính là sửa quyết định. Ghi luật này để script dò link không đỏ oan kho lịch sử |
 | **QĐ-12** | **Không xây Control Plane.** 8 capability của mô hình nâng cao (MCP Gateway · AuthZ · Audit · Governance · Approval engine · Evaluation platform · Registry service · Data Platform) là **hạ tầng công ty ngoài repo**. Repo chỉ chuẩn bị **tương thích bằng dữ liệu** (QĐ-8, QĐ-9) — đúng wrap-not-build (ADR-014 §7), đúng "co lại trước khi mở rộng", và đúng chính lời phản biện ngoài: *"chỉ thêm infrastructure khi use case thực tế yêu cầu"* |
 
@@ -78,7 +78,13 @@ minipower/                                  ← REPO (thương hiệu — QĐ-2)
 ├── AGENTS.md                               luật cho agent, nạp mỗi phiên
 ├── CLAUDE.md                               → @AGENTS.md
 ├── README.md                               bản đồ toàn repo
-├── COORDINATION.md                         hợp đồng liên-pack (§5 = schema PACK.md — QĐ-10)
+├── contracts/                              hợp đồng liên-pack — tách ×5 (QĐ-10), mỗi file tự khai trạng thái
+│   ├── README.md                           nguyên tắc nền + index + việc còn lại
+│   ├── trace-spine.md                      LUẬT: ID CMP/TEST/DEPLOY, mọi artifact trace về FR/AC
+│   ├── handoff.md                          GIAO THỨC: H1–H6, per-module (ĐÃ SỐNG — ADR-020)
+│   ├── lingua-franca.md                    QUY ƯỚC: memory · decision-log · versioning · ownership
+│   ├── cross-repo-bridge.md                CƠ CHẾ: pin docs@tag + back-ref (kích hoạt khi tách repo)
+│   └── pack-manifest.md                    SCHEMA của PACK.md (load-bearing — QĐ-8)
 ├── ADRs/                                   quyết định định hướng + README index
 ├── fundamentals/                           kiến thức nền + interview/ (giữ tên — ADR-021 QĐ-8)
 │
@@ -217,10 +223,10 @@ Số đếm thật (2026-08-24): ~937 lượt "minipower" toàn repo — `minipo
 | 1 | Script dò link (`hooks/bin/link-check.js` + `npm run link:check`) — chạy lấy baseline | In danh sách link gãy hiện có |
 | 2 | `minipower/` → `sdlc/` + sửa install 3 kênh + CI + `.claude-plugin` path + tag `[minipower]` → giữ (tag search, không phải path) | Verify 3–4 §5 xanh |
 | 3 | Thi hành [ADR-021 §8](ADR-021-2026-08-24-doi-ten-pack-jarvis-thanh-backend.md): `jarvis/` → `backend/` + 15 skill `minipower-backend-*` | Bảng §2 ADR-021 khớp thư mục thật |
-| 4 | AGENTS.md: định vị QĐ-1 + danh sách pack mới + **khôi phục 3 chỗ COORDINATION** (QĐ-10) + sửa `SOPs/`→`fundamentals/` (ADR-021 QĐ-8) | Đọc lại nhất quán |
-| 5 | README.md bản đồ + COORDINATION.md §5.3/§5.4 (`pack: backend` / `frontend`) | Link check xanh |
+| 4 | AGENTS.md: định vị QĐ-1 + danh sách pack mới + **index `contracts/` ở §Tham chiếu** (QĐ-10, thay 3 chỗ đã gỡ) + sửa `SOPs/`→`fundamentals/` (ADR-021 QĐ-8) + đổi chữ "ai-skills"→"minipower" trong tài liệu (folder/remote chủ repo tự đổi sau) | Đọc lại nhất quán |
+| 5 | **Tách COORDINATION.md → `contracts/` ×5 + README index** (QĐ-10); cập nhật ví dụ manifest sang tên pack mới (`sdlc`/`backend`/`frontend`); sửa test `#12` → `contracts/handoff.md`; README.md bản đồ | Link check + gen/test xanh |
 | 6 | Href trong ADRs cũ (QĐ-11) — máy móc, không đụng chữ | Link check xanh trên ADRs |
-| 7 | `PACK.md` cho `sdlc/` + `backend/` (QĐ-8) | Schema §5 COORDINATION hợp lệ |
+| 7 | `PACK.md` cho `sdlc/` + `backend/` (QĐ-8) | Khớp schema `contracts/pack-manifest.md` |
 | 8 | Chạy trọn 5 bước verify §5 | Cả 5 xanh |
 
 Sau đợt này (không thuộc đợt): nâng `install.mjs --with` (QĐ-6) · mở rộng ánh xạ MCP tên (QĐ-9) · tích hợp OpenProject cho `sdlc/`.
@@ -240,4 +246,4 @@ Sau đợt này (không thuộc đợt): nâng `install.mjs --with` (QĐ-6) · m
 
 ---
 
-*Liên quan:* [ADR-021](ADR-021-2026-08-24-doi-ten-pack-jarvis-thanh-backend.md) (áp dụng cho pack backend) · [ADR-020](ADR-020-2026-08-20-minipower-3-che-do-du-an-gate-bang-hook.md) (ruột sdlc) · [ADR-014](ADR-014-2026-07-28-minipower-spine-tong-hop-wrap-not-build.md) (wrap-not-build) · [COORDINATION.md](../COORDINATION.md) §5 (schema PACK.md) · [AGENTS.md](../AGENTS.md)
+*Liên quan:* [ADR-021](ADR-021-2026-08-24-doi-ten-pack-jarvis-thanh-backend.md) (áp dụng cho pack backend) · [ADR-020](ADR-020-2026-08-20-minipower-3-che-do-du-an-gate-bang-hook.md) (ruột sdlc) · [ADR-014](ADR-014-2026-07-28-minipower-spine-tong-hop-wrap-not-build.md) (wrap-not-build) · [COORDINATION.md](../COORDINATION.md) (nguồn tách `contracts/` — QĐ-10) · [AGENTS.md](../AGENTS.md)
