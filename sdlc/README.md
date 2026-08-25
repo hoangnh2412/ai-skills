@@ -1,12 +1,12 @@
-# Minipower — Trợ lý BA + Solution Architect + PM
+# Quy trình phát triển (sdlc) — Trợ lý BA + Solution Architect + PM
 
 Version 2.5.0
 
-## Minipower là gì?
+## sdlc là gì?
 
-Minipower là **một bộ skill** giúp bạn (và AI trong Cursor / Claude Code / OpenCode) làm việc như một **team BA + Solution Architect + PM** — đi từ *painpoint của khách hàng* đến *SRS, kiến trúc, kế hoạch và tài liệu bàn giao* theo một pipeline chuẩn.
+`sdlc` (nhãn: **Quy trình phát triển**) là **module lõi của Minipower** — bộ skill giúp bạn (và AI trong Cursor / Claude Code / OpenCode) làm việc như một **team BA + Solution Architect + PM**: đi từ *painpoint của khách hàng* đến *SRS, kiến trúc, kế hoạch và tài liệu bàn giao* theo một quy trình chuẩn. Đăng ký với công cụ AI dưới tên skill **`minipower-sdlc`**.
 
-Thay vì viết tài liệu tuỳ hứng, Minipower dẫn bạn qua **6 giai đoạn (phase)**, sinh ra **18 loại tài liệu (DOC)** đã chuẩn hoá theo các chuẩn nghề (IEEE 830, ISO/IEC/IEEE 29148, BABOK, PMBOK, ADR, OpenAPI…), và **giữ mọi thứ trace được với nhau** (Use Case → FR → Acceptance Criteria → Test).
+Thay vì viết tài liệu tuỳ hứng, module dẫn bạn qua **6 giai đoạn (phase)**, sinh ra **19 loại tài liệu (DOC)** đã chuẩn hoá theo các chuẩn nghề (IEEE 830, ISO/IEC/IEEE 29148, BABOK, PMBOK, ADR, OpenAPI…), và **giữ mọi thứ trace được với nhau** (Use Case → FR → Acceptance Criteria → Test). Hỗ trợ **ba chế độ dự án** — `mvp` · `standard` · `maintain` — chọn khi khởi tạo, xem [§ Ba chế độ](#ba-chế-độ-dự-án-project_mode).
 
 **Điểm mạnh:**
 
@@ -34,17 +34,33 @@ Business Goal → Stakeholder → Process → Requirement → Solution
 | **Delivery** | [delivery](skills/delivery/SKILL.md) | Test strategy, deployment, go-live | 16–17 |
 | **Change control** | [change-control](skills/change-control/SKILL.md) | Change Request sau baseline | 18 |
 
-**3 skill dùng chung (chạy xuyên phase):**
+**5 skill dùng chung (chạy xuyên phase):**
 
 | Skill | Khi nào | Vai trò |
 |-------|---------|---------|
 | [deliberation](skills/deliberation/SKILL.md) | **Trước** khi vào phase, hoặc trước quyết định lớn | Premise Check ("có đáng làm không") + nghị luận đa góc nhìn |
+| [readiness-gate](skills/readiness-gate/SKILL.md) | **Trước khi thực thi** (viết code, sinh artifact cuối) | Soát tiền đề — liệt kê **tất cả** thiếu sót một lượt; hoãn có ghi nợ |
 | [doc-review](skills/doc-review/SKILL.md) | Cuối mỗi phase, trước baseline, sau CR | QC đối kháng — soi trace đứt, mâu thuẫn, requirement không testable |
-| decision-log | Khi chốt quyết định có phương án bị loại | Lưu "tại sao" — [schema](docs/decision-log.md) |
+| [fan-out](skills/fan-out/SKILL.md) | Sinh tài liệu song song nhiều module | Pipeline **theo module, mỗi module một nhịp** — người mở đường từng nhánh |
+| [as-built](skills/as-built/SKILL.md) | Tiếp quản hệ đang chạy (mode `maintain`) | Khai quật code + tài liệu cũ thành **bản vẽ hoàn công** — người trigger, một vùng một phiên |
+
+Kèm **decision-log** (không phải skill — [schema](docs/decision-log.md)): lưu "tại sao" khi chốt quyết định có phương án bị loại.
 
 ---
 
-## Minipower giúp được gì? (use case)
+## Ba chế độ dự án (project_mode)
+
+Chọn ở **câu 6 khi Init project**, quyết định *DOC nào cần điền* và *cảnh báo nào bật* — cấu trúc thư mục **giống hệt nhau ở cả ba**, đổi chế độ không phải di trú:
+
+- **`mvp`** — chạy được để demo, tài liệu lõi; bỏ qua gì ghi nợ `memory/doc-debt.md`, cảnh báo chỉ nhắc.
+- **`standard`** — đủ 19 DOC + baseline; thiếu tiền đề bị **chặn** (mở bằng `BYPASS`), sau baseline mọi thay đổi qua CR.
+- **`maintain`** — tiếp quản hệ đang chạy: vào bằng `as-built`, `_legacy` mở, CR là đơn vị công việc chính.
+
+Bảng đầy đủ (DOC theo mode, gate, lối lên `standard`): [SKILL.md § Chế độ dự án](SKILL.md#chế-độ-dự-án-project_mode).
+
+---
+
+## sdlc giúp được gì? (use case)
 
 | Bạn đang cần… | Minipower hỗ trợ |
 |---------------|-------------------|
@@ -56,6 +72,8 @@ Business Goal → Stakeholder → Process → Requirement → Solution
 | Soạn **chiến lược test, kế hoạch triển khai / go-live** | Delivery |
 | Xử lý **thay đổi sau khi đã ký baseline** (Change Request) | Change control |
 | **QC tài liệu** trước khi ký / bàn giao | Doc-review |
+| **Tiếp quản hệ chạy nhiều năm, tài liệu thất lạc** — khai quật hiện trạng | As-built (mode `maintain`) |
+| **Sinh BR / Prototype / SRS song song theo module**, mỗi module một nhịp | Fan-out |
 | Nhiều **BA / SA / PM làm song song** trên dự án lớn | [parallel-work](docs/parallel-work.md) |
 | Cần **khung thư mục dự án chuẩn** (memory, assets, brainstorm, docs) | Init project — [SKILL.md](SKILL.md#khởi-tạo-cấu-trúc-dự-án-mặc-định) |
 
@@ -63,10 +81,10 @@ Business Goal → Stakeholder → Process → Requirement → Solution
 
 ## Dùng skill nào theo từng giai đoạn dự án? (Q&A)
 
-Cách gọi chung: gõ **`/minipower`** rồi ghi rõ **`Phase: <tên phase>`**, đính kèm file bằng **`@`**. Ví dụ:
+Cách gọi chung: gõ **`/minipower-sdlc`** rồi ghi rõ **`Phase: <tên phase>`**, đính kèm file bằng **`@`**. Ví dụ:
 
 ```text
-/minipower
+/minipower-sdlc
 Phase: requirements — bóc tách FR cho module billing từ @assets/public/yeu-cau.md
 ```
 
@@ -81,7 +99,7 @@ Phase: requirements — bóc tách FR cho module billing từ @assets/public/yeu
 1. Đặt file khách gửi vào `assets/public/`.
 2. Gọi:
    ```text
-   /minipower
+   /minipower-sdlc
    Phase: discovery — phân tích sơ bộ @assets/public/painpoint.md, đề xuất bộ câu hỏi khảo sát
    ```
 3. Minipower sẽ:
@@ -100,17 +118,17 @@ Phase: requirements — bóc tách FR cho module billing từ @assets/public/yeu
 
 1. `discovery` nhẹ để **chốt danh sách module & in/out scope** (DOC-03):
    ```text
-   /minipower
+   /minipower-sdlc
    Phase: discovery — từ @assets/public/yeu-cau-ky-thuat.md, chốt scope + liệt kê module
    ```
 2. `requirements` để **bóc FR / feature theo từng module**:
    ```text
-   /minipower
+   /minipower-sdlc
    Phase: requirements — bóc tách FR Must/Should cho từng module đã liệt kê
    ```
 3. `planning` để **chấm độ phức tạp & ước lượng**:
    ```text
-   /minipower
+   /minipower-sdlc
    Phase: planning — chấm complexity (rubric 5 chiều) từng module, WBS + estimate sơ bộ để chào giá
    ```
 
@@ -128,7 +146,7 @@ Phase: requirements — bóc tách FR cho module billing từ @assets/public/yeu
 2. Nếu có ≥2 phương án kiến trúc/công nghệ → chạy `deliberation` để nghị luận đa góc nhìn (business, security, ops, cost…) trước khi chốt.
 3. `architecture` để dựng đề xuất giải pháp:
    ```text
-   /minipower
+   /minipower-sdlc
    Phase: architecture — từ @assets/public/yeu-cau-ky-thuat.md, dựng SAD + ADR các lựa chọn chính, sơ đồ tích hợp
    ```
 
@@ -142,11 +160,11 @@ Phase: requirements — bóc tách FR cho module billing từ @assets/public/yeu
 
 **→ Dùng `requirements` (đây là bước sản xuất SRS chính — DOC-06).**
 
-1. Nếu chưa có khung dự án → **Init project** trước (`/minipower` + `Init project`), rồi bỏ 3 file input vào `assets/public/`.
+1. Nếu chưa có khung dự án → **Init project** trước (`/minipower-sdlc` + `Init project`), rồi bỏ 3 file input vào `assets/public/`.
 2. `discovery` chốt **scope baseline** (DOC-03) — SRS cần scope làm mốc.
 3. `requirements` chạy **đủ 6 bước** để ra SRS:
    ```text
-   /minipower
+   /minipower-sdlc
    Phase: requirements — từ @assets/public/yeu-cau.md + @assets/public/giai-phap.md + @assets/public/chuc-nang.md,
    dựng SRS đầy đủ cho từng module
    ```
@@ -196,11 +214,11 @@ Nguyên tắc: **doc-review** cuối mỗi phase và **bắt buộc trước bas
 **Ví dụ prompt song song:**
 
 ```text
-/minipower
+/minipower-sdlc
 Phase: requirements — module {module-a}, cập nhật DOC-05/06, owner BA1
 ```
 ```text
-/minipower
+/minipower-sdlc
 Phase: architecture — shared data model + API contract giữa {module-a} và {module-b};
 đọc FR Must hiện có, phần chưa rõ ghi TBD trong memory/architecture/
 ```
@@ -229,9 +247,12 @@ Phase: architecture — shared data model + API contract giữa {module-a} và {
 sdlc/
 ├── README.md          ← File này — giới thiệu & Q&A theo giai đoạn
 ├── INSTALL.md         ← Hướng dẫn cài đặt
-├── SKILL.md           ← Router kỹ thuật (menu / của Cursor)
-├── skills/            ← 6 phase + 3 skill dùng chung
+├── SKILL.md           ← Router kỹ thuật (đăng ký tên `minipower-sdlc`)
+├── PACK.md            ← Manifest máy-đọc (schema: contracts/pack-manifest.md)
+├── skills/            ← 6 phase + 5 skill dùng chung
 ├── agents/            ← Guardrails agent (token, sửa DOC)
+├── roles/             ← 7 lăng kính vai trò (BA · PM · SA · DEV · QC · DevOps · Support)
+├── hooks/             ← Điều kiện cứng bằng máy: 7 hook/CI + rules.json (SSOT) + test
 ├── install/           ← Adapter cài rules/hooks (cursor / claude / opencode)
 ├── docs/              ← Tài liệu framework (pipeline, parallel-work, token-guard)
 ├── templates/         ← Khung 19 DOC
