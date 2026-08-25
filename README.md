@@ -41,15 +41,33 @@ Chi tiết: [sdlc/SKILL.md § Chế độ dự án](sdlc/SKILL.md#chế-độ-d�
 
 ---
 
-## Nguyên tắc chung
+## Hướng dẫn bắt đầu
 
-| Nguyên tắc | Mô tả |
-|------------|--------|
-| **Source of truth** | Sửa skill tại repo `minipower`; repo product **sync** (submodule / rsync / symlink), không fork chỉnh tay |
-| **SKILL.md cho agent** | Quy tắc, workflow, output bắt buộc |
-| **README.md cho người** | Hướng dẫn sử dụng, bảng tra, prompt mẫu |
-| **Một module — một hub** | `sdlc/README.md`, `backend/README.md`, `contracts/README.md` là điểm vào; README gốc (file này) là bản đồ toàn repo |
-| **Giữ cách làm, không giữ dữ liệu** | minipower chứa quy trình/template/quy tắc truy vết; tài liệu nghiệp vụ, code, task nằm ở hệ thống chuyên trách (wiki, Git, công cụ quản lý việc) |
+Ba bước từ số 0 tới phiên làm việc đầu tiên:
+
+**1. Cài module cần dùng** vào công cụ AI đang xài (Cursor / Claude / OpenCode):
+
+- **Quy trình phát triển** — một symlink thành skill `minipower-sdlc` + bộ hook: [sdlc/INSTALL.md](sdlc/INSTALL.md)
+- **Code backend .NET** — symlink từng skill lá: [backend § Cài vào Cursor](backend/README.md#cài-vào-cursor)
+
+**2. Khởi tạo dự án** — trong workspace dự án, gõ:
+
+```text
+/minipower-sdlc
+Init project ten-du-an
+```
+
+Agent hỏi **trọn gói 7 câu** (tên & xưng hô · vai trò · dự án làm gì · giai đoạn · kinh nghiệm · chế độ dự án · nơi phê duyệt) rồi tự dựng khung `docs/` · `memory/` · `assets/` · `brainstorm/` và sinh `AGENTS.md` / `CLAUDE.md` cá nhân hoá theo chế độ đã chọn — từ đó trợ lý biết bạn là ai, dự án đang ở đâu, và phải dẫn bạn theo hướng nào.
+
+**3. Làm việc** — mỗi prompt khai giai đoạn + phạm vi, agent tự đọc đúng skill:
+
+```text
+Phase: requirements
+/minipower-sdlc
+Viết FR cho luồng đặt hàng, module ORD, DOC-06
+```
+
+Việc code .NET chỉ cần mô tả bằng lời — skill tương ứng tự kích hoạt: *"thêm cache Redis cho service đơn hàng"* → `minipower-backend-caching-dotnet` vào việc.
 
 ---
 
