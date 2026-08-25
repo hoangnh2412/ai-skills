@@ -1,5 +1,5 @@
 ---
-name: ba-delivery
+name: delivery
 description: >-
   [minipower] Test strategy (ISTQB) & deployment — DOC-16–17. Dùng
   khi UAT, test strategy, trace matrix test, deployment, cutover, go-live.

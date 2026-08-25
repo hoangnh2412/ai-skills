@@ -1,5 +1,5 @@
 ---
-name: ba-requirements
+name: requirements
 description: >-
   [minipower] Phân tích yêu cầu — Actor, UC, BR, Prototype, FR, NFR, AC
   (Gherkin). Bước 3–9, DOC-04–07, 13, 19. Dùng khi requirements, use case, SRS,

@@ -1,5 +1,5 @@
 ---
-name: ba-planning
+name: planning
 description: >-
   [minipower] Ước lượng & kế hoạch — complexity, WBS, Story Point,
   roadmap. Bước 10–12, DOC-14–15. Dùng khi estimate, WBS, project plan, roadmap.

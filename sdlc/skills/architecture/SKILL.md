@@ -1,5 +1,5 @@
 ---
-name: ba-architecture
+name: architecture
 description: >-
   [minipower] Thiết kế kiến trúc — SAD, ADR, Integration, Data
   Model, API (OpenAPI). Bước 9, DOC-08–12. Dùng khi solution architecture, SAD,

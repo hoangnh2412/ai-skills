@@ -1,5 +1,5 @@
 ---
-name: ba-discovery
+name: discovery
 description: >-
   [minipower] Khám phá bài toán, stakeholder, scope — bước 1–2,
   DOC-01–03. Dùng khi brainstorm, business case, stakeholder, in/out scope.

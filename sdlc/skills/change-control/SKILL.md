@@ -1,5 +1,5 @@
 ---
-name: ba-change-control
+name: change-control
 description: >-
   [minipower] Change Request sau baseline — DOC-18, delta,
   re-baseline. Dùng khi CR, RFC, sửa requirement đã sign-off, impact analysis.

@@ -32,7 +32,7 @@ Thay cho symlink skill + wire hook thủ công, có thể nạp cả pack như *
 claude --plugin-dir /path/to/minipower/sdlc
 ```
 
-- **Skill namespaced:** gọi `/minipower:ba-discovery`, `/minipower:doc-review`, … (không phải `/minipower-sdlc` gọn như đường project-skill ở trên).
+- **Skill namespaced:** gọi `/minipower:discovery`, `/minipower:doc-review`, … (không phải `/minipower-sdlc` gọn như đường project-skill ở trên).
 - **Hook tự nạp** từ `hooks/hooks.json` (sinh từ `settings.fragment.json` qua `npm run gen`). **KHÔNG** chạy `install.mjs` khi đã dùng plugin — nếu không hook chạy **hai lần** (settings + plugin).
 - **Không còn phải tự thêm `permissions.deny`** (ADR-020 QĐ-4). Trước đây plugin không mang được `permissions.deny` nên phải chép tay 2 dòng vào `.claude/settings.json` — nay `bin/baseline-guard.js` cưỡng chế việc đó ở **cả hai kênh**, nên plugin và settings hành xử **giống hệt nhau**. Nếu bản cài cũ của bạn còn 2 dòng deny thì để nguyên cũng được (trùng chức năng, vô hại), xoá cũng được.
 
