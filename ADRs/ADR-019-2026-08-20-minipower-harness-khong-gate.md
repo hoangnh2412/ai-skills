@@ -7,7 +7,7 @@
 | **Phạm vi** | Toàn `minipower/` — **pivot định vị**: từ *pipeline 6 phase có cổng* sang *harness hỗ trợ 7 vai, không block ở bước nào*. Chạm §0 và toàn bộ mô hình gatekeeper |
 | **Nối tiếp** | **Huỷ** [ADR-003](ADR-003-2026-07-20-minipower-gated-fanout-execution.md) · [ADR-013](ADR-013-2026-07-26-minipower-senior-junior-execution.md) · [ADR-017](ADR-017-2026-08-20-minipower-toolchain-openproject-github-outline-slack.md) · [ADR-018](ADR-018-2026-08-20-minipower-phe-duyet-openproject-publish-outline.md) · **giữ** [ADR-014](ADR-014-2026-07-28-minipower-spine-tong-hop-wrap-not-build.md) (wrap-not-build) · [ADR-008](ADR-008-2026-07-25-minipower-proposal-suite.md) · [ADR-016](ADR-016-2026-08-02-minipower-discovery-tom-tat-tai-lieu-lon.md) |
 | **Mục đích** | Chốt: minipower là **bộ công cụ gọi khi cần** cho mọi vai SDLC; **mọi phê duyệt sống ở công cụ ngoài**; kháng thể chống hallucination giữ lại dưới dạng **khuyến nghị, không chặn** |
-| **Ảnh hưởng** | [AGENTS.md](../AGENTS.md) §0 + mục gatekeeper + phân tầng micro/light/full · [minipower/SKILL.md](../minipower/SKILL.md) router · [rules.json](../minipower/hooks/lib/rules.json) (`approval_gates`, `prereq_by_intent`) · [agents/approval-gate.md](../minipower/agents/approval-gate.md) · 3 skill [deliberation](../minipower/skills/deliberation/SKILL.md) / [readiness-gate](../minipower/skills/readiness-gate/SKILL.md) / [doc-review](../minipower/skills/doc-review/SKILL.md) · [COORDINATION.md](../contracts/README.md) H1–H6 · [docs/pipeline.md](../minipower/docs/pipeline.md) · `install/*` (`permissions.deny`) |
+| **Ảnh hưởng** | [AGENTS.md](../AGENTS.md) §0 + mục gatekeeper + phân tầng micro/light/full · [minipower/SKILL.md](../sdlc/SKILL.md) router · [rules.json](../sdlc/hooks/lib/rules.json) (`approval_gates`, `prereq_by_intent`) · [agents/approval-gate.md](../sdlc/agents/approval-gate.md) · 3 skill [deliberation](../sdlc/skills/deliberation/SKILL.md) / [readiness-gate](../sdlc/skills/readiness-gate/SKILL.md) / [doc-review](../sdlc/skills/doc-review/SKILL.md) · [COORDINATION.md](../contracts/README.md) H1–H6 · [docs/pipeline.md](../sdlc/docs/pipeline.md) · `install/*` (`permissions.deny`) |
 
 ---
 
@@ -44,9 +44,9 @@
 | Loại | Là gì | Sau ADR này |
 |---|---|---|
 | **Approval gate** (`approval_gates`, 7 cổng ký) | Chữ ký người giữa các chặng | 🟣 **Bỏ khỏi minipower** → OpenProject / Gitlab MR approval |
-| **Premise gate** ([deliberation](../minipower/skills/deliberation/SKILL.md)) | "Việc này có đáng làm không" | ⚪ **Giữ làm skill gọi khi cần** — không tự bật, không chặn |
-| **Readiness gate** ([readiness-gate](../minipower/skills/readiness-gate/SKILL.md)) | Soát tiền đề trước khi sinh artifact | 🟡 **Advisory** (QĐ-5) — hỏi trọn gói một lượt, ghi nợ `open-questions.md`, **rồi vẫn làm** |
-| **QC gate** ([doc-review](../minipower/skills/doc-review/SKILL.md)) | Đối kháng 5 chiều, BLOCK baseline | 🟡 **Báo cáo** — vẫn 5 chiều, vẫn fan-out per-module, nhưng verdict là thông tin |
+| **Premise gate** ([deliberation](../sdlc/skills/deliberation/SKILL.md)) | "Việc này có đáng làm không" | ⚪ **Giữ làm skill gọi khi cần** — không tự bật, không chặn |
+| **Readiness gate** ([readiness-gate](../sdlc/skills/readiness-gate/SKILL.md)) | Soát tiền đề trước khi sinh artifact | 🟡 **Advisory** (QĐ-5) — hỏi trọn gói một lượt, ghi nợ `open-questions.md`, **rồi vẫn làm** |
+| **QC gate** ([doc-review](../sdlc/skills/doc-review/SKILL.md)) | Đối kháng 5 chiều, BLOCK baseline | 🟡 **Báo cáo** — vẫn 5 chiều, vẫn fan-out per-module, nhưng verdict là thông tin |
 | **Read-guard / `permissions.deny`** | Hook chặn đọc baseline/legacy | 🟡 **Nhắc thay vì chặn** |
 | **Xác nhận hành động ra ngoài** | Gửi Slack, tạo MR, publish Outline | 🔒 **KHÔNG bỏ** — xem §5 |
 
@@ -73,12 +73,12 @@ Chưa có MCP cho công cụ nào → **vẫn làm việc bình thường trên 
 | Nguyên tắc | Đổi gì | File phải sửa |
 |---|---|---|
 | §0 `AI = trợ lý · Người quyết cuối` | **Không đổi bản chất** — chỉ dời *nơi* quyết ra ngoài | [AGENTS.md](../AGENTS.md) §0 (diễn đạt lại) |
-| "Gatekeeper — 3 gate + boundary H1–H6" | **Bỏ** — 3 skill thành dịch vụ; H1–H6 thành **gợi ý phối hợp** | AGENTS.md · [COORDINATION.md](../contracts/README.md) · [pipeline.md](../minipower/docs/pipeline.md) |
-| "Chỉ thực thi khi tài liệu đủ rõ" | **Advisory** (QĐ-5) | [readiness-gate/SKILL.md](../minipower/skills/readiness-gate/SKILL.md) · `prereq_by_intent` trong [rules.json](../minipower/hooks/lib/rules.json) |
-| Trace UC→FR→AC→Test | **Giữ**, thêm `trace:check` + **job CI Gitlab** (QĐ-6) — cưỡng chế chuyển từ *gate trong repo* sang *pipeline ngoài* | `hooks/` (script + test) · `package.json` · template `.gitlab-ci.yml` trong [project-skeleton](../minipower/project-skeleton/) |
-| baseline / CR governance | **Định nghĩa lại**: baseline = version đã publish Outline / tag Gitlab; `change-control` ghi delta, không chặn | [change-control](../minipower/skills/change-control/SKILL.md) · [doc-versioning.md](../minipower/docs-skeleton/00-governance/doc-versioning.md) |
-| Phân tầng micro/light/full | **Bỏ** — không còn gate để bật/tắt | AGENTS.md · [minipower/SKILL.md](../minipower/SKILL.md) |
-| `approval_gates` + guardrail cổng | **Xoá khỏi SSOT** hoặc đổi thành bảng ánh xạ trạng thái OpenProject | [rules.json](../minipower/hooks/lib/rules.json) · [agents/approval-gate.md](../minipower/agents/approval-gate.md) → `gen` → `test` → `gen:check` |
+| "Gatekeeper — 3 gate + boundary H1–H6" | **Bỏ** — 3 skill thành dịch vụ; H1–H6 thành **gợi ý phối hợp** | AGENTS.md · [COORDINATION.md](../contracts/README.md) · [pipeline.md](../sdlc/docs/pipeline.md) |
+| "Chỉ thực thi khi tài liệu đủ rõ" | **Advisory** (QĐ-5) | [readiness-gate/SKILL.md](../sdlc/skills/readiness-gate/SKILL.md) · `prereq_by_intent` trong [rules.json](../sdlc/hooks/lib/rules.json) |
+| Trace UC→FR→AC→Test | **Giữ**, thêm `trace:check` + **job CI Gitlab** (QĐ-6) — cưỡng chế chuyển từ *gate trong repo* sang *pipeline ngoài* | `hooks/` (script + test) · `package.json` · template `.gitlab-ci.yml` trong [project-skeleton](../sdlc/project-skeleton/) |
+| baseline / CR governance | **Định nghĩa lại**: baseline = version đã publish Outline / tag Gitlab; `change-control` ghi delta, không chặn | [change-control](../sdlc/skills/change-control/SKILL.md) · [doc-versioning.md](../sdlc/docs-skeleton/00-governance/doc-versioning.md) |
+| Phân tầng micro/light/full | **Bỏ** — không còn gate để bật/tắt | AGENTS.md · [minipower/SKILL.md](../sdlc/SKILL.md) |
+| `approval_gates` + guardrail cổng | **Xoá khỏi SSOT** hoặc đổi thành bảng ánh xạ trạng thái OpenProject | [rules.json](../sdlc/hooks/lib/rules.json) · [agents/approval-gate.md](../sdlc/agents/approval-gate.md) → `gen` → `test` → `gen:check` |
 | Co lại trước khi mở rộng · rules-as-data · wrap-not-build | **Không đổi** | — |
 
 ---
@@ -91,7 +91,7 @@ Chưa có MCP cho công cụ nào → **vẫn làm việc bình thường trên 
 | **Không tự viết SDK/adapter** | Wrap MCP ([ADR-014](ADR-014-2026-07-28-minipower-spine-tong-hop-wrap-not-build.md) §5.2) |
 | **Không thêm nền tảng thứ tư** | 4 công cụ là mặt tích hợp duy nhất |
 | **Rules-as-data + golden test + CI hook** | Mọi thay đổi `rules.json` vẫn theo vòng `gen → test → gen:check` |
-| **Một-owner-một-module khi fan-out** | [parallel-work.md](../minipower/docs/parallel-work.md) giữ nguyên |
+| **Một-owner-một-module khi fan-out** | [parallel-work.md](../sdlc/docs/parallel-work.md) giữ nguyên |
 
 ---
 
@@ -124,12 +124,12 @@ Chưa có MCP cho công cụ nào → **vẫn làm việc bình thường trên 
 |---|---|---|
 | 1 | Viết lại [AGENTS.md](../AGENTS.md) §0 + bỏ mục gatekeeper/phân tầng | Đọc lại: không còn câu nào hứa "chặn" |
 | 2 | `rules.json`: bỏ `approval_gates`, đổi `prereq_by_intent` thành advisory | `npm run gen && npm test && npm run gen:check` xanh |
-| 3 | Xoá/viết lại [agents/approval-gate.md](../minipower/agents/approval-gate.md) | `gen:check` xanh |
+| 3 | Xoá/viết lại [agents/approval-gate.md](../sdlc/agents/approval-gate.md) | `gen:check` xanh |
 | 4 | Sửa 3 skill gate → dịch vụ/advisory/báo cáo | Không skill nào còn từ chối làm việc |
 | 5 | Nới read-guard + `permissions.deny` từ chặn → nhắc | Smoke hook |
 | 6 | Viết `trace:check` (Node thuần + golden test) **+ job CI** | `npm run trace:check` chạy đúng trên project-skeleton; template `.gitlab-ci.yml` fail khi ID trỏ sai/trùng, warn khi thiếu AC/Test |
-| 7 | Sửa [COORDINATION.md](../contracts/README.md) H1–H6 + [pipeline.md](../minipower/docs/pipeline.md) sang ngôn ngữ gợi ý | — |
-| 8 | Định nghĩa lại baseline/CR | [change-control](../minipower/skills/change-control/SKILL.md) |
+| 7 | Sửa [COORDINATION.md](../contracts/README.md) H1–H6 + [pipeline.md](../sdlc/docs/pipeline.md) sang ngôn ngữ gợi ý | — |
+| 8 | Định nghĩa lại baseline/CR | [change-control](../sdlc/skills/change-control/SKILL.md) |
 
 ---
 
@@ -140,7 +140,7 @@ Chưa có MCP cho công cụ nào → **vẫn làm việc bình thường trên 
 | **Q1** | OpenProject/Gitlab **đã có luồng duyệt thật** chưa, hay đang dựng? | Nếu chưa, giữ `approval_gates` ở dạng **bảng tham chiếu** (không cưỡng chế) tới khi luồng ngoài chạy — chặn R4 |
 | **Q2** | 19 DOC giữ nguyên số lượng, hay rút gọn khi không còn là chặng bắt buộc? | Giữ nguyên — template thừa không hại, thiếu mới hại |
 | **Q3** | `fan-out` bỏ điều kiện "DEC cổng trước" — có cần điều kiện thay thế nào không? | Không; chỉ cần biết module in-scope từ DOC-03 |
-| **Q4** | [lark-work-assistant.md](../minipower/agents/lark-work-assistant.md) (Lark rời lộ trình) | Gỡ khỏi bảng trigger router; giữ file làm tham chiếu khi viết bản OpenProject/Slack |
+| **Q4** | [lark-work-assistant.md](../sdlc/agents/lark-work-assistant.md) (Lark rời lộ trình) | Gỡ khỏi bảng trigger router; giữ file làm tham chiếu khi viết bản OpenProject/Slack |
 | **Q5** | `trace:check` phân phối thế nào tới dự án đích — script trong pack, hay copy vào mỗi repo? | Script sống trong pack (một SSOT); `.gitlab-ci.yml` của dự án đích gọi tới. Tránh mỗi repo một bản lệch nhau ([ADR-001](ADR-001-2026-07-17-danh-gia-minipower-va-chien-luoc-phat-trien.md): không test → drift) |
 
 ---
@@ -150,4 +150,4 @@ Chưa có MCP cho công cụ nào → **vẫn làm việc bình thường trên 
 - [ADR-014](ADR-014-2026-07-28-minipower-spine-tong-hop-wrap-not-build.md) — wrap-not-build, bảng borrow (còn hiệu lực; bỏ S1 constitution-as-gate và P2 test-first-gate)
 - [ADR-002](ADR-002-2026-07-20-dinh-huong-minipower-ai-ho-tro-ra-quyet-dinh.md) — định vị *AI Project Intelligence*, cảnh báo Prompt Library (R1)
 - [ADR-001](ADR-001-2026-07-17-danh-gia-minipower-va-chien-luoc-phat-trien.md) — "không test → drift", kỷ luật SSOT + golden test (giữ nguyên)
-- [parallel-work.md](../minipower/docs/parallel-work.md) · [token-guard.md](../minipower/docs/token-guard.md) — không đụng
+- [parallel-work.md](../sdlc/docs/parallel-work.md) · [token-guard.md](../sdlc/docs/token-guard.md) — không đụng

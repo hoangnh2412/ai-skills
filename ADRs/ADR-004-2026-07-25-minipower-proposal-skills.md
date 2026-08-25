@@ -183,4 +183,4 @@ Câu hỏi riêng từng skill → ADR con tương ứng.
 - [proposal-technical](ADR-006-2026-07-25-proposal-technical.md)
 - [proposal-quotation](ADR-005-2026-07-25-proposal-quotation.md)
 - [proposal-timeline](ADR-007-2026-07-25-proposal-timeline.md)
-- [`minipower/SKILL.md`](../minipower/SKILL.md) · [`minipower/docs/pipeline.md`](../minipower/docs/pipeline.md)
+- [`minipower/SKILL.md`](../sdlc/SKILL.md) · [`minipower/docs/pipeline.md`](../sdlc/docs/pipeline.md)

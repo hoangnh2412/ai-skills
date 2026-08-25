@@ -4,16 +4,16 @@
 |---|---|
 | **Ngày** | 2026-08-02 |
 | **Trạng thái** | 📝 **Proposed** — thiết kế trên giấy, chờ chốt các Quyết định mở (§6). **Chưa** đụng file pipeline. |
-| **Phạm vi** | `minipower/` — bước **nạp/tiêu hoá nguồn** *đầu vào* của [discovery](../minipower/skills/discovery/SKILL.md) (đọc tài liệu painpoint/legacy/RFP lớn trước DOC-01–03). **Không** đổi nội dung/luồng 6 phase, **không** thêm phase mới. |
-| **Nối tiếp** | [token-guard](../minipower/docs/token-guard.md) (một-slice, đọc theo lớp) · [doc-review](../minipower/skills/doc-review/SKILL.md) (fan-out đọc/QC, context sạch, dedup) · [parallel-work](../minipower/docs/parallel-work.md) (một-owner) · [fan-out ADR](ADR-003-2026-07-20-minipower-gated-fanout-execution.md) (ranh giới fan-out giữa hai cổng) |
+| **Phạm vi** | `minipower/` — bước **nạp/tiêu hoá nguồn** *đầu vào* của [discovery](../sdlc/skills/discovery/SKILL.md) (đọc tài liệu painpoint/legacy/RFP lớn trước DOC-01–03). **Không** đổi nội dung/luồng 6 phase, **không** thêm phase mới. |
+| **Nối tiếp** | [token-guard](../sdlc/docs/token-guard.md) (một-slice, đọc theo lớp) · [doc-review](../sdlc/skills/doc-review/SKILL.md) (fan-out đọc/QC, context sạch, dedup) · [parallel-work](../sdlc/docs/parallel-work.md) (một-owner) · [fan-out ADR](ADR-003-2026-07-20-minipower-gated-fanout-execution.md) (ranh giới fan-out giữa hai cổng) |
 | **Mục đích** | Định nghĩa **cách agent tiêu hoá tài liệu nguồn cỡ lớn** (≥ context một phiên) thành bản tóm tắt truy-vết-được, làm **đầu vào tin cậy** cho Premise gate + elicit của discovery — mà **không** one-shot, **không** mất số liệu/trace, **không** phụ thuộc memory phiên. |
-| **Ảnh hưởng** (khi accepted) | [discovery/SKILL.md](../minipower/skills/discovery/SKILL.md) — thêm **Bước 0: Ingest nguồn lớn** (recon → chunk/fan-out → merge) trước Bước 1 · [token-guard.md](../minipower/docs/token-guard.md) — nới ngoại lệ "đọc cả file lớn" khi có kế hoạch chunk + persist · một **agent/skill mới `source-ingest`** (recon·chunk·merge·rollup) nếu chốt chuẩn hoá (Q8) · `memory/discovery/` — thêm quy ước lưu **artifact tóm tắt trung gian** (chunk draft + rollup). **Không** sửa `rules.json` trong ADR này (chỉ đề xuất; sửa khi có skill thật). |
+| **Ảnh hưởng** (khi accepted) | [discovery/SKILL.md](../sdlc/skills/discovery/SKILL.md) — thêm **Bước 0: Ingest nguồn lớn** (recon → chunk/fan-out → merge) trước Bước 1 · [token-guard.md](../sdlc/docs/token-guard.md) — nới ngoại lệ "đọc cả file lớn" khi có kế hoạch chunk + persist · một **agent/skill mới `source-ingest`** (recon·chunk·merge·rollup) nếu chốt chuẩn hoá (Q8) · `memory/discovery/` — thêm quy ước lưu **artifact tóm tắt trung gian** (chunk draft + rollup). **Không** sửa `rules.json` trong ADR này (chỉ đề xuất; sửa khi có skill thật). |
 
 ---
 
 ## §0. Vấn đề
 
-Ở **phase discovery**, đầu vào thật hiếm khi gọn: khách gửi **RFP / tài liệu nghiệp vụ / hệ thống legacy** dài hàng nghìn dòng, hoặc **batch nhiều file** (~8.000 dòng, ~150k–300k token). Agent cần **tóm tắt** (~1:15 → 1:30) để có bản đọc-được làm nền cho [Premise gate](../minipower/skills/deliberation/SKILL.md) và elicit (≤10 câu hỏi).
+Ở **phase discovery**, đầu vào thật hiếm khi gọn: khách gửi **RFP / tài liệu nghiệp vụ / hệ thống legacy** dài hàng nghìn dòng, hoặc **batch nhiều file** (~8.000 dòng, ~150k–300k token). Agent cần **tóm tắt** (~1:15 → 1:30) để có bản đọc-được làm nền cho [Premise gate](../sdlc/skills/deliberation/SKILL.md) và elicit (≤10 câu hỏi).
 
 > **Không thể nạp toàn bộ nguồn vào một context window.** Đọc cắt giữa chừng → mất mục giữa/cuối file; token nguồn **chiếm chỗ** reasoning/output → chất lượng tóm tắt giảm; nén mạnh → **hallucinate**, mất số liệu/ngưỡng/tên hệ thống; chunk hoá → **trace** phức tạp thêm.
 
@@ -25,7 +25,7 @@ tràn / truncate
 Output: thiếu mục · mất số liệu · mất trace · rủi ro bịa
 ```
 
-Đây **không phải** một phase mới hay cơ chế đè lên pipeline. Nó là **bước nạp đầu vào (ingest)** đứng *trước* Bước 1 của discovery — và về hình dạng, nó là **fan-out đọc/QC** (giống [doc-review](../minipower/skills/doc-review/SKILL.md)), **không** phải fan-out sinh artifact.
+Đây **không phải** một phase mới hay cơ chế đè lên pipeline. Nó là **bước nạp đầu vào (ingest)** đứng *trước* Bước 1 của discovery — và về hình dạng, nó là **fan-out đọc/QC** (giống [doc-review](../sdlc/skills/doc-review/SKILL.md)), **không** phải fan-out sinh artifact.
 
 ---
 
@@ -33,10 +33,10 @@ Output: thiếu mục · mất số liệu · mất trace · rủi ro bịa
 
 | # | Nguyên tắc (§0 triết lý) | Áp vào đây |
 |---|---|---|
-| 1 | **Người là người quyết định cuối** | Tóm tắt chỉ là **đầu vào chuẩn bị**; verdict PROCEED/RESHAPE/STOP vẫn do người ra tại [Premise gate](../minipower/skills/deliberation/SKILL.md). AI **không** tự kết luận "đáng làm" từ bản tóm tắt. |
+| 1 | **Người là người quyết định cuối** | Tóm tắt chỉ là **đầu vào chuẩn bị**; verdict PROCEED/RESHAPE/STOP vẫn do người ra tại [Premise gate](../sdlc/skills/deliberation/SKILL.md). AI **không** tự kết luận "đáng làm" từ bản tóm tắt. |
 | 2 | **Không nhảy giải pháp sớm** | Ingest chỉ **nén + trace**, tuyệt đối **không** suy diễn UC/FR/kiến trúc từ nguồn. Tóm tắt là *dữ kiện đã đọc*, không phải *đề xuất*. |
 | 3 | **Fan-out đọc/QC — không tự sửa của owner khác** | Reuse mẫu doc-review: **1 subagent / file (hoặc / chunk)**, context sạch (1 slice), **agent chính dedup + merge**. Subagent **chỉ đọc & rút gọn**, không viết DOC. |
-| 4 | **Một-owner, một-slice** ([token-guard](../minipower/docs/token-guard.md) · [parallel-work](../minipower/docs/parallel-work.md)) | Mỗi file/chunk có một luồng xử lý; không hai luồng đè cùng vùng. Ingest là ngoại lệ *có kế hoạch* của token-guard (được đọc file lớn **vì** có chunk + persist), không phải quét lan man. |
+| 4 | **Một-owner, một-slice** ([token-guard](../sdlc/docs/token-guard.md) · [parallel-work](../sdlc/docs/parallel-work.md)) | Mỗi file/chunk có một luồng xử lý; không hai luồng đè cùng vùng. Ingest là ngoại lệ *có kế hoạch* của token-guard (được đọc file lớn **vì** có chunk + persist), không phải quét lan man. |
 | 5 | **Không phụ thuộc memory phiên** | Draft chunk + rollup **persist ra file** (`memory/discovery/`) để phiên merge/resume sau đọc lại — không dựa context cũ (T4). |
 | 6 | **Trace được (UC→FR→AC→Test bắt đầu từ nguồn)** | Mỗi ý tóm tắt **gắn vị trí nguồn** ngay từ draft cục bộ (`{file}#{dòng/mục}`) — trace không thể vá sau khi đã nén. |
 | 7 | **Co lại trước khi mở rộng** | **Không** thêm "nền tảng thứ tư" (không DB vector, không index engine ngoài) khi chunk + memory-file đã đủ. Tự động hoá/song song bật **có ngưỡng**, không mặc định. |
@@ -95,10 +95,10 @@ Ingest **kết thúc trước** Premise gate — nó chuẩn bị dữ kiện, *
 
 | Primitive sẵn có | Vai trò cũ | Vai trò trong ingest |
 |---|---|---|
-| [doc-review](../minipower/skills/doc-review/SKILL.md) fan-out | 1 subagent/chiều-hoặc-module, context sạch, agent chính dedup | **Khuôn mẫu** cho fan-out đọc: 1 subagent/file(chunk) → merge + dedup theo `{file}#{mục}` |
-| [token-guard](../minipower/docs/token-guard.md) | Chặn đọc lan man, một-slice | Ingest = **ngoại lệ có kế hoạch**: được đọc file lớn *vì* có chunk + persist; vẫn cấm quét cả `docs/` không mục đích |
+| [doc-review](../sdlc/skills/doc-review/SKILL.md) fan-out | 1 subagent/chiều-hoặc-module, context sạch, agent chính dedup | **Khuôn mẫu** cho fan-out đọc: 1 subagent/file(chunk) → merge + dedup theo `{file}#{mục}` |
+| [token-guard](../sdlc/docs/token-guard.md) | Chặn đọc lan man, một-slice | Ingest = **ngoại lệ có kế hoạch**: được đọc file lớn *vì* có chunk + persist; vẫn cấm quét cả `docs/` không mục đích |
 | `memory/{phase}/` | Persist DEC, open-questions | Thêm **artifact trung gian**: chunk draft + rollup → resume/merge không phụ thuộc context phiên (T4) |
-| [deliberation](../minipower/skills/deliberation/SKILL.md) Premise gate | Verdict PROCEED/RESHAPE/STOP | Bản tóm tắt là **đầu vào** cho gate — không thay gate |
+| [deliberation](../sdlc/skills/deliberation/SKILL.md) Premise gate | Verdict PROCEED/RESHAPE/STOP | Bản tóm tắt là **đầu vào** cho gate — không thay gate |
 | ID ổn định (§0 quy ước) | `{MOD}-FR-`, `DEC-{PHASE}-` | Trace nguồn: mỗi ý ↔ `{file}#{dòng/mục}` từ bước draft |
 
 ---
@@ -134,10 +134,10 @@ Ingest **kết thúc trước** Premise gate — nó chuẩn bị dữ kiện, *
 
 ## §7. Nếu accepted — việc sẽ làm (chưa làm bây giờ)
 
-1. Thêm **Bước 0: Ingest nguồn lớn** vào [discovery/SKILL.md](../minipower/skills/discovery/SKILL.md) (recon → chunk/fan-out → merge → tóm tắt truy-vết-được) — *trước* Bước 1, **không** đổi Bước 1–2.
+1. Thêm **Bước 0: Ingest nguồn lớn** vào [discovery/SKILL.md](../sdlc/skills/discovery/SKILL.md) (recon → chunk/fan-out → merge → tóm tắt truy-vết-được) — *trước* Bước 1, **không** đổi Bước 1–2.
 2. Ghi quy ước **artifact trung gian** trong `memory/discovery/` (front-matter Q3) + luật persist/resume (T4).
-3. Nới ngoại lệ trong [token-guard.md](../minipower/docs/token-guard.md): đọc file lớn được phép **khi** khai kế hoạch chunk + persist (không phải quét lan man).
-4. (Nếu Q8=Có) tạo **skill `source-ingest`** + agent guardrail; khai trigger ở router [minipower/SKILL.md](../minipower/SKILL.md); nếu đụng `rules.json` → theo vòng lặp `gen → test → gen:check`.
+3. Nới ngoại lệ trong [token-guard.md](../sdlc/docs/token-guard.md): đọc file lớn được phép **khi** khai kế hoạch chunk + persist (không phải quét lan man).
+4. (Nếu Q8=Có) tạo **skill `source-ingest`** + agent guardrail; khai trigger ở router [minipower/SKILL.md](../sdlc/SKILL.md); nếu đụng `rules.json` → theo vòng lặp `gen → test → gen:check`.
 5. **Pilot 1 file lớn** → đo T1–T6 → điều chỉnh chunk size / ngưỡng song song **trước khi** scale batch (§10 problem-doc).
 
 ---
@@ -159,9 +159,9 @@ Ingest **kết thúc trước** Premise gate — nó chuẩn bị dữ kiện, *
 
 | Tài liệu | Vai trò |
 |---|---|
-| [discovery/SKILL.md](../minipower/skills/discovery/SKILL.md) | Nơi gắn Bước 0 Ingest (trước Premise gate + elicit) |
-| [doc-review/SKILL.md](../minipower/skills/doc-review/SKILL.md) | Mẫu fan-out đọc/QC: subagent context sạch, agent chính dedup |
-| [token-guard.md](../minipower/docs/token-guard.md) | Một-slice, đọc theo lớp — ingest là ngoại lệ có kế hoạch |
-| [parallel-work.md](../minipower/docs/parallel-work.md) | Một-owner, tránh đè slice khi song song |
+| [discovery/SKILL.md](../sdlc/skills/discovery/SKILL.md) | Nơi gắn Bước 0 Ingest (trước Premise gate + elicit) |
+| [doc-review/SKILL.md](../sdlc/skills/doc-review/SKILL.md) | Mẫu fan-out đọc/QC: subagent context sạch, agent chính dedup |
+| [token-guard.md](../sdlc/docs/token-guard.md) | Một-slice, đọc theo lớp — ingest là ngoại lệ có kế hoạch |
+| [parallel-work.md](../sdlc/docs/parallel-work.md) | Một-owner, tránh đè slice khi song song |
 | [fan-out ADR](ADR-003-2026-07-20-minipower-gated-fanout-execution.md) | Ranh giới: fan-out **sinh** artifact chỉ giữa hai cổng (phân biệt với fan-out **đọc** ở đây) |
-| [deliberation/SKILL.md](../minipower/skills/deliberation/SKILL.md) | Premise gate — người quyết, dùng tóm tắt làm đầu vào |
+| [deliberation/SKILL.md](../sdlc/skills/deliberation/SKILL.md) | Premise gate — người quyết, dùng tóm tắt làm đầu vào |

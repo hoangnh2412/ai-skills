@@ -1,6 +1,6 @@
 # Hướng dẫn sử dụng Jarvis với OpenCode / AI Agent
 
-> **Đã chuyển:** Bản đồ skill và hướng dẫn sử dụng nằm tại **[`.opencode/README.md`](../.opencode/README.md)** và **README.md** trong từng skill (`jarvis-dotnet`, `telemetry-dotnet`, `healthcheck-dotnet`, `code-review`). Thư mục `docs/` không còn là nguồn chính cho skill AI.
+> **Đã chuyển:** Bản đồ skill và hướng dẫn sử dụng nằm tại **[`.opencode/README.md`](../.opencode/README.md)** và **README.md** trong từng skill (`minipower-backend-scaffold-dotnet`, `minipower-backend-telemetry-dotnet`, `minipower-backend-healthcheck-dotnet`, `code-review`). Thư mục `docs/` không còn là nguồn chính cho skill AI.
 
 Tài liệu dưới đây giữ làm tham chiếu lịch sử; ưu tiên link trong `.opencode/`.
 
@@ -37,9 +37,9 @@ Các skill nằm tại `.opencode/skills/`. Mỗi skill có cấu trúc nội b�
 
 | Skill | Vai trò | Hướng dẫn cho người |
 |-------|---------|---------------------|
-| [`jarvis-dotnet`](../.opencode/skills/jarvis-dotnet/SKILL.md) | Orchestrator: scaffold / init / add module Jarvis | [README](../.opencode/skills/jarvis-dotnet/README.md) |
-| [`healthcheck-dotnet`](../.opencode/skills/healthcheck-dotnet/SKILL.md) | `Jarvis.HealthChecks`: init + provider (PostgreSQL, Redis, …) | Xem [mục healthcheck](#healthcheck-dotnet) |
-| [`telemetry-dotnet`](../.opencode/skills/telemetry-dotnet/SKILL.md) | `Jarvis.OpenTelemetry`: trace / metric / log OTLP | Xem [mục telemetry](#telemetry-dotnet) |
+| [`minipower-backend-scaffold-dotnet`](../.opencode/skills/minipower-backend-scaffold-dotnet/SKILL.md) | Orchestrator: scaffold / init / add module Jarvis | [README](../.opencode/skills/minipower-backend-scaffold-dotnet/README.md) |
+| [`minipower-backend-healthcheck-dotnet`](../.opencode/skills/minipower-backend-healthcheck-dotnet/SKILL.md) | `Jarvis.HealthChecks`: init + provider (PostgreSQL, Redis, …) | Xem [mục healthcheck](#minipower-backend-healthcheck-dotnet) |
+| [`minipower-backend-telemetry-dotnet`](../.opencode/skills/minipower-backend-telemetry-dotnet/SKILL.md) | `Jarvis.OpenTelemetry`: trace / metric / log OTLP | Xem [mục telemetry](#minipower-backend-telemetry-dotnet) |
 | [`code-review`](../.opencode/skills/code-review/SKILL.md) | Review PR C#/.NET trước merge | [README đầy đủ](../.opencode/skills/code-review/README.md) — **chuẩn mẫu** |
 
 **Chuẩn mẫu cho README skill:** [`.opencode/skills/code-review/README.md`](../.opencode/skills/code-review/README.md) — cấu trúc *khi nào dùng → cách gọi → chuẩn bị → prompt mẫu → đọc kết quả → tài liệu liên quan*.
@@ -69,11 +69,11 @@ docs/tutorial-index.md (file này)        → Hub: skill nào, khi nào, prompt 
 ## Chọn skill nào khi nào
 
 ```text
-Folder trống, tạo backend mới          → jarvis-dotnet (scaffold)
-Đã có solution, gắn Jarvis             → jarvis-dotnet (init)
-Thêm JWT / EF / Caching / …            → jarvis-dotnet (add) + skill *-dotnet
-Thêm /health/ready PostgreSQL          → healthcheck-dotnet (add)
-Bật OTLP trace / metric / log          → telemetry-dotnet (init / add)
+Folder trống, tạo backend mới          → minipower-backend-scaffold-dotnet (scaffold)
+Đã có solution, gắn Jarvis             → minipower-backend-scaffold-dotnet (init)
+Thêm JWT / EF / Caching / …            → minipower-backend-scaffold-dotnet (add) + skill *-dotnet
+Thêm /health/ready PostgreSQL          → minipower-backend-healthcheck-dotnet (add)
+Bật OTLP trace / metric / log          → minipower-backend-telemetry-dotnet (init / add)
 Trước khi mở PR                        → code-review
 ```
 
@@ -81,13 +81,13 @@ Trước khi mở PR                        → code-review
 
 | Tình huống | Skill | Workflow / tài liệu |
 |------------|-------|---------------------|
-| Tạo repo `{product}-backend` từ đầu, 5 project, F5 Swagger | `jarvis-dotnet` | [workflows/scaffold.md](../.opencode/skills/jarvis-dotnet/workflows/scaffold.md) |
-| Solution .NET có sẵn, muốn cài Jarvis theo layer | `jarvis-dotnet` | [workflows/init.md](../.opencode/skills/jarvis-dotnet/workflows/init.md) |
-| Đã có Jarvis, thêm module (JWT, EF, Caching, …) | `jarvis-dotnet` + skill `*-dotnet` | [workflows/add.md](../.opencode/skills/jarvis-dotnet/workflows/add.md) · [SKILLS.md](../.opencode/skills/jarvis-dotnet/templates/SKILLS.md) |
-| Chưa có health endpoint Jarvis | `healthcheck-dotnet` | [workflows/init.md](../.opencode/skills/healthcheck-dotnet/workflows/init.md) |
-| Đã có `/health/live`, thêm readiness dependency | `healthcheck-dotnet` | [workflows/add.md](../.opencode/skills/healthcheck-dotnet/workflows/add.md) + [providers/](../.opencode/skills/healthcheck-dotnet/providers/) |
-| Chưa có OpenTelemetry Jarvis | `telemetry-dotnet` | [workflows/init.md](../.opencode/skills/telemetry-dotnet/workflows/init.md) |
-| Đã có OTEL core, thêm enrich / EF / Redis plug-in | `telemetry-dotnet` | [workflows/add.md](../.opencode/skills/telemetry-dotnet/workflows/add.md) + [providers/](../.opencode/skills/telemetry-dotnet/providers/) |
+| Tạo repo `{product}-backend` từ đầu, 5 project, F5 Swagger | `minipower-backend-scaffold-dotnet` | [workflows/scaffold.md](../.opencode/skills/minipower-backend-scaffold-dotnet/workflows/scaffold.md) |
+| Solution .NET có sẵn, muốn cài Jarvis theo layer | `minipower-backend-scaffold-dotnet` | [workflows/init.md](../.opencode/skills/minipower-backend-scaffold-dotnet/workflows/init.md) |
+| Đã có Jarvis, thêm module (JWT, EF, Caching, …) | `minipower-backend-scaffold-dotnet` + skill `*-dotnet` | [workflows/add.md](../.opencode/skills/minipower-backend-scaffold-dotnet/workflows/add.md) · [SKILLS.md](../.opencode/skills/minipower-backend-scaffold-dotnet/templates/SKILLS.md) |
+| Chưa có health endpoint Jarvis | `minipower-backend-healthcheck-dotnet` | [workflows/init.md](../.opencode/skills/minipower-backend-healthcheck-dotnet/workflows/init.md) |
+| Đã có `/health/live`, thêm readiness dependency | `minipower-backend-healthcheck-dotnet` | [workflows/add.md](../.opencode/skills/minipower-backend-healthcheck-dotnet/workflows/add.md) + [providers/](../.opencode/skills/minipower-backend-healthcheck-dotnet/providers/) |
+| Chưa có OpenTelemetry Jarvis | `minipower-backend-telemetry-dotnet` | [workflows/init.md](../.opencode/skills/minipower-backend-telemetry-dotnet/workflows/init.md) |
+| Đã có OTEL core, thêm enrich / EF / Redis plug-in | `minipower-backend-telemetry-dotnet` | [workflows/add.md](../.opencode/skills/minipower-backend-telemetry-dotnet/workflows/add.md) + [providers/](../.opencode/skills/minipower-backend-telemetry-dotnet/providers/) |
 | Review diff trước PR | `code-review` | [SKILL.md](../.opencode/skills/code-review/SKILL.md) + [README](../.opencode/skills/code-review/README.md) |
 
 ---
@@ -97,7 +97,7 @@ Trước khi mở PR                        → code-review
 Khuyến nghị **một cú pháp** cho mọi skill — tham chiếu file cụ thể để agent load đúng ngữ cảnh:
 
 ```text
-@.opencode/skills/jarvis-dotnet/workflows/scaffold.md
+@.opencode/skills/minipower-backend-scaffold-dotnet/workflows/scaffold.md
 
 Scaffold solution .NET 9 tên Acme từ folder trống, dùng NuGet feed nội bộ.
 ```
@@ -105,9 +105,9 @@ Scaffold solution .NET 9 tên Acme từ folder trống, dùng NuGet feed nội b
 Hoặc gọi orchestrator:
 
 ```text
-@.opencode/skills/jarvis-dotnet/SKILL.md
+@.opencode/skills/minipower-backend-scaffold-dotnet/SKILL.md
 
-Dùng skill jarvis-dotnet scaffold: Product=Acme, product=acme
+Dùng skill minipower-backend-scaffold-dotnet scaffold: Product=Acme, product=acme
 ```
 
 **Lưu ý:** Trong Cursor, có thể dùng `@` kèm đường dẫn tương đương tới file skill hoặc workflow.
@@ -118,18 +118,18 @@ Dùng skill jarvis-dotnet scaffold: Product=Acme, product=acme
 
 | Mục tiêu | Prompt gợi ý |
 |----------|----------------|
-| **Scaffold** từ folder trống | `Tạo solution backend .NET 9 tên {Product}, theo @.opencode/skills/jarvis-dotnet/workflows/scaffold.md` |
-| **Init** Jarvis vào solution có sẵn | `Cài Jarvis vào solution có sẵn … theo @.opencode/skills/jarvis-dotnet/workflows/init.md` |
-| **Add** module | `Thêm {module} theo @.opencode/skills/{module}-dotnet/workflows/init.md` (xem [SKILLS.md](../.opencode/skills/jarvis-dotnet/templates/SKILLS.md)) |
-| **JWT** | `Thêm JWT theo @.opencode/skills/authentication-dotnet/providers/jwt/SKILL.md` |
-| **Health PostgreSQL** | `Thêm readiness PostgreSQL theo @.opencode/skills/healthcheck-dotnet/providers/postgresql/SKILL.md` |
-| **OpenTelemetry** | `Init Jarvis OpenTelemetry theo @.opencode/skills/telemetry-dotnet/workflows/init.md` |
+| **Scaffold** từ folder trống | `Tạo solution backend .NET 9 tên {Product}, theo @.opencode/skills/minipower-backend-scaffold-dotnet/workflows/scaffold.md` |
+| **Init** Jarvis vào solution có sẵn | `Cài Jarvis vào solution có sẵn … theo @.opencode/skills/minipower-backend-scaffold-dotnet/workflows/init.md` |
+| **Add** module | `Thêm {module} theo @.opencode/skills/{module}-dotnet/workflows/init.md` (xem [SKILLS.md](../.opencode/skills/minipower-backend-scaffold-dotnet/templates/SKILLS.md)) |
+| **JWT** | `Thêm JWT theo @.opencode/skills/minipower-backend-authentication-dotnet/providers/jwt/SKILL.md` |
+| **Health PostgreSQL** | `Thêm readiness PostgreSQL theo @.opencode/skills/minipower-backend-healthcheck-dotnet/providers/postgresql/SKILL.md` |
+| **OpenTelemetry** | `Init Jarvis OpenTelemetry theo @.opencode/skills/minipower-backend-telemetry-dotnet/workflows/init.md` |
 | **Review PR** | `Review PR theo @.opencode/skills/code-review/SKILL.md, base: main` |
 
 ### Prompt scaffold «đủ thông tin»
 
 ```text
-@.opencode/skills/jarvis-dotnet/workflows/scaffold.md
+@.opencode/skills/minipower-backend-scaffold-dotnet/workflows/scaffold.md
 
 Scaffold backend .NET 9:
 - Product: Acme (PascalCase)
@@ -159,27 +159,27 @@ Review PR theo code-review; solution theo Jarvis layered architecture
 
 | Skill | Nên nêu trong prompt |
 |-------|----------------------|
-| **jarvis-dotnet** (scaffold) | `{Product}` PascalCase, `{product}` kebab, `{JarvisRoot}` monorepo **hoặc** NuGet feed |
-| **jarvis-dotnet** (init/add) | Tên solution, project Host, module cần thêm |
-| **healthcheck-dotnet** | Provider (PostgreSQL, Redis, …), config path (`ConnectionStrings:MainDb`), không hardcode secret |
-| **telemetry-dotnet** | OTLP endpoint (env), có/không enrich, plug-in EF/Redis, sampling |
+| **minipower-backend-scaffold-dotnet** (scaffold) | `{Product}` PascalCase, `{product}` kebab, `{JarvisRoot}` monorepo **hoặc** NuGet feed |
+| **minipower-backend-scaffold-dotnet** (init/add) | Tên solution, project Host, module cần thêm |
+| **minipower-backend-healthcheck-dotnet** | Provider (PostgreSQL, Redis, …), config path (`ConnectionStrings:MainDb`), không hardcode secret |
+| **minipower-backend-telemetry-dotnet** | OTLP endpoint (env), có/không enrich, plug-in EF/Redis, sampling |
 | **code-review** | Base branch (`main`, `develop`), hoặc danh sách file; commit/stage trước khi review |
 
 ---
 
 ## Hướng dẫn từng skill
 
-### jarvis-dotnet
+### minipower-backend-scaffold-dotnet
 
 **Orchestrator chính** — scaffold solution phân lớp + cài Jarvis trên ASP.NET Core .NET 9.
 
-**Hướng dẫn:** [jarvis-dotnet/README.md](../.opencode/skills/jarvis-dotnet/README.md) · EF: [entityframework-dotnet](../.opencode/skills/entityframework-dotnet/README.md) · Cache: [caching-dotnet](../.opencode/skills/caching-dotnet/README.md) · Hub: [.opencode/README.md](../.opencode/README.md)
+**Hướng dẫn:** [minipower-backend-scaffold-dotnet/README.md](../.opencode/skills/minipower-backend-scaffold-dotnet/README.md) · EF: [minipower-backend-entityframework-dotnet](../.opencode/skills/minipower-backend-entityframework-dotnet/README.md) · Cache: [minipower-backend-caching-dotnet](../.opencode/skills/minipower-backend-caching-dotnet/README.md) · Hub: [.opencode/README.md](../.opencode/README.md)
 
 | Luồng | Workflow | Khi nào |
 |-------|----------|---------|
-| Scaffold | [workflows/scaffold.md](../.opencode/skills/jarvis-dotnet/workflows/scaffold.md) | Folder trống → solution 5 project + test |
-| Init | [workflows/init.md](../.opencode/skills/jarvis-dotnet/workflows/init.md) | Solution có sẵn, gắn Jarvis theo layer |
-| Add | [workflows/add.md](../.opencode/skills/jarvis-dotnet/workflows/add.md) | Đã có foundation, thêm module |
+| Scaffold | [workflows/scaffold.md](../.opencode/skills/minipower-backend-scaffold-dotnet/workflows/scaffold.md) | Folder trống → solution 5 project + test |
+| Init | [workflows/init.md](../.opencode/skills/minipower-backend-scaffold-dotnet/workflows/init.md) | Solution có sẵn, gắn Jarvis theo layer |
+| Add | [workflows/add.md](../.opencode/skills/minipower-backend-scaffold-dotnet/workflows/add.md) | Đã có foundation, thêm module |
 
 **Cấu trúc solution chuẩn:**
 
@@ -200,16 +200,16 @@ Review PR theo code-review; solution theo Jarvis layered architecture
 
 | Module | Skill |
 |--------|-------|
-| Foundation | [foundation-dotnet](../.opencode/skills/foundation-dotnet/README.md) |
-| Application (CQRS) | [application-dotnet](../.opencode/skills/application-dotnet/README.md) |
-| Entity Framework | [entityframework-dotnet](../.opencode/skills/entityframework-dotnet/README.md) |
-| Caching | [caching-dotnet](../.opencode/skills/caching-dotnet/README.md) |
-| Authentication | [authentication-dotnet](../.opencode/skills/authentication-dotnet/README.md) |
-| Blob storing | [blobstoring-dotnet](../.opencode/skills/blobstoring-dotnet/README.md) |
-| Notification | [notification-dotnet](../.opencode/skills/notification-dotnet/README.md) |
-| Swashbuckle | [swashbuckle-dotnet](../.opencode/skills/swashbuckle-dotnet/README.md) |
-| OpenTelemetry | [telemetry-dotnet](../.opencode/skills/telemetry-dotnet/README.md) |
-| Health checks | [healthcheck-dotnet](../.opencode/skills/healthcheck-dotnet/README.md) |
+| Foundation | [minipower-backend-foundation-dotnet](../.opencode/skills/minipower-backend-foundation-dotnet/README.md) |
+| Application (CQRS) | [minipower-backend-application-dotnet](../.opencode/skills/minipower-backend-application-dotnet/README.md) |
+| Entity Framework | [minipower-backend-entityframework-dotnet](../.opencode/skills/minipower-backend-entityframework-dotnet/README.md) |
+| Caching | [minipower-backend-caching-dotnet](../.opencode/skills/minipower-backend-caching-dotnet/README.md) |
+| Authentication | [minipower-backend-authentication-dotnet](../.opencode/skills/minipower-backend-authentication-dotnet/README.md) |
+| Blob storing | [minipower-backend-blobstoring-dotnet](../.opencode/skills/minipower-backend-blobstoring-dotnet/README.md) |
+| Notification | [minipower-backend-notification-dotnet](../.opencode/skills/minipower-backend-notification-dotnet/README.md) |
+| Swashbuckle | [minipower-backend-swashbuckle-dotnet](../.opencode/skills/minipower-backend-swashbuckle-dotnet/README.md) |
+| OpenTelemetry | [minipower-backend-telemetry-dotnet](../.opencode/skills/minipower-backend-telemetry-dotnet/README.md) |
+| Health checks | [minipower-backend-healthcheck-dotnet](../.opencode/skills/minipower-backend-healthcheck-dotnet/README.md) |
 
 **Hai cách cài Jarvis:**
 
@@ -234,14 +234,14 @@ Review PR theo code-review; solution theo Jarvis layered architecture
 
 ---
 
-### healthcheck-dotnet
+### minipower-backend-healthcheck-dotnet
 
 Skill chuyên **`Jarvis.HealthChecks`** — liveness, startup, readiness.
 
 | Tình huống | Workflow |
 |------------|----------|
-| Project chưa có healthcheck | [workflows/init.md](../.opencode/skills/healthcheck-dotnet/workflows/init.md) |
-| Đã có core, thêm dependency | [workflows/add.md](../.opencode/skills/healthcheck-dotnet/workflows/add.md) |
+| Project chưa có healthcheck | [workflows/init.md](../.opencode/skills/minipower-backend-healthcheck-dotnet/workflows/init.md) |
+| Đã có core, thêm dependency | [workflows/add.md](../.opencode/skills/minipower-backend-healthcheck-dotnet/workflows/add.md) |
 
 **Quy tắc cốt lõi:**
 
@@ -265,21 +265,21 @@ Skill chuyên **`Jarvis.HealthChecks`** — liveness, startup, readiness.
 
 | Provider | SKILL |
 |----------|-------|
-| PostgreSQL | [providers/postgresql/SKILL.md](../.opencode/skills/healthcheck-dotnet/providers/postgresql/SKILL.md) |
-| MySQL | [providers/mysql/SKILL.md](../.opencode/skills/healthcheck-dotnet/providers/mysql/SKILL.md) |
-| SQL Server | [providers/mssql/SKILL.md](../.opencode/skills/healthcheck-dotnet/providers/mssql/SKILL.md) |
-| Oracle | [providers/oracle/SKILL.md](../.opencode/skills/healthcheck-dotnet/providers/oracle/SKILL.md) |
-| Redis | [providers/redis/SKILL.md](../.opencode/skills/healthcheck-dotnet/providers/redis/SKILL.md) |
-| Kafka | [providers/kafka/SKILL.md](../.opencode/skills/healthcheck-dotnet/providers/kafka/SKILL.md) |
-| RabbitMQ | [providers/rabbitmq/SKILL.md](../.opencode/skills/healthcheck-dotnet/providers/rabbitmq/SKILL.md) |
-| MinIO | [providers/minio/SKILL.md](../.opencode/skills/healthcheck-dotnet/providers/minio/SKILL.md) |
-| HTTP | [providers/http/SKILL.md](../.opencode/skills/healthcheck-dotnet/providers/http/SKILL.md) |
-| SignalR | [providers/signalr/SKILL.md](../.opencode/skills/healthcheck-dotnet/providers/signalr/SKILL.md) |
+| PostgreSQL | [providers/postgresql/SKILL.md](../.opencode/skills/minipower-backend-healthcheck-dotnet/providers/postgresql/SKILL.md) |
+| MySQL | [providers/mysql/SKILL.md](../.opencode/skills/minipower-backend-healthcheck-dotnet/providers/mysql/SKILL.md) |
+| SQL Server | [providers/mssql/SKILL.md](../.opencode/skills/minipower-backend-healthcheck-dotnet/providers/mssql/SKILL.md) |
+| Oracle | [providers/oracle/SKILL.md](../.opencode/skills/minipower-backend-healthcheck-dotnet/providers/oracle/SKILL.md) |
+| Redis | [providers/redis/SKILL.md](../.opencode/skills/minipower-backend-healthcheck-dotnet/providers/redis/SKILL.md) |
+| Kafka | [providers/kafka/SKILL.md](../.opencode/skills/minipower-backend-healthcheck-dotnet/providers/kafka/SKILL.md) |
+| RabbitMQ | [providers/rabbitmq/SKILL.md](../.opencode/skills/minipower-backend-healthcheck-dotnet/providers/rabbitmq/SKILL.md) |
+| MinIO | [providers/minio/SKILL.md](../.opencode/skills/minipower-backend-healthcheck-dotnet/providers/minio/SKILL.md) |
+| HTTP | [providers/http/SKILL.md](../.opencode/skills/minipower-backend-healthcheck-dotnet/providers/http/SKILL.md) |
+| SignalR | [providers/signalr/SKILL.md](../.opencode/skills/minipower-backend-healthcheck-dotnet/providers/signalr/SKILL.md) |
 
 **Prompt mẫu:**
 
 ```text
-@.opencode/skills/healthcheck-dotnet/workflows/add.md
+@.opencode/skills/minipower-backend-healthcheck-dotnet/workflows/add.md
 
 Thêm readiness PostgreSQL cho project MyApp.Host.
 Connection string: ConnectionStrings:MainDb trong appsettings.
@@ -287,14 +287,14 @@ Connection string: ConnectionStrings:MainDb trong appsettings.
 
 ---
 
-### telemetry-dotnet
+### minipower-backend-telemetry-dotnet
 
 Skill chuyên **`Jarvis.OpenTelemetry`** — trace, metric, log OTLP.
 
 | Tình huống | Workflow |
 |------------|----------|
-| Project chưa có Jarvis OTEL | [workflows/init.md](../.opencode/skills/telemetry-dotnet/workflows/init.md) |
-| Đã có core, thêm instrumentation | [workflows/add.md](../.opencode/skills/telemetry-dotnet/workflows/add.md) |
+| Project chưa có Jarvis OTEL | [workflows/init.md](../.opencode/skills/minipower-backend-telemetry-dotnet/workflows/init.md) |
+| Đã có core, thêm instrumentation | [workflows/add.md](../.opencode/skills/minipower-backend-telemetry-dotnet/workflows/add.md) |
 
 **Quy tắc cốt lõi:**
 
@@ -310,12 +310,12 @@ Skill chuyên **`Jarvis.OpenTelemetry`** — trace, metric, log OTLP.
 
 | Provider | SKILL |
 |----------|-------|
-| Enrich trace/log | [providers/enrich/SKILL.md](../.opencode/skills/telemetry-dotnet/providers/enrich/SKILL.md) |
-| Redis trace | [providers/redis/SKILL.md](../.opencode/skills/telemetry-dotnet/providers/redis/SKILL.md) |
-| EF Core trace | [providers/entityframework/SKILL.md](../.opencode/skills/telemetry-dotnet/providers/entityframework/SKILL.md) |
-| Custom trace plug-in | [providers/trace-plugin/SKILL.md](../.opencode/skills/telemetry-dotnet/providers/trace-plugin/SKILL.md) |
-| Custom metric plug-in | [providers/metric-plugin/SKILL.md](../.opencode/skills/telemetry-dotnet/providers/metric-plugin/SKILL.md) |
-| Custom log exporter | [providers/logging-plugin/SKILL.md](../.opencode/skills/telemetry-dotnet/providers/logging-plugin/SKILL.md) |
+| Enrich trace/log | [providers/enrich/SKILL.md](../.opencode/skills/minipower-backend-telemetry-dotnet/providers/enrich/SKILL.md) |
+| Redis trace | [providers/redis/SKILL.md](../.opencode/skills/minipower-backend-telemetry-dotnet/providers/redis/SKILL.md) |
+| EF Core trace | [providers/entityframework/SKILL.md](../.opencode/skills/minipower-backend-telemetry-dotnet/providers/entityframework/SKILL.md) |
+| Custom trace plug-in | [providers/trace-plugin/SKILL.md](../.opencode/skills/minipower-backend-telemetry-dotnet/providers/trace-plugin/SKILL.md) |
+| Custom metric plug-in | [providers/metric-plugin/SKILL.md](../.opencode/skills/minipower-backend-telemetry-dotnet/providers/metric-plugin/SKILL.md) |
+| Custom log exporter | [providers/logging-plugin/SKILL.md](../.opencode/skills/minipower-backend-telemetry-dotnet/providers/logging-plugin/SKILL.md) |
 
 **Biến môi trường OTLP (tham chiếu):**
 
@@ -338,7 +338,7 @@ Skill chuyên **`Jarvis.OpenTelemetry`** — trace, metric, log OTLP.
 **Prompt mẫu:**
 
 ```text
-@.opencode/skills/telemetry-dotnet/workflows/init.md
+@.opencode/skills/minipower-backend-telemetry-dotnet/workflows/init.md
 
 Init Jarvis OpenTelemetry cho MyApp.Host.
 OTLP endpoint qua biến môi trường, không commit secret.
@@ -395,18 +395,18 @@ Base branch: main
 
 1. Link tới **file này:** *«Chi tiết skill AI: [docs/tutorial-index.md](tutorial-index.md)»*
 2. Mỗi «Cách» trỏ workflow:
-   - Cách 1 (Scaffold) → `jarvis-dotnet/workflows/scaffold.md`
-   - Cách 2 (Add) → `jarvis-dotnet/workflows/add.md`
-   - Cách 3 (Init) → `jarvis-dotnet/workflows/init.md`
+   - Cách 1 (Scaffold) → `minipower-backend-scaffold-dotnet/workflows/scaffold.md`
+   - Cách 2 (Add) → `minipower-backend-scaffold-dotnet/workflows/add.md`
+   - Cách 3 (Init) → `minipower-backend-scaffold-dotnet/workflows/init.md`
 3. Giữ prompt tiếng Việt tự nhiên, kèm `@.opencode/skills/...` để agent load đúng file
 
 **Bốn cách bắt đầu (tóm tắt từ README):**
 
 | Cách | Mô tả | Skill / workflow |
 |------|--------|------------------|
-| **1 — Scaffold** (khuyến khích) | Folder trống → solution + Jarvis → F5 Swagger | `jarvis-dotnet` / scaffold |
-| **2 — Add** | Đã có foundation, thêm module | `jarvis-dotnet` / add + modules |
-| **3 — Init** | Solution .NET có sẵn, cài Jarvis | `jarvis-dotnet` / init |
+| **1 — Scaffold** (khuyến khích) | Folder trống → solution + Jarvis → F5 Swagger | `minipower-backend-scaffold-dotnet` / scaffold |
+| **2 — Add** | Đã có foundation, thêm module | `minipower-backend-scaffold-dotnet` / add + modules |
+| **3 — Init** | Solution .NET có sẵn, cài Jarvis | `minipower-backend-scaffold-dotnet` / init |
 | **4 — Manual** | `dotnet new`, `dotnet add package` tay | Không cần skill |
 
 ---
@@ -416,9 +416,9 @@ Base branch: main
 | Câu hỏi | Trả lời ở |
 |---------|-----------|
 | Jarvis là gì, 5 layer, module nào? | [README.md](../README.md) |
-| Tôi muốn tạo project mới bằng AI? | **docs/tutorial-index.md** + `jarvis-dotnet` workflows |
-| Thêm PostgreSQL vào `/health/ready`? | `healthcheck-dotnet` providers |
-| Bật OTLP / enrich trace? | `telemetry-dotnet` workflows |
+| Tôi muốn tạo project mới bằng AI? | **docs/tutorial-index.md** + `minipower-backend-scaffold-dotnet` workflows |
+| Thêm PostgreSQL vào `/health/ready`? | `minipower-backend-healthcheck-dotnet` providers |
+| Bật OTLP / enrich trace? | `minipower-backend-telemetry-dotnet` workflows |
 | Review PR trước merge? | `code-review` README |
 
 ---
@@ -438,8 +438,8 @@ Khi bổ sung `README.md` trong từng thư mục skill, dùng **cùng khung** n
 ### Thứ tự triển khai tài liệu (đội nội bộ)
 
 1. **docs/tutorial-index.md** (file này) — hub + decision tree + bảng prompt
-2. **`.opencode/skills/jarvis-dotnet/README.md`** — skill dùng nhiều nhất
-3. **`healthcheck-dotnet/README.md`** + **`telemetry-dotnet/README.md`**
+2. **`.opencode/skills/minipower-backend-scaffold-dotnet/README.md`** — skill dùng nhiều nhất
+3. **`minipower-backend-healthcheck-dotnet/README.md`** + **`minipower-backend-telemetry-dotnet/README.md`**
 4. **Cập nhật README.md gốc** — đoạn link + workflow
 5. (Tuỳ chọn) **`docs/ai-workflows.md`** hoặc CONTRIBUTING nếu team lớn
 
@@ -459,8 +459,8 @@ Khi bổ sung `README.md` trong từng thư mục skill, dùng **cùng khung** n
 | Tài liệu | Path |
 |----------|------|
 | Framework overview | [README.md](../README.md) |
-| Jarvis orchestrator | [.opencode/skills/jarvis-dotnet/SKILL.md](../.opencode/skills/jarvis-dotnet/SKILL.md) |
-| Solution structure reference | [.opencode/skills/jarvis-dotnet/reference/solution-structure.md](../.opencode/skills/jarvis-dotnet/reference/solution-structure.md) |
+| Jarvis orchestrator | [.opencode/skills/minipower-backend-scaffold-dotnet/SKILL.md](../.opencode/skills/minipower-backend-scaffold-dotnet/SKILL.md) |
+| Solution structure reference | [.opencode/skills/minipower-backend-scaffold-dotnet/reference/solution-structure.md](../.opencode/skills/minipower-backend-scaffold-dotnet/reference/solution-structure.md) |
 | Code review (chuẩn README) | [.opencode/skills/code-review/README.md](../.opencode/skills/code-review/README.md) |
-| Health checks | [.opencode/skills/healthcheck-dotnet/SKILL.md](../.opencode/skills/healthcheck-dotnet/SKILL.md) |
-| OpenTelemetry | [.opencode/skills/telemetry-dotnet/SKILL.md](../.opencode/skills/telemetry-dotnet/SKILL.md) |
+| Health checks | [.opencode/skills/minipower-backend-healthcheck-dotnet/SKILL.md](../.opencode/skills/minipower-backend-healthcheck-dotnet/SKILL.md) |
+| OpenTelemetry | [.opencode/skills/minipower-backend-telemetry-dotnet/SKILL.md](../.opencode/skills/minipower-backend-telemetry-dotnet/SKILL.md) |

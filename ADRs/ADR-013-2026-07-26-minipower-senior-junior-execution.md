@@ -63,7 +63,7 @@ Mỗi lần Senior dispatch Junior phải kèm gói đủ 7 trường; thiếu t
 |---|--------|---------------------------|
 | 1 | **Lý do** (vì sao có việc này) | Trace về FR/UC/DEC cổng trước |
 | 2 | **Nội dung yêu cầu** | Slice công việc (1 module/1 artifact — *một owner*) |
-| 3 | **Phạm vi** (in/out) | Bounded context theo [parallel-work](../minipower/docs/parallel-work.md) |
+| 3 | **Phạm vi** (in/out) | Bounded context theo [parallel-work](../sdlc/docs/parallel-work.md) |
 | 4 | **Test case cần thực hiện** | **Bộ acceptance test Senior sở hữu** (xem §3.2) |
 | 5 | **Kế hoạch thực thi chi tiết** | Các bước Junior phải theo |
 | 6 | **Bộ tiêu chí đáp ứng** | Definition of Done + rubric chấm của Senior |
@@ -99,7 +99,7 @@ flowchart TB
   classDef stop fill:#fecaca,stroke:#b91c1c,color:#111
 ```
 
-- Senior QC = tái dùng [doc-review](../minipower/skills/doc-review/SKILL.md) (5 chiều, verdict PASS/BLOCK) + **chạy bộ acceptance test** §3.2.
+- Senior QC = tái dùng [doc-review](../sdlc/skills/doc-review/SKILL.md) (5 chiều, verdict PASS/BLOCK) + **chạy bộ acceptance test** §3.2.
 - **Bound = 3.** Hết 3 lần vẫn BLOCK → **dừng**, không lặp vô hạn; ghi nợ vào `memory/{phase}/open-questions.md` để người xử.
 - **PASS của Senior ≠ nghiệm thu.** PASS chỉ đưa artifact tới **cổng người** — người mới nghiệm thu cuối.
 
@@ -109,12 +109,12 @@ flowchart TB
 
 | Thành phần | Neo về | Trạng thái |
 |---|---|---|
-| Senior/Junior persona | [`roles/`](../minipower/roles/) (DEV/BA/SA/QC/PM/DevOps/Support) — thêm tầng senior/junior | Mở rộng |
-| Fan-out điều phối | QĐ-2 gated-fanout + [skill fan-out](../minipower/skills/fan-out/SKILL.md) | Mở rộng |
-| Senior QC loop | [doc-review](../minipower/skills/doc-review/SKILL.md) (PASS/BLOCK, context sạch) | Tái dùng |
-| Hợp đồng 7 trường | [readiness-gate](../minipower/skills/readiness-gate/SKILL.md) (hỏi trọn gói) + template mới | Mới (template) |
-| Cổng nghiệm thu người | `approval_gates` trong [rules.json](../minipower/hooks/lib/rules.json) | Tái dùng |
-| Chặn đốt token (junior free × 3) | [token-guard](../minipower/docs/token-guard.md) | Tái dùng |
+| Senior/Junior persona | [`roles/`](../sdlc/roles/) (DEV/BA/SA/QC/PM/DevOps/Support) — thêm tầng senior/junior | Mở rộng |
+| Fan-out điều phối | QĐ-2 gated-fanout + [skill fan-out](../sdlc/skills/fan-out/SKILL.md) | Mở rộng |
+| Senior QC loop | [doc-review](../sdlc/skills/doc-review/SKILL.md) (PASS/BLOCK, context sạch) | Tái dùng |
+| Hợp đồng 7 trường | [readiness-gate](../sdlc/skills/readiness-gate/SKILL.md) (hỏi trọn gói) + template mới | Mới (template) |
+| Cổng nghiệm thu người | `approval_gates` trong [rules.json](../sdlc/hooks/lib/rules.json) | Tái dùng |
+| Chặn đốt token (junior free × 3) | [token-guard](../sdlc/docs/token-guard.md) | Tái dùng |
 | "Agent nào có skill nào / tầng nào" | khai trong `rules.json` → `npm run gen` (rules-as-data) | Mới (dữ liệu) |
 
 ---
@@ -212,5 +212,5 @@ flowchart TB
 - [gated-fanout §0/QĐ-2/§4](ADR-003-2026-07-20-minipower-gated-fanout-execution.md) — §0 hiện hành, fan-out giữa hai cổng, lộ trình A→E
 - [checkpoint tạm dừng E](ADR-010-2026-07-25-tam-dung-gated-fanout-checkpoint.md) — lý do treo Giai đoạn D/E
 - [orchestrator-analysis](ADR-009-2026-07-25-minipower-orchestrator-analysis.md) — Trục A "role skill-pack", phân loại L1/L2/L3
-- [doc-review](../minipower/skills/doc-review/SKILL.md) · [readiness-gate](../minipower/skills/readiness-gate/SKILL.md) · [fan-out](../minipower/skills/fan-out/SKILL.md) · [token-guard](../minipower/docs/token-guard.md) · [parallel-work](../minipower/docs/parallel-work.md)
-- [roles/DEV.md](../minipower/roles/DEV.md) — lăng kính DEV, "chỉ bắt đầu khi tài liệu đủ rõ"
+- [doc-review](../sdlc/skills/doc-review/SKILL.md) · [readiness-gate](../sdlc/skills/readiness-gate/SKILL.md) · [fan-out](../sdlc/skills/fan-out/SKILL.md) · [token-guard](../sdlc/docs/token-guard.md) · [parallel-work](../sdlc/docs/parallel-work.md)
+- [roles/DEV.md](../sdlc/roles/DEV.md) — lăng kính DEV, "chỉ bắt đầu khi tài liệu đủ rõ"

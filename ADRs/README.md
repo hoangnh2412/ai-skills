@@ -49,4 +49,4 @@ File này **viết tay** — không phải vùng generated.
 - **Tham chiếu chéo:** trong ADR và trong hội thoại, gọi bằng mã (`ADR-014`) thay vì tên file.
 - Mã `ADR-NNN` ở đây là **quyết định định hướng của repo `ai-skills`**; đừng nhầm với `ADR-NNN` trong `docs/` của **dự án đích** (hai không gian tên tách biệt).
 - **Không** chép nội dung ADR vào đây — chi tiết quyết định, trade-off và mục **Ảnh hưởng** nằm trong từng ADR.
-- Liên quan: [AGENTS.md](../AGENTS.md) (quy ước ADR) · [COORDINATION.md](../contracts/README.md) (handoff H1–H6) · [minipower/SKILL.md](../minipower/SKILL.md) (router).
+- Liên quan: [AGENTS.md](../AGENTS.md) (quy ước ADR) · [COORDINATION.md](../contracts/README.md) (handoff H1–H6) · [minipower/SKILL.md](../sdlc/SKILL.md) (router).

@@ -6,7 +6,7 @@
 | **Trạng thái** | ✅ N1–N6 đã triển khai (2026-07-20, branch `feature/minipower-rules-as-data`) · Q6/Q7 chốt (§6). Test 202 pass, `gen --check` xanh. Nối tiếp [ADR 2026-07-17](ADR-001-2026-07-17-danh-gia-minipower-va-chien-luoc-phat-trien.md) (P0–P4, R1–R6) |
 | **Phạm vi** | `minipower/` — lớp Thinking / Workflow / Roles / Memory |
 | **Mục đích** | Chốt triết lý sản phẩm và liệt kê việc cần làm cho giai đoạn kế |
-| **Ảnh hưởng** | [AGENTS.md](../AGENTS.md) — mục "Triết lý bất biến" (§0) và quy ước khai trigger cho router (Q6) · [minipower/skills/readiness-gate/SKILL.md](../minipower/skills/readiness-gate/SKILL.md) — nguyên tắc "chỉ thực thi khi tài liệu đủ rõ" + auto-routing (Q6). **Lưu ý:** §0 đã bị [gated-fanout](ADR-003-2026-07-20-minipower-gated-fanout-execution.md) supersede. |
+| **Ảnh hưởng** | [AGENTS.md](../AGENTS.md) — mục "Triết lý bất biến" (§0) và quy ước khai trigger cho router (Q6) · [minipower/skills/readiness-gate/SKILL.md](../sdlc/skills/readiness-gate/SKILL.md) — nguyên tắc "chỉ thực thi khi tài liệu đủ rõ" + auto-routing (Q6). **Lưu ý:** §0 đã bị [gated-fanout](ADR-003-2026-07-20-minipower-gated-fanout-execution.md) supersede. |
 
 ---
 
@@ -100,12 +100,12 @@ Khi tài liệu đã đủ, AI tự nạp chuỗi ngữ cảnh trước khi đ�
 
 | # | Việc | Deliverable | Trạng thái |
 |---|------|-------------|-----------|
-| **N1** | Readiness Gate (§3.1) | `prereq_by_intent` trong [rules.json](../minipower/hooks/lib/rules.json) + skill [readiness-gate/SKILL.md](../minipower/skills/readiness-gate/SKILL.md) (hỏi trọn gói, hoãn-ghi-nợ, sổ `open-questions.md`) + wire router. Bảng tiền đề sinh qua `npm run gen`. | ✅ |
-| **N2** | Project State Awareness (§3.2) | `phase_meta` (state+role) trong rules.json + [agents/project-state.md](../minipower/agents/project-state.md) (bảng generated) + auto-routing nhét `State:/Role:` vào context enrich; test golden. | ✅ |
-| **N3** | Roles as lenses (§3.3) | [roles/](../minipower/roles/) — 7 file (BA, PM, SA, DEV, QC, DevOps, Support): Goal · Deliverables · Checklist · Câu hỏi cần hỏi; index sinh từ `roles` trong rules.json. | ✅ |
-| **N4** | Context-aware auto-load (§3.4) | `context_chain` trong rules.json + [agents/context-load.md](../minipower/agents/context-load.md) (bảng generated); readiness-gate → context-load sau khi đủ tiền đề. | ✅ |
-| **N5** | Templates mở rộng (§3.5) | [templates/](../minipower/templates/) — TPL RFC / Meeting Minutes / Incident / Postmortem (ADR đã là DOC-09); README có mục "Template phụ trợ". | ✅ |
-| **N6** | Memory linking (§3.5) | Trường `Affects:` (hệ thống/task/release) vào schema [decision-log](../minipower/docs/decision-log.md) + 6 skeleton; recall "vì sao X đổi" lần ngược `Affects`. | ✅ |
+| **N1** | Readiness Gate (§3.1) | `prereq_by_intent` trong [rules.json](../sdlc/hooks/lib/rules.json) + skill [readiness-gate/SKILL.md](../sdlc/skills/readiness-gate/SKILL.md) (hỏi trọn gói, hoãn-ghi-nợ, sổ `open-questions.md`) + wire router. Bảng tiền đề sinh qua `npm run gen`. | ✅ |
+| **N2** | Project State Awareness (§3.2) | `phase_meta` (state+role) trong rules.json + [agents/project-state.md](../sdlc/agents/project-state.md) (bảng generated) + auto-routing nhét `State:/Role:` vào context enrich; test golden. | ✅ |
+| **N3** | Roles as lenses (§3.3) | [roles/](../sdlc/roles/) — 7 file (BA, PM, SA, DEV, QC, DevOps, Support): Goal · Deliverables · Checklist · Câu hỏi cần hỏi; index sinh từ `roles` trong rules.json. | ✅ |
+| **N4** | Context-aware auto-load (§3.4) | `context_chain` trong rules.json + [agents/context-load.md](../sdlc/agents/context-load.md) (bảng generated); readiness-gate → context-load sau khi đủ tiền đề. | ✅ |
+| **N5** | Templates mở rộng (§3.5) | [templates/](../sdlc/templates/) — TPL RFC / Meeting Minutes / Incident / Postmortem (ADR đã là DOC-09); README có mục "Template phụ trợ". | ✅ |
+| **N6** | Memory linking (§3.5) | Trường `Affects:` (hệ thống/task/release) vào schema [decision-log](../sdlc/docs/decision-log.md) + 6 skeleton; recall "vì sao X đổi" lần ngược `Affects`. | ✅ |
 
 **Xác minh:** 202 test pass (`node --test`, gồm golden rules/auto-routing mới), `npm run gen:check` xanh — mọi bảng doc đồng bộ rules.json. Yêu cầu node ≥18 (`--test` + `||=`).
 

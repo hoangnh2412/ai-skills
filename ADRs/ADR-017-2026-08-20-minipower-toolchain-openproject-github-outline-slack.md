@@ -7,7 +7,7 @@
 | **Phạm vi** | Định vị toàn `minipower/` — mở rộng phục vụ **7 vai** (PM · BA · SA · DEV · DevOps · QC · Operation) và chốt **bộ 4 công cụ** làm mặt tích hợp duy nhất. Chạm §0 (ranh giới side-effect) |
 | **Nối tiếp** | [ADR-014](ADR-014-2026-07-28-minipower-spine-tong-hop-wrap-not-build.md) §5.2 (wrap-not-build) · **thay** [ADR-009](ADR-009-2026-07-25-minipower-orchestrator-analysis.md) (cancel) · **thay** [ADR-015](ADR-015-2026-07-29-minipower-phe-duyet-jira-lark-publish-outline.md) (cancel → [ADR-018](ADR-018-2026-08-20-minipower-phe-duyet-openproject-publish-outline.md)) |
 | **Mục đích** | Chốt: Minipower phục vụ **mọi vai trong SDLC**, và **mọi tương tác ra hệ ngoài đi qua đúng 4 công cụ** — thay cho cụm Jira/Lark/Calendar/Zoom bàn rải rác ở các ADR trước |
-| **Ảnh hưởng** | [AGENTS.md](../AGENTS.md) §0 (bổ sung mặt tích hợp) · [ADR-003](ADR-003-2026-07-20-minipower-gated-fanout-execution.md) GĐ-C/D/E (đổi đích tích hợp) · [minipower/agents/lark-work-assistant.md](../minipower/agents/lark-work-assistant.md) (thành legacy — xem §3.3) · [minipower/SKILL.md](../minipower/SKILL.md) bảng trigger · `rules.json` (khai vai + công cụ, khi có ADR con) |
+| **Ảnh hưởng** | [AGENTS.md](../AGENTS.md) §0 (bổ sung mặt tích hợp) · [ADR-003](ADR-003-2026-07-20-minipower-gated-fanout-execution.md) GĐ-C/D/E (đổi đích tích hợp) · [minipower/agents/lark-work-assistant.md](../sdlc/agents/lark-work-assistant.md) (thành legacy — xem §3.3) · [minipower/SKILL.md](../sdlc/SKILL.md) bảng trigger · `rules.json` (khai vai + công cụ, khi có ADR con) |
 
 ---
 
@@ -76,7 +76,7 @@ Mức L1/L2/L3 kế thừa từ ADR-009 §4 (phần còn giá trị của ADR đ
 
 ### 3.3. Artifact thành legacy
 
-[minipower/agents/lark-work-assistant.md](../minipower/agents/lark-work-assistant.md) (257 dòng, wrap `user-lark-mcp`, đang wire ở bảng trigger router) **mất căn cứ** theo QĐ-3. Chưa xoá — cần người quyết (§6 Q4). Trong lúc chờ, file vẫn chạy được và **không** vi phạm §0 (nó đã theo luật đọc-tự-do/ghi-qua-cổng).
+[minipower/agents/lark-work-assistant.md](../sdlc/agents/lark-work-assistant.md) (257 dòng, wrap `user-lark-mcp`, đang wire ở bảng trigger router) **mất căn cứ** theo QĐ-3. Chưa xoá — cần người quyết (§6 Q4). Trong lúc chờ, file vẫn chạy được và **không** vi phạm §0 (nó đã theo luật đọc-tự-do/ghi-qua-cổng).
 
 ---
 
@@ -110,7 +110,7 @@ Mức L1/L2/L3 kế thừa từ ADR-009 §4 (phần còn giá trị của ADR đ
 | **Q1** | Thứ tự mở 7 vai — đồng loạt hay theo wedge? | **Theo wedge** (R1): BA/SA → PM → DEV → QC → DevOps → Operation |
 | **Q2** | OpenProject: dùng **work package hierarchy** sẵn có hay định nghĩa Epic/Story/Task riêng? | Dùng hierarchy sẵn có, map `{MOD}-FR` vào custom field — không phát minh schema |
 | **Q3** | Github: minipower **cùng repo** với code sản phẩm hay repo docs tách riêng? | Tách repo docs, nối bằng pin + back-reference ([COORDINATION.md](../contracts/README.md) §4) |
-| **Q4** | [lark-work-assistant.md](../minipower/agents/lark-work-assistant.md): xoá, hay giữ như adapter ngoài lộ trình? | **Gỡ khỏi bảng trigger router**, giữ file làm tham chiếu cho tới khi có bản OpenProject/Slack tương đương |
+| **Q4** | [lark-work-assistant.md](../sdlc/agents/lark-work-assistant.md): xoá, hay giữ như adapter ngoài lộ trình? | **Gỡ khỏi bảng trigger router**, giữ file làm tham chiếu cho tới khi có bản OpenProject/Slack tương đương |
 | **Q5** | Slack: chỉ **thông báo một chiều**, hay nhận cả lệnh từ Slack? | Một chiều trước (thông báo + nhắc); nhận lệnh = bề mặt mới, để sau |
 | **Q6** | MCP nào cho từng công cụ — server chính thức hay cộng đồng? Chiến lược suy giảm khi MCP chết? | Ưu tiên server chính thức; thiếu tool → báo thẳng + workaround thủ công, **không** giả lập đã ghi |
 
@@ -134,4 +134,4 @@ Mức L1/L2/L3 kế thừa từ ADR-009 §4 (phần còn giá trị của ADR đ
 - [ADR-003](ADR-003-2026-07-20-minipower-gated-fanout-execution.md) — gated fan-out, lộ trình A→E bị sửa đích ở §3.2
 - [ADR-009](ADR-009-2026-07-25-minipower-orchestrator-analysis.md) (cancel) — nguồn của phân loại L1/L2/L3
 - [COORDINATION.md](../contracts/README.md) — handoff H1–H6, cross-repo bridge
-- [minipower/docs/parallel-work.md](../minipower/docs/parallel-work.md) — một-owner-một-module khi fan-out
+- [minipower/docs/parallel-work.md](../sdlc/docs/parallel-work.md) — một-owner-một-module khi fan-out

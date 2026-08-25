@@ -135,7 +135,7 @@ Ba mức, tăng dần độ "chạm thế giới thật":
 
 Nguyên tắc bất biến khi reshape:
 1. **Agent = role skill-pack**, không phải thực thể tự trị. Tái dùng `roles/` + `rules.json`, **không** thêm runtime agent framework.
-2. **Không agent-tự-bàn-giao-agent.** Con người điều phối giữa các pack qua **ID ổn định** (`{MOD}-FR-`, `DEC-{PHASE}-`, `ADR-`) + memory theo chủ đề — y như [parallel-work](../minipower/docs/parallel-work.md) đang làm.
+2. **Không agent-tự-bàn-giao-agent.** Con người điều phối giữa các pack qua **ID ổn định** (`{MOD}-FR-`, `DEC-{PHASE}-`, `ADR-`) + memory theo chủ đề — y như [parallel-work](../sdlc/docs/parallel-work.md) đang làm.
 3. **Mọi L2/L3 dừng ở gate.** Không có auto-send/auto-book/auto-create. Gate này khớp sẵn với **action-category** của harness (send/publish/purchase/settings = cần phép).
 4. **Rules-as-data.** "Agent nào có skill nào", trigger, prereq → khai trong `rules.json`, sinh bảng qua `npm run gen`. Không hard-code.
 
@@ -193,6 +193,6 @@ Cụm **connector L3** (Calendar, Zoom/Teams/Meet, Jira/Lark/OpenProject, mail, 
 
 - [ADR 2026-07-20 định hướng §0/§3.3/§5](ADR-002-2026-07-20-dinh-huong-minipower-ai-ho-tro-ra-quyet-dinh.md) — triết lý bất biến, roles = lăng kính
 - [ADR gated-fanout](ADR-003-2026-07-20-minipower-gated-fanout-execution.md) · [proposal-suite](ADR-008-2026-07-25-minipower-proposal-suite.md) — precedent ADR gộp cha/con
-- [`minipower/docs/parallel-work.md`](../minipower/docs/parallel-work.md) — fan-out qua ID, con người điều phối
-- [`minipower/roles/`](../minipower/roles/) — 7 lăng kính vai trò (nền cho "role skill-pack")
+- [`minipower/docs/parallel-work.md`](../sdlc/docs/parallel-work.md) — fan-out qua ID, con người điều phối
+- [`minipower/roles/`](../sdlc/roles/) — 7 lăng kính vai trò (nền cho "role skill-pack")
 - Anthropic *Building Effective Agents* (orchestrator-workers, routing) · OpenAI *A Practical Guide to Building Agents* (manager vs decentralized) — thuật ngữ §2

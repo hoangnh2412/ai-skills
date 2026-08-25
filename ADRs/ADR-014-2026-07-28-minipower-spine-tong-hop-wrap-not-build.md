@@ -136,12 +136,12 @@ Nguyên tắc: **mượn cơ chế, không mượn quy mô** (ADR 07-17: Superpo
 
 | ID | Cơ chế | Ánh xạ Minipower | Ưu tiên |
 |----|--------|------------------|:---:|
-| **B1** | **Sharded step-files**: Skill = `SKILL.md` entrypoint + `step-XX-name.md` + metadata; agent **chỉ nạp bước đang chạy** (chống "lost in the middle", giảm token) | Skill hiện monolithic → tách entrypoint + step rời; `rules.json` dispatch tới **step**, không chỉ phase. Cộng hưởng [token-guard](../minipower/docs/token-guard.md) | 🔴 Cao |
-| **B2** | **Story file = gói handoff hoàn chỉnh, mỗi story chạy fresh-context** | Trùng khít **hợp đồng 7-trường** senior→junior ([senior-junior §3.1](ADR-013-2026-07-26-minipower-senior-junior-execution.md)) + one-owner-per-module ([parallel-work](../minipower/docs/parallel-work.md)). Ép fresh-context mỗi junior | 🔴 Cao |
-| **B3** | **Handoff artifact-tên-rõ mỗi ranh giới** (Analyst→PM→Architect + **Implementation Readiness review**→Dev→Review) | = [COORDINATION.md](../contracts/README.md) H1–H6 + [readiness-gate](../minipower/skills/readiness-gate/SKILL.md). BMAD xác nhận gate-model đúng | 🟡 Đối chiếu |
-| **B4** | **Scale-adaptive** depth theo cỡ dự án | Đã có [complexity-rubric](../minipower/skills/planning/complexity-rubric.md) + micro/light/full → nâng: tier quyết **step nào nạp** (nối B1) | 🟢 Nối B1 |
+| **B1** | **Sharded step-files**: Skill = `SKILL.md` entrypoint + `step-XX-name.md` + metadata; agent **chỉ nạp bước đang chạy** (chống "lost in the middle", giảm token) | Skill hiện monolithic → tách entrypoint + step rời; `rules.json` dispatch tới **step**, không chỉ phase. Cộng hưởng [token-guard](../sdlc/docs/token-guard.md) | 🔴 Cao |
+| **B2** | **Story file = gói handoff hoàn chỉnh, mỗi story chạy fresh-context** | Trùng khít **hợp đồng 7-trường** senior→junior ([senior-junior §3.1](ADR-013-2026-07-26-minipower-senior-junior-execution.md)) + one-owner-per-module ([parallel-work](../sdlc/docs/parallel-work.md)). Ép fresh-context mỗi junior | 🔴 Cao |
+| **B3** | **Handoff artifact-tên-rõ mỗi ranh giới** (Analyst→PM→Architect + **Implementation Readiness review**→Dev→Review) | = [COORDINATION.md](../contracts/README.md) H1–H6 + [readiness-gate](../sdlc/skills/readiness-gate/SKILL.md). BMAD xác nhận gate-model đúng | 🟡 Đối chiếu |
+| **B4** | **Scale-adaptive** depth theo cỡ dự án | Đã có [complexity-rubric](../sdlc/skills/planning/complexity-rubric.md) + micro/light/full → nâng: tier quyết **step nào nạp** (nối B1) | 🟢 Nối B1 |
 
-**KHÔNG lấy:** "Party mode" (persona tranh luận cùng lúc) — trái [deliberation](../minipower/skills/deliberation/SKILL.md) "mỗi góc một lượt". Không lấy vòng dev tự trị bỏ cổng người.
+**KHÔNG lấy:** "Party mode" (persona tranh luận cùng lúc) — trái [deliberation](../sdlc/skills/deliberation/SKILL.md) "mỗi góc một lượt". Không lấy vòng dev tự trị bỏ cổng người.
 
 ### 🥈 SpecKit — Constitution là viên ngọc
 
@@ -149,8 +149,8 @@ Nguyên tắc: **mượn cơ chế, không mượn quy mô** (ADR 07-17: Superpo
 |----|--------|------------------|:---:|
 | **S1** | **Constitution** (`memory/constitution.md`) — rulebook bất biến cấp dự án; article = go/no-go gate (test-first · chống over-engineering · integration-first) | Dự án đích **thiếu constitution**. Tạo `constitution.md` per-project mã hoá **luật jarvis + code người-đọc-được + test-first + cấm huỷ-data**; AI check tuân thủ tại mỗi gate. Chỗ triết lý jarvis **có răng** | 🔴 Cao |
 | **S2** | **Marker `[NEEDS CLARIFICATION]`** ép AI đánh dấu mơ hồ thay vì bịa | Nâng `TBD`/open-questions rời rạc thành **marker hạng-nhất, đếm được, CHẶN baseline** khi còn sót. Nối readiness-gate "hỏi trọn gói" | 🔴 Cao |
-| **S3** | **Gate nhúng template** (Simplicity / Anti-Abstraction / Integration-First) làm checkpoint | Nhét gate chống-over-engineering vào readiness-gate/[doc-review](../minipower/skills/doc-review/SKILL.md) | 🟡 Vừa |
-| **S4** | **`[P]` đánh dấu task song-song-hoá-được** | Đánh dấu module/task fan-out-được trong WBS → [fan-out](../minipower/skills/fan-out/SKILL.md) biết cái gì chạy song song | 🟢 Nhỏ |
+| **S3** | **Gate nhúng template** (Simplicity / Anti-Abstraction / Integration-First) làm checkpoint | Nhét gate chống-over-engineering vào readiness-gate/[doc-review](../sdlc/skills/doc-review/SKILL.md) | 🟡 Vừa |
+| **S4** | **`[P]` đánh dấu task song-song-hoá-được** | Đánh dấu module/task fan-out-được trong WBS → [fan-out](../sdlc/skills/fan-out/SKILL.md) biết cái gì chạy song song | 🟢 Nhỏ |
 
 **KHÔNG lấy nguyên:** Article I "mọi feature là standalone library" — quá giáo điều cho .NET/React enterprise. Constitution phải **project-defined** (SpecKit cũng để slot tự định).
 
@@ -158,7 +158,7 @@ Nguyên tắc: **mượn cơ chế, không mượn quy mô** (ADR 07-17: Superpo
 
 | ID | Cơ chế | Ánh xạ Minipower | Ưu tiên |
 |----|--------|------------------|:---:|
-| **O1** | **Spec delta `## ADDED / MODIFIED / REMOVED Requirements`** so baseline | Formalize CR: delta trên FR/BR đã baseline → "đổi gì" **máy đọc + trace được**. Gắn `docs/06-changes/` + [change-control](../minipower/skills/change-control/SKILL.md) | 🔴 Cao |
+| **O1** | **Spec delta `## ADDED / MODIFIED / REMOVED Requirements`** so baseline | Formalize CR: delta trên FR/BR đã baseline → "đổi gì" **máy đọc + trace được**. Gắn `docs/06-changes/` + [change-control](../sdlc/skills/change-control/SKILL.md) | 🔴 Cao |
 | **O2** | **Change folder tự chứa** (`proposal + specs/ + design + tasks`) | `docs/06-changes/CR-xxx/` áp layout này → mỗi CR tự đủ | 🟡 Vừa |
 | **O3** | **archive → merge ngược `specs/`** (một nguồn chân lý) | = baseline vX.Y sau CR duyệt; mượn kỷ luật archive-có-ngày | 🟢 Siết cơ học |
 
@@ -241,7 +241,7 @@ Nguyên tắc: **mượn cơ chế, không mượn quy mô** (ADR 07-17: Superpo
 ## §10. Tham chiếu
 
 - ADR nội bộ: [đánh giá 2026-07-17](ADR-001-2026-07-17-danh-gia-minipower-va-chien-luoc-phat-trien.md) · [định hướng 2026-07-20](ADR-002-2026-07-20-dinh-huong-minipower-ai-ho-tro-ra-quyet-dinh.md) · [gated-fanout](ADR-003-2026-07-20-minipower-gated-fanout-execution.md) · [orchestrator](ADR-009-2026-07-25-minipower-orchestrator-analysis.md) · [senior-junior](ADR-013-2026-07-26-minipower-senior-junior-execution.md)
-- Máy Minipower: [rules.json](../minipower/hooks/lib/rules.json) · [deliberation](../minipower/skills/deliberation/SKILL.md) · [readiness-gate](../minipower/skills/readiness-gate/SKILL.md) · [doc-review](../minipower/skills/doc-review/SKILL.md) · [fan-out](../minipower/skills/fan-out/SKILL.md) · [token-guard](../minipower/docs/token-guard.md) · [parallel-work](../minipower/docs/parallel-work.md) · [COORDINATION.md](../contracts/README.md)
+- Máy Minipower: [rules.json](../sdlc/hooks/lib/rules.json) · [deliberation](../sdlc/skills/deliberation/SKILL.md) · [readiness-gate](../sdlc/skills/readiness-gate/SKILL.md) · [doc-review](../sdlc/skills/doc-review/SKILL.md) · [fan-out](../sdlc/skills/fan-out/SKILL.md) · [token-guard](../sdlc/docs/token-guard.md) · [parallel-work](../sdlc/docs/parallel-work.md) · [COORDINATION.md](../contracts/README.md)
 - Nghiên cứu ngoài (đọc source/doc, không dừng README):
   - BMAD — [Workflow Architecture (DeepWiki)](https://deepwiki.com/bmad-code-org/BMAD-METHOD/8.1-workflow-architecture) · [repo](https://github.com/bmad-code-org/BMAD-METHOD): sharded Skill (SKILL.md + step-XX), role-agent handoff, per-story fresh-context
   - SpecKit — [spec-driven.md](https://github.com/github/spec-kit/blob/main/spec-driven.md): constitution 9-article, `/specify`·`/plan`·`/tasks`, `[NEEDS CLARIFICATION]`, template-as-constraint

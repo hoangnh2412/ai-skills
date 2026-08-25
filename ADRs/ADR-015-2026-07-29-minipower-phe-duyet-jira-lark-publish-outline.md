@@ -7,7 +7,7 @@
 | **Phạm vi** | `minipower/` — cơ chế **cổng ký (chữ ký)** và **publish tài liệu**. Không đổi nội dung/luồng phase. |
 | **Nối tiếp** | [gated-fanout 2026-07-20](ADR-003-2026-07-20-minipower-gated-fanout-execution.md) (§0 approval-gate, D/E chờ SOP Lark) · [checkpoint 2026-07-25](ADR-010-2026-07-25-tam-dung-gated-fanout-checkpoint.md) · [COORDINATION §4](../contracts/cross-repo-bridge.md) (cross-repo bridge) |
 | **Mục đích** | Bắt đầu định nghĩa "SOP Lark/Jira/Outline" cho **chiều phê duyệt + publish** — biến "chữ ký" từ tick-markdown thành **event duyệt trên công cụ quy trình thật**, rồi doc bump version + publish lên Outline. |
-| **Ảnh hưởng** (khi accepted) | [approval-gate.md](../minipower/agents/approval-gate.md) — "chữ ký" = event ngoài, không còn chỉ DEC-markdown · [doc-versioning.md](../minipower/docs-skeleton/00-governance/doc-versioning.md) — version bump kích bởi approval event · [doc-registry.md](../minipower/docs-skeleton/05-traceability/doc-registry.md) — đổi vai thành **bảng ánh xạ** DOC↔Jira↔Lark↔Outline · [parallel-work.md](../minipower/docs/parallel-work.md) — phân vai Author vs Approver. **Không** sửa `rules.json` trong ADR này (chỉ đề xuất; sửa khi có skill/adapter thật). |
+| **Ảnh hưởng** (khi accepted) | [approval-gate.md](../sdlc/agents/approval-gate.md) — "chữ ký" = event ngoài, không còn chỉ DEC-markdown · [doc-versioning.md](../sdlc/docs-skeleton/00-governance/doc-versioning.md) — version bump kích bởi approval event · [doc-registry.md](../sdlc/docs-skeleton/05-traceability/doc-registry.md) — đổi vai thành **bảng ánh xạ** DOC↔Jira↔Lark↔Outline · [parallel-work.md](../sdlc/docs/parallel-work.md) — phân vai Author vs Approver. **Không** sửa `rules.json` trong ADR này (chỉ đề xuất; sửa khi có skill/adapter thật). |
 
 ---
 
@@ -21,7 +21,7 @@ Cơ chế "ký" hiện tại là **tick trong markdown** (mục Approval trong D
 
 Tức **dời "chữ ký" ra hệ thống ngoài** (có audit trail thật: ai duyệt, khi nào, comment), và **Outline là bản đọc đã duyệt** — không sửa nội dung trên Outline.
 
-Đây **không phải** cơ chế mới đè lên pipeline: nó là **hiện thực hoá cột "người chốt" của [approval-gate](../minipower/agents/approval-gate.md)** bằng công cụ ngoài, đúng nhánh **D/E đang paused** (§4 gated-fanout) — chỉ khác: ta mở **riêng chiều phê duyệt + publish**, chưa động tới task-hierarchy.
+Đây **không phải** cơ chế mới đè lên pipeline: nó là **hiện thực hoá cột "người chốt" của [approval-gate](../sdlc/agents/approval-gate.md)** bằng công cụ ngoài, đúng nhánh **D/E đang paused** (§4 gated-fanout) — chỉ khác: ta mở **riêng chiều phê duyệt + publish**, chưa động tới task-hierarchy.
 
 ---
 
@@ -74,15 +74,15 @@ flowchart LR
   class SIG gate
 ```
 
-**Các bước (khớp [approval-gate](../minipower/agents/approval-gate.md) — chỉ đổi *nơi ký*):**
+**Các bước (khớp [approval-gate](../sdlc/agents/approval-gate.md) — chỉ đổi *nơi ký*):**
 
 1. **Soạn (git)** — BA A/B viết draft `03-modules/{module}/`; `Status=Draft`, `Version=—`.
-2. **Self-QC** — chạy [doc-review](../minipower/skills/doc-review/SKILL.md) đối kháng 5 chiều; sửa Blocker; chuyển `Status=Review`.
+2. **Self-QC** — chạy [doc-review](../sdlc/skills/doc-review/SKILL.md) đối kháng 5 chiều; sửa Blocker; chuyển `Status=Review`.
 3. **Tạo approval item (AI soạn)** — adapter tạo/ cập nhật một *item duyệt* trên Jira/Lark cho **cổng tương ứng** (`approval_gates`), đính: link commit/PR + **doc-review report** + DEC nháp (đã làm · cần quyết · TBD).
 4. **Lead BA duyệt (người chốt)** — đọc → **approve / reject** trên Jira/Lark. **Đây là chữ ký.**
 5. **Approve event → git** — bump `Version 0.1`, `Status=Baseline`; ghi **back-ref DEC** "approved via {Jira key / Lark ref} @ {date}"; cập nhật `doc-registry` (Jira key, Outline URL, version, ngày).
 6. **Publish → Outline** — bản đã duyệt lên Outline (read-only). **Hành động ra-ngoài** → do **CI hoặc người bấm**; AI chuẩn bị nội dung, **không** tự publish nội dung chưa duyệt.
-7. **Mở khoá** — chỉ sau (5)/(6), doc mới vượt [boundary H2/H3](../contracts/handoff.md) sang Architecture/Planning. **Reject** → về Draft, ghi nợ `memory/{phase}/open-questions.md` ([readiness-gate](../minipower/skills/readiness-gate/SKILL.md)).
+7. **Mở khoá** — chỉ sau (5)/(6), doc mới vượt [boundary H2/H3](../contracts/handoff.md) sang Architecture/Planning. **Reject** → về Draft, ghi nợ `memory/{phase}/open-questions.md` ([readiness-gate](../sdlc/skills/readiness-gate/SKILL.md)).
 
 **Fan-out:** BA A và BA B là **hai luồng độc lập**. Lead BA **duyệt từng module khi module đó đủ** — không gom chờ cả hai (luật "input tối thiểu là hợp đồng, không phải toàn bộ").
 
@@ -93,8 +93,8 @@ flowchart LR
 | Primitive sẵn có | Vai trò cũ | Vai trò sau ADR này |
 |---|---|---|
 | `approval_gates` (rules.json) | 7 cổng người-chốt, ký = DEC markdown | Mỗi cổng ↔ **một approval template** trên Jira/Lark (qua adapter). Danh sách cổng **không đổi**. |
-| [doc-review](../minipower/skills/doc-review/SKILL.md) | QC đối kháng trước sign-off | Chạy **trước khi tạo approval item**; report là **bằng chứng** cho Lead BA duyệt. |
-| [doc-versioning](../minipower/docs-skeleton/00-governance/doc-versioning.md) | Version chỉ sau sign-off | Giữ nguyên — chỉ khác: "sign-off" giờ = **approve event ngoài**, không phải tick markdown. |
+| [doc-review](../sdlc/skills/doc-review/SKILL.md) | QC đối kháng trước sign-off | Chạy **trước khi tạo approval item**; report là **bằng chứng** cho Lead BA duyệt. |
+| [doc-versioning](../sdlc/docs-skeleton/00-governance/doc-versioning.md) | Version chỉ sau sign-off | Giữ nguyên — chỉ khác: "sign-off" giờ = **approve event ngoài**, không phải tick markdown. |
 | `doc-registry.md` | Nơi ký (Sign-off cột) | **Bảng ánh xạ** DOC↔Jira↔Lark↔Outline↔version (mirror; SSOT duyệt ở ngoài). |
 | DEC (decision-log) | Chữ ký nội-repo | **Back-reference**: "approved via {ref}" — giữ repo tự mô tả. |
 | [COORDINATION §4](../contracts/cross-repo-bridge.md) bridge | git-docs ↔ git-code | Tổng quát cho git ↔ Outline + Jira/Lark ↔ git. |
@@ -128,9 +128,9 @@ flowchart LR
 
 ## §7. Nếu accepted — việc sẽ làm (chưa làm bây giờ)
 
-1. Bổ sung phân vai **Author (BA module) vs Approver (Lead BA)** vào [parallel-work.md](../minipower/docs/parallel-work.md) + [roles/BA.md](../minipower/roles/BA.md).
-2. Ghi luồng "Review → approval event → bump version → publish" vào [doc-versioning.md](../minipower/docs-skeleton/00-governance/doc-versioning.md); đổi `doc-registry.md` thành bảng ánh xạ (thêm cột Jira key / Outline URL).
-3. Cập nhật [approval-gate.md](../minipower/agents/approval-gate.md): "chữ ký" = approve event ngoài + back-ref DEC (giữ bảng `approval_gates` — sinh từ rules.json).
+1. Bổ sung phân vai **Author (BA module) vs Approver (Lead BA)** vào [parallel-work.md](../sdlc/docs/parallel-work.md) + [roles/BA.md](../sdlc/roles/BA.md).
+2. Ghi luồng "Review → approval event → bump version → publish" vào [doc-versioning.md](../sdlc/docs-skeleton/00-governance/doc-versioning.md); đổi `doc-registry.md` thành bảng ánh xạ (thêm cột Jira key / Outline URL).
+3. Cập nhật [approval-gate.md](../sdlc/agents/approval-gate.md): "chữ ký" = approve event ngoài + back-ref DEC (giữ bảng `approval_gates` — sinh từ rules.json).
 4. **Adapter riêng** (`minipower/install/…` hoặc pack adapter) cho Jira/Lark/Outline — **sau** khi chốt Q1–Q3; kèm ranh giới QĐ-3.
 5. Cập nhật §4 gated-fanout: đánh dấu nhánh **approval+publish** đã tách ra khỏi "chờ SOP Lark".
 
@@ -140,11 +140,11 @@ flowchart LR
 
 | Tài liệu | Vai trò |
 |---|---|
-| [approval-gate.md](../minipower/agents/approval-gate.md) | 7 cổng người-chốt (nền để ánh xạ ra Jira/Lark) |
+| [approval-gate.md](../sdlc/agents/approval-gate.md) | 7 cổng người-chốt (nền để ánh xạ ra Jira/Lark) |
 | [gated-fanout ADR](ADR-003-2026-07-20-minipower-gated-fanout-execution.md) §4 | Lộ trình D/E — nơi Lark integration đang paused |
 | [checkpoint 2026-07-25](ADR-010-2026-07-25-tam-dung-gated-fanout-checkpoint.md) | Ranh giới "không làm D/E thiếu SOP" |
-| [doc-versioning.md](../minipower/docs-skeleton/00-governance/doc-versioning.md) | Quy tắc version chỉ-sau-sign-off |
-| [parallel-work.md](../minipower/docs/parallel-work.md) | Fan-out theo module, một-owner |
+| [doc-versioning.md](../sdlc/docs-skeleton/00-governance/doc-versioning.md) | Quy tắc version chỉ-sau-sign-off |
+| [parallel-work.md](../sdlc/docs/parallel-work.md) | Fan-out theo module, một-owner |
 | [COORDINATION.md §4](../contracts/cross-repo-bridge.md) | Cross-repo bridge — pin + back-reference |
 </content>
 </invoke>

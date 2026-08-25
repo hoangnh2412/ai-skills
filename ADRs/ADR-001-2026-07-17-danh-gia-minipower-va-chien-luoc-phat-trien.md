@@ -64,13 +64,13 @@ Staleness hook tự ghi *"Chỉ để nhắc, không phán quyết — verdict c
 > Đã xử lý qua P0/P2/P3: **bốn bản cài đặt lệch nhau** (gộp về một Node SSOT), **không test/CI** (golden test + GitHub Action 3 OS), **không có chi phí tương xứng** (3 tầng micro/light/full), **Claude adapter ship file chết** (đã wire), **runtime coupling `.sh`→python** (bỏ python, thuần Node).
 
 ### §2.1. ✅ Routing regex giòn → rules-as-data (R3, 2026-07-19)
-Trước: heuristic (map DOC→phase, edit-verbs, breadth) nhúng trong code, thêm DOC = sửa nhiều nơi. Nay tách **[hooks/lib/rules.json](../minipower/hooks/lib/rules.json)** làm SSOT dữ liệu; `auto-routing.js` + `token-guard.js` sinh cấu trúc từ đó; `agents/auto-routing.md` sinh bảng map qua `npm run gen` (CI `gen --check` chặn lệch). **Thêm DOC-19 = một dòng JSON.** Keyword lưu tiếng Việt có dấu (đọc được), strip-diacritics trước match → giữ diệt class bug có/không dấu.
+Trước: heuristic (map DOC→phase, edit-verbs, breadth) nhúng trong code, thêm DOC = sửa nhiều nơi. Nay tách **[hooks/lib/rules.json](../sdlc/hooks/lib/rules.json)** làm SSOT dữ liệu; `auto-routing.js` + `token-guard.js` sinh cấu trúc từ đó; `agents/auto-routing.md` sinh bảng map qua `npm run gen` (CI `gen --check` chặn lệch). **Thêm DOC-19 = một dòng JSON.** Keyword lưu tiếng Việt có dấu (đọc được), strip-diacritics trước match → giữ diệt class bug có/không dấu.
 
 ### §2.2. ✅ Install thủ công → script + verify (R5, 2026-07-19)
-`/ABSOLUTE/PATH/TO/...` thay bằng **[install/claude/install.mjs](../minipower/install/claude/install.mjs)**: tự resolve path, merge an toàn (giữ hook/permission khác, idempotent, backup `.bak`), và **verify** bằng smoke-test 4 shim dưới `node` thật. README cập nhật.
+`/ABSOLUTE/PATH/TO/...` thay bằng **[install/claude/install.mjs](../sdlc/install/claude/install.mjs)**: tự resolve path, merge an toàn (giữ hook/permission khác, idempotent, backup `.bak`), và **verify** bằng smoke-test 4 shim dưới `node` thật. README cập nhật.
 
 ### §2.3. ✅ Rubric Complexity → đã viết (R4, 2026-07-19)
-**[skills/planning/complexity-rubric.md](../minipower/skills/planning/complexity-rubric.md)** — 5 chiều × 0–4 = 0–20 → Small/Medium/Large/Enterprise, mỗi chiều có mốc 0/2/4 + ví dụ. `planning/SKILL.md` trỏ tới. Điểm complexity nay **tái lập được**.
+**[skills/planning/complexity-rubric.md](../sdlc/skills/planning/complexity-rubric.md)** — 5 chiều × 0–4 = 0–20 → Small/Medium/Large/Enterprise, mỗi chiều có mốc 0/2/4 + ví dụ. `planning/SKILL.md` trỏ tới. Điểm complexity nay **tái lập được**.
 
 ### §2.4. ✅ Tiếng Việt — chốt giữ Việt-only (Q5, 2026-07-19)
 **Quyết định:** giữ tiếng Việt. **Lý do:** chủ sở hữu pack đọc-hiểu & ứng dụng trực tiếp bằng tiếng Việt; ưu tiên tính dùng được của team hơn khả năng đóng góp ngoài. Chấp nhận đánh đổi (đóng cửa contributor ngoài) một cách có ý thức.
@@ -113,7 +113,7 @@ Compiler `hookbridge` **không nằm trong repo** (đã bị gỡ). **Clone ≠ 
 Một implementation (Node `.js` thuần, 0 build, 0 dependency), mọi platform gọi qua shim ≤10 dòng. Xoá `.ps1`/`.py`/lib `.ts` trùng, gộp 3 `hooks.fragment*.json` → 1. Bug drift tự biến mất vì chỉ còn một regex.
 
 ### §4.2. ✅ P1 — Rules as data *(R3, xong 2026-07-19)*
-Đã trích map DOC→phase và keyword heuristic ra **[hooks/lib/rules.json](../minipower/hooks/lib/rules.json)**:
+Đã trích map DOC→phase và keyword heuristic ra **[hooks/lib/rules.json](../sdlc/hooks/lib/rules.json)**:
 
 ```json
 {

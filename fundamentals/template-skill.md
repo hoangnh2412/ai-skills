@@ -2,20 +2,20 @@
 
 Chuẩn tạo skill trong `.opencode/skills/<tên-skill>/` cho framework Jarvis. **Không** dùng một file SKILL dài kiểu Purpose / Role / Process chung chung.
 
-**Tham chiếu đầy đủ:** [healthcheck-dotnet](../.opencode/skills/healthcheck-dotnet/)  
+**Tham chiếu đầy đủ:** [minipower-backend-healthcheck-dotnet](../.opencode/skills/minipower-backend-healthcheck-dotnet/)  
 **Bản đồ skill:** [.opencode/README.md](../.opencode/README.md)
 
 ---
 
 ## 1. Khi nào tạo skill riêng
 
-| Tạo skill `*-dotnet` riêng trong `.opencode/skills/` | Chỉ trong `jarvis-dotnet` (scaffold, templates, catalog) |
+| Tạo skill `*-dotnet` riêng trong `.opencode/skills/` | Chỉ trong `minipower-backend-scaffold-dotnet` (scaffold, templates, catalog) |
 |------------------------------------------------------|--------------------------------------------------------|
-| Module Jarvis có workflow init/add phức tạp | Orchestrator solution — `jarvis-dotnet` |
-| Nhiều biến thể (providers, patterns) | Link từ `jarvis-dotnet/templates/SKILLS.md` |
+| Module Jarvis có workflow init/add phức tạp | Orchestrator solution — `minipower-backend-scaffold-dotnet` |
+| Nhiều biến thể (providers, patterns) | Link từ `minipower-backend-scaffold-dotnet/templates/SKILLS.md` |
 | Agent cần discover qua `description` (health, OTEL, EF, cache) | Skill độc lập, không thư mục `modules/` con |
 
-Ví dụ skill độc lập: `foundation-dotnet`, `application-dotnet`, `authentication-dotnet`, `notification-dotnet`, `healthcheck-dotnet`, `caching-dotnet`, `telemetry-dotnet`, `entityframework-dotnet`, `swashbuckle-dotnet`.
+Ví dụ skill độc lập: `minipower-backend-foundation-dotnet`, `minipower-backend-application-dotnet`, `minipower-backend-authentication-dotnet`, `minipower-backend-notification-dotnet`, `minipower-backend-healthcheck-dotnet`, `minipower-backend-caching-dotnet`, `minipower-backend-telemetry-dotnet`, `minipower-backend-entityframework-dotnet`, `minipower-backend-swashbuckle-dotnet`.
 
 ---
 
@@ -45,9 +45,9 @@ Ví dụ skill độc lập: `foundation-dotnet`, `application-dotnet`, `authent
 
 | Thành phần | Quy tắc | Ví dụ |
 |------------|---------|--------|
-| Thư mục skill | `kebab-case`, hậu tố `-dotnet` | `caching-dotnet` |
-| `name` frontmatter | trùng tên thư mục | `caching-dotnet` |
-| Provider skill `name` | `<skill>-<provider>` | `healthcheck-dotnet-postgresql` |
+| Thư mục skill | `minipower-backend-{capability}-{stack}` — kebab-case, ≤64 ký tự (hệ tên ADR-022 QĐ-4) | `minipower-backend-caching-dotnet` |
+| `name` frontmatter | trùng tên thư mục | `minipower-backend-caching-dotnet` |
+| Provider skill `name` | `<skill>-<provider>` | `minipower-backend-healthcheck-dotnet-postgresql` |
 | Workflow | `init` / `add` — không đổi tên | `workflows/init.md` |
 
 ---
@@ -148,9 +148,9 @@ Skill tích hợp **<Jarvis.Module>**. Agent đọc [SKILL.md](./SKILL.md).
 | ... | [workflows/init.md](./workflows/init.md) |
 | ... | [workflows/add.md](./workflows/add.md) |
 
-**Không dùng cho:** ... (vd. scaffold solution → jarvis-dotnet)
+**Không dùng cho:** ... (vd. scaffold solution → minipower-backend-scaffold-dotnet)
 
-Scaffold `jarvis-dotnet` đã ... — dùng skill này khi ...
+Scaffold `minipower-backend-scaffold-dotnet` đã ... — dùng skill này khi ...
 
 ## Cách gọi
 
@@ -172,7 +172,7 @@ Scaffold `jarvis-dotnet` đã ... — dùng skill này khi ...
 
 ## Liên quan
 
-- [jarvis-dotnet/README.md](../jarvis-dotnet/README.md)
+- [minipower-backend-scaffold-dotnet/README.md](../minipower-backend-scaffold-dotnet/README.md)
 - [skill-phụ-thuộc](../other-skill/README.md)
 ```
 
@@ -292,7 +292,7 @@ dependencies:
 
 ## 9. `patterns/` thay `providers/` (EF)
 
-Dùng cho **entityframework-dotnet** — mô hình multitenancy, không phải infrastructure probe:
+Dùng cho **minipower-backend-entityframework-dotnet** — mô hình multitenancy, không phải infrastructure probe:
 
 ```text
 patterns/
@@ -308,21 +308,21 @@ Orchestrator trỏ: `patterns/` + `reference/setup.md` thay vì bảng providers
 
 ---
 
-## 10. Quan hệ với `jarvis-dotnet`
+## 10. Quan hệ với `minipower-backend-scaffold-dotnet`
 
 | Vai trò | Skill |
 |---------|--------|
-| Scaffold / init / add **cả solution** | `jarvis-dotnet` |
+| Scaffold / init / add **cả solution** | `minipower-backend-scaffold-dotnet` |
 | Chỉ health / cache / EF / OTEL / Swagger | skill `*-dotnet` tương ứng |
 
-Trong `jarvis-dotnet/SKILL.md` — bảng Modules:
+Trong `minipower-backend-scaffold-dotnet/SKILL.md` — bảng Modules:
 
 ```markdown
 | Module | Skill chuyên sâu |
 |--------|-------------------|
-| Health checks | [healthcheck-dotnet](../.opencode/skills/healthcheck-dotnet/README.md) |
-| Caching | [caching-dotnet](../.opencode/skills/caching-dotnet/README.md) |
-| Authentication | [authentication-dotnet](../.opencode/skills/authentication-dotnet/README.md) |
+| Health checks | [minipower-backend-healthcheck-dotnet](../.opencode/skills/minipower-backend-healthcheck-dotnet/README.md) |
+| Caching | [minipower-backend-caching-dotnet](../.opencode/skills/minipower-backend-caching-dotnet/README.md) |
+| Authentication | [minipower-backend-authentication-dotnet](../.opencode/skills/minipower-backend-authentication-dotnet/README.md) |
 ```
 
 Mọi module: skill `*-dotnet` trong `.opencode/skills/` — hub [.opencode/README.md](../.opencode/README.md).
@@ -340,7 +340,7 @@ Mọi module: skill `*-dotnet` trong `.opencode/skills/` — hub [.opencode/READ
 - [ ] providers/ hoặc patterns/ — mỗi biến thể một SKILL.md + dependencies
 - [ ] templates/ — program + appsettings mẫu
 - [ ] Cập nhật .opencode/README.md
-- [ ] Cập nhật jarvis-dotnet (link, bỏ module trùng)
+- [ ] Cập nhật minipower-backend-scaffold-dotnet (link, bỏ module trùng)
 - [ ] Không tham chiếu docs/ cũ — mọi doc nằm trong skill hoặc README repo
 ```
 
@@ -367,8 +367,8 @@ Mọi module: skill `*-dotnet` trong `.opencode/skills/` — hub [.opencode/READ
 
 | Mức | Skill | Đặc điểm |
 |-----|-------|----------|
-| Đầy đủ | [healthcheck-dotnet](../.opencode/skills/healthcheck-dotnet/) | Nhiều providers, 2 templates |
-| Trung bình | [caching-dotnet](../.opencode/skills/caching-dotnet/) | 3 providers + reference |
-| Trung bình | [telemetry-dotnet](../.opencode/skills/telemetry-dotnet/) | 6 providers, OTEL templates |
-| Patterns | [entityframework-dotnet](../.opencode/skills/entityframework-dotnet/) | `patterns/` + `reference/setup.md` |
-| Review | [code-review-dotnet](../.opencode/skills/code-review-dotnet/) | Không workflows/providers — checklist trong SKILL |
+| Đầy đủ | [minipower-backend-healthcheck-dotnet](../.opencode/skills/minipower-backend-healthcheck-dotnet/) | Nhiều providers, 2 templates |
+| Trung bình | [minipower-backend-caching-dotnet](../.opencode/skills/minipower-backend-caching-dotnet/) | 3 providers + reference |
+| Trung bình | [minipower-backend-telemetry-dotnet](../.opencode/skills/minipower-backend-telemetry-dotnet/) | 6 providers, OTEL templates |
+| Patterns | [minipower-backend-entityframework-dotnet](../.opencode/skills/minipower-backend-entityframework-dotnet/) | `patterns/` + `reference/setup.md` |
+| Review | [minipower-backend-review-dotnet](../.opencode/skills/minipower-backend-review-dotnet/) | Không workflows/providers — checklist trong SKILL |

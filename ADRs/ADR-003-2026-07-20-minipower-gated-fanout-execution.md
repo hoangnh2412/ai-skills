@@ -9,7 +9,7 @@
 | **Trạng thái (2026-08-20)** | 🟣 **CANCEL** — [ADR-019](ADR-019-2026-08-20-minipower-harness-khong-gate.md) bỏ toàn bộ gate nội bộ; ADR này lấy "gated" làm lõi nên mất căn cứ. **Kế thừa:** cơ chế fan-out per-module (skill `fan-out` đã có) + thứ tự requirements + DOC-19. Giữ làm lịch sử. |
 | **Cập nhật 2026-08-20 (trước khi cancel)** | Theo [ADR-017](ADR-017-2026-08-20-minipower-toolchain-openproject-github-outline-slack.md): **GĐ-C bỏ phần HTML wireframe** (chuyển sang skill `jarvis-frontend`, DOC-19 chỉ còn đặc tả) · **GĐ-D** đổi đích Lark → **OpenProject work package**, blocker thành *chờ SOP OpenProject* · **GĐ-E** "Lark MCP adapter" → **OpenProject + Github MCP**. Lộ trình A→E và triết lý §0 **không đổi**. |
 | **Mục đích** | Chốt hướng cho tầm nhìn 8 bước (BRD→BR→Prototype→SRS→Task→Plan→Test→Code→Report); ghi lại quyết định kiến trúc và lộ trình A→E |
-| **Ảnh hưởng** | [minipower/agents/approval-gate.md](../minipower/agents/approval-gate.md) — guardrail cổng người-chốt (§0/§3-A2) · [minipower/skills/fan-out/SKILL.md](../minipower/skills/fan-out/SKILL.md) — fan-out chỉ chạy giữa hai cổng (§0). Cũng chi phối mô hình "gatekeeper + fan-out" mô tả trong [AGENTS.md](../AGENTS.md). |
+| **Ảnh hưởng** | [minipower/agents/approval-gate.md](../sdlc/agents/approval-gate.md) — guardrail cổng người-chốt (§0/§3-A2) · [minipower/skills/fan-out/SKILL.md](../sdlc/skills/fan-out/SKILL.md) — fan-out chỉ chạy giữa hai cổng (§0). Cũng chi phối mô hình "gatekeeper + fan-out" mô tả trong [AGENTS.md](../AGENTS.md). |
 
 ---
 
@@ -104,7 +104,7 @@ Mức phủ hiện tại (đọc repo, không nói vo):
 | # | Quyết định | Nội dung |
 |---|---|---|
 | **QĐ-1** | Pivot §0 | Chuyển sang Gated Fan-out Execution (§0). ADR này là văn bản chốt. |
-| **QĐ-2** | Cơ chế fan-out | **Sub-agent per-module** của harness. Không nền tảng mới. Mỗi agent sở hữu 1 artifact/module, tổng hợp về `trace-matrix.md` + `memory/{phase}/`. Quy tắc song song trong [parallel-work.md](../minipower/docs/parallel-work.md) giữ nguyên. |
+| **QĐ-2** | Cơ chế fan-out | **Sub-agent per-module** của harness. Không nền tảng mới. Mỗi agent sở hữu 1 artifact/module, tổng hợp về `trace-matrix.md` + `memory/{phase}/`. Quy tắc song song trong [parallel-work.md](../sdlc/docs/parallel-work.md) giữ nguyên. |
 | **QĐ-3** | Tách lớp tích hợp ngoài | Lark/MCP (b4,7,8) = **lớp adapter riêng**, không nhét vào core skill. Rủi ro & lệ thuộc ngoài cao nhất → làm sau cùng (giai đoạn E). |
 
 ---
@@ -119,7 +119,7 @@ Chốt §0 mới + QĐ-1/2/3 + lộ trình §4. Là tiền đề chặn đườn
 ### A2 — Approval gate formal  ✅ (đã triển khai)
 Cổng người-chốt hiện là *ngầm* (readiness-gate soát tiền đề đầu vào, không phải cổng ký giữa phase). Cần cổng ký **có thật, ghi decision-log**.
 
-**Đã làm:** khối `approval_gates` trong [rules.json](../minipower/hooks/lib/rules.json) — mỗi cổng khai `id · label · approve (DOC) · unlocks (bước sau)`. Cổng theo **artifact người-chốt** (mịn hơn phase-transition), khớp tầm nhìn "sau khi con người chốt X thì làm Y" — gồm cả cổng nội-phase (BR→Prototype→SRS):
+**Đã làm:** khối `approval_gates` trong [rules.json](../sdlc/hooks/lib/rules.json) — mỗi cổng khai `id · label · approve (DOC) · unlocks (bước sau)`. Cổng theo **artifact người-chốt** (mịn hơn phase-transition), khớp tầm nhìn "sau khi con người chốt X thì làm Y" — gồm cả cổng nội-phase (BR→Prototype→SRS):
 
 ```jsonc
 "approval_gates": [
@@ -133,13 +133,13 @@ Cổng người-chốt hiện là *ngầm* (readiness-gate soát tiền đề đ
 ]
 ```
 
-- Guardrail [agents/approval-gate.md](../minipower/agents/approval-gate.md) (bảng sinh qua `npm run gen`): giao thức **AI soạn DEC nháp → người duyệt → mở khoá** (Q3). Không có DEC chốt = không qua cổng; fan-out chỉ nằm *giữa* hai cổng.
+- Guardrail [agents/approval-gate.md](../sdlc/agents/approval-gate.md) (bảng sinh qua `npm run gen`): giao thức **AI soạn DEC nháp → người duyệt → mở khoá** (Q3). Không có DEC chốt = không qua cổng; fan-out chỉ nằm *giữa* hai cổng.
 - Phân biệt với readiness-gate: approval-gate soát *người đã chốt bước trước chưa*; readiness-gate soát *tiền đề đầu vào đủ chưa*.
-- Golden test `approval_gates` trong [rules.test.js](../minipower/hooks/test/rules.test.js); `gen:check` phủ bảng mới.
+- Golden test `approval_gates` trong [rules.test.js](../sdlc/hooks/test/rules.test.js); `gen:check` phủ bảng mới.
 
 ### A3 — Chèn Prototype + đúng thứ tự phase  ✅ (đã triển khai)
-1. **DOC-19 "Prototype / Wireframe"** (chốt Q1: nối đuôi, không đánh số lại) → `phase_by_doc` + `doc_short`, thuộc phase `requirements`. Template [DOC-19-prototype.md](../minipower/templates/DOC-19-prototype.md).
-2. **Thứ tự requirements:** `Actor/UC(05) → BR(04) → Prototype(19) → FR/SRS(06) → NFR(13) → AC(07)` — cập nhật [requirements SKILL](../minipower/skills/requirements/SKILL.md) + [pipeline.md](../minipower/docs/pipeline.md) (luồng module + gate).
+1. **DOC-19 "Prototype / Wireframe"** (chốt Q1: nối đuôi, không đánh số lại) → `phase_by_doc` + `doc_short`, thuộc phase `requirements`. Template [DOC-19-prototype.md](../sdlc/templates/DOC-19-prototype.md).
+2. **Thứ tự requirements:** `Actor/UC(05) → BR(04) → Prototype(19) → FR/SRS(06) → NFR(13) → AC(07)` — cập nhật [requirements SKILL](../sdlc/skills/requirements/SKILL.md) + [pipeline.md](../sdlc/docs/pipeline.md) (luồng module + gate).
 3. **Routing SSOT:** `auto-routing.js` `normalizeDocNum` nay lấy bound từ `PHASE_BY_DOC` thay vì hardcode `≤18` → tự hỗ trợ DOC-19 và mọi DOC tương lai.
 4. **prereq_by_intent:** thêm intent `prototype` (requires DOC-04); intent `implement` nay requires cả DOC-19 (UI cần prototype đã chốt).
 5. **Architecture là cổng bắt buộc trước code:** cổng `architecture` (approve DOC-08) trong `approval_gates` mở khoá task-breakdown — vá lỗ hổng "8 bước quên architecture".
@@ -150,7 +150,7 @@ Cổng người-chốt hiện là *ngầm* (readiness-gate soát tiền đề đ
 
 ## §3′. Giai đoạn B & C — chi tiết (đã triển khai)
 
-**Quyết định gộp B và C thành MỘT cơ chế.** B (fan-out BR + SRS) và C (fan-out Prototype) khác nhau chỉ ở DOC target và phần render — bản chất điều phối per-module giống hệt. Thay vì 3 skill trùng lặp → **một skill [fan-out](../minipower/skills/fan-out/SKILL.md)** tham số hoá theo DOC, uỷ quyền nội dung cho [requirements SKILL](../minipower/skills/requirements/SKILL.md) + template (nguyên tắc "co lại trước khi mở rộng").
+**Quyết định gộp B và C thành MỘT cơ chế.** B (fan-out BR + SRS) và C (fan-out Prototype) khác nhau chỉ ở DOC target và phần render — bản chất điều phối per-module giống hệt. Thay vì 3 skill trùng lặp → **một skill [fan-out](../sdlc/skills/fan-out/SKILL.md)** tham số hoá theo DOC, uỷ quyền nội dung cho [requirements SKILL](../sdlc/skills/requirements/SKILL.md) + template (nguyên tắc "co lại trước khi mở rộng").
 
 | # | Việc | Deliverable | Trạng thái |
 |---|------|-------------|-----------|
@@ -158,9 +158,9 @@ Cổng người-chốt hiện là *ngầm* (readiness-gate soát tiền đề đ
 | **B2** | Fan-out SRS (bước 3) | Cùng skill, DOC-06 — tái dùng, không code mới | ✅ |
 | **C** | Fan-out Prototype (bước 2) | Cùng skill, DOC-19; **render HTML wireframe HOÃN** → MCP ngoài (Q2). Fan-out chỉ sinh khung màn hình/luồng + ghi nợ `TBD: wireframe` | ✅ (khung) · 🔜 (HTML) |
 
-**Cơ chế fan-out (skill):** ① kiểm **DEC cổng trước đã chốt** (approval-gate) — chưa thì dừng; ② đọc module in-scope từ DOC-03; ③ **một artifact = một owner**, mỗi module một luồng (sub-agent nếu host hỗ trợ, không thì tuần tự giữ ranh giới); ④ tuân quy tắc [parallel-work](../minipower/docs/parallel-work.md) (không sửa file chung đồng thời); ⑤ tổng hợp trace-matrix/doc-registry/memory; ⑥ **AI soạn DEC nháp** trình cổng kế.
+**Cơ chế fan-out (skill):** ① kiểm **DEC cổng trước đã chốt** (approval-gate) — chưa thì dừng; ② đọc module in-scope từ DOC-03; ③ **một artifact = một owner**, mỗi module một luồng (sub-agent nếu host hỗ trợ, không thì tuần tự giữ ranh giới); ④ tuân quy tắc [parallel-work](../sdlc/docs/parallel-work.md) (không sửa file chung đồng thời); ⑤ tổng hợp trace-matrix/doc-registry/memory; ⑥ **AI soạn DEC nháp** trình cổng kế.
 
-**Wiring:** router [SKILL.md](../minipower/SKILL.md) (frontmatter cross-phase + bảng trigger) + tham chiếu [parallel-work.md](../minipower/docs/parallel-work.md). Không thêm dữ liệu rules.json (fan-out là skill cross-phase, khai trigger ở router như deliberation/doc-review — không phải map DOC→phase).
+**Wiring:** router [SKILL.md](../sdlc/SKILL.md) (frontmatter cross-phase + bảng trigger) + tham chiếu [parallel-work.md](../sdlc/docs/parallel-work.md). Không thêm dữ liệu rules.json (fan-out là skill cross-phase, khai trigger ở router như deliberation/doc-review — không phải map DOC→phase).
 
 **Ranh giới §0 giữ chặt:** fan-out **chỉ giữa hai cổng**; không tự qua cổng kế (chỉ soạn DEC nháp); không bịa module ngoài DOC-03.
 

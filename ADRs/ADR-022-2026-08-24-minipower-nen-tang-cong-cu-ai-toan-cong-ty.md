@@ -56,7 +56,7 @@
 
 | Tầng | Tên | Vai |
 |---|---|---|
-| Thương hiệu | `minipower` | repo · tiền tố skill · plugin ([plugin.json](../minipower/.claude-plugin/plugin.json) `"name": "minipower"` giữ) |
+| Thương hiệu | `minipower` | repo · tiền tố skill · plugin ([plugin.json](../sdlc/.claude-plugin/plugin.json) `"name": "minipower"` giữ) |
 | Module | `sdlc` · `backend` · `frontend` · `autotest` · `design` · `slide`… | folder ngang hàng = đơn vị cài |
 | Skill | `minipower-{module}-{capability}[-{stack}]` | tên đăng ký với loader, = tên thư mục lá |
 
