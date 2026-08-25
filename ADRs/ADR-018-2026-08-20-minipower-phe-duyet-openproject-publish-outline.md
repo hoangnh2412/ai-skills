@@ -30,7 +30,7 @@ ADR-015 đã thiết kế đúng mô hình này nhưng neo vào Jira/Lark — [A
 | 3 | **Wrap MCP, không tự build adapter** | [ADR-017](ADR-017-2026-08-20-minipower-toolchain-openproject-github-outline-slack.md) QĐ-5 |
 | 4 | **Co lại trước khi mở rộng** | Giai đoạn đầu **thủ công/CLI** (người dán ref duyệt); webhook làm sau |
 | 5 | **Repo tự mô tả** | Dù chữ ký sống ở OpenProject, repo giữ **back-reference** DEC: "approved via {WP#} @ {date}" |
-| 6 | **Không copy tay hai nơi** | Pin version + back-reference ([COORDINATION.md](../COORDINATION.md) §4) |
+| 6 | **Không copy tay hai nơi** | Pin version + back-reference ([COORDINATION.md](../contracts/README.md) §4) |
 
 ---
 
@@ -79,7 +79,7 @@ flowchart LR
 5. **Approve event → git** — bump `Version 0.1`, `Status=Baseline`; ghi back-ref DEC "approved via WP#{id} @ {date}"; cập nhật `doc-registry`.
 6. **Publish → Outline** — bản đã duyệt, read-only. Ra-ngoài ⇒ **CI hoặc người bấm**, AI không tự publish.
 7. **Thông báo Slack** — một chiều, sau khi publish.
-8. **Mở khoá** — chỉ sau (5)/(6) mới vượt [boundary H2/H3](../COORDINATION.md). Reject → về Draft, ghi nợ `memory/{phase}/open-questions.md`.
+8. **Mở khoá** — chỉ sau (5)/(6) mới vượt [boundary H2/H3](../contracts/handoff.md). Reject → về Draft, ghi nợ `memory/{phase}/open-questions.md`.
 
 **Fan-out:** Lead BA duyệt **từng module khi module đó đủ** — không gom chờ cả hai (luật "input tối thiểu là hợp đồng").
 
@@ -140,4 +140,4 @@ flowchart LR
 | [ADR-015](ADR-015-2026-07-29-minipower-phe-duyet-jira-lark-publish-outline.md) (cancel) | Bản gốc của mô hình 3 mặt phẳng |
 | [approval-gate.md](../minipower/agents/approval-gate.md) | 7 cổng người-chốt |
 | [doc-versioning.md](../minipower/docs-skeleton/00-governance/doc-versioning.md) | Version chỉ-sau-sign-off |
-| [COORDINATION.md](../COORDINATION.md) §4 | Cross-repo bridge — pin + back-reference |
+| [COORDINATION.md](../contracts/README.md) §4 | Cross-repo bridge — pin + back-reference |

@@ -1,38 +1,41 @@
-# ai-skills
+# minipower
 
-Bộ **skill và tài liệu hướng dẫn AI** dùng với Cursor, OpenCode, Claude và các agent tương tự — tập trung vào phát triển **.NET / Jarvis**, quy trình **BA & kiến trúc doanh nghiệp (Minipower)**, và bộ **phỏng vấn kỹ thuật**.
+**Nền tảng công cụ AI của toàn công ty** — bộ **skill + tài liệu + hook** theo module, dùng với Cursor, OpenCode, Claude và các agent tương tự. Lõi là pipeline vòng đời phần mềm (`sdlc`), quanh nó là các module kỹ năng theo chức năng (`backend` hôm nay; `frontend` · `autotest` · `design` · `slide` khi có nội dung thật).
+
+Hệ tên: **`minipower`** = thương hiệu (repo · tiền tố skill · plugin); **tên module** = chức năng một-từ; skill đăng ký dạng `minipower-{module}-{capability}[-{stack}]` — gõ "minipower" trong ô search là thấy toàn bộ.
+
+> Thư mục repo hiện có thể còn mang tên cũ `ai-skills` — sẽ đổi thành `minipower` sau; tài liệu viết theo tên đích.
 
 **License:** [MIT](LICENSE) · Copyright (c) 2026 Hoàng Nguyễn
 
 ---
 
-## Bộ skill chính
+## Module
 
-| Pack | Thư mục | Dùng khi | Hướng dẫn |
-|------|---------|----------|-----------|
-| **Jarvis .NET** | [`jarvis/`](jarvis/) | Scaffold backend .NET, CQRS, EF, auth, cache, OTEL, health, review PR | [jarvis/README.md](jarvis/README.md) |
-| **Minipower** | [`minipower/`](minipower/) | Discovery → requirements → architecture → planning → delivery → change-control | [minipower/README.md](minipower/README.md) |
-| **Convention** | [`skills/`](skills/) | Clean Architecture, DDD, coding convention, code review, UI kit | Xem [danh sách bên dưới](#skills-convention-chung) |
-| **Interview** | [`interview/`](interview/) | Phỏng vấn C#/.NET và React/Frontend | [interview/README.md](interview/README.md) |
-
----
-
-## Cài vào Cursor
-
-Cursor nhận skill tại **`.cursor/skills/{tên}/SKILL.md`**. Repo này là **source of truth** — cần link hoặc copy vào workspace đang làm việc.
-
-| Pack | Hướng dẫn cài |
-|------|----------------|
-| **Minipower** | [minipower/README.md#cài-vào-cursor](minipower/README.md#cài-vào-cursor) — symlink một folder; rules/hooks: [minipower/README.md#cài-rules--hooks](minipower/README.md#cài-rules--hooks) |
-| **Jarvis .NET** | [jarvis/README.md#cài-vào-cursor](jarvis/README.md#cài-vào-cursor) — symlink từng skill hoặc tree `.opencode/skills/` |
-| **Interview** | [interview/README.md](interview/README.md) — `@` file track, không cần symlink |
-| **Convention** | `@skills/dotnet-structure.md` (hoặc file tương ứng trong workspace) |
+| Module | Thư mục | Dùng khi | Hướng dẫn |
+|--------|---------|----------|-----------|
+| **sdlc** — lõi pipeline | [`sdlc/`](sdlc/) | Discovery → requirements → architecture → planning → delivery → change-control; router `minipower-sdlc` | [sdlc/README.md](sdlc/README.md) |
+| **backend** — code .NET | [`backend/`](backend/) | Scaffold backend .NET (framework Jarvis), CQRS, EF, auth, cache, OTEL, health, review PR — 15 skill `minipower-backend-*-dotnet` | [backend/README.md](backend/README.md) |
+| **contracts** — hợp đồng liên-pack | [`contracts/`](contracts/) | Trace spine · handoff H1–H6 · lingua franca · cross-repo bridge · schema `PACK.md` | [contracts/README.md](contracts/README.md) |
+| **fundamentals** — kiến thức nền | [`fundamentals/`](fundamentals/) | Convention .NET/DDD/testing, template skill, bộ phỏng vấn kỹ thuật | [fundamentals/tutorial-index.md](fundamentals/tutorial-index.md) |
 
 ---
 
-## Ba chế độ dự án — dùng minipower cho tình huống nào
+## Cài đặt
 
-Không dự án nào cũng cần đủ 19 tài liệu. Minipower có **`project_mode`**, chọn khi khởi tạo, quyết định *tài liệu nào cần điền* và *cảnh báo nào bật* — nhưng **dùng chung một cấu trúc thư mục**, nên đổi chế độ về sau không phải di trú gì.
+Repo này là **source of truth** — link hoặc copy vào workspace đang làm việc; repo product **sync** (submodule / rsync / symlink), không fork chỉnh tay.
+
+| Module | Hướng dẫn cài |
+|--------|----------------|
+| **sdlc** | [sdlc/INSTALL.md](sdlc/INSTALL.md) — symlink một folder thành skill `minipower-sdlc`; hooks: `node sdlc/install/claude/install.mjs` (Claude) · [sdlc/install/](sdlc/install/) (Cursor/OpenCode) |
+| **backend** | [backend/README.md#cài-vào-cursor](backend/README.md#cài-vào-cursor) — symlink từng skill lá hoặc tree `.opencode/skills/` |
+| **fundamentals** | `@` thẳng file trong workspace (vd `@fundamentals/dotnet-structure.md`), không cần symlink |
+
+---
+
+## Ba chế độ dự án — dùng sdlc cho tình huống nào
+
+Không dự án nào cũng cần đủ 19 tài liệu. `sdlc` có **`project_mode`**, chọn khi khởi tạo, quyết định *tài liệu nào cần điền* và *cảnh báo nào bật* — nhưng **dùng chung một cấu trúc thư mục**, nên đổi chế độ về sau không phải di trú gì.
 
 | Chế độ | Khi nào chọn | Điền gì | Lên đời |
 |--------|--------------|---------|---------|
@@ -42,7 +45,7 @@ Không dự án nào cũng cần đủ 19 tài liệu. Minipower có **`project_
 
 Chỉ `standard` có cảnh báo **chặn** (và luôn mở được bằng `BYPASS`); hai chế độ kia chỉ nhắc. Ở mọi chế độ, **con người là người ra lệnh** — hệ cảnh báo, bạn xác nhận là chạy.
 
-Chi tiết: [minipower/SKILL.md § Chế độ dự án](minipower/SKILL.md#chế-độ-dự-án-project_mode) · [ADR-020](ADRs/ADR-020-2026-08-20-minipower-3-che-do-du-an-gate-bang-hook.md)
+Chi tiết: [sdlc/SKILL.md § Chế độ dự án](sdlc/SKILL.md#chế-độ-dự-án-project_mode) · [ADR-020](ADRs/ADR-020-2026-08-20-minipower-3-che-do-du-an-gate-bang-hook.md)
 
 ---
 
@@ -50,25 +53,26 @@ Chi tiết: [minipower/SKILL.md § Chế độ dự án](minipower/SKILL.md#ch�
 
 | Nguyên tắc | Mô tả |
 |------------|--------|
-| **Source of truth** | Sửa skill tại repo `ai-skills`; repo product **sync** (submodule / rsync / symlink), không fork chỉnh tay |
+| **Source of truth** | Sửa skill tại repo `minipower`; repo product **sync** (submodule / rsync / symlink), không fork chỉnh tay |
 | **SKILL.md cho agent** | Quy tắc, workflow, output bắt buộc |
 | **README.md cho người** | Hướng dẫn sử dụng, bảng tra, prompt mẫu |
-| **Một pack — một hub** | `jarvis/README.md`, `minipower/README.md`, `interview/README.md` là điểm vào; README gốc (file này) là bản đồ toàn repo |
+| **Một module — một hub** | `sdlc/README.md`, `backend/README.md`, `contracts/README.md` là điểm vào; README gốc (file này) là bản đồ toàn repo |
+| **Sở hữu khuôn, không sở hữu đất sét** | minipower giữ quy trình/template/kỷ luật trace; tri thức nghiệp vụ, code, task sống ở hệ thống của chúng |
 
 ---
 
 ## Đóng góp
 
-1. Thay đổi skill → PR trên repo `ai-skills`.
+1. Thay đổi skill → PR trên repo `minipower`.
 2. Repo consumer cập nhật symlink / `rsync` / submodule theo tag hoặc commit mới.
-3. Skill Jarvis mới: làm theo [skills/template-skill.md](skills/template-skill.md).
+3. Skill backend mới: làm theo [fundamentals/template-skill.md](fundamentals/template-skill.md).
+4. Module mới: quy tắc 3 câu hỏi + "chưa có skill thật chưa tạo folder" — xem [AGENTS.md](AGENTS.md) §Quy ước.
 
 ---
 
 ## Liên kết nhanh
 
-- [Jarvis skill hub](jarvis/README.md)
-- [Minipower skill hub](minipower/README.md)
-- [Minipower router (SKILL.md)](minipower/SKILL.md)
-- [18 DOC templates](minipower/templates/README.md)
-- [Interview hub](interview/README.md)
+- [sdlc hub](sdlc/README.md) · [sdlc router (SKILL.md)](sdlc/SKILL.md) · [19 DOC templates](sdlc/templates/README.md)
+- [backend hub](backend/README.md)
+- [contracts — hợp đồng liên-pack](contracts/README.md)
+- [fundamentals — tutorial index](fundamentals/tutorial-index.md) · [interview](fundamentals/interview/)

@@ -34,7 +34,7 @@ Pack đang mang tên một **framework nội bộ**. Ba hệ quả:
 |---|---|
 | Tên pack ≠ chức năng pack | Người mới đọc `jarvis/` không đoán được đây là skill backend. Phải mở README mới biết |
 | Không mở rộng được | Thêm backend Node/Java thì đặt ở đâu? `jarvis/` sai nghĩa, tạo pack mới thì phân mảnh |
-| Trộn hai không gian tên | "Jarvis" vừa là pack ở repo này, vừa là framework + repo code ở [COORDINATION.md §4](../COORDINATION.md) — cầu H4/H6 trỏ sang repo **khác**, không nằm trong tay lần refactor này |
+| Trộn hai không gian tên | "Jarvis" vừa là pack ở repo này, vừa là framework + repo code ở [COORDINATION.md §4](../contracts/cross-repo-bridge.md) — cầu H4/H6 trỏ sang repo **khác**, không nằm trong tay lần refactor này |
 
 QĐ-1 tách đúng chỗ đau: **cái nào là bao bì thì đổi, cái nào là sản phẩm thì giữ.** Nội dung 15 skill vẫn dạy Jarvis framework, vẫn gọi `AddJarvisAuthentication` — chỉ cái hộp đựng đổi tên.
 
@@ -219,7 +219,7 @@ Bước 2 cần script dò link (~30 dòng Node, không dependency). Xem **§6a*
 
 ### §6a. Script dò link là gì, và "giữ hay bỏ" nghĩa là gì (giải thích Q4)
 
-**Vấn đề nó giải.** Markdown link kiểu `[COORDINATION](../COORDINATION.md)` là **chuỗi ký tự thường** — không compiler nào kiểm. Đổi tên `jarvis/` → `backend/` sẽ làm mọi link trỏ `jarvis/...` chết **im lặng**: file vẫn mở được, link vẫn hiện màu xanh, bấm vào mới ra 404. Repo có ~649 chỗ nhắc `jarvis` (và ~937 chỗ nhắc `minipower` — đợt chung với ADR-022), không soi tay hết được.
+**Vấn đề nó giải.** Markdown link kiểu `[COORDINATION](../contracts/README.md)` là **chuỗi ký tự thường** — không compiler nào kiểm. Đổi tên `jarvis/` → `backend/` sẽ làm mọi link trỏ `jarvis/...` chết **im lặng**: file vẫn mở được, link vẫn hiện màu xanh, bấm vào mới ra 404. Repo có ~649 chỗ nhắc `jarvis` (và ~937 chỗ nhắc `minipower` — đợt chung với ADR-022), không soi tay hết được.
 
 **Script làm gì.** Quét mọi `.md`, bóc link tương đối, kiểm file đích có thật không, in ra cái nào gãy:
 

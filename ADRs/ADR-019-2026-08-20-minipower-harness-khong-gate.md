@@ -7,7 +7,7 @@
 | **Phạm vi** | Toàn `minipower/` — **pivot định vị**: từ *pipeline 6 phase có cổng* sang *harness hỗ trợ 7 vai, không block ở bước nào*. Chạm §0 và toàn bộ mô hình gatekeeper |
 | **Nối tiếp** | **Huỷ** [ADR-003](ADR-003-2026-07-20-minipower-gated-fanout-execution.md) · [ADR-013](ADR-013-2026-07-26-minipower-senior-junior-execution.md) · [ADR-017](ADR-017-2026-08-20-minipower-toolchain-openproject-github-outline-slack.md) · [ADR-018](ADR-018-2026-08-20-minipower-phe-duyet-openproject-publish-outline.md) · **giữ** [ADR-014](ADR-014-2026-07-28-minipower-spine-tong-hop-wrap-not-build.md) (wrap-not-build) · [ADR-008](ADR-008-2026-07-25-minipower-proposal-suite.md) · [ADR-016](ADR-016-2026-08-02-minipower-discovery-tom-tat-tai-lieu-lon.md) |
 | **Mục đích** | Chốt: minipower là **bộ công cụ gọi khi cần** cho mọi vai SDLC; **mọi phê duyệt sống ở công cụ ngoài**; kháng thể chống hallucination giữ lại dưới dạng **khuyến nghị, không chặn** |
-| **Ảnh hưởng** | [AGENTS.md](../AGENTS.md) §0 + mục gatekeeper + phân tầng micro/light/full · [minipower/SKILL.md](../minipower/SKILL.md) router · [rules.json](../minipower/hooks/lib/rules.json) (`approval_gates`, `prereq_by_intent`) · [agents/approval-gate.md](../minipower/agents/approval-gate.md) · 3 skill [deliberation](../minipower/skills/deliberation/SKILL.md) / [readiness-gate](../minipower/skills/readiness-gate/SKILL.md) / [doc-review](../minipower/skills/doc-review/SKILL.md) · [COORDINATION.md](../COORDINATION.md) H1–H6 · [docs/pipeline.md](../minipower/docs/pipeline.md) · `install/*` (`permissions.deny`) |
+| **Ảnh hưởng** | [AGENTS.md](../AGENTS.md) §0 + mục gatekeeper + phân tầng micro/light/full · [minipower/SKILL.md](../minipower/SKILL.md) router · [rules.json](../minipower/hooks/lib/rules.json) (`approval_gates`, `prereq_by_intent`) · [agents/approval-gate.md](../minipower/agents/approval-gate.md) · 3 skill [deliberation](../minipower/skills/deliberation/SKILL.md) / [readiness-gate](../minipower/skills/readiness-gate/SKILL.md) / [doc-review](../minipower/skills/doc-review/SKILL.md) · [COORDINATION.md](../contracts/README.md) H1–H6 · [docs/pipeline.md](../minipower/docs/pipeline.md) · `install/*` (`permissions.deny`) |
 
 ---
 
@@ -73,7 +73,7 @@ Chưa có MCP cho công cụ nào → **vẫn làm việc bình thường trên 
 | Nguyên tắc | Đổi gì | File phải sửa |
 |---|---|---|
 | §0 `AI = trợ lý · Người quyết cuối` | **Không đổi bản chất** — chỉ dời *nơi* quyết ra ngoài | [AGENTS.md](../AGENTS.md) §0 (diễn đạt lại) |
-| "Gatekeeper — 3 gate + boundary H1–H6" | **Bỏ** — 3 skill thành dịch vụ; H1–H6 thành **gợi ý phối hợp** | AGENTS.md · [COORDINATION.md](../COORDINATION.md) · [pipeline.md](../minipower/docs/pipeline.md) |
+| "Gatekeeper — 3 gate + boundary H1–H6" | **Bỏ** — 3 skill thành dịch vụ; H1–H6 thành **gợi ý phối hợp** | AGENTS.md · [COORDINATION.md](../contracts/README.md) · [pipeline.md](../minipower/docs/pipeline.md) |
 | "Chỉ thực thi khi tài liệu đủ rõ" | **Advisory** (QĐ-5) | [readiness-gate/SKILL.md](../minipower/skills/readiness-gate/SKILL.md) · `prereq_by_intent` trong [rules.json](../minipower/hooks/lib/rules.json) |
 | Trace UC→FR→AC→Test | **Giữ**, thêm `trace:check` + **job CI Gitlab** (QĐ-6) — cưỡng chế chuyển từ *gate trong repo* sang *pipeline ngoài* | `hooks/` (script + test) · `package.json` · template `.gitlab-ci.yml` trong [project-skeleton](../minipower/project-skeleton/) |
 | baseline / CR governance | **Định nghĩa lại**: baseline = version đã publish Outline / tag Gitlab; `change-control` ghi delta, không chặn | [change-control](../minipower/skills/change-control/SKILL.md) · [doc-versioning.md](../minipower/docs-skeleton/00-governance/doc-versioning.md) |
@@ -128,7 +128,7 @@ Chưa có MCP cho công cụ nào → **vẫn làm việc bình thường trên 
 | 4 | Sửa 3 skill gate → dịch vụ/advisory/báo cáo | Không skill nào còn từ chối làm việc |
 | 5 | Nới read-guard + `permissions.deny` từ chặn → nhắc | Smoke hook |
 | 6 | Viết `trace:check` (Node thuần + golden test) **+ job CI** | `npm run trace:check` chạy đúng trên project-skeleton; template `.gitlab-ci.yml` fail khi ID trỏ sai/trùng, warn khi thiếu AC/Test |
-| 7 | Sửa [COORDINATION.md](../COORDINATION.md) H1–H6 + [pipeline.md](../minipower/docs/pipeline.md) sang ngôn ngữ gợi ý | — |
+| 7 | Sửa [COORDINATION.md](../contracts/README.md) H1–H6 + [pipeline.md](../minipower/docs/pipeline.md) sang ngôn ngữ gợi ý | — |
 | 8 | Định nghĩa lại baseline/CR | [change-control](../minipower/skills/change-control/SKILL.md) |
 
 ---

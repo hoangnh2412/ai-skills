@@ -69,7 +69,7 @@ Mỗi lần Senior dispatch Junior phải kèm gói đủ 7 trường; thiếu t
 | 6 | **Bộ tiêu chí đáp ứng** | Definition of Done + rubric chấm của Senior |
 | 7 | **Báo cáo mẫu** | Template Junior điền khi trả việc |
 
-> Đây là **input tối thiểu** của một handoff nội bộ Senior→Junior — cùng tinh thần "input tối thiểu là hợp đồng" của [COORDINATION.md](../COORDINATION.md).
+> Đây là **input tối thiểu** của một handoff nội bộ Senior→Junior — cùng tinh thần "input tối thiểu là hợp đồng" của [COORDINATION.md](../contracts/README.md).
 
 ### §3.2. Governance test-case — kháng thể chống ảo giác (chốt của người, §0.1)
 
@@ -77,7 +77,7 @@ Mỗi lần Senior dispatch Junior phải kèm gói đủ 7 trường; thiếu t
 
 1. **Người + Senior đồng chốt** bộ **test case tối thiểu** đảm bảo các **BR / FR / NFR chính**. Đây là *nguồn chân lý nghiệm thu*.
 2. Senior **được bổ sung** test case mới (cái người chưa nghĩ ra) — **nhưng tổng bổ sung ≤ 10%** số test đã chốt. Mục đích: chặn AI sinh test **trùng · không liên quan · phủ định** test đã chốt.
-3. **Mọi test case phải phủ 100% BR/FR/NFR đã chốt** — trace `test → {MOD}-FR/BR/NFR-NNN` (khớp trace spine UC→FR→AC→Test của [COORDINATION.md](../COORDINATION.md)).
+3. **Mọi test case phải phủ 100% BR/FR/NFR đã chốt** — trace `test → {MOD}-FR/BR/NFR-NNN` (khớp trace spine UC→FR→AC→Test của [COORDINATION.md](../contracts/README.md)).
 4. Senior chỉ "chốt" **trong phạm vi đã trao đổi với người**.
 5. **Phân biệt hai loại test** (chống gaming):
    - **Acceptance test** = do Senior+người sở hữu (mục 1–2) → **thẩm quyền nghiệm thu**.

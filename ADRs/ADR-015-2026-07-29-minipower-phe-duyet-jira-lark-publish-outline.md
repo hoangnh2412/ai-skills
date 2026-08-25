@@ -5,7 +5,7 @@
 | **Ngày** | 2026-07-29 |
 | **Trạng thái** | 🟣 **CANCEL** (2026-08-20) — Jira/Lark rời lộ trình theo [ADR-017](ADR-017-2026-08-20-minipower-toolchain-openproject-github-outline-slack.md) QĐ-3; Q1 "Jira hay Lark" mất nghĩa. Mô hình **3 mặt phẳng** được viết lại tại [ADR-018](ADR-018-2026-08-20-minipower-phe-duyet-openproject-publish-outline.md). Giữ làm lịch sử — không cập nhật tiếp. |
 | **Phạm vi** | `minipower/` — cơ chế **cổng ký (chữ ký)** và **publish tài liệu**. Không đổi nội dung/luồng phase. |
-| **Nối tiếp** | [gated-fanout 2026-07-20](ADR-003-2026-07-20-minipower-gated-fanout-execution.md) (§0 approval-gate, D/E chờ SOP Lark) · [checkpoint 2026-07-25](ADR-010-2026-07-25-tam-dung-gated-fanout-checkpoint.md) · [COORDINATION §4](../COORDINATION.md) (cross-repo bridge) |
+| **Nối tiếp** | [gated-fanout 2026-07-20](ADR-003-2026-07-20-minipower-gated-fanout-execution.md) (§0 approval-gate, D/E chờ SOP Lark) · [checkpoint 2026-07-25](ADR-010-2026-07-25-tam-dung-gated-fanout-checkpoint.md) · [COORDINATION §4](../contracts/cross-repo-bridge.md) (cross-repo bridge) |
 | **Mục đích** | Bắt đầu định nghĩa "SOP Lark/Jira/Outline" cho **chiều phê duyệt + publish** — biến "chữ ký" từ tick-markdown thành **event duyệt trên công cụ quy trình thật**, rồi doc bump version + publish lên Outline. |
 | **Ảnh hưởng** (khi accepted) | [approval-gate.md](../minipower/agents/approval-gate.md) — "chữ ký" = event ngoài, không còn chỉ DEC-markdown · [doc-versioning.md](../minipower/docs-skeleton/00-governance/doc-versioning.md) — version bump kích bởi approval event · [doc-registry.md](../minipower/docs-skeleton/05-traceability/doc-registry.md) — đổi vai thành **bảng ánh xạ** DOC↔Jira↔Lark↔Outline · [parallel-work.md](../minipower/docs/parallel-work.md) — phân vai Author vs Approver. **Không** sửa `rules.json` trong ADR này (chỉ đề xuất; sửa khi có skill/adapter thật). |
 
@@ -34,7 +34,7 @@ Tức **dời "chữ ký" ra hệ thống ngoài** (có audit trail thật: ai d
 | 3 | **Tách lớp adapter** (QĐ-3 gated-fanout) | Jira/Lark/Outline = **adapter riêng**, không nhét vào core skill. Core chỉ biết trạng thái "đã duyệt / chưa". |
 | 4 | **Co lại trước khi mở rộng** | Giai đoạn đầu cho phép **thủ công/CLI** (người dán ref duyệt), tự động webhook làm sau. Không thêm runtime thứ tư khi chưa cần. |
 | 5 | **Repo tự mô tả, model-agnostic** | Dù chữ ký sống ở Jira/Lark, repo **vẫn giữ back-reference** (DEC ghi "approved via {ref} @ {date}") — không có công cụ ngoài vẫn đọc được lịch sử duyệt. |
-| 6 | **Cross-repo bridge** ([COORDINATION §4](../COORDINATION.md)) | "Pin version + back-reference, **không copy tay hai nơi**." Áp cho git↔Outline và Jira/Lark↔git. |
+| 6 | **Cross-repo bridge** ([COORDINATION §4](../contracts/cross-repo-bridge.md)) | "Pin version + back-reference, **không copy tay hai nơi**." Áp cho git↔Outline và Jira/Lark↔git. |
 
 ---
 
@@ -82,7 +82,7 @@ flowchart LR
 4. **Lead BA duyệt (người chốt)** — đọc → **approve / reject** trên Jira/Lark. **Đây là chữ ký.**
 5. **Approve event → git** — bump `Version 0.1`, `Status=Baseline`; ghi **back-ref DEC** "approved via {Jira key / Lark ref} @ {date}"; cập nhật `doc-registry` (Jira key, Outline URL, version, ngày).
 6. **Publish → Outline** — bản đã duyệt lên Outline (read-only). **Hành động ra-ngoài** → do **CI hoặc người bấm**; AI chuẩn bị nội dung, **không** tự publish nội dung chưa duyệt.
-7. **Mở khoá** — chỉ sau (5)/(6), doc mới vượt [boundary H2/H3](../COORDINATION.md) sang Architecture/Planning. **Reject** → về Draft, ghi nợ `memory/{phase}/open-questions.md` ([readiness-gate](../minipower/skills/readiness-gate/SKILL.md)).
+7. **Mở khoá** — chỉ sau (5)/(6), doc mới vượt [boundary H2/H3](../contracts/handoff.md) sang Architecture/Planning. **Reject** → về Draft, ghi nợ `memory/{phase}/open-questions.md` ([readiness-gate](../minipower/skills/readiness-gate/SKILL.md)).
 
 **Fan-out:** BA A và BA B là **hai luồng độc lập**. Lead BA **duyệt từng module khi module đó đủ** — không gom chờ cả hai (luật "input tối thiểu là hợp đồng, không phải toàn bộ").
 
@@ -97,7 +97,7 @@ flowchart LR
 | [doc-versioning](../minipower/docs-skeleton/00-governance/doc-versioning.md) | Version chỉ sau sign-off | Giữ nguyên — chỉ khác: "sign-off" giờ = **approve event ngoài**, không phải tick markdown. |
 | `doc-registry.md` | Nơi ký (Sign-off cột) | **Bảng ánh xạ** DOC↔Jira↔Lark↔Outline↔version (mirror; SSOT duyệt ở ngoài). |
 | DEC (decision-log) | Chữ ký nội-repo | **Back-reference**: "approved via {ref}" — giữ repo tự mô tả. |
-| [COORDINATION §4](../COORDINATION.md) bridge | git-docs ↔ git-code | Tổng quát cho git ↔ Outline + Jira/Lark ↔ git. |
+| [COORDINATION §4](../contracts/cross-repo-bridge.md) bridge | git-docs ↔ git-code | Tổng quát cho git ↔ Outline + Jira/Lark ↔ git. |
 
 ---
 
@@ -145,6 +145,6 @@ flowchart LR
 | [checkpoint 2026-07-25](ADR-010-2026-07-25-tam-dung-gated-fanout-checkpoint.md) | Ranh giới "không làm D/E thiếu SOP" |
 | [doc-versioning.md](../minipower/docs-skeleton/00-governance/doc-versioning.md) | Quy tắc version chỉ-sau-sign-off |
 | [parallel-work.md](../minipower/docs/parallel-work.md) | Fan-out theo module, một-owner |
-| [COORDINATION.md §4](../COORDINATION.md) | Cross-repo bridge — pin + back-reference |
+| [COORDINATION.md §4](../contracts/cross-repo-bridge.md) | Cross-repo bridge — pin + back-reference |
 </content>
 </invoke>

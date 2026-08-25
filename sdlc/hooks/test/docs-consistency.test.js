@@ -1,7 +1,7 @@
 /**
  * Golden test — tài liệu gốc repo khớp quyết định (ADR-020 §8 #10, #12).
  *
- * AGENTS.md và COORDINATION.md là thứ agent đọc ĐẦU TIÊN. Một câu sai ở đó lan
+ * AGENTS.md và contracts/ là thứ agent đọc ĐẦU TIÊN. Một câu sai ở đó lan
  * ra mọi phiên làm việc sau — đắt hơn nhiều so với một câu sai trong skill lẻ.
  * Trước giờ chúng chỉ được canh bằng trí nhớ người sửa.
  */
@@ -59,10 +59,10 @@ test("#12 — AGENTS.md nêu lệnh trace:check", () => {
   assert.ok(pkg.scripts["trace:check"], "AGENTS.md nêu lệnh mà package.json không có")
 })
 
-// ─── #12 — COORDINATION.md ──────────────────────────────────────────────────
+// ─── #12 — contracts/handoff.md ──────────────────────────────────────────────────
 
-test("#12 — COORDINATION.md: handoff là per-module, không per-project", () => {
-  const t = read("COORDINATION.md")
+test("#12 — contracts/handoff.md: handoff là per-module, không per-project", () => {
+  const t = read("contracts", "handoff.md")
   assert.match(t, /per-module/i, "phải nói rõ handoff theo module")
   assert.match(t, /QĐ-14/)
   assert.match(t, /[Kk]hông có vạch đích chung/, "phải phủ định barrier")

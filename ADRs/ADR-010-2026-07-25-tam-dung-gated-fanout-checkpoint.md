@@ -90,7 +90,7 @@ Chi tiết kỹ thuật: [ADR gated-fanout §3–§3′](ADR-003-2026-07-20-mini
 
 | Hạng mục | Trạng thái |
 |---|---|
-| [COORDINATION.md](../COORDINATION.md) | Draft v0.1 — chưa áp dụng vào pack |
+| [COORDINATION.md](../contracts/README.md) | Draft v0.1 — chưa áp dụng vào pack |
 | `minipower-academy/` | Untracked — chưa commit |
 
 ### 3.3. Mức phủ 8 bước tầm nhìn (snapshot)

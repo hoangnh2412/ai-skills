@@ -39,7 +39,7 @@ Mức L1/L2/L3 kế thừa từ ADR-009 §4 (phần còn giá trị của ADR đ
 | **QC** | Test strategy, test case per-FR, kết quả kiểm thử (DOC-16) | **Github** (test trong repo) · **OpenProject** (defect) |
 | **Operation** | Incident, postmortem, runbook, theo dõi vận hành | **Slack** (kênh sự cố) · **OpenProject** (ticket) · **Outline** (runbook) |
 
-**Nguyên tắc gán:** một công việc chỉ có **một công cụ chủ**. Không ghi cùng một dữ kiện vào hai nơi — chỗ còn lại chỉ **trỏ tham chiếu** (luật cross-repo bridge, [COORDINATION.md](../COORDINATION.md) §4).
+**Nguyên tắc gán:** một công việc chỉ có **một công cụ chủ**. Không ghi cùng một dữ kiện vào hai nơi — chỗ còn lại chỉ **trỏ tham chiếu** (luật cross-repo bridge, [COORDINATION.md](../contracts/README.md) §4).
 
 ---
 
@@ -109,7 +109,7 @@ Mức L1/L2/L3 kế thừa từ ADR-009 §4 (phần còn giá trị của ADR đ
 |---|---|---|
 | **Q1** | Thứ tự mở 7 vai — đồng loạt hay theo wedge? | **Theo wedge** (R1): BA/SA → PM → DEV → QC → DevOps → Operation |
 | **Q2** | OpenProject: dùng **work package hierarchy** sẵn có hay định nghĩa Epic/Story/Task riêng? | Dùng hierarchy sẵn có, map `{MOD}-FR` vào custom field — không phát minh schema |
-| **Q3** | Github: minipower **cùng repo** với code sản phẩm hay repo docs tách riêng? | Tách repo docs, nối bằng pin + back-reference ([COORDINATION.md](../COORDINATION.md) §4) |
+| **Q3** | Github: minipower **cùng repo** với code sản phẩm hay repo docs tách riêng? | Tách repo docs, nối bằng pin + back-reference ([COORDINATION.md](../contracts/README.md) §4) |
 | **Q4** | [lark-work-assistant.md](../minipower/agents/lark-work-assistant.md): xoá, hay giữ như adapter ngoài lộ trình? | **Gỡ khỏi bảng trigger router**, giữ file làm tham chiếu cho tới khi có bản OpenProject/Slack tương đương |
 | **Q5** | Slack: chỉ **thông báo một chiều**, hay nhận cả lệnh từ Slack? | Một chiều trước (thông báo + nhắc); nhận lệnh = bề mặt mới, để sau |
 | **Q6** | MCP nào cho từng công cụ — server chính thức hay cộng đồng? Chiến lược suy giảm khi MCP chết? | Ưu tiên server chính thức; thiếu tool → báo thẳng + workaround thủ công, **không** giả lập đã ghi |
@@ -133,5 +133,5 @@ Mức L1/L2/L3 kế thừa từ ADR-009 §4 (phần còn giá trị của ADR đ
 - [ADR-014](ADR-014-2026-07-28-minipower-spine-tong-hop-wrap-not-build.md) — wrap-not-build, bảng borrow, điều kiện siết 5.2
 - [ADR-003](ADR-003-2026-07-20-minipower-gated-fanout-execution.md) — gated fan-out, lộ trình A→E bị sửa đích ở §3.2
 - [ADR-009](ADR-009-2026-07-25-minipower-orchestrator-analysis.md) (cancel) — nguồn của phân loại L1/L2/L3
-- [COORDINATION.md](../COORDINATION.md) — handoff H1–H6, cross-repo bridge
+- [COORDINATION.md](../contracts/README.md) — handoff H1–H6, cross-repo bridge
 - [minipower/docs/parallel-work.md](../minipower/docs/parallel-work.md) — một-owner-một-module khi fan-out
