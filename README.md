@@ -72,6 +72,39 @@ Việc code .NET chỉ cần mô tả bằng lời — skill tương ứng tự 
 
 ---
 
+## Cấu trúc thư mục
+
+Repo tổ chức theo hai tầng: **module** (đơn vị cài, chứa skill — mỗi module tự khai `PACK.md`) và **tầng nền** (đọc trực tiếp trong workspace, không cần cài):
+
+```text
+minipower/
+├── sdlc/                  # Module: Quy trình phát triển (BA + SA + TPM)
+│   ├── SKILL.md           #   Router — routing intent → phase, init dự án, phân tầng chi phí
+│   ├── skills/            #   6 phase-skill + deliberation / doc-review / readiness-gate / fan-out / as-built
+│   ├── agents/            #   Guardrail markdown cho subagent
+│   ├── roles/             #   7 lăng kính vai trò (BA, SA, PM…)
+│   ├── templates/         #   19 DOC template + TPL phụ trợ
+│   ├── hooks/             #   Logic hook — Node ESM thuần, SSOT là lib/rules.json
+│   ├── docs/              #   pipeline, parallel-work, token-guard, decision-log
+│   ├── project-skeleton/  #   Khung dự án đích (docs/ · memory/ · assets/ · brainstorm/)
+│   └── install/           #   Hướng dẫn cài cho cursor / claude / opencode
+├── backend/               # Module: 14 skill code .NET (minipower-backend-*-dotnet)
+│   └── skills/
+├── ops/                   # Module: kỹ năng vận hành DevOps (minipower-ops-*)
+│   └── skills/
+├── contracts/             # Tầng nền: hợp đồng liên-pack — trace-spine, handoff H1–H6, schema PACK.md
+├── fundamentals/          # Tầng nền: kiến thức nền .NET/DDD/testing + bộ phỏng vấn (interview/)
+└── ADRs/                  # Quyết định định hướng — trạng thái khai ở ADRs/README.md
+```
+
+Nguyên tắc tổ chức:
+
+- **Tên hai tầng:** `minipower` là thương hiệu; tên module là chức năng một-từ (`sdlc`, `backend`, `ops`). Skill đăng ký theo mẫu `minipower-{module}-{capability}[-{stack}]` — gõ "minipower" trong ô search là thấy toàn bộ.
+- **Mỗi thư mục một vai:** `SKILL.md` viết cho agent (quy tắc, workflow); `README.md` viết cho người (hướng dẫn, bảng tra). Module mới chỉ tạo khi đã có skill thật.
+- **Nguồn chân lý duy nhất:** các bảng routing/phase trong tài liệu được **sinh tự động** từ [`sdlc/hooks/lib/rules.json`](sdlc/hooks/lib/rules.json) — sửa rules rồi chạy `npm run gen`, không sửa tay vùng generated.
+
+---
+
 ## Liên kết nhanh
 
 - [Quy trình phát triển — sdlc hub](sdlc/README.md) · [sdlc router (SKILL.md)](sdlc/SKILL.md) · [19 DOC templates](sdlc/templates/README.md)
