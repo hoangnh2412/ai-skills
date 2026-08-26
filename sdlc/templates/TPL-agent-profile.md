@@ -24,6 +24,7 @@ Hướng dẫn maintainer & agent khi **Init project** / **Reconfigure agent**.
 | `{minipower_experience}` | `new` \| `returning` |
 | `{mode_context_block}` | Bối cảnh theo chế độ — xem [§ Block mode_context_block](#block-mode_context_block) |
 | `{mode_tasks_block}` | Việc phải làm theo chế độ — xem [§ Block mode_tasks_block](#block-mode_tasks_block) |
+| `{modules_block}` | Bảng module Minipower đã cài — sinh từ `PACK.md` các module, xem [§ Block modules_block](#block-modules_block) |
 | `{onboarding_block}` | Đoạn hướng dẫn người mới — xem [§ Block onboarding](#block-onboarding_block) |
 | `{profile_table_rows}` | 7 dòng bảng markdown từ câu trả lời init (7 câu — [SKILL.md § Init](../SKILL.md)) |
 
@@ -106,6 +107,8 @@ Ba nguyên tắc áp cho mọi chế độ, mọi phase:
 - Chốt nội dung → `docs/`; trao đổi chi tiết → `brainstorm/`; bản gốc khách → `assets/` (không sửa file gốc).
 
 {mode_tasks_block}
+
+{modules_block}
 
 {onboarding_block}
 
@@ -288,6 +291,42 @@ Chọn đúng **một** biến thể theo `project_mode`.
 
 ---
 
+## Block `{modules_block}`
+
+Cho agent dự án đích biết **ngoài pipeline `sdlc` còn module nào, khi nào gọi cái gì**. Không viết tay danh sách — **sinh từ `PACK.md`** của từng module (schema: [contracts/pack-manifest.md](../../contracts/pack-manifest.md)):
+
+1. Khi init / reconfigure, quét `*/PACK.md` trong repo pack (`sdlc`, `backend`, `ops`, và mọi module tương lai — `frontend`, `design`, …).
+2. Bỏ `sdlc` (đã đi qua router `/minipower-sdlc` ở phần trên). Với mỗi module còn lại, lấy từ khối yaml: `pack` · `stage` · `consumes` · `handoff-in/out`; câu "dùng khi nào" chưng cất từ đó + mô tả ở hub `{module}/README.md`.
+3. Chỉ liệt kê module **thực sự cài** cho dự án (theo lựa chọn `--with` lúc cài / câu trả lời init). Không cài module nào ngoài `sdlc` → block rút còn một dòng ghi chú.
+
+Khuôn render:
+
+```markdown
+### Module Minipower ngoài sdlc
+
+Skill các module dưới đây là **lá-rời** — không qua router; gọi bằng tên skill (tiền tố `minipower-{module}-…`) hoặc để agent tự kích hoạt theo description. Nguyên tắc chung: chỉ chuyển sang thực thi khi tiền đề ở cột *Cần trước* đã đủ (per-module); thiếu thì hỏi trọn gói qua readiness-gate, không nhảy giải pháp sớm.
+
+| Module | Skill | Dùng khi | Cần trước (consumes) | Boundary | Chi tiết |
+|--------|-------|----------|----------------------|----------|----------|
+| `backend` | `minipower-backend-*-dotnet` | viết / review / chẩn đoán code .NET của module đã đủ FR+AC | DOC-08, DOC-11, DOC-12, `{MOD}-FR-*`, `{MOD}-AC-*` | vào H4 · ra H6 | `backend/README.md` |
+| `ops` | `minipower-ops-*` | vận hành sau bàn giao: đọc metrics, chẩn đoán sự cố | DOC-17, dashboard/metrics runtime | vào H6 | `ops/README.md` |
+
+Quy tắc dùng chung:
+- **Mỗi module một nhịp** — module đủ tiền đề thì tiến, không chờ module khác; tiền đề tính per-module.
+- **Không bàn giao agent↔agent giữa module** — output giao qua boundary (H4/H6) bằng ID ổn định, {honorific_display} {user_name} mở đường từng nhánh.
+- Cần danh sách skill đầy đủ của một module: đọc hub `{module}/README.md` — không đoán tên skill.
+```
+
+> Hai dòng bảng trên là **ví dụ theo `PACK.md` hiện hành** — luôn render lại từ `PACK.md` thật tại thời điểm init, không copy nguyên văn. Mỗi module **một dòng** (không liệt kê từng skill lá — chi tiết ở hub README); module mới có `PACK.md` là tự có mặt trong bảng.
+
+**Khi dự án không cài module nào ngoài `sdlc`:**
+
+```markdown
+*Dự án hiện chỉ dùng pipeline `sdlc`. Khi cài thêm module Minipower (backend, frontend, ops, …), chạy `Cập nhật profile` để bổ sung bảng module vào file này.*
+```
+
+---
+
 ## Block `{onboarding_block}`
 
 **Khi `minipower_experience` = `new`:**
@@ -348,6 +387,6 @@ Sau toàn bộ nội dung trên (sau phần Nguyên tắc code), thêm:
 
 1. Hỏi **trọn gói 7 câu** ([SKILL.md § Init](../SKILL.md) — gồm cả `project_mode` và `approval_source`) — **không** copy skeleton trước khi có đủ trả lời.
 2. Copy [project-skeleton](../project-skeleton/) + [docs-skeleton](../docs-skeleton/).
-3. Ghi `memory/profile.json` → sinh `AGENTS.md` + `CLAUDE.md` theo template trên — chọn đúng biến thể `{mode_context_block}` / `{mode_tasks_block}` / `{onboarding_block}`.
+3. Ghi `memory/profile.json` → sinh `AGENTS.md` + `CLAUDE.md` theo template trên — chọn đúng biến thể `{mode_context_block}` / `{mode_tasks_block}` / `{onboarding_block}`; render `{modules_block}` từ `PACK.md` các module đã cài.
 4. Điền `README.md`, `memory/memory.md`, `memory/{current_phase}/`.
 5. Exit: profile hợp lệ + đủ 4 nhánh `memory/` · `assets/` · `brainstorm/` · `docs/` — [SKILL.md § Exit init](../SKILL.md#exit-init).
