@@ -14,6 +14,7 @@ Hub: [.opencode/README.md](../../../README.md) (repo Jarvis gốc).
 | `AddJarvisOpenTelemetry` / enricher | [minipower-backend-telemetry-dotnet](../../minipower-backend-telemetry-dotnet/README.md) | HostLayerExtension, Enrich*Service.cs |
 | `AddCoreSwagger` | [minipower-backend-swashbuckle-dotnet](../../minipower-backend-swashbuckle-dotnet/README.md) | HostLayerExtension |
 | `AddHealthChecks` | [minipower-backend-healthcheck-dotnet](../../minipower-backend-healthcheck-dotnet/README.md) | HostLayerExtension |
+| `.editorconfig` + `Directory.Build.props` (analyzer ép convention lúc build) | [minipower-backend-convention-dotnet](../../minipower-backend-convention-dotnet/README.md) | [convention templates/](../../minipower-backend-convention-dotnet/templates/) |
 
 ## Chưa wire — thêm qua skill
 

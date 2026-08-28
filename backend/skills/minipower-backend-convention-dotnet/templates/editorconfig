@@ -1,0 +1,114 @@
+# Copy thành `.editorconfig` ở **root repo product** ({product}-backend/.editorconfig).
+# Chỉ chứa rule ánh xạ được từ reference/coding-convention.md — không thêm sở thích cá nhân.
+# Rule mục 1 (naming) để `error`: đây là phần convention máy kiểm được, sai thì build đỏ.
+
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+indent_style = space
+trim_trailing_whitespace = true
+
+[*.{cs,csx}]
+indent_size = 4
+
+# --- Mục 10: C# hiện đại -------------------------------------------------
+csharp_style_namespace_declarations = file_scoped:warning
+
+# --- Mục 1: Đặt tên (IDE1006) --------------------------------------------
+dotnet_diagnostic.IDE1006.severity = error
+
+# Symbol groups
+dotnet_naming_symbols.interfaces.applicable_kinds = interface
+dotnet_naming_symbols.interfaces.applicable_accessibilities = *
+
+dotnet_naming_symbols.types_and_members.applicable_kinds = class, struct, enum, delegate, method, property, event
+dotnet_naming_symbols.types_and_members.applicable_accessibilities = *
+
+dotnet_naming_symbols.constants.applicable_kinds = field
+dotnet_naming_symbols.constants.applicable_accessibilities = *
+dotnet_naming_symbols.constants.required_modifiers = const
+
+dotnet_naming_symbols.static_fields.applicable_kinds = field
+dotnet_naming_symbols.static_fields.applicable_accessibilities = private, private_protected
+dotnet_naming_symbols.static_fields.required_modifiers = static
+
+dotnet_naming_symbols.private_fields.applicable_kinds = field
+dotnet_naming_symbols.private_fields.applicable_accessibilities = private, private_protected
+
+dotnet_naming_symbols.parameters_and_locals.applicable_kinds = parameter, local
+dotnet_naming_symbols.parameters_and_locals.applicable_accessibilities = *
+
+# Naming styles
+dotnet_naming_style.pascal_case.capitalization = pascal_case
+dotnet_naming_style.camel_case.capitalization = camel_case
+dotnet_naming_style.i_prefix.capitalization = pascal_case
+dotnet_naming_style.i_prefix.required_prefix = I
+dotnet_naming_style.underscore_camel_case.capitalization = camel_case
+dotnet_naming_style.underscore_camel_case.required_prefix = _
+
+# Rules
+dotnet_naming_rule.interfaces_start_with_i.symbols = interfaces
+dotnet_naming_rule.interfaces_start_with_i.style = i_prefix
+dotnet_naming_rule.interfaces_start_with_i.severity = error
+
+dotnet_naming_rule.types_and_members_pascal.symbols = types_and_members
+dotnet_naming_rule.types_and_members_pascal.style = pascal_case
+dotnet_naming_rule.types_and_members_pascal.severity = error
+
+# const PascalCase — chặn kiểu C cũ MAX_RETRY_COUNT (mục 1)
+dotnet_naming_rule.constants_pascal.symbols = constants
+dotnet_naming_rule.constants_pascal.style = pascal_case
+dotnet_naming_rule.constants_pascal.severity = error
+
+# Private field STATIC → PascalCase, không `_` (mục 1). Phải khai TRƯỚC rule
+# private field instance bên dưới: rule khớp đầu tiên thắng, mà static cũng là field private.
+dotnet_naming_rule.static_fields_pascal.symbols = static_fields
+dotnet_naming_rule.static_fields_pascal.style = pascal_case
+dotnet_naming_rule.static_fields_pascal.severity = error
+
+# Private field INSTANCE → _camelCase (mục 1).
+dotnet_naming_rule.private_fields_underscore.symbols = private_fields
+dotnet_naming_rule.private_fields_underscore.style = underscore_camel_case
+dotnet_naming_rule.private_fields_underscore.severity = error
+
+dotnet_naming_rule.parameters_and_locals_camel.symbols = parameters_and_locals
+dotnet_naming_rule.parameters_and_locals_camel.style = camel_case
+dotnet_naming_rule.parameters_and_locals_camel.severity = error
+
+# --- Mục 3: Exception ----------------------------------------------------
+# `throw ex;` làm mất stack gốc — reference mục 3 gọi thẳng là sai.
+dotnet_diagnostic.CA2200.severity = error
+# Nuốt exception / catch chung chung: cảnh báo, người quyết có lý do chính đáng không.
+dotnet_diagnostic.CA1031.severity = suggestion
+
+# --- Mục 4: Async / await ------------------------------------------------
+# `.Result` / `.Wait()` trong method async.
+dotnet_diagnostic.CA1849.severity = warning
+# Hậu tố `Async` không có analyzer sẵn — thuộc phần mềm, review bằng mắt.
+# ConfigureAwait(false): BẬT ở project library dùng chung, TẮT ở Host ASP.NET Core (reference mục 4).
+# Đặt `warning` trong .editorconfig của thư mục project library thay vì bật toàn repo.
+dotnet_diagnostic.CA2007.severity = none
+
+# --- Mục 9.2: Logging có cấu trúc ---------------------------------------
+dotnet_diagnostic.CA2254.severity = warning
+
+# --- Mục 9.3: IDisposable ------------------------------------------------
+dotnet_diagnostic.CA2000.severity = warning
+dotnet_diagnostic.CA2213.severity = warning
+
+# --- Mục 9.4 / 9.5: Culture & so sánh chuỗi ------------------------------
+dotnet_diagnostic.CA1305.severity = warning
+dotnet_diagnostic.CA1307.severity = warning
+dotnet_diagnostic.CA1310.severity = warning
+
+# --- Mục 12: Bảo mật cơ bản ---------------------------------------------
+# SQL nối chuỗi.
+dotnet_diagnostic.CA2100.severity = warning
+
+# --- Test project: nới rule không hợp ngữ cảnh test ---------------------
+[tests/**/*.cs]
+dotnet_diagnostic.CA1031.severity = none
+dotnet_diagnostic.CA2007.severity = none

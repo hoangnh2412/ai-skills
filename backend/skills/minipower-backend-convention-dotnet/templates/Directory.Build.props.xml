@@ -1,0 +1,39 @@
+<!--
+  Copy thành `Directory.Build.props` ở root `src/` của repo product (cạnh {Product}.sln).
+  Nhiệm vụ: bật analyzer + nullable, và biến một nhóm rule chọn lọc thành LỖI BUILD.
+
+  Vì sao WarningsAsErrors chọn lọc chứ không TreatWarningsAsErrors=true:
+  bật tất cả trên codebase có sẵn làm build đỏ hàng loạt vì code cũ — phạt vì lịch sử,
+  không phải vì lỗi mới. Danh sách dưới là phần convention đáng chặn ngay; nâng dần
+  bằng cách thêm mã rule vào $(WarningsAsErrors) khi codebase đã sạch.
+-->
+<Project>
+
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+
+    <!-- Analyzer .NET (CAxxxx) + code style (IDExxxx) chạy trong `dotnet build`, không chỉ trong IDE -->
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <AnalysisMode>Recommended</AnalysisMode>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+
+    <!--
+      IDE1006 : đặt tên sai (mục 1)
+      CA2200  : `throw ex;` mất stack (mục 3)
+      CS8600/8602/8603/8618 : nullable — tránh `!` dập cảnh báo (mục 9.1)
+    -->
+    <WarningsAsErrors>$(WarningsAsErrors);IDE1006;CA2200;CS8600;CS8602;CS8603;CS8618</WarningsAsErrors>
+  </PropertyGroup>
+
+  <!--
+    Áp dần cho repo có sẵn: đặt Nullable=annotations (chỉ nhận annotation, chưa cảnh báo)
+    ở project legacy, rồi nâng lên enable từng project.
+
+    <PropertyGroup Condition="'$(MSBuildProjectName)' == '{Product}.Legacy'">
+      <Nullable>annotations</Nullable>
+    </PropertyGroup>
+  -->
+
+</Project>

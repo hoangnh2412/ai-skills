@@ -51,3 +51,5 @@ Hướng dẫn người dùng: [README.md](README.md).
 - Extensions `AddCore*` / `UseCore*` trên Host
 - `appsettings`: `Json`, `Cors`, `Middlewares`
 - API trả `BaseResponse` cho path trong `Includes` (nếu bật wrapper)
+- Code C# theo [minipower-backend-convention-dotnet](../minipower-backend-convention-dotnet/SKILL.md) — `dotnet format --verify-no-changes` sạch trên file đã chạm
+

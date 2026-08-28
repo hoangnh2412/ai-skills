@@ -61,3 +61,5 @@ Hướng dẫn: [README.md](README.md).
 - `AddJarvisAuthentication(config, auth => { AddCore* })` + `UseAuthentication` / `UseAuthorization`
 - `appsettings` section `Authentication` (schema đúng: API Key `KeyName`+`Key`, Basic `Users`, JWT `Authority`/`IssuerSigningKeys`)
 - Protected endpoint trả 401 khi thiếu credential (validate)
+- Code C# theo [minipower-backend-convention-dotnet](../minipower-backend-convention-dotnet/SKILL.md) — `dotnet format --verify-no-changes` sạch trên file đã chạm
+

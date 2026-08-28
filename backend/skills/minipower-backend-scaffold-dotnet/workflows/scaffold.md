@@ -14,6 +14,7 @@
 - [ ] 0. Hỏi / xác nhận 5.9 (Q1–Q7) — dùng defaults nếu user không chỉ định
 - [ ] 1. Tạo cây thư mục repo (5.1)
 - [ ] 2. dotnet new sln + 5 projects + tests (5.2, 5.10 bước 1–2)
+- [ ] 2b. .editorconfig + Directory.Build.props (convention — bước 2b)
 - [ ] 3. Project references đúng thứ tự (5.11)
 - [ ] 4. Thêm Jarvis PackageReference / ProjectReference theo layer
 - [ ] 5. Tạo folder structure (5.3–5.8) + *LayerExtension.cs
@@ -69,6 +70,17 @@ dotnet add "${PRODUCT}.Host" reference "${PRODUCT}.Application" "${PRODUCT}.Infr
 dotnet add "../tests/${PRODUCT}.Domain.Tests" reference "${PRODUCT}.Domain"
 dotnet add "../tests/${PRODUCT}.Application.Tests" reference "${PRODUCT}.Application"
 ```
+
+## Bước 2b — Convention (.editorconfig + Directory.Build.props)
+
+Đặt **trước** khi copy code layer, để analyzer bắt lỗi ngay từ file đầu tiên.
+
+| Copy từ | Tới |
+|---|---|
+| [minipower-backend-convention-dotnet/templates/editorconfig](../../minipower-backend-convention-dotnet/templates/editorconfig) | `{product}-backend/.editorconfig` |
+| [minipower-backend-convention-dotnet/templates/Directory.Build.props.xml](../../minipower-backend-convention-dotnet/templates/Directory.Build.props.xml) | `{product}-backend/src/Directory.Build.props` |
+
+Bỏ dòng comment hướng dẫn ở đầu mỗi file khi copy. Quy ước đầy đủ: [minipower-backend-convention-dotnet](../../minipower-backend-convention-dotnet/SKILL.md).
 
 ## Bước 3 — Jarvis references
 

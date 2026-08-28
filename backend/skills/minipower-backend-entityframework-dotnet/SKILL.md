@@ -64,3 +64,5 @@ Skill điều phối `Jarvis.EntityFramework` trên ASP.NET Core. Hướng dẫn
 - `AppDbContext`, `AppUnitOfWork`, entities
 - `appsettings` `ConnectionStrings`, `Cache:Items:ConnectionString`
 - `dotnet build`; migrate nếu bật `AutoMigrate`
+- Code C# theo [minipower-backend-convention-dotnet](../minipower-backend-convention-dotnet/SKILL.md) — `dotnet format --verify-no-changes` sạch trên file đã chạm
+

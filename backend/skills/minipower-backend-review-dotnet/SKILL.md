@@ -42,7 +42,7 @@ Nguyên tắc quan trọng:
 
 * Chỉ comment issue có impact thực tế
 * Không giải thích best practice chung chung
-* Không nitpick style/editorconfig
+* Không nitpick style/editorconfig — style, format, naming do `.editorconfig` + analyzer + `dotnet format` gác ([minipower-backend-convention-dotnet](../minipower-backend-convention-dotnet/SKILL.md)). Repo chưa có lớp đó: đề xuất dựng **một lần**, không lặp comment mỗi PR.
 * Không comment những gì đã obvious từ code
 * Không đề xuất refactor lớn nếu không cần thiết
 * Không cố tìm issue nhỏ nếu code ổn

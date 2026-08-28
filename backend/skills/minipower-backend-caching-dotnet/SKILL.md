@@ -60,3 +60,5 @@ Kiến trúc & vận hành: [README.md](README.md).
 - `appsettings.json` section `Cache`
 - Item `ConnectionString` nếu dùng cùng EF
 - Validate: hit/miss, `RemoveAsync` sau update
+- Code C# theo [minipower-backend-convention-dotnet](../minipower-backend-convention-dotnet/SKILL.md) — `dotnet format --verify-no-changes` sạch trên file đã chạm
+

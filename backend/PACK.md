@@ -6,7 +6,7 @@ Manifest máy-đọc của module (schema: [contracts/pack-manifest.md](../contr
 pack: backend
 version: 0.1.0
 owner: hoangnh
-roles: [backend-dotnet]        # 14 lá phục vụ 3 lăng kính: DEV · QC (review) · DevOps (observability)
+roles: [backend-dotnet]        # 15 lá phục vụ 3 lăng kính: DEV · QC (review) · DevOps (observability)
 stage: implementation
 repo: code
 consumes: [DOC-08, DOC-11, DOC-12, "{MOD}-FR-*", "{MOD}-AC-*"]

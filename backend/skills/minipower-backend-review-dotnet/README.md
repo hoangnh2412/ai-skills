@@ -147,4 +147,4 @@ Agent ghi **Need more context** và nêu cần thêm (base branch, danh sách fi
 
 - Skill ưu tiên **production risk**, không thay human reviewer hoàn toàn
 - Checklist dài là **cố ý** — agent tự đối chiếu từng hạng mục với PR, không bắt buộc phải có issue ở mọi mục
-- Không mong đợi comment về formatting, EditorConfig, hay refactor lớn không cần thiết
+- Không mong đợi comment về formatting, EditorConfig, hay refactor lớn không cần thiết — phần đó do [minipower-backend-convention-dotnet](../minipower-backend-convention-dotnet/README.md) (analyzer + `dotnet format`) gác

@@ -48,3 +48,5 @@ Hướng dẫn: [README.md](README.md).
 - `AddCoreApplication()` trong Application layer extension
 - Handler đăng ký DI
 - `dotnet build`; ít nhất một command/query end-to-end
+- Code C# theo [minipower-backend-convention-dotnet](../minipower-backend-convention-dotnet/SKILL.md) — `dotnet format --verify-no-changes` sạch trên file đã chạm
+

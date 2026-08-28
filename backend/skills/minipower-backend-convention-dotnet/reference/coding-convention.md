@@ -1,10 +1,4 @@
----
-name: dotnet-coding-convention
-description: >-
-  Áp dụng quy ước C#/.NET cho đặt tên, nullable, async/CancellationToken, logging,
-  exception, LINQ, DI, C# 11–12, test, bảo mật cơ bản, ASP.NET Core, refactoring và
-  code smells. Dùng khi viết hoặc review C# hoặc coding style .NET.
----
+<!-- Reference của skill minipower-backend-convention-dotnet — toàn văn quy ước, không load mặc định. -->
 
 # Quy ước coding C# / .NET
 
@@ -23,7 +17,8 @@ Tuân thủ các mục dưới đây khi chỉnh sửa hoặc tạo mã C# trong
 | Interface | PascalCase, tiền tố `I` | `ILogger`, `IPaymentGateway` | `LoggerInterface` |
 | Method | PascalCase, động từ | `CalculateTotal()`, `SaveChanges()` | `calcTotal()`, `save_changes()` |
 | Property | PascalCase | `public string FirstName { get; set; }` | `public string firstName` |
-| Field (private) | `_` + camelCase (phổ biến trong .NET) | `private readonly IOrderRepository _orderRepository` | `private OrderRepository orderRepository` |
+| Field (private, instance) | `_` + camelCase | `private readonly IOrderRepository _orderRepository` | `private OrderRepository orderRepository` |
+| Field (private, **static**) | PascalCase, **không** `_` | `private static readonly TimeSpan DefaultCacheTimeout` | `private static readonly TimeSpan _defaultCacheTimeout` |
 | Type parameter | `T`, `TKey`, `TItem` + `where` rõ ràng | `Dictionary<TKey, TValue> where TKey : notnull` | `T1`, `Foo` không mô tả |
 | Parameter / biến local | camelCase | `customerId`, `orderDate` | `CustomerId`, `order_date` |
 | Constant | PascalCase | `const int MaxRetryCount = 3;` | `MAX_RETRY_COUNT` (kiểu C cũ) |
@@ -57,7 +52,7 @@ namespace MyCompany.MyProduct.Features.Orders
         private static readonly TimeSpan DefaultCacheTimeout = TimeSpan.FromMinutes(5);
 
         // 2. Private static fields (hạn chế; ưu tiên inject qua DI)
-        private static readonly JsonSerializerOptions _serializerOptions = new()
+        private static readonly JsonSerializerOptions SerializerOptions = new()
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase
         };

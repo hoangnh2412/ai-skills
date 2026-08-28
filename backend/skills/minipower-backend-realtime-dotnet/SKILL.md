@@ -44,3 +44,5 @@ Hướng dẫn: [README.md](README.md).
 - `AddCoreRealtime().UseSignalR()`
 - `MapRealtimeHub<TUser, TTenant>()`
 - `dotnet build`
+- Code C# theo [minipower-backend-convention-dotnet](../minipower-backend-convention-dotnet/SKILL.md) — `dotnet format --verify-no-changes` sạch trên file đã chạm
+

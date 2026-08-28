@@ -48,6 +48,7 @@ Chi tiết folder, DI convention, Jarvis mapping: [reference/solution-structure.
 | Layer extensions + Host | [templates/layers/](templates/layers/) |
 | csproj Jarvis refs | [templates/layer-csproj/](templates/layer-csproj/) |
 | README / Architecture | [templates/docs-README.md](templates/docs-README.md) |
+| `.editorconfig` + `Directory.Build.props` | [minipower-backend-convention-dotnet/templates/](../minipower-backend-convention-dotnet/templates/) |
 
 ## Hai cách cài Jarvis
 
@@ -119,4 +120,5 @@ Mở rộng module: dùng [templates/SKILLS.md](templates/SKILLS.md) và skill `
 - `*LayerExtension.cs` mỗi layer
 - `Program.cs` mỏng
 - `appsettings` + `launchSettings`
+- `.editorconfig` (root) + `src/Directory.Build.props` — [minipower-backend-convention-dotnet](../minipower-backend-convention-dotnet/SKILL.md)
 - `dotnet build` thành công

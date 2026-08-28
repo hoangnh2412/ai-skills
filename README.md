@@ -14,15 +14,16 @@ Cách làm dựa trên ba nguyên tắc:
 
 ## Minipower có gì?
 
-Hai **module** (đơn vị cài, chứa skill) + hai **tầng nền** (đọc trực tiếp, không cần cài). Hướng dẫn cài nằm trong từng module.
+Bốn **module** (đơn vị cài, chứa skill) + một **tầng nền** (luật chơi chung, đọc trực tiếp) + một **kho tạm** (nội dung cũ đang rút dần thành skill). Hướng dẫn cài nằm trong từng module.
 
 | Thành phần | Loại | Giải quyết việc gì | Bắt đầu |
 |------------|------|--------------------|---------|
 | **Quy trình phát triển** — [`sdlc/`](sdlc/) | Module | Dẫn dự án từ nỗi đau khách hàng → SRS, kiến trúc, kế hoạch, tài liệu bàn giao chuẩn nghề (IEEE 830, BABOK, PMBOK) qua 6 giai đoạn — mỗi chặng con người duyệt rồi mới đi tiếp | [sdlc/README.md](sdlc/README.md) · cài: [sdlc/INSTALL.md](sdlc/INSTALL.md) |
-| **Code backend .NET** — [`backend/`](backend/) | Module | Dựng backend .NET theo framework Jarvis chuẩn công ty: scaffold chạy được ngay, gắn auth / cache / EF / observability theo nhu cầu, review PR trước khi merge — 14 skill `minipower-backend-*` | [backend/README.md](backend/README.md) · cài: [§ Cài vào Cursor](backend/README.md#cài-vào-cursor) |
+| **Code backend .NET** — [`backend/`](backend/) | Module | Dựng backend .NET theo framework Jarvis chuẩn công ty: scaffold chạy được ngay, gắn auth / cache / EF / observability theo nhu cầu, review PR trước khi merge — 15 skill `minipower-backend-*` | [backend/README.md](backend/README.md) · cài: [§ Cài vào Cursor](backend/README.md#cài-vào-cursor) |
 | **Vận hành hạ tầng** — [`ops/`](ops/) | Module | Kỹ năng DevOps/SRE: thu thập metrics Grafana/Prometheus chuẩn hoá cho AI chẩn đoán sự cố; sẽ mở rộng dần sang chẩn đoán theo case (memory leak, deadlock, log flow), cài server, CI/CD — skill `minipower-ops-*` (ADR-023) | [ops/README.md](ops/README.md) |
+| **Công cụ làm ra Minipower** — [`toolbox/`](toolbox/) | Module | Đồ nghề của maintainer repo này: viết skill mới đúng chuẩn, soát skill cũ lệch chuẩn, mở module mới trọn bộ (PACK.md + hub + test) — skill `minipower-toolbox-*`. Không cài vào workspace dự án khách hàng | [toolbox/README.md](toolbox/README.md) |
 | [`contracts/`](contracts/) | Tầng nền | Luật chơi chung giữa các module và giữa repo tài liệu ↔ repo code: trace spine, điểm bàn giao H1–H6, quy ước chung, schema `PACK.md` | [contracts/README.md](contracts/README.md) |
-| [`fundamentals/`](fundamentals/) | Tầng nền | Kiến thức nền .NET / DDD / testing, template viết skill, bộ phỏng vấn kỹ thuật — dùng bằng cách `@` thẳng file trong workspace, không cần cài | [fundamentals/tutorial-index.md](fundamentals/tutorial-index.md) |
+| [`staging/`](staging/) | Kho tạm | Kiến thức nền .NET / DDD / testing, bộ phỏng vấn kỹ thuật — **nội dung cũ viết tạm, đang rút dần thành skill/template**; dùng bằng cách `@` thẳng file trong workspace, không cần cài. *(Kho chứa tài liệu chờ chuẩn hoá — không liên quan tới "môi trường staging" của việc triển khai.)* | [staging/](staging/) |
 
 ---
 
@@ -74,7 +75,7 @@ Việc code .NET chỉ cần mô tả bằng lời — skill tương ứng tự 
 
 ## Cấu trúc thư mục
 
-Repo tổ chức theo hai tầng: **module** (đơn vị cài, chứa skill — mỗi module tự khai `PACK.md`) và **tầng nền** (đọc trực tiếp trong workspace, không cần cài):
+Repo tổ chức theo **module** (đơn vị cài, chứa skill — mỗi module tự khai `PACK.md`), **tầng nền** (luật chơi chung, đọc trực tiếp, không cần cài) và một **kho tạm** (nội dung cũ viết tạm, rút dần thành skill/template — chỉ rút, không nạp):
 
 ```text
 minipower/
@@ -88,18 +89,20 @@ minipower/
 │   ├── docs/              #   pipeline, parallel-work, token-guard, decision-log
 │   ├── project-skeleton/  #   Khung dự án đích (docs/ · memory/ · assets/ · brainstorm/)
 │   └── install/           #   Hướng dẫn cài cho cursor / claude / opencode
-├── backend/               # Module: 14 skill code .NET (minipower-backend-*-dotnet)
+├── backend/               # Module: 15 skill code .NET (minipower-backend-*-dotnet)
 │   └── skills/
 ├── ops/                   # Module: kỹ năng vận hành DevOps (minipower-ops-*)
 │   └── skills/
+├── toolbox/               # Module: công cụ làm ra chính minipower (minipower-toolbox-*)
+│   └── skills/
 ├── contracts/             # Tầng nền: hợp đồng liên-pack — trace-spine, handoff H1–H6, schema PACK.md
-├── fundamentals/          # Tầng nền: kiến thức nền .NET/DDD/testing + bộ phỏng vấn (interview/)
-└── ADRs/                  # Quyết định định hướng — trạng thái khai ở ADRs/README.md
+├── ADRs/                  # Tầng nền: quyết định định hướng — trạng thái khai ở ADRs/README.md
+└── staging/               # Kho tạm: nội dung cũ viết tạm, rút dần thành skill/template (interview/)
 ```
 
 Nguyên tắc tổ chức:
 
-- **Tên hai tầng:** `minipower` là thương hiệu; tên module là chức năng một-từ (`sdlc`, `backend`, `ops`). Skill đăng ký theo mẫu `minipower-{module}-{capability}[-{stack}]` — gõ "minipower" trong ô search là thấy toàn bộ.
+- **Tên hai tầng:** `minipower` là thương hiệu; tên module là chức năng một-từ (`sdlc`, `backend`, `ops`, `toolbox`). Skill đăng ký theo mẫu `minipower-{module}-{capability}[-{stack}]` — gõ "minipower" trong ô search là thấy toàn bộ.
 - **Mỗi thư mục một vai:** `SKILL.md` viết cho agent (quy tắc, workflow); `README.md` viết cho người (hướng dẫn, bảng tra). Module mới chỉ tạo khi đã có skill thật.
 - **Nguồn chân lý duy nhất:** các bảng routing/phase trong tài liệu được **sinh tự động** từ [`sdlc/hooks/lib/rules.json`](sdlc/hooks/lib/rules.json) — sửa rules rồi chạy `npm run gen`, không sửa tay vùng generated.
 
@@ -110,4 +113,4 @@ Nguyên tắc tổ chức:
 - [Quy trình phát triển — sdlc hub](sdlc/README.md) · [sdlc router (SKILL.md)](sdlc/SKILL.md) · [19 DOC templates](sdlc/templates/README.md)
 - [backend hub](backend/README.md)
 - [contracts — hợp đồng liên-pack](contracts/README.md)
-- [fundamentals — tutorial index](fundamentals/tutorial-index.md) · [interview](fundamentals/interview/)
+- [staging — kho tạm đang rút](staging/) · [interview](staging/interview/)
