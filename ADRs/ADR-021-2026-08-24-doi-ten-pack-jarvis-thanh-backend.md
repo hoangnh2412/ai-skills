@@ -7,7 +7,7 @@
 | **Phạm vi** | Tên **pack / thư mục / skill** của pack `jarvis/`. **Không** đụng nội dung kỹ thuật .NET, **không** đụng pack lõi (việc `minipower/` → `sdlc/` thuộc [ADR-022](ADR-022-2026-08-24-minipower-nen-tang-cong-cu-ai-toan-cong-ty.md) QĐ-3; `rules.json` 0 hit `"jarvis"`), **không** đụng framework Jarvis hay repo code của nó |
 | **Nối tiếp** | **Tuân theo hệ tên [ADR-022](ADR-022-2026-08-24-minipower-nen-tang-cong-cu-ai-toan-cong-ty.md)** (QĐ-2 hai tầng · QĐ-4 tiền tố `minipower-{module}-…`) · **Giữ** [ADR-020](ADR-020-2026-08-20-minipower-3-che-do-du-an-gate-bang-hook.md) · **Giữ** [ADR-011](ADR-011-2026-07-26-minipower-claude-code-plugin.md) (plugin — việc SAU) · **Kế thừa bài học** [ADR-001](ADR-001-2026-07-17-danh-gia-minipower-va-chien-luoc-phat-trien.md) §2.2 + §3.1 (bốn bản cài lệch nhau; parity đa nền tảng là bẫy) |
 | **Mục đích** | Tách bạch **tên sản phẩm ngoài** (framework Jarvis) khỏi **tên gói skill trong repo**; đặt tên pack theo **chức năng** (`backend`) và tên skill theo hệ `minipower-backend-*`, để repo mở sang stack khác không phải đổi tên lần hai và gõ `minipower` là thấy toàn bộ |
-| **Ảnh hưởng** | `jarvis/` (→ `backend/`, 15 skill `minipower-backend-*`) · [README.md](../README.md) §bản đồ pack · [AGENTS.md](../AGENTS.md) §Quy ước đặt tên & thư mục · hợp đồng liên-pack (sau tách theo ADR-022 QĐ-10: `contracts/lingua-franca.md` anatomy · `contracts/pack-manifest.md` §5.3–5.4 · `contracts/README.md` checklist) · [fundamentals/template-skill.md](../fundamentals/template-skill.md) · [fundamentals/tutorial-index.md](../fundamentals/tutorial-index.md). **Không ảnh hưởng:** ruột pack lõi · 7 điều kiện cứng · `rules.json` · CI hooks |
+| **Ảnh hưởng** | `jarvis/` (→ `backend/`, 15 skill `minipower-backend-*`) · [README.md](../README.md) §bản đồ pack · [AGENTS.md](../AGENTS.md) §Quy ước đặt tên & thư mục · hợp đồng liên-pack (sau tách theo ADR-022 QĐ-10: `contracts/lingua-franca.md` anatomy · `contracts/pack-manifest.md` §5.3–5.4 · `contracts/README.md` checklist) · [fundamentals/template-skill.md](../toolbox/skills/minipower-toolbox-skill-author/SKILL.md) · `fundamentals/tutorial-index.md`. **Không ảnh hưởng:** ruột pack lõi · 7 điều kiện cứng · `rules.json` · CI hooks |
 
 ---
 
@@ -61,13 +61,13 @@ QĐ-1 tách đúng chỗ đau: **cái nào là bao bì thì đổi, cái nào l�
 | `jarvis/skills/telemetry-dotnet/` | `backend/skills/minipower-backend-telemetry-dotnet/` |
 | `jarvis/skills/troubleshooting-dotnet/` | `backend/skills/minipower-backend-troubleshooting-dotnet/` |
 
-**Ràng buộc kiểm được:** `name:` frontmatter **trùng tên thư mục lá** (quy ước sẵn có tại [fundamentals/template-skill.md](../fundamentals/template-skill.md) §2). Tên dài nhất `minipower-backend-entityframework-dotnet` = **40 ký tự**, dưới ngưỡng 64.
+**Ràng buộc kiểm được:** `name:` frontmatter **trùng tên thư mục lá** (quy ước sẵn có tại [fundamentals/template-skill.md](../toolbox/skills/minipower-toolbox-skill-author/SKILL.md) §2). Tên dài nhất `minipower-backend-entityframework-dotnet` = **40 ký tự**, dưới ngưỡng 64.
 
 **Provider skill con** (`providers/*/SKILL.md`, `patterns/*/SKILL.md`) theo quy ước cũ là `<skill>-<provider>` — sau đổi tên thành `minipower-backend-healthcheck-dotnet-postgresql` (**47 ký tự**, vẫn dưới 64).
 
 ### §2a. Cây repo sau đổi tên — pack `backend/` mở chi tiết
 
-Toàn cảnh repo để thấy pack này đứng ở đâu; ruột `sdlc/` xem [ADR-022 §2a](ADR-022-2026-08-24-minipower-nen-tang-cong-cu-ai-toan-cong-ty.md). Giải phẫu từng skill **giữ nguyên** theo [fundamentals/template-skill.md](../fundamentals/template-skill.md) — chỉ tên thư mục lá và `name:` đổi:
+Toàn cảnh repo để thấy pack này đứng ở đâu; ruột `sdlc/` xem [ADR-022 §2a](ADR-022-2026-08-24-minipower-nen-tang-cong-cu-ai-toan-cong-ty.md). Giải phẫu từng skill **giữ nguyên** theo [fundamentals/template-skill.md](../toolbox/skills/minipower-toolbox-skill-author/SKILL.md) — chỉ tên thư mục lá và `name:` đổi:
 
 ```text
 minipower/                                          ← REPO (thương hiệu — ADR-022 QĐ-2)
@@ -274,11 +274,22 @@ Các bước dưới lồng trong đợt chung [ADR-022 §6](ADR-022-2026-08-24-
 | **2** | Đổi tên `jarvis/` → `backend/` + 15 thư mục skill theo bảng §2; cập nhật `name:` frontmatter | Tên thư mục lá ≡ `name:` ở cả 15 skill |
 | **3** | Cập nhật `backend/README.md` — bảng 15 skill, path prompt mẫu | Bảng khớp thư mục thật |
 | **4** | Cập nhật [README.md](../README.md) (6 chỗ) · [AGENTS.md](../AGENTS.md) (+ QĐ-8) · hợp đồng liên-pack (theo §4 ADR này, trên `contracts/` sau tách) | grep bước 1 §6 sạch |
-| **5** | Cập nhật [fundamentals/template-skill.md](../fundamentals/template-skill.md) + [tutorial-index.md](../fundamentals/tutorial-index.md) | Quy ước đặt tên trong template khớp QĐ-3 |
+| **5** | Cập nhật [fundamentals/template-skill.md](../toolbox/skills/minipower-toolbox-skill-author/SKILL.md) + `tutorial-index.md` | Quy ước đặt tên trong template khớp QĐ-3 |
 | **6** | Chạy trọn 4 bước verify §6 | Cả 4 xanh |
 
 **Phát hiện phụ trong lúc khảo sát** (không sửa nếu chưa được đồng ý): [README.md:64](../README.md) trỏ `skills/template-skill.md` — path này **không tồn tại**, file thật ở `fundamentals/template-skill.md`. Link gãy có sẵn, và nằm đúng dòng nói về "Skill Jarvis mới" nên sẽ chạm tới ở bước 5.
 
 ---
 
-*Liên quan:* [ADR-022](ADR-022-2026-08-24-minipower-nen-tang-cong-cu-ai-toan-cong-ty.md) (ADR chủ — hệ tên + đợt thi hành + tách `contracts/`) · [AGENTS.md](../AGENTS.md) §Quy ước đặt tên & thư mục · `contracts/pack-manifest.md` (schema PACK.md, sau tách) · [ADR-011](ADR-011-2026-07-26-minipower-claude-code-plugin.md) (plugin — việc sau) · [ADR-020](ADR-020-2026-08-20-minipower-3-che-do-du-an-gate-bang-hook.md) (định hướng hiện hành)
+## §9. Điều chỉnh 2026-08-28 — QĐ-8 và QĐ-6 bị [ADR-028](ADR-028-2026-08-28-ha-fundamentals-thanh-kho-tam.md) thay
+
+Hai quyết định của ADR này thôi hiệu lực; phần còn lại (đổi tên pack `jarvis` → `backend`, 15 skill lá, ràng buộc `name:` ≡ thư mục) **giữ nguyên**.
+
+| QĐ | Nội dung cũ | Thay bằng | Vì sao đổi |
+|---|---|---|---|
+| **QĐ-8** | *"`fundamentals/` giữ tên"* | Thư mục đổi tên **`fundamentals/` → `staging/`** và hạ vai từ *tầng nền* xuống **kho tạm — chỉ rút, không nạp** ([ADR-028](ADR-028-2026-08-28-ha-fundamentals-thanh-kho-tam.md) QĐ-1) | Lúc ADR-021, đổi tên kéo theo **50 link gãy** phải soát để đổi lấy đúng một chữ — không đáng. Sau khi xoá `tutorial-index.md` (44 trong số đó) ngày 2026-08-28, chi phí còn ~5 link: cùng một quyết định, cán cân khác hẳn |
+| **QĐ-6** | `frontend/` chưa tạo ⇒ nội dung frontend nằm chờ | `staging/tabler-uikit-skill.md` **xoá hẳn**, không chờ `frontend/` ([ADR-028](ADR-028-2026-08-28-ha-fundamentals-thanh-kho-tam.md) QĐ-7). Luật *"chưa có skill thật thì chưa tạo thư mục module"* **vẫn giữ** — `frontend/` vẫn chưa tạo | Giữ một file để chờ module chưa có kế hoạch mở là giữ nợ; cần thì lấy lại từ lịch sử Git |
+
+---
+
+*Liên quan:* [ADR-028](ADR-028-2026-08-28-ha-fundamentals-thanh-kho-tam.md) (điều chỉnh QĐ-8 · QĐ-6) · [ADR-022](ADR-022-2026-08-24-minipower-nen-tang-cong-cu-ai-toan-cong-ty.md) (ADR chủ — hệ tên + đợt thi hành + tách `contracts/`) · [AGENTS.md](../AGENTS.md) §Quy ước đặt tên & thư mục · `contracts/pack-manifest.md` (schema PACK.md, sau tách) · [ADR-011](ADR-011-2026-07-26-minipower-claude-code-plugin.md) (plugin — việc sau) · [ADR-020](ADR-020-2026-08-20-minipower-3-che-do-du-an-gate-bang-hook.md) (định hướng hiện hành)

@@ -12,7 +12,7 @@ import { fileURLToPath } from "node:url"
 import { dirname, join } from "node:path"
 
 const ROOT = dirname(dirname(dirname(dirname(fileURLToPath(import.meta.url)))))
-const MODULES = ["sdlc", "backend"]
+const MODULES = ["sdlc", "backend", "ops", "toolbox"]
 
 // trường bắt buộc theo schema contracts/pack-manifest.md §1
 const REQUIRED = ["pack", "version", "owner", "roles", "stage", "repo", "consumes", "produces", "memory", "mcp"]
