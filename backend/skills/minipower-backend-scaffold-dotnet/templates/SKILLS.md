@@ -8,8 +8,9 @@ Hub: [.opencode/README.md](../../../README.md) (repo Jarvis gốc).
 
 | Vùng code | Skill | File template |
 |-----------|-------|----------------|
-| `AddCoreJson` / CORS / WebApi / wrapper | [minipower-backend-foundation-dotnet](../../minipower-backend-foundation-dotnet/README.md) | [layers/HostLayerExtension.cs](layers/HostLayerExtension.cs) |
-| `AddCoreApplication` | [minipower-backend-application-dotnet](../../minipower-backend-application-dotnet/README.md) | [layers/ApplicationLayerExtension.cs](layers/ApplicationLayerExtension.cs) |
+| `AddCoreJson` / CORS / WebApi / wrapper | *(scaffold sở hữu — chỉnh `Cors` / `Json` / `Middlewares` trong `appsettings`)* | [layers/HostLayerExtension.cs](layers/HostLayerExtension.cs) |
+| `AddCoreApplication` + chỗ đặt handler | [minipower-backend-architecture-dotnet](../../minipower-backend-architecture-dotnet/README.md) | [layers/ApplicationLayerExtension.cs](layers/ApplicationLayerExtension.cs) |
+| Luật kiến trúc R1–R7 (`dotnet test`) | [minipower-backend-architecture-dotnet](../../minipower-backend-architecture-dotnet/README.md) | [architecture templates/ArchitectureTests/](../../minipower-backend-architecture-dotnet/templates/ArchitectureTests/) |
 | `AddJarvisCaching` → `AddEntityFramework` → `AddCoreDbContext` | [minipower-backend-caching-dotnet](../../minipower-backend-caching-dotnet/README.md) · [minipower-backend-entityframework-dotnet](../../minipower-backend-entityframework-dotnet/README.md) | [layers/InfrastructureLayerExtension.cs](layers/InfrastructureLayerExtension.cs) |
 | `AddJarvisOpenTelemetry` / enricher | [minipower-backend-telemetry-dotnet](../../minipower-backend-telemetry-dotnet/README.md) | HostLayerExtension, Enrich*Service.cs |
 | `AddCoreSwagger` | [minipower-backend-swashbuckle-dotnet](../../minipower-backend-swashbuckle-dotnet/README.md) | HostLayerExtension |
@@ -20,6 +21,7 @@ Hub: [.opencode/README.md](../../../README.md) (repo Jarvis gốc).
 
 | Nhu cầu | Skill | Workflow |
 |---------|-------|----------|
+| Thêm tính năng mới xuyên 5 layer | [minipower-backend-architecture-dotnet](../../minipower-backend-architecture-dotnet/README.md) | `workflows/add-feature.md` |
 | JWT / API Key / Cognito | [minipower-backend-authentication-dotnet](../../minipower-backend-authentication-dotnet/README.md) | `workflows/init.md` + `providers/*` |
 | SMTP email | [minipower-backend-notification-dotnet](../../minipower-backend-notification-dotnet/README.md) | `providers/mailkit-smtp/SKILL.md` |
 | Redis cache / invalidation | [minipower-backend-caching-dotnet](../../minipower-backend-caching-dotnet/README.md) | `workflows/add.md` |

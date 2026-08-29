@@ -17,8 +17,7 @@
 
 | Module | Skill |
 |------|-----|
-| Foundation | [minipower-backend-foundation-dotnet/SKILL.md](../../minipower-backend-foundation-dotnet/SKILL.md) |
-| Application | [minipower-backend-application-dotnet/SKILL.md](../../minipower-backend-application-dotnet/SKILL.md) |
+| Kiến trúc / tính năng mới | [minipower-backend-architecture-dotnet/SKILL.md](../../minipower-backend-architecture-dotnet/SKILL.md) |
 | Authentication | [minipower-backend-authentication-dotnet/SKILL.md](../../minipower-backend-authentication-dotnet/SKILL.md) |
 | Notification | [minipower-backend-notification-dotnet/SKILL.md](../../minipower-backend-notification-dotnet/SKILL.md) |
 | Caching | [minipower-backend-caching-dotnet/SKILL.md](../../minipower-backend-caching-dotnet/SKILL.md) |

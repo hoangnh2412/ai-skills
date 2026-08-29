@@ -159,8 +159,7 @@ Chỉ mở skill cần dùng — [workflows/add.md](./workflows/add.md):
 
 | Module | Skill | Ghi chú |
 |--------|-------|---------|
-| Foundation | [minipower-backend-foundation-dotnet](../minipower-backend-foundation-dotnet/README.md) | Json, CORS, WebApi, middleware |
-| Application | [minipower-backend-application-dotnet](../minipower-backend-application-dotnet/README.md) | CQRS dispatcher |
+| Kiến trúc + tính năng mới | [minipower-backend-architecture-dotnet](../minipower-backend-architecture-dotnet/README.md) | 5 layer, lát cắt dọc, architecture test |
 | Authentication | [minipower-backend-authentication-dotnet](../minipower-backend-authentication-dotnet/README.md) | JWT, API Key, Cognito |
 | Notification | [minipower-backend-notification-dotnet](../minipower-backend-notification-dotnet/README.md) | SMTP Mailkit |
 | Entity Framework | [minipower-backend-entityframework-dotnet](../minipower-backend-entityframework-dotnet/README.md) | **Caching trước EF** |

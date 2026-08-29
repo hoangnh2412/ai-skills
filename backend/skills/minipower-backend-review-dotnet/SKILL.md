@@ -112,6 +112,15 @@ Validation & Domain:
 * timezone consistency
 * localization/culture issue
 
+## Hai nguồn luật khi PR chạm C# / Jarvis
+
+| Nguồn | Soát gì | Máy đã gác phần nào |
+|---|---|---|
+| [minipower-backend-convention-dotnet](../minipower-backend-convention-dotnet/SKILL.md) | *Code trong file viết thế nào* | `.editorconfig` + analyzer + `dotnet format` — **đừng nitpick style bằng tay** |
+| [minipower-backend-architecture-dotnet](../minipower-backend-architecture-dotnet/SKILL.md) | *File nằm ở đâu, reference thế nào* | `{Product}.ArchitectureTests` R1–R7 — review chỉ soát phần **mềm** |
+
+Repo chưa có hai lớp cổng đó ⇒ đề xuất dựng **một lần**, không lặp comment mỗi PR.
+
 ## Jarvis framework (khi PR chạm `Jarvis.*` / layer extension)
 
 Bản đồ skill: [minipower-backend-scaffold-dotnet/templates/SKILLS.md](../minipower-backend-scaffold-dotnet/templates/SKILLS.md). Chỉ flag issue có path trong diff.
@@ -159,7 +168,16 @@ Bản đồ skill: [minipower-backend-scaffold-dotnet/templates/SKILLS.md](../mi
 
 * SMTP / connection string / API keys trong config — placeholder + secret ngoài repo ([minipower-backend-notification-dotnet](../minipower-backend-notification-dotnet/README.md)).
 * Health: readiness vs liveness — không nhầm dependency ([minipower-backend-healthcheck-dotnet](../minipower-backend-healthcheck-dotnet/README.md)).
-* `ApiResponseWrapper` `Includes` khớp route API thực tế ([minipower-backend-foundation-dotnet](../minipower-backend-foundation-dotnet/README.md)).
+### Pipeline & bootstrap Host
+
+* `ApiResponseWrapper` `Includes` khớp route API thực tế.
+* Thứ tự pipeline: `UseCoreCors` → `UseCoreMiddleware<ApiResponseWrapperMiddleware>` → `MapControllers`. Đặt `UseCoreMiddleware` **sau** `MapControllers` ⇒ middleware không chạy — build vẫn xanh, lỗi chỉ lộ lúc gọi API.
+* Bỏ `AddCoreDomain()` khi app dùng `IWorkContext` / enricher tenant ⇒ `IWorkContext` **null lúc chạy**, enricher im lặng hỏng.
+* `Jarvis.Mvc` kéo transitive `Jarvis.Common` + `Jarvis.DDD.Domain.Shared` + `Jarvis.OpenTelemetry` — soát khi PR thêm package trùng vai.
+
+### Kiến trúc
+
+* File đặt đúng layer, hướng phụ thuộc đúng chiều ([minipower-backend-architecture-dotnet](../minipower-backend-architecture-dotnet/README.md)). Phần máy kiểm được đã có `{Product}.ArchitectureTests` lo — review chỉ soát phần **mềm**: entity public setter, `DateTime.Now` trong Domain, repository trả `IQueryable`, một transaction sửa nhiều aggregate root, ranh giới aggregate.
 
 Security:
 

@@ -62,4 +62,5 @@ Hướng dẫn: [README.md](README.md).
 - `appsettings` section `Authentication` (schema đúng: API Key `KeyName`+`Key`, Basic `Users`, JWT `Authority`/`IssuerSigningKeys`)
 - Protected endpoint trả 401 khi thiếu credential (validate)
 - Code C# theo [minipower-backend-convention-dotnet](../minipower-backend-convention-dotnet/SKILL.md) — `dotnet format --verify-no-changes` sạch trên file đã chạm
+- File đặt đúng layer + hướng phụ thuộc theo [minipower-backend-architecture-dotnet](../minipower-backend-architecture-dotnet/SKILL.md) — `dotnet test -c Debug` xanh, kể cả `{Product}.ArchitectureTests`
 

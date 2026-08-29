@@ -58,3 +58,5 @@ Hướng dẫn người dùng: [README.md](README.md). API interface: [reference
 - `appsettings` sections `FileSystem` / `MinIO`
 - Service/host inject `[FromKeyedServices("MinIO")]` hoặc `"FileSystem"` resolve được
 - `dotnet build` thành công
+- Code C# theo [minipower-backend-convention-dotnet](../minipower-backend-convention-dotnet/SKILL.md) — `dotnet format --verify-no-changes` sạch trên file đã chạm
+- File đặt đúng layer + hướng phụ thuộc theo [minipower-backend-architecture-dotnet](../minipower-backend-architecture-dotnet/SKILL.md) — `dotnet test -c Debug` xanh, kể cả `{Product}.ArchitectureTests`

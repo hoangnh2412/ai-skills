@@ -44,6 +44,7 @@ Chi tiết folder, DI convention, Jarvis mapping: [reference/solution-structure.
 | Tài nguyên | Path |
 |---|---|
 | Bản đồ scaffold → skill | [templates/SKILLS.md](templates/SKILLS.md) |
+| Architecture test R1–R7 | [minipower-backend-architecture-dotnet/templates/ArchitectureTests/](../minipower-backend-architecture-dotnet/templates/ArchitectureTests/) |
 | Cây thư mục | [templates/solution-tree.txt](templates/solution-tree.txt) |
 | Layer extensions + Host | [templates/layers/](templates/layers/) |
 | csproj Jarvis refs | [templates/layer-csproj/](templates/layer-csproj/) |
@@ -72,7 +73,7 @@ Phiên bản tham chiếu từ repo Jarvis (`develop`):
 | Entity Framework | `Jarvis.EntityFramework` | 1.0.0 | Infrastructure |
 | Caching | `Jarvis.Caching` | 1.1.0 | Infrastructure (**bắt buộc trước EF**) |
 | Caching Redis | `Jarvis.Caching.Redis` | 1.1.0 | Infrastructure (tùy chọn) |
-| MVC | `Jarvis.Mvc` | 1.1.0 | Host |
+| MVC | `Jarvis.Mvc` | 1.1.0 | Host — kéo transitive `Jarvis.Common` + `Jarvis.DDD.Domain.Shared` + `Jarvis.OpenTelemetry`, cân nhắc khi chỉ cần domain thuần |
 | Swashbuckle | `Jarvis.Swashbuckle` | 1.0.1 | Host |
 | Health checks | `Jarvis.HealthChecks` | 1.0.0 | Host |
 | OpenTelemetry | `Jarvis.OpenTelemetry` | 1.0.1 | Host |
@@ -94,8 +95,7 @@ Skill chuyên sâu: [minipower-backend-entityframework-dotnet](../minipower-back
 
 | Module | Skill chuyên sâu |
 |---|---|
-| Foundation | [minipower-backend-foundation-dotnet](../minipower-backend-foundation-dotnet/README.md) |
-| Application | [minipower-backend-application-dotnet](../minipower-backend-application-dotnet/README.md) |
+| Kiến trúc + tính năng mới | [minipower-backend-architecture-dotnet](../minipower-backend-architecture-dotnet/README.md) |
 | Authentication | [minipower-backend-authentication-dotnet](../minipower-backend-authentication-dotnet/README.md) |
 | Notification | [minipower-backend-notification-dotnet](../minipower-backend-notification-dotnet/README.md) |
 | Entity Framework | [minipower-backend-entityframework-dotnet](../minipower-backend-entityframework-dotnet/README.md) |
@@ -116,9 +116,10 @@ Mở rộng module: dùng [templates/SKILLS.md](templates/SKILLS.md) và skill `
 
 ## Output bắt buộc (scaffold)
 
-- Solution 5 project + 2 test projects
+- Solution 5 project + **3** test projects (gồm `{Product}.ArchitectureTests`)
 - `*LayerExtension.cs` mỗi layer
 - `Program.cs` mỏng
 - `appsettings` + `launchSettings`
 - `.editorconfig` (root) + `src/Directory.Build.props` — [minipower-backend-convention-dotnet](../minipower-backend-convention-dotnet/SKILL.md)
-- `dotnet build` thành công
+- `dotnet build` thành công; `dotnet test -c Debug` xanh — kể cả luật kiến trúc R1–R7 ([minipower-backend-architecture-dotnet](../minipower-backend-architecture-dotnet/SKILL.md))
+- Code C# theo [minipower-backend-convention-dotnet](../minipower-backend-convention-dotnet/SKILL.md) — `dotnet format --verify-no-changes` sạch trên file đã chạm

@@ -10,6 +10,13 @@ metadata:
 
 Skill cắt ngang mọi skill `minipower-backend-*-dotnet`: code sinh ra hoặc sửa đổi phải theo quy ước này.
 
+Đi cặp với [minipower-backend-architecture-dotnet](../minipower-backend-architecture-dotnet/SKILL.md) — hai skill trả lời hai câu hỏi khác nhau, không chồng lấn:
+
+| Skill | Trả lời câu hỏi | Cổng cứng |
+|---|---|---|
+| **convention** (skill này) | **Code trong file viết thế nào?** | `dotnet build` + `dotnet format` — analyzer |
+| **architecture** | **File nằm ở đâu? Reference thế nào?** | `dotnet test -c Debug` — architecture test |
+
 Toàn văn quy ước (12 mục): [reference/coding-convention.md](reference/coding-convention.md). Hướng dẫn người: [README.md](README.md).
 
 ## Khi nào dùng workflow nào

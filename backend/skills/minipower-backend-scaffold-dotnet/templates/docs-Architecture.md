@@ -14,9 +14,9 @@
 
 | Layer | Package / API | Skill mở rộng (repo Jarvis `.opencode/skills/`) |
 |-------|----------------|--------------------------------------------------|
-| Application | `Jarvis.DDD.Application` — CQRS | `minipower-backend-application-dotnet` |
+| Application | `Jarvis.DDD.Application` — CQRS | `minipower-backend-architecture-dotnet` |
 | Infrastructure | `Jarvis.Caching` → `Jarvis.EntityFramework` | `minipower-backend-caching-dotnet`, `minipower-backend-entityframework-dotnet` |
-| Host | Mvc, Swashbuckle, HealthChecks, OpenTelemetry | `minipower-backend-foundation-dotnet`, `minipower-backend-swashbuckle-dotnet`, `minipower-backend-healthcheck-dotnet`, `minipower-backend-telemetry-dotnet` |
+| Host | Mvc, Swashbuckle, HealthChecks, OpenTelemetry | `minipower-backend-scaffold-dotnet`, `minipower-backend-swashbuckle-dotnet`, `minipower-backend-healthcheck-dotnet`, `minipower-backend-telemetry-dotnet` |
 
 Chưa có trong scaffold — thêm khi cần: `minipower-backend-authentication-dotnet`, `minipower-backend-notification-dotnet`, `minipower-backend-blobstoring-dotnet`.
 

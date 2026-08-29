@@ -1,0 +1,17 @@
+<!-- Merge into {Product}.Domain.csproj -->
+<!-- Skill: architecture-dotnet — templates/SKILLS.md -->
+<!-- Domain KHÔNG reference Microsoft.EntityFrameworkCore (luật R2 ArchitectureTests).
+     Jarvis.DDD.Domain là base interface thuần (IEntity, IRepository, IUnitOfWork,
+     IWorkContext) — không kéo EF, an toàn cho Domain. -->
+<ItemGroup>
+  <PackageReference Include="Jarvis.DDD.Domain" Version="1.1.1" />
+</ItemGroup>
+<ItemGroup>
+  <ProjectReference Include="../{Product}.Domain.Shared/{Product}.Domain.Shared.csproj" />
+</ItemGroup>
+<!-- Monorepo Jarvis — packages trong frameworks/: -->
+<!--
+<ItemGroup>
+  <ProjectReference Include="{JarvisRoot}/frameworks/Jarvis.DDD.Domain/Jarvis.DDD.Domain.csproj" />
+</ItemGroup>
+-->

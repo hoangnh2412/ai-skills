@@ -1,8 +1,8 @@
 <!-- Merge into {Product}.Application.csproj -->
-<!-- Skill: application-dotnet — jarvis-dotnet/templates/SKILLS.md -->
-<ItemGroup>
-  <FrameworkReference Include="Microsoft.AspNetCore.App" />
-</ItemGroup>
+<!-- Skill: architecture-dotnet — templates/SKILLS.md -->
+<!-- KHÔNG thêm <FrameworkReference Include="Microsoft.AspNetCore.App" /> ở đây:
+     Jarvis.DDD.Application không có, và nó mở cửa cho Microsoft.AspNetCore.Mvc
+     lọt vào use case — luật R4 của ArchitectureTests sẽ đỏ. -->
 <ItemGroup>
   <PackageReference Include="Jarvis.DDD.Application" Version="1.2.1" />
   <PackageReference Include="Jarvis.DDD.Application.Contracts" Version="1.2.1" />

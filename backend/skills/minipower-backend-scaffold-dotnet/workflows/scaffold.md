@@ -20,7 +20,8 @@
 - [ ] 5. Tạo folder structure (5.3–5.8) + *LayerExtension.cs
 - [ ] 6. Copy templates Host / Infrastructure / Application / Domain
 - [ ] 7. appsettings + launchSettings (Swagger F5)
-- [ ] 8. dotnet build && dotnet run --project Host
+- [ ] 7b. ArchitectureTests — luật kiến trúc (bước 5b)
+- [ ] 8. dotnet build && dotnet test -c Debug && dotnet run --project Host
 ```
 
 ## Bước 0 — Placeholder
@@ -58,10 +59,12 @@ dotnet new webapi -n "${PRODUCT}.Host" -f net9.0 -o "${PRODUCT}.Host" --use-cont
 
 dotnet new xunit -n "${PRODUCT}.Domain.Tests" -f net9.0 -o "../tests/${PRODUCT}.Domain.Tests"
 dotnet new xunit -n "${PRODUCT}.Application.Tests" -f net9.0 -o "../tests/${PRODUCT}.Application.Tests"
+dotnet new xunit -n "${PRODUCT}.ArchitectureTests" -f net9.0 -o "../tests/${PRODUCT}.ArchitectureTests"
 
 dotnet sln add "${PRODUCT}.Domain.Shared" "${PRODUCT}.Domain" "${PRODUCT}.Application" \
   "${PRODUCT}.Infrastructure" "${PRODUCT}.Host" \
-  "../tests/${PRODUCT}.Domain.Tests" "../tests/${PRODUCT}.Application.Tests"
+  "../tests/${PRODUCT}.Domain.Tests" "../tests/${PRODUCT}.Application.Tests" \
+  "../tests/${PRODUCT}.ArchitectureTests"
 
 dotnet add "${PRODUCT}.Domain" reference "${PRODUCT}.Domain.Shared"
 dotnet add "${PRODUCT}.Application" reference "${PRODUCT}.Domain"
@@ -69,6 +72,11 @@ dotnet add "${PRODUCT}.Infrastructure" reference "${PRODUCT}.Domain"
 dotnet add "${PRODUCT}.Host" reference "${PRODUCT}.Application" "${PRODUCT}.Infrastructure"
 dotnet add "../tests/${PRODUCT}.Domain.Tests" reference "${PRODUCT}.Domain"
 dotnet add "../tests/${PRODUCT}.Application.Tests" reference "${PRODUCT}.Application"
+
+# ArchitectureTests nạp CẢ 5 layer — ArchUnitNET soi assembly, không đọc csproj
+dotnet add "../tests/${PRODUCT}.ArchitectureTests" reference \
+  "${PRODUCT}.Domain.Shared" "${PRODUCT}.Domain" "${PRODUCT}.Application" \
+  "${PRODUCT}.Infrastructure" "${PRODUCT}.Host"
 ```
 
 ## Bước 2b — Convention (.editorconfig + Directory.Build.props)
@@ -89,6 +97,8 @@ Bỏ dòng comment hướng dẫn ở đầu mỗi file khi copy. Quy ước đ�
 **Infrastructure** — [templates/layer-csproj/Infrastructure.csproj.xml](../templates/layer-csproj/Infrastructure.csproj.xml) (`Jarvis.EntityFramework` + **`Jarvis.Caching`** — bắt buộc cho EF).
 
 **Application** — [templates/layer-csproj/Application.csproj.xml](../templates/layer-csproj/Application.csproj.xml).
+
+**Domain** — [templates/layer-csproj/Domain.csproj.xml](../templates/layer-csproj/Domain.csproj.xml). **Không** thêm EF Core vào đây.
 
 **Domain.Shared** (tùy chọn) — `Jarvis.DDD.Domain.Shared`.
 
@@ -123,9 +133,22 @@ Copy từ `templates/layers/` → đúng project (đổi namespace `{Product}`):
 | `layers/PingController.cs` | `{Product}.Host/Controllers/` |
 | `layers/appsettings.json` | `{Product}.Host` |
 | `layers/launchSettings.json` | `{Product}.Host/Properties/` |
+| `templates/docs-Architecture.md` | `docs/Architecture.md` |
 | `templates/SKILLS.md` | Tham chiếu agent — **không** copy vào product repo (hoặc link trong `docs/Architecture.md`) |
 | `templates/docs-README.md` | repo `README.md` |
 | `templates/docs-Architecture.md` | `docs/Architecture.md` |
+
+## Bước 5b — ArchitectureTests
+
+Copy từ [minipower-backend-architecture-dotnet/templates/ArchitectureTests/](../../minipower-backend-architecture-dotnet/templates/ArchitectureTests/) → `tests/{Product}.ArchitectureTests/`:
+
+| Template | Đích |
+|---|---|
+| `ArchitectureTests.csproj.xml` | merge vào `{Product}.ArchitectureTests.csproj` |
+| `ArchitectureFixture.cs` | `tests/{Product}.ArchitectureTests/` |
+| `LayerDependencyTests.cs` | `tests/{Product}.ArchitectureTests/` |
+
+Bảy luật R1–R7 (hướng phụ thuộc, chỗ đặt handler, controller không chạm persistence) chạy mỗi lần `dotnet test`. Chi tiết + cách xử khi đỏ: [architecture-dotnet/workflows/add-arch-test.md](../../minipower-backend-architecture-dotnet/workflows/add-arch-test.md).
 
 ## Bước 6 — Program.cs (composition root)
 
@@ -142,6 +165,7 @@ app.Run();
 ```bash
 cd src
 dotnet build
+dotnet test -c Debug          # gồm ArchitectureTests — Debug để ArchUnitNET đọc đủ bytecode
 dotnet run --project "${PRODUCT}.Host"
 ```
 
@@ -157,12 +181,12 @@ dotnet run --project "${PRODUCT}.Host"
 
 | Việc | Skill |
 |------|-------|
-| Entity / handler | Code product + [minipower-backend-application-dotnet](../../minipower-backend-application-dotnet/workflows/add.md) |
+| Thêm tính năng / entity / handler | [minipower-backend-architecture-dotnet](../../minipower-backend-architecture-dotnet/workflows/add-feature.md) |
 | JWT / API Key | [minipower-backend-authentication-dotnet](../../minipower-backend-authentication-dotnet/README.md) |
 | Redis cache | [minipower-backend-caching-dotnet](../../minipower-backend-caching-dotnet/workflows/add.md) |
 | EF pattern | [minipower-backend-entityframework-dotnet](../../minipower-backend-entityframework-dotnet/README.md) |
 | Readiness PostgreSQL | [minipower-backend-healthcheck-dotnet](../../minipower-backend-healthcheck-dotnet/SKILL.md) |
 | Blob / email | [minipower-backend-blobstoring-dotnet](../../minipower-backend-blobstoring-dotnet/README.md), [minipower-backend-notification-dotnet](../../minipower-backend-notification-dotnet/README.md) |
 
-- Thêm entity → `Domain/Entities/`
-- Thêm handler → `Application/Features/` + đăng ký `ApplicationLayerExtension`
+- Thêm entity → `Domain/Entities/` · handler → `Application/Features/` + `AddScoped` trong `ApplicationLayerExtension`
+- Phân vân đặt file ở đâu → bảng *Đặt file ở đâu* trong [architecture-dotnet/SKILL.md](../../minipower-backend-architecture-dotnet/SKILL.md)

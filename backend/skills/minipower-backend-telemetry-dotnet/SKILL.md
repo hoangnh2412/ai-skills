@@ -64,6 +64,8 @@ Chỉ đọc provider cần dùng:
 - Thay đổi `Program.cs`
 - `appsettings.json` section `OTEL` (khi đổi config)
 - Checklist: OTLP endpoint/env, sampling, allowlist header, plug-in singleton
+- Code C# theo [minipower-backend-convention-dotnet](../minipower-backend-convention-dotnet/SKILL.md) — `dotnet format --verify-no-changes` sạch trên file đã chạm
+- File đặt đúng layer + hướng phụ thuộc theo [minipower-backend-architecture-dotnet](../minipower-backend-architecture-dotnet/SKILL.md) — `dotnet test -c Debug` xanh, kể cả `{Product}.ArchitectureTests`
 
 ## Background worker
 

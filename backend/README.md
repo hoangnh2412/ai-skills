@@ -1,6 +1,6 @@
 # Code backend .NET (backend) — framework Jarvis
 
-Module `backend` của **Minipower** — 15 skill **lá-rời** dạy dựng backend .NET theo framework Jarvis chuẩn công ty. Lá-rời nghĩa là: mô tả việc bằng lời (*"thêm cache Redis"*, *"API cần JWT"*) là skill tương ứng **tự kích hoạt** — không cần nhớ tên. Trong quy trình chung, module này nhận bàn giao từ **Quy trình phát triển** (`sdlc`) tại H4: DOC-08 (SAD) · DOC-11 (data model) · DOC-12 (API) + FR/AC theo module — xem [PACK.md](PACK.md).
+Module `backend` của **Minipower** — 14 skill **lá-rời** dạy dựng backend .NET theo framework Jarvis chuẩn công ty. Lá-rời nghĩa là: mô tả việc bằng lời (*"thêm cache Redis"*, *"API cần JWT"*) là skill tương ứng **tự kích hoạt** — không cần nhớ tên. Trong quy trình chung, module này nhận bàn giao từ **Quy trình phát triển** (`sdlc`) tại H4: DOC-08 (SAD) · DOC-11 (data model) · DOC-12 (API) + FR/AC theo module — xem [PACK.md](PACK.md).
 
 Mỗi skill có **README** (người dùng) và **SKILL.md** (agent).
 
@@ -55,8 +55,7 @@ Chi tiết publish sang repo product: [Publish skill sang repo consumer](#publis
 | Skill | README | Mô tả |
 |-------|--------|--------|
 | **minipower-backend-scaffold-dotnet** | [skills/minipower-backend-scaffold-dotnet/README.md](./skills/minipower-backend-scaffold-dotnet/README.md) | Scaffold / init / add solution Jarvis |
-| **minipower-backend-foundation-dotnet** | [skills/minipower-backend-foundation-dotnet/README.md](./skills/minipower-backend-foundation-dotnet/README.md) | Json, CORS, WebApi, ApiResponseWrapper |
-| **minipower-backend-application-dotnet** | [skills/minipower-backend-application-dotnet/README.md](./skills/minipower-backend-application-dotnet/README.md) | CQRS Application layer |
+| **minipower-backend-architecture-dotnet** | [skills/minipower-backend-architecture-dotnet/README.md](./skills/minipower-backend-architecture-dotnet/README.md) | Kiến trúc DDD 5 layer, lát cắt dọc, architecture test |
 | **minipower-backend-authentication-dotnet** | [skills/minipower-backend-authentication-dotnet/README.md](./skills/minipower-backend-authentication-dotnet/README.md) | JWT, API Key, Cognito |
 | **minipower-backend-notification-dotnet** | [skills/minipower-backend-notification-dotnet/README.md](./skills/minipower-backend-notification-dotnet/README.md) | Email SMTP Mailkit |
 | **minipower-backend-caching-dotnet** | [skills/minipower-backend-caching-dotnet/README.md](./skills/minipower-backend-caching-dotnet/README.md) | Memory + Redis cache |

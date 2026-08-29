@@ -87,3 +87,26 @@ test("backend/README.md: bảng skill khớp thư mục thật — đủ và kh�
 test("backend/PACK.md tồn tại (manifest — ADR-022 QĐ-8)", () => {
   assert.ok(existsSync(join(ROOT, "backend", "PACK.md")))
 })
+
+// Hai luật cắt ngang (ADR-029 Điều chỉnh 2026-08-29): mỗi skill lá phải MANG theo con trỏ
+// tới convention (viết code thế nào) và architecture (đặt file ở đâu). Minipower không ép
+// được agent tuân thủ — nhưng ép được invariant "skill nào cũng chở đủ hai luật", để dù
+// skill nào kích hoạt thì luật cũng đi cùng. Không có test, mỗi skill mới lại quên một cái.
+const CROSS_CUTTING = [
+  { skill: "minipower-backend-convention-dotnet", what: "convention (code trong file viết thế nào)" },
+  { skill: "minipower-backend-architecture-dotnet", what: "architecture (file nằm ở đâu, reference thế nào)" },
+]
+
+for (const { skill, what } of CROSS_CUTTING) {
+  test(`backend: mọi skill lá trỏ tới ${what}`, () => {
+    assert.ok(skillDirs.includes(skill), `thiếu chính skill ${skill}`)
+    for (const dir of skillDirs) {
+      if (dir === skill) continue // không tự trỏ về mình
+      const body = readFileSync(join(SKILLS, dir, "SKILL.md"), "utf8")
+      assert.ok(
+        body.includes(`../${skill}/SKILL.md`),
+        `${dir}/SKILL.md không trỏ tới ${skill} — agent kích hoạt skill này sẽ không thấy luật ${what}`,
+      )
+    }
+  })
+}

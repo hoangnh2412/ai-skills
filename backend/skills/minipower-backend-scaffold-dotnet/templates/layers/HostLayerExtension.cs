@@ -59,6 +59,10 @@ public static class HostLayerExtension
     return builder;
   }
 
+  // Thứ tự pipeline là BẮT BUỘC:
+  //   UseCoreCors -> UseCoreMiddleware<ApiResponseWrapperMiddleware> -> MapControllers
+  // Đặt UseCoreMiddleware SAU MapControllers => middleware không chạy.
+  // Bỏ AddCoreDomain ở trên => IWorkContext null lúc chạy (enricher tenant im lặng hỏng).
   public static WebApplication UseHostLayer(this WebApplication app)
   {
     app.UseCoreSwagger();

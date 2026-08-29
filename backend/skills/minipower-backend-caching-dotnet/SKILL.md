@@ -61,4 +61,5 @@ Kiến trúc & vận hành: [README.md](README.md).
 - Item `ConnectionString` nếu dùng cùng EF
 - Validate: hit/miss, `RemoveAsync` sau update
 - Code C# theo [minipower-backend-convention-dotnet](../minipower-backend-convention-dotnet/SKILL.md) — `dotnet format --verify-no-changes` sạch trên file đã chạm
+- File đặt đúng layer + hướng phụ thuộc theo [minipower-backend-architecture-dotnet](../minipower-backend-architecture-dotnet/SKILL.md) — `dotnet test -c Debug` xanh, kể cả `{Product}.ArchitectureTests`
 

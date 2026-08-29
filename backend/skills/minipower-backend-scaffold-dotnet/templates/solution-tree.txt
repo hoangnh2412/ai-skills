@@ -45,4 +45,7 @@
 │           └── launchSettings.json
 └── tests/
     ├── {Product}.Domain.Tests/
-    └── {Product}.Application.Tests/
+    ├── {Product}.Application.Tests/
+    └── {Product}.ArchitectureTests/          # luật kiến trúc — dotnet test -c Debug
+        ├── ArchitectureFixture.cs
+        └── LayerDependencyTests.cs

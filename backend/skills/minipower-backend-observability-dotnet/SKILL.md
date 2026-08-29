@@ -73,6 +73,8 @@ Chi tiết: [reference/metric-families.md](reference/metric-families.md).
 3. Ngưỡng alert **đề xuất** kèm ghi chú “thay bằng baseline thực”
 4. Runbook ngắn: alert firing → kiểm tra gì → hành động tiếp
 
+Phần **code C#** đụng tới (enricher, metric custom, middleware đo đạc) vẫn theo hai luật chung: viết code theo [minipower-backend-convention-dotnet](../minipower-backend-convention-dotnet/SKILL.md), đặt file đúng layer theo [minipower-backend-architecture-dotnet](../minipower-backend-architecture-dotnet/SKILL.md) — metric/enricher là **adapter**, thuộc `Host` hoặc `Infrastructure`, không nhét vào `Domain`.
+
 ## Liên quan
 
 | Skill | Khi nào |
