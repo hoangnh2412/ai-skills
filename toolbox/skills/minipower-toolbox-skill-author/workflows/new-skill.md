@@ -2,9 +2,12 @@
 
 Áp dụng khi **chưa có** skill nào phủ việc cần làm. Nếu đã có skill gần đúng → [extend-skill.md](extend-skill.md).
 
+Mọi quyết định (lọc, tên, `description`, cây file, câu chữ) đi qua [SKILL.md § Gate người](../SKILL.md#gate-người--xác-nhận-trước-khi-viết) — đề xuất, dừng, chờ xác nhận, rồi mới ghi.
+
 ## Checklist
 
 ```text
+- [ ] 0. Đã hỏi và được xác nhận mọi quyết định còn mở của lượt này
 - [ ] 1. Lọc 3 câu hỏi — có đáng một skill riêng không, thuộc module nào
 - [ ] 2. Đặt tên + viết description trước khi viết ruột
 - [ ] 3. Dựng cây file tối thiểu (SKILL.md + README.md)
@@ -17,7 +20,7 @@
 
 ## Bước 1 — Lọc 3 câu hỏi
 
-Chạy bảng ở [SKILL.md § Bước 0](../SKILL.md#bước-0--việc-này-có-đáng-một-skill-riêng-không). Kết quả phải là **một trong ba**, viết ra thành lời trước khi gõ phím:
+Chạy bảng ở [SKILL.md § Bước 0](../SKILL.md#bước-0--việc-này-có-đáng-một-skill-riêng-không). Kết quả phải là **một trong ba**, viết ra thành lời, **chờ người xác nhận**, rồi mới gõ phím:
 
 - *"Skill lá mới trong `backend/`"* → tiếp bước 2.
 - *"Chỉ là workflow của skill X"* → dừng, sang [extend-skill.md](extend-skill.md).
@@ -122,7 +125,7 @@ Không tạo thư mục module trước khi có skill thật trong đó (ADR-022
 
 | ❌ | Vì sao |
 |---|---|
-| Viết ruột trước, `description` sau cho có | Lá-rời sống nhờ description — viết sau thì viết theo ruột, không theo cách người dùng gọi |
+| Tự chốt tên / `description` / cây / câu chữ rồi ghi | Gate người — người mới ký nội dung skill |
 | Tên theo công cụ (`minipower-ops-grafana`) | Đổi công cụ là đổi tên skill; tên phải theo **việc** |
 | Copy SKILL.md sang README.md | Hai đối tượng đọc khác nhau; bản sao lệch nhau sau lần sửa thứ hai |
 | Tạo `workflows/` + `providers/` rỗng "cho đủ chuẩn" | Thư mục rỗng là lời hứa, agent vẫn phải mở ra mới biết trống |

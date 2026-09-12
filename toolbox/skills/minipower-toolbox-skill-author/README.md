@@ -15,6 +15,8 @@ Skill để **viết và soát skill Minipower**. Agent đọc [SKILL.md](./SKIL
 
 **Không dùng cho:** viết skill trong [`sdlc/`](../../../sdlc/README.md) (router-gộp, đăng ký qua `rules.json` — luật khác, xem [reference/anatomy.md](./reference/anatomy.md#sdlc-khác-gì)) · viết ADR (theo [ADRs/TEMPLATE.md](../../../ADRs/TEMPLATE.md)) · viết tài liệu nền không phải skill (→ [`staging/`](../../../staging/), kho tạm đang rút).
 
+Agent **không tự chốt** nội dung skill: nêu phương án, dừng chờ bạn xác nhận, rồi mới ghi file. Đọc/kiểm tra (`npm test`, `link:check`) thì làm luôn.
+
 ## Vì sao là skill chứ không phải một file template
 
 Vì phần lớn lỗi khi viết skill **không** nằm ở chỗ quên khung file — nó nằm ở `description`. Skill lá-rời được chọn bằng `description`; viết mơ hồ là skill không bao giờ chạy, và **không test nào bắt được**. Một file template nằm im trong kho tạm không cứu được việc đó; một skill tự kích hoạt lúc bạn đang tạo skill thì có.

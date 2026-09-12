@@ -2,9 +2,12 @@
 
 Áp dụng khi **đã có** skill phủ việc, cần thêm một biến thể — hoặc khi một skill cũ lệch chuẩn.
 
+Mọi quyết định (loại biến thể, chỗ đặt, sửa gì / không sửa gì, câu chữ) đi qua [SKILL.md § Gate người](../SKILL.md#gate-người--xác-nhận-trước-khi-viết) — đề xuất, dừng, chờ xác nhận, rồi mới ghi.
+
 ## Checklist — thêm biến thể
 
 ```text
+- [ ] 0. Đã hỏi và được xác nhận mọi quyết định còn mở của lượt này
 - [ ] 1. Xác định loại biến thể: workflow / provider / pattern / template
 - [ ] 2. Kiểm tra không trùng với biến thể đã có
 - [ ] 3. Viết file biến thể — MỘT file, không lặp orchestrator
@@ -51,7 +54,7 @@ cd sdlc/hooks && npm test && npm run link:check
 
 ## Soát skill có sẵn
 
-Dùng khi nghi một skill cũ lệch chuẩn. Soát theo thứ tự **đắt dần**, dừng khi hết vấn đề:
+Dùng khi nghi một skill cũ lệch chuẩn. Soát theo thứ tự **đắt dần**, dừng khi hết vấn đề. Phát hiện lệch → nêu đề xuất sửa, **chờ xác nhận**, rồi mới ghi — không tự vá.
 
 | # | Soát | Sai thì sao | Ai bắt được |
 |---|---|---|---|

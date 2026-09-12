@@ -1,6 +1,6 @@
 ---
 name: minipower-toolbox-skill-author
-description: Viết và soát skill lá-rời Minipower (minipower-{module}-{capability}) — chọn module bằng 3 câu hỏi ADR-022, dựng cây SKILL.md/README.md/workflows/providers, đặt description kích hoạt được, cập nhật hub và test canh. Dùng khi tạo skill mới, thêm provider/pattern/workflow, mở module mới, hoặc soát skill có sẵn lệch chuẩn.
+description: Viết và soát skill lá-rời Minipower (minipower-{module}-{capability}) — chọn module bằng 3 câu hỏi ADR-022, dựng cây SKILL.md/README.md/workflows/providers, đặt description kích hoạt được, cập nhật hub và test canh. Hỏi người xác nhận trước mọi quyết định, không tự chốt. Dùng khi tạo skill mới, thêm provider/pattern/workflow, mở module mới, hoặc soát skill có sẵn lệch chuẩn.
 metadata:
   audience: hoangnh
   workflow: github
@@ -21,6 +21,15 @@ Hướng dẫn người: [README.md](README.md) · giải phẫu đầy đủ: [
 | Chưa có skill cho việc này | [workflows/new-skill.md](workflows/new-skill.md) |
 | Đã có skill, thêm provider / pattern / workflow / template | [workflows/extend-skill.md](workflows/extend-skill.md) |
 | Skill có sẵn lệch chuẩn (thiếu README, `description` mơ hồ, SKILL.md phình) | [workflows/extend-skill.md § Soát skill có sẵn](workflows/extend-skill.md#soát-skill-có-sẵn) |
+
+## Gate người — xác nhận trước khi viết
+
+AI chuẩn bị phương án; người xác nhận rồi mới ghi. **Không tự quyết định** bất kỳ nội dung nào của skill đang viết/soát: lọc 3 câu hỏi, tên, `description`, câu chữ, chỗ đặt, cây file, new vs extend, mở module, sửa gì / không sửa gì.
+
+- Gom **mọi quyết định còn mở của lượt đó** thành một lần hỏi — không nhỏ giọt.
+- Nêu đề xuất; nếu hơn một cách hiểu thì liệt kê hết, không tự chọn. Dừng. Chờ xác nhận. Rồi mới làm bước tiếp.
+- Đã xác nhận thì không hỏi lại cùng nội dung, trừ khi thông tin mới đảo phương án.
+- Đọc file, đối chiếu chuẩn, chạy `npm test` / `link:check` — không cần hỏi. **Ghi hoặc đổi file skill** thì phải đã được xác nhận.
 
 ## Bước 0 — việc này có đáng một skill riêng không
 
@@ -98,7 +107,7 @@ npm run link:check    # 0 link gãy MỚI
 - Bảng skill trong `{module}/README.md` có dòng `**{tên-skill}**` + link `skills/{tên-skill}/README.md`
 - **Module mới** còn phải có: `{module}/PACK.md` đủ trường schema · `{module}-pack.test.js` · dòng trong `README.md` §Minipower có gì + cây thư mục · `AGENTS.md` §Quy ước đặt tên · ADR + dòng index
 
-Phần **người soát** (không máy nào kiểm): `description` có kích hoạt đúng lúc không · SKILL.md có ngắn không · có trùng việc với skill sẵn có không.
+Phần **người soát** (không máy nào kiểm): `description` có kích hoạt đúng lúc không · SKILL.md có ngắn không · có trùng việc với skill sẵn có không · mọi quyết định đã được người xác nhận trước khi ghi.
 
 ## Liên quan
 
