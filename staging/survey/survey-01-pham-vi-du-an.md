@@ -1,10 +1,8 @@
-# Vietnam Airlines · Lakehouse
-
 # Phiếu khảo sát 01 — Phạm vi dự án
 
 > **Mục đích:** Xác định mục tiêu, phạm vi, ưu tiên, hiện trạng tích hợp ở mức tổng thể, định hướng ODS / Golden Zone / Data Mart và các yêu cầu governance ở mức dự án.
 >
-> **Đối tượng trả lời:** PM / chủ đầu tư / đầu mối kiến trúc dữ liệu của VNA.
+> **Đối tượng trả lời:** PM / chủ đầu tư / đầu mối kiến trúc dữ liệu của khách hàng.
 >
 > **Cách dùng:** Điền trực tiếp vào ô **Trả lời**. Không yêu cầu mỗi hệ thống trả lời toàn bộ bộ câu hỏi. Dùng **Question Matrix** ([`survey-question-matrix.md`](survey-question-matrix.md)) để xác định câu hỏi `Required / Conditional / N/A` theo từng hệ thống.
 
@@ -13,7 +11,7 @@
 | File | Nội dung |
 |---|---|
 | `survey-01-pham-vi-du-an.md` | Phạm vi dự án (phiếu này) |
-| `survey-question-matrix.md` | Question Matrix – 32 hệ thống |
+| `survey-question-matrix.md` | Question Matrix theo hệ thống |
 | `survey-02-ha-tang-moi-truong.md` | Hạ tầng, môi trường hệ thống nguồn |
 | `survey-03-nghiep-vu-he-thong-nguon.md` | Nghiệp vụ hệ thống nguồn |
 | `survey-04-quan-tri-du-lieu.md` | Nhu cầu quản trị dữ liệu |
@@ -32,7 +30,7 @@
 
 | Trường | Nội dung |
 |---|---|
-| Dự án | Data Warehouse / Data Platform — Vietnam Airlines |
+| Dự án | Data Warehouse / Data Platform |
 | Phiên bản phiếu | 1.0 |
 | Ngày khảo sát | |
 | Hình thức | ☐ Họp trực tiếp · ☐ Online · ☐ Email / tài liệu · ☐ Khác: ________ |
@@ -54,7 +52,7 @@ _điền_
 
 _điền_
 
-### Q02. Những vấn đề hiện tại mà VNA muốn giải quyết bằng kho dữ liệu mới?
+### Q02. Những vấn đề hiện tại mà khách hàng muốn giải quyết bằng kho dữ liệu mới?
 
 **Trả lời:**
 
@@ -141,7 +139,7 @@ _điền_
 
 ## 2. Hệ thống nguồn và System of Record
 
-### Q11. Hiện VNA có những hệ thống nguồn chính nào cần đưa dữ liệu vào ODS?
+### Q11. Hiện khách hàng có những hệ thống nguồn chính nào cần đưa dữ liệu vào ODS?
 
 **Trả lời:**
 
@@ -231,7 +229,7 @@ _điền_
 | | | | |
 | | | | |
 
-### Q19. VNA có danh mục chính thức các hệ thống và owner của từng hệ thống không?
+### Q19. Khách hàng có danh mục chính thức các hệ thống và owner của từng hệ thống không?
 
 - Quyết định: ☐ Có · ☐ Không · ☐ Có nhưng chưa đầy đủ
 
@@ -321,7 +319,7 @@ _điền_
 | | | | |
 | | | | |
 
-### Q28. Những dữ liệu nào đang được coi là “Golden Data” hoặc dữ liệu chuẩn của VNA?
+### Q28. Những dữ liệu nào đang được coi là “Golden Data” hoặc dữ liệu chuẩn của doanh nghiệp?
 
 **Trả lời:**
 
@@ -350,7 +348,7 @@ _điền_
 
 ## 4. ODS, Golden Zone và Data Mart
 
-### Q31. VNA xác định ODS sẽ đóng vai trò gì trong kiến trúc dữ liệu tương lai?
+### Q31. Khách hàng xác định ODS sẽ đóng vai trò gì trong kiến trúc dữ liệu tương lai?
 
 **Trả lời:**
 
@@ -425,7 +423,7 @@ _điền_
 
 _điền_
 
-### Q40. VNA có định nghĩa chính thức về Staging Zone và Golden Zone chưa?
+### Q40. Khách hàng có định nghĩa chính thức về Staging Zone và Golden Zone chưa?
 
 - Quyết định: ☐ Có, đủ rõ · ☐ Có, chưa đầy đủ · ☐ Chưa có · ☐ Chưa rõ
 
@@ -478,7 +476,7 @@ _điền_
 
 ## 5. Data Integration
 
-### Q46. VNA ưu tiên những phương thức tích hợp nào: MQ, CDC, DB replication, SFTP, API, JDBC...?
+### Q46. Khách hàng ưu tiên những phương thức tích hợp nào: MQ, CDC, DB replication, SFTP, API, JDBC...?
 
 **Thứ tự ưu tiên:**
 
@@ -575,7 +573,7 @@ _điền_
 | An toàn | | |
 | Quản lý chung | | |
 
-### Q55. VNA đã có Data Owner / Data Steward cho từng domain chưa?
+### Q55. Khách hàng đã có Data Owner / Data Steward cho từng domain chưa?
 
 - Quyết định: ☐ Đã có đủ · ☐ Có một phần · ☐ Chưa có · ☐ Chưa rõ
 
@@ -726,38 +724,10 @@ Không khảo sát bằng câu hỏi riêng cho từng hệ thống. Điền ma 
 
 | STT | Hệ thống | Domain | Trong phạm vi | Ưu tiên | ODS | Data Mart | Near-real-time | Integration chính | Owner | Ghi chú |
 |---:|---|---|---|---|---|---|---|---|---|---|
-| 1 | Flight OPS | Khai thác | | | | | | | | |
-| 2 | FMS | Khai thác | | | | | | | | |
-| 3 | AVES | Khai thác | | | | | | | | |
-| 4 | LIDO FLIGHT4D | Khai thác | | | | | | | | |
-| 5 | CrewTrip | Khai thác | | | | | | | | |
-| 6 | ANCM | Khai thác | | | | | | | | |
-| 7 | ETL | Khai thác | | | | | | | | |
-| 8 | ACARS | Khai thác | | | | | | | | |
-| 9 | MVT | Khai thác | | | | | | | | |
-| 10 | Schedule Management | Thương mại | | | | | | | | |
-| 11 | PSS | Thương mại | | | | | | | | |
-| 12 | CLM | Thương mại | | | | | | | | |
-| 13 | CargoSpot | Thương mại | | | | | | | | |
-| 14 | RODB | Thương mại | | | | | | | | |
-| 15 | PSS Logfile | Thương mại | | | | | | | | |
-| 16 | DCS FM | Dịch vụ | | | | | | | | |
-| 17 | DCS CM | Dịch vụ | | | | | | | | |
-| 18 | LMS | Dịch vụ | | | | | | | | |
-| 19 | Qualtrics | Dịch vụ | | | | | | | | |
-| 20 | World Tracer | Dịch vụ | | | | | | | | |
-| 21 | SPS | Dịch vụ | | | | | | | | |
-| 22 | CentralHub | Dịch vụ | | | | | | | | |
-| 23 | BSM | Dịch vụ | | | | | | | | |
-| 24 | MRO | Kỹ thuật | | | | | | | | |
-| 25 | TIMS | Kỹ thuật | | | | | | | | |
-| 26 | AQD | An toàn | | | | | | | | |
-| 27 | AGS | An toàn | | | | | | | | |
-| 28 | PMS | Quản lý chung | | | | | | | | |
-| 29 | Revera | Quản lý chung | | | | | | | | |
-| 30 | GAS | Quản lý chung | | | | | | | | |
-| 31 | SkyHR | Quản lý chung | | | | | | | | |
-| 32 | CMS | Quản lý chung | | | | | | | | |
+| 1 | _(điền)_ | | | | | | | | | |
+| 2 | | | | | | | | | | |
+| 3 | | | | | | | | | | |
+| … | | | | | | | | | | |
 
 **Người xác nhận ma trận:** ________ · **Ngày:** ________
 
@@ -765,7 +735,7 @@ Không khảo sát bằng câu hỏi riêng cho từng hệ thống. Điền ma 
 
 | File | Nội dung |
 |---|---|
-| [`survey-question-matrix.md`](survey-question-matrix.md) | Question Matrix – 32 hệ thống |
+| [`survey-question-matrix.md`](survey-question-matrix.md) | Question Matrix theo hệ thống |
 
 
 ## Phụ lục. Kết luận thiết kế bộ khảo sát
@@ -776,10 +746,10 @@ Không khảo sát bằng câu hỏi riêng cho từng hệ thống. Điền ma 
 2. **System Questionnaire** — SME xác nhận nghiệp vụ, dữ liệu, integration, DQ, security và downstream.
 3. **Data Source Inventory** — thu thập metadata ở mức database / table / column / data-flow.
 
-Không nên phát nguyên bộ 144 câu hỏi cho cả 32 hệ thống. Thay vào đó:
+Không nên phát nguyên bộ câu hỏi cho mọi hệ thống. Thay vào đó:
 
 ```text
-32 Systems
+N Systems
     │
     ▼
 Question Matrix

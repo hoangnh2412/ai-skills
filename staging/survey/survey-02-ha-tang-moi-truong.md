@@ -1,5 +1,3 @@
-# Vietnam Airlines · Lakehouse
-
 ## Phiếu khảo sát 02 — Hạ tầng và môi trường hệ thống nguồn
 
 **Mục lục**
@@ -61,7 +59,7 @@ Phiếu này thu thập hiện trạng kỹ thuật của **một hệ thống n
 ## 3. Thông tin hệ thống khảo sát (SYS)
 
 ### Q01. Tên hệ thống?
-> Ví dụ: Flight OPS
+> Ví dụ: CRM · Billing · ERP
 
 ### Q02. Tên viết tắt?
 > Ví dụ: FOPS
@@ -404,7 +402,7 @@ Phiếu này thu thập hiện trạng kỹ thuật của **một hệ thống n
 - Quyết định: ☐ Có · ☐ Không · ☐ Chưa rõ
 
 **Mô tả ngắn:**
-> Ví dụ: Bắt buộc flight_no, date · validate mã sân bay
+> Ví dụ: Bắt buộc customer_id, transaction_date · validate mã tham chiếu
 
 ### Q66. Có thể chỉnh sửa / xóa bản ghi đã gửi không?
 - Quyết định: ☐ Có · ☐ Không · ☐ Chưa rõ

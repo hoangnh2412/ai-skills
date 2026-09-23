@@ -1,5 +1,3 @@
-# Vietnam Airlines · Lakehouse
-
 # Khảo sát 3 — Nghiệp vụ hệ thống nguồn
 
 > **Mục đích:** Làm rõ ngữ nghĩa nghiệp vụ, mô hình dữ liệu, phạm vi đưa vào ODS, transformation nghiệp vụ và các hệ thống downstream đang phụ thuộc.
@@ -13,7 +11,7 @@
 | File | Nội dung |
 |---|---|
 | `survey-01-pham-vi-du-an.md` | Phạm vi dự án |
-| `survey-question-matrix.md` | Question Matrix – 32 hệ thống |
+| `survey-question-matrix.md` | Question Matrix theo hệ thống |
 | `survey-02-ha-tang-moi-truong.md` | Hạ tầng, môi trường hệ thống nguồn |
 | `survey-03-nghiep-vu-he-thong-nguon.md` | Nghiệp vụ hệ thống nguồn (tài liệu này) |
 | `survey-04-quan-tri-du-lieu.md` | Nhu cầu quản trị dữ liệu |
@@ -22,7 +20,7 @@
 
 - **[Đã xác nhận]**: Thông tin đã được xác nhận trong quá trình khảo sát/tài liệu nguồn.
 - **[Suy luận]**: Nhận định hoặc đề xuất được suy ra từ thông tin khảo sát.
-- **[Chưa xác nhận]**: Thông tin cần tiếp tục xác minh với VNA/SME.
+- **[Chưa xác nhận]**: Thông tin cần tiếp tục xác minh với khách hàng / SME.
 - Các tên hệ thống và công nghệ trong tài liệu này được giữ theo inventory hiện tại; không tự suy diễn các tên viết tắt hoặc quan hệ giữa các hệ thống nếu chưa được xác nhận.
 
 ---

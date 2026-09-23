@@ -1,6 +1,4 @@
-# Vietnam Airlines · Lakehouse
-
-# Bộ câu hỏi khảo sát Data Warehouse / Data Platform – Vietnam Airlines
+# Bộ câu hỏi khảo sát Data Warehouse / Data Platform
 
 > **Mục đích:** Tài liệu khảo sát phục vụ phân tích hiện trạng, thiết kế mô hình dữ liệu, kiến trúc Logical/Physical Data Warehouse, luồng tích hợp, Data Governance và API.
 >
@@ -10,7 +8,7 @@
 
 - **[Đã xác nhận]**: Thông tin đã được xác nhận trong quá trình khảo sát/tài liệu nguồn.
 - **[Suy luận]**: Nhận định hoặc đề xuất được suy ra từ thông tin khảo sát.
-- **[Chưa xác nhận]**: Thông tin cần tiếp tục xác minh với VNA/SME.
+- **[Chưa xác nhận]**: Thông tin cần tiếp tục xác minh với khách hàng / SME.
 - Các tên hệ thống và công nghệ trong tài liệu này được giữ theo inventory hiện tại; không tự suy diễn các tên viết tắt hoặc quan hệ giữa các hệ thống nếu chưa được xác nhận.
 
 ---
@@ -20,7 +18,7 @@
 ## 1.1. Mục tiêu và phạm vi
 
 1. Mục tiêu chính của dự án xây dựng Data Warehouse/Data Platform lần này là gì?
-2. Những vấn đề hiện tại mà VNA muốn giải quyết bằng kho dữ liệu mới?
+2. Những vấn đề hiện tại mà khách hàng muốn giải quyết bằng kho dữ liệu mới?
 3. Những hệ thống/phòng ban nào nằm trong phạm vi giai đoạn hiện tại?
 4. Những hệ thống nào chắc chắn nằm ngoài phạm vi?
 5. Có phân chia phạm vi theo các khối nghiệp vụ không?
@@ -32,7 +30,7 @@
 
 ## 1.2. Hệ thống nguồn và System of Record
 
-11. Hiện VNA có những hệ thống nguồn chính nào cần đưa dữ liệu vào ODS?
+11. Hiện khách hàng có những hệ thống nguồn chính nào cần đưa dữ liệu vào ODS?
 12. Hệ thống nào là hệ thống nghiệp vụ chính/master system cho từng domain?
 13. Hệ thống nào đang được xem là nguồn dữ liệu chính thức (System of Record)?
 14. Có hệ thống nào đang tổng hợp dữ liệu từ nhiều nguồn khác không?
@@ -40,7 +38,7 @@
 16. Có hệ thống nào dự kiến thay đổi nền tảng/công nghệ trong thời gian tới?
 17. Có hệ thống nào đang trong quá trình triển khai nhưng vẫn cần đưa vào phạm vi khảo sát?
 18. Các hệ thống nguồn hiện đang tích hợp với nhau bằng những phương thức nào?
-19. VNA có danh mục chính thức các hệ thống và owner của từng hệ thống không?
+19. Khách hàng có danh mục chính thức các hệ thống và owner của từng hệ thống không?
 
 ## 1.3. Hiện trạng tích hợp và dữ liệu
 
@@ -52,13 +50,13 @@
 25. Hiện tại DIH/MIS đang thực hiện những chức năng gì?
 26. Có những luồng ETL/ELT hiện hữu nào đang được sử dụng?
 27. Có những luồng dữ liệu nào đang tổng hợp từ nhiều nguồn trước khi đưa vào báo cáo?
-28. Những dữ liệu nào đang được coi là “Golden Data” hoặc dữ liệu chuẩn của VNA?
+28. Những dữ liệu nào đang được coi là “Golden Data” hoặc dữ liệu chuẩn của doanh nghiệp?
 29. Hiện tại có Data Catalog/Data Dictionary tập trung không?
 30. Có cơ chế quản lý Data Lineage hiện tại không?
 
 ## 1.4. ODS, Golden Zone và Data Mart
 
-31. VNA xác định ODS sẽ đóng vai trò gì trong kiến trúc dữ liệu tương lai?
+31. Khách hàng xác định ODS sẽ đóng vai trò gì trong kiến trúc dữ liệu tương lai?
 32. Có thống nhất nguyên tắc đưa dữ liệu nguồn vào ODS trước, sau đó mới ETL/ELT sang Data Mart không?
 33. ODS cần lưu dữ liệu ở mức độ nào: raw, normalized hay business-transformed?
 34. Có cần giữ nguyên dữ liệu gốc từ hệ thống nguồn không?
@@ -67,7 +65,7 @@
 37. Những Mart nào dự kiến triển khai đầu tiên?
 38. Ai là owner của từng Data Mart?
 39. Có yêu cầu xây dựng Enterprise Data Model dùng chung giữa các domain không?
-40. VNA có định nghĩa chính thức về Staging Zone và Golden Zone chưa?
+40. Khách hàng có định nghĩa chính thức về Staging Zone và Golden Zone chưa?
 41. Sau khi ODS được xây dựng, các hệ thống MIS/DIH hiện tại có được phép tiếp tục sử dụng Staging không?
 42. Những hệ thống nào cần cơ chế chuyển tiếp từ nguồn cũ → Staging → Golden Zone?
 43. Tiêu chí nào để một hệ thống được chuyển từ Staging sang Golden Zone?
@@ -76,7 +74,7 @@
 
 ## 1.5. Data Integration
 
-46. VNA ưu tiên những phương thức tích hợp nào: MQ, CDC, DB replication, SFTP, API, JDBC...?
+46. Khách hàng ưu tiên những phương thức tích hợp nào: MQ, CDC, DB replication, SFTP, API, JDBC...?
 47. Có tiêu chuẩn chung cho việc tích hợp dữ liệu vào ODS không?
 48. Có yêu cầu near-real-time đối với domain nào?
 49. Những domain nào chỉ cần batch?
@@ -88,7 +86,7 @@
 ## 1.6. Data Governance và Data Quality
 
 54. Ai chịu trách nhiệm về chất lượng dữ liệu của từng domain?
-55. VNA đã có Data Owner/Data Steward cho từng domain chưa?
+55. Khách hàng đã có Data Owner/Data Steward cho từng domain chưa?
 56. Có quy định chung về naming convention cho database/table/column không?
 57. Có quy định về phân loại dữ liệu nhạy cảm không?
 58. Có yêu cầu masking/encryption đối với PII hoặc dữ liệu nhạy cảm không?
@@ -112,38 +110,10 @@ Không khảo sát bằng câu hỏi riêng cho từng hệ thống. Sử dụng
 
 | STT | Hệ thống | Domain | Trong phạm vi | Ưu tiên | ODS | Data Mart | Near-real-time | Integration chính | Owner | Ghi chú |
 |---:|---|---|---|---|---|---|---|---|---|---|
-| 1 | Flight OPS | Khai thác | | | | | | | | |
-| 2 | FMS | Khai thác | | | | | | | | |
-| 3 | AVES | Khai thác | | | | | | | | |
-| 4 | LIDO FLIGHT4D | Khai thác | | | | | | | | |
-| 5 | CrewTrip | Khai thác | | | | | | | | |
-| 6 | ANCM | Khai thác | | | | | | | | |
-| 7 | ETL | Khai thác | | | | | | | | |
-| 8 | ACARS | Khai thác | | | | | | | | |
-| 9 | MVT | Khai thác | | | | | | | | |
-| 10 | Schedule Management | Thương mại | | | | | | | | |
-| 11 | PSS | Thương mại | | | | | | | | |
-| 12 | CLM | Thương mại | | | | | | | | |
-| 13 | CargoSpot | Thương mại | | | | | | | | |
-| 14 | RODB | Thương mại | | | | | | | | |
-| 15 | PSS Logfile | Thương mại | | | | | | | | |
-| 16 | DCS FM | Dịch vụ | | | | | | | | |
-| 17 | DCS CM | Dịch vụ | | | | | | | | |
-| 18 | LMS | Dịch vụ | | | | | | | | |
-| 19 | Qualtrics | Dịch vụ | | | | | | | | |
-| 20 | World Tracer | Dịch vụ | | | | | | | | |
-| 21 | SPS | Dịch vụ | | | | | | | | |
-| 22 | CentralHub | Dịch vụ | | | | | | | | |
-| 23 | BSM | Dịch vụ | | | | | | | | |
-| 24 | MRO | Kỹ thuật | | | | | | | | |
-| 25 | TIMS | Kỹ thuật | | | | | | | | |
-| 26 | AQD | An toàn | | | | | | | | |
-| 27 | AGS | An toàn | | | | | | | | |
-| 28 | PMS | Quản lý chung | | | | | | | | |
-| 29 | Revera | Quản lý chung | | | | | | | | |
-| 30 | GAS | Quản lý chung | | | | | | | | |
-| 31 | SkyHR | Quản lý chung | | | | | | | | |
-| 32 | CMS | Quản lý chung | | | | | | | | |
+| 1 | _(điền)_ | | | | | | | | | |
+| 2 | | | | | | | | | | |
+| 3 | | | | | | | | | | |
+| … | | | | | | | | | | |
 
 ---
 
@@ -297,7 +267,7 @@ Không khảo sát bằng câu hỏi riêng cho từng hệ thống. Sử dụng
 112. Master data được quản lý ở hệ thống nào?
 113. Có mã định danh dùng chung giữa các hệ thống không?
 114. Nếu cùng một entity nhưng các hệ thống sử dụng mã khác nhau thì mapping ở đâu?
-115. VNA đã có Master Data Management chưa?
+115. Khách hàng đã có Master Data Management chưa?
 116. Có cần xây dựng Golden Record không?
 
 ## L. Retention
@@ -561,38 +531,7 @@ Sử dụng **Integration Matrix** thay vì hỏi lặp lại ở nhiều tài l
 
 | Hệ thống | SYS | BUS | DB | DM | ODS | CDC | NRT | FILE | MQ | DQ | MDM | RET | SEC | DS |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Flight OPS | R | R | R | R | R | C | C | N/A | N/A | R | C | R | R | R |
-| FMS | R | R | R | R | R | C | C | N/A | C | R | C | R | R | R |
-| AVES | R | R | C | C | R | C | C | N/A | C | R | C | R | R | R |
-| LIDO FLIGHT4D | R | R | C | C | R | N/A | C | N/A | N/A | R | C | R | R | R |
-| CrewTrip | R | R | R | R | R | C | C | N/A | N/A | R | C | R | R | R |
-| ANCM | R | R | R | R | R | C | C | N/A | N/A | R | C | R | R | R |
-| ETL | R | R | C | C | R | N/A | C | R | C | R | C | R | R | R |
-| ACARS | R | R | C | C | R | N/A | C | R | C | R | C | R | R | R |
-| MVT | R | R | C | C | R | N/A | C | R | C | R | C | R | R | R |
-| Schedule Management | R | R | R | R | R | C | C | C | C | R | C | R | R | R |
-| PSS | R | R | C | R | R | C | C | C | C | R | R | R | R | R |
-| CLM | R | R | R | R | R | C | C | N/A | C | R | R | R | R | R |
-| CargoSpot | R | R | R | R | R | C | C | C | C | R | C | R | R | R |
-| RODB | R | R | R | R | R | C | C | N/A | C | R | C | R | R | R |
-| PSS Logfile | R | R | C | C | R | N/A | C | R | N/A | R | C | R | R | R |
-| DCS FM | R | R | C | R | R | C | R | N/A | C | R | R | R | R | R |
-| DCS CM | R | R | C | R | R | C | R | N/A | C | R | R | R | R | R |
-| LMS | R | R | R | R | R | C | C | N/A | C | R | C | R | R | R |
-| Qualtrics | R | R | C | C | R | C | C | C | N/A | R | C | R | R | R |
-| World Tracer | R | R | C | C | R | C | C | C | C | R | C | R | R | R |
-| SPS | R | R | R | R | R | C | C | N/A | C | R | C | R | R | R |
-| CentralHub | R | R | C | C | R | C | C | C | C | R | C | R | R | R |
-| BSM | R | R | C | C | R | C | R | C | C | R | C | R | R | R |
-| MRO | R | R | R | R | R | R | R | N/A | C | R | C | R | R | R |
-| TIMS | R | R | R | R | R | C | C | N/A | C | R | C | R | R | R |
-| AQD | R | R | C | C | R | C | C | C | C | R | C | R | R | R |
-| AGS | R | R | C | C | R | N/A | C | R | N/A | R | C | R | R | R |
-| PMS | R | R | R | R | R | C | C | N/A | C | R | C | R | R | R |
-| Revera | R | R | R | R | R | C | C | N/A | C | R | C | R | R | R |
-| GAS | R | R | R | R | R | C | C | N/A | C | R | C | R | R | R |
-| SkyHR | R | R | R | R | R | C | C | N/A | C | R | R | R | R | R |
-| CMS | R | R | C | C | R | C | C | C | C | R | C | R | R | R |
+| _(điền tên hệ thống)_ | | | | | | | | | | | | | | |
 
 > **Lưu ý:** Các giá trị trong ma trận trên là phân loại khảo sát ban đầu, **không phải xác nhận kỹ thuật của từng hệ thống**.
 
@@ -779,10 +718,10 @@ Validation / Cut-over
 2. **System Questionnaire** – SME xác nhận nghiệp vụ, dữ liệu, integration, DQ, security và downstream.
 3. **Data Source Inventory** – thu thập metadata ở mức database/table/column/data-flow.
 
-Không nên phát nguyên bộ 144 câu hỏi cho cả 32 hệ thống. Thay vào đó:
+Không nên phát nguyên bộ câu hỏi cho mọi hệ thống. Thay vào đó:
 
 ```text
-32 Systems
+N Systems
     │
     ▼
 Question Matrix

@@ -1,5 +1,3 @@
-# Vietnam Airlines · Lakehouse
-
 ## Phiếu khảo sát 04 — Nhu cầu quản trị dữ liệu
 
 **Mục lục**
@@ -57,7 +55,7 @@ Phiếu này thu thập yêu cầu quản trị dữ liệu ở mức **một h�
 ## 3. Thông tin hệ thống (SYS)
 
 ### Q01. Tên hệ thống?
-> Ví dụ: Flight OPS
+> Ví dụ: CRM · Billing · ERP
 
 ### Q02. Tên viết tắt?
 > Ví dụ: FOPS
@@ -72,7 +70,7 @@ Phiếu này thu thập yêu cầu quản trị dữ liệu ở mức **một h�
 - Quyết định: ☐ Có · ☐ Không · ☐ Chưa rõ
 
 **Nếu có — mô tả ngắn / vị trí tài liệu:**
-> Ví dụ: Rule validate mã sân bay · tài liệu DQ-FOPS-v1.pdf
+> Ví dụ: Rule validate mã khách hàng · tài liệu DQ-CRM-v1.pdf
 
 ### Q05. Có dữ liệu duplicate không?
 - Quyết định: ☐ Có · ☐ Không · ☐ Chưa rõ
@@ -84,7 +82,7 @@ Phiếu này thu thập yêu cầu quản trị dữ liệu ở mức **một h�
 - Quyết định: ☐ Có · ☐ Không · ☐ Chưa rõ
 
 **Nếu có — liệt kê loại (hoặc trỏ sang mục MDM):**
-> Ví dụ: Danh mục sân bay · loại tàu bay
+> Ví dụ: Danh mục sản phẩm · loại khách hàng
 
 ### Q07. Có business rule nào để xác định record hợp lệ không?
 - Quyết định: ☐ Có · ☐ Không · ☐ Chưa rõ
@@ -113,16 +111,16 @@ Phiếu này thu thập yêu cầu quản trị dữ liệu ở mức **một h�
 ## 5. Master data (MDM)
 
 ### Q12. Những master data nào hệ thống sử dụng?
-> Ví dụ: Sân bay · loại tàu bay · mã chuyến · mã nhân viên
+> Ví dụ: Sản phẩm · loại khách hàng · mã hợp đồng · mã nhân viên
 
 ### Q13. Master data được quản lý ở hệ thống nào?
-> Ví dụ: Danh mục sân bay ở hệ thống X; mã nhân viên ở HR
+> Ví dụ: Danh mục sản phẩm ở hệ thống X; mã nhân viên ở HR
 
 ### Q14. Có mã định danh dùng chung giữa các hệ thống không?
 - Quyết định: ☐ Có · ☐ Không · ☐ Chưa rõ
 
 **Nếu có — mô tả mã / phạm vi:**
-> Ví dụ: Mã sân bay IATA dùng chung toàn VNA
+> Ví dụ: Mã khách hàng / mã sản phẩm dùng chung toàn doanh nghiệp
 
 ### Q15. Nếu cùng một entity nhưng các hệ thống dùng mã khác nhau thì mapping ở đâu?
 - Quyết định: ☐ Có mapping · ☐ Không có · ☐ Không áp dụng · ☐ Chưa rõ
@@ -213,7 +211,7 @@ Phiếu này thu thập yêu cầu quản trị dữ liệu ở mức **một h�
 - Quyết định: ☐ Có · ☐ Không · ☐ Chưa quyết
 
 **Nếu có — mô tả:**
-> Ví dụ: Lọc theo mã sân bay / đơn vị người dùng
+> Ví dụ: Lọc theo mã chi nhánh / đơn vị người dùng
 
 ### Q31. Có yêu cầu audit access log không?
 - Quyết định: ☐ Có · ☐ Không · ☐ Chưa quyết
