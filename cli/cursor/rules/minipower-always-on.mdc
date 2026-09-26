@@ -1,0 +1,10 @@
+---
+description: Dự án có .minipower/ — bật Minipower, chọn skill, chờ người OK kế hoạch.
+alwaysApply: true
+---
+
+Nếu thư mục `.minipower/` tồn tại (từ CWD đi lên): đây là dự án Minipower.
+
+1. Chọn skill bằng keyword (`router/lib/intent-dispatch.js`) kết hợp LLM.
+2. Thông báo: `Sẽ chạy {skill} để xử lý {việc}.`
+3. Việc nhiều bước → bảng kế hoạch. **Không** ghi artifact cuối / L3 MCP / Git trước khi người xác nhận và điều phối.

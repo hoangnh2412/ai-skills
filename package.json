@@ -1,0 +1,13 @@
+{
+  "name": "minipower",
+  "private": true,
+  "description": "Minipower — test/gen/link từ gốc repo (logic vẫn ở sdlc/hooks).",
+  "scripts": {
+    "test": "npm test --prefix src/sdlc/hooks",
+    "gen": "npm run gen --prefix src/sdlc/hooks",
+    "gen:check": "npm run gen:check --prefix src/sdlc/hooks",
+    "link:check": "npm run link:check --prefix src/sdlc/hooks",
+    "trace:check": "npm run trace:check --prefix src/sdlc/hooks",
+    "minipower": "node cli/minipower.mjs"
+  }
+}

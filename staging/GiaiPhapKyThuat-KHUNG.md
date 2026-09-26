@@ -44,7 +44,7 @@
 | **III.4** ANTT (giải pháp) | **DOC-08** security view · đáp ứng **II.6** / **DOC-13** | Báo cáo pentest plan · policy KH |
 | **III.5** Đảm bảo hoạt động | **DOC-17** · đáp ứng **II.5** | SLA AMC / hỗ trợ trong HĐ |
 | **III.6 / III.7** Phạm vi NT vs KH | **DOC-03** RACI · assumption · điều khoản HĐ | Phụ lục trách nhiệm trong RFP |
-| Ước lượng / giá *(nếu đính kèm)* | [ULNL.md](ULNL.md) · [T-SHIRT.md](T-SHIRT.md) | Bảng giá / BoQ thương mại |
+| Ước lượng / giá *(nếu đính kèm)* | [presales ULNL](../src/presales/README.md) · [T-SHIRT.md](T-SHIRT.md) | Bảng giá / BoQ thương mại |
 
 **Luồng distill khuyến nghị**
 
@@ -574,7 +574,7 @@ Ví dụ khung (thay bằng sơ đồ thật):
 
 ## III.3. Kế hoạch triển khai
 
-> **Nguồn:** DOC-15 roadmap · DOC-14 WBS · DOC-17 cutover · milestone hợp đồng / proposal. Ước lượng effort: [ULNL.md](ULNL.md) / [T-SHIRT.md](T-SHIRT.md) nếu đính kèm BoQ.
+> **Nguồn:** DOC-15 roadmap · DOC-14 WBS · DOC-17 cutover · milestone hợp đồng / proposal. Ước lượng effort: [presales](../src/presales/README.md) / [T-SHIRT.md](T-SHIRT.md) nếu đính kèm BoQ.
 
 ```text
 [Đính kèm timeline / Gantt / milestone]

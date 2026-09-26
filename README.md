@@ -14,14 +14,20 @@ Cách làm dựa trên ba nguyên tắc:
 
 ## Minipower có gì?
 
-Bốn **module** (đơn vị cài, chứa skill) + một **tầng nền** (luật chơi chung, đọc trực tiếp) + một **kho tạm** (nội dung cũ đang rút dần thành skill). Hướng dẫn cài nằm trong từng module.
+**Module nghề** + **module kênh** (ADR-033: SOP MCP, không luật UC/FR) + **tầng nền** + **kho tạm**. Pack cài được nằm dưới `src/`; code cài đặt nằm `cli/` (không chứa `hooks/` — hook ở `src/sdlc/hooks/`). Hướng dẫn cài nằm trong từng module.
 
 | Thành phần | Loại | Giải quyết việc gì | Bắt đầu |
 |------------|------|--------------------|---------|
-| **Quy trình phát triển** — [`sdlc/`](sdlc/) | Module | Dẫn dự án từ nỗi đau khách hàng → SRS, kiến trúc, kế hoạch, tài liệu bàn giao chuẩn nghề (IEEE 830, BABOK, PMBOK) qua 6 giai đoạn — mỗi chặng con người duyệt rồi mới đi tiếp | [sdlc/README.md](sdlc/README.md) · cài: [sdlc/INSTALL.md](sdlc/INSTALL.md) |
-| **Code backend .NET** — [`backend/`](backend/) | Module | Dựng backend .NET theo framework Jarvis chuẩn công ty: scaffold chạy được ngay, gắn auth / cache / EF / observability theo nhu cầu, review PR trước khi merge — 15 skill `minipower-backend-*` | [backend/README.md](backend/README.md) · cài: [§ Cài vào Cursor](backend/README.md#cài-vào-cursor) |
-| **Vận hành hạ tầng** — [`ops/`](ops/) | Module | Kỹ năng DevOps/SRE: thu thập metrics Grafana/Prometheus chuẩn hoá cho AI chẩn đoán sự cố; sẽ mở rộng dần sang chẩn đoán theo case (memory leak, deadlock, log flow), cài server, CI/CD — skill `minipower-ops-*` (ADR-023) | [ops/README.md](ops/README.md) |
-| **Công cụ làm ra Minipower** — [`toolbox/`](toolbox/) | Module | Đồ nghề của maintainer repo này: viết skill mới đúng chuẩn, soát skill cũ lệch chuẩn, mở module mới trọn bộ (PACK.md + hub + test) — skill `minipower-toolbox-*`. Không cài vào workspace dự án khách hàng | [toolbox/README.md](toolbox/README.md) |
+| **Quy trình (kho neo)** — [`sdlc/`](src/sdlc/) | Kho chuyển | Hook, skeleton, template 19 DOC, plugin path — đăng ký dispatcher `minipower-router` | [sdlc/README.md](src/sdlc/README.md) · [sdlc/INSTALL.md](src/sdlc/INSTALL.md) |
+| **Code backend .NET** — [`backend/`](src/backend/) | Module nghề | Dựng backend .NET theo framework Jarvis chuẩn công ty: scaffold chạy được ngay, gắn auth / cache / EF / observability theo nhu cầu, review PR trước khi merge — 15 skill `minipower-backend-*` | [backend/README.md](src/backend/README.md) · cài: [§ Cài vào Cursor](src/backend/README.md#cài-vào-cursor) |
+| **Vận hành hạ tầng** — [`ops/`](src/ops/) | Module nghề | Kỹ năng DevOps/SRE: thu thập metrics Grafana/Prometheus chuẩn hoá cho AI chẩn đoán sự cố; sẽ mở rộng dần sang chẩn đoán theo case (memory leak, deadlock, log flow), cài server, CI/CD — skill `minipower-ops-*` (ADR-023) | [ops/README.md](src/ops/README.md) |
+| **Dispatcher** — [`router/`](src/router/) | Dispatcher | Gợi ý đúng một pack; init `project_mode` + provider (`minipower-router`) | [router/README.md](src/router/README.md) |
+| **Presales** — [`presales/`](src/presales/) | Module nghề | ULNL + quotation trước ký — không sở hữu khảo sát | [presales/README.md](src/presales/README.md) |
+| **Công cụ làm ra Minipower** — [`toolbox/`](src/toolbox/) | Module nghề | Viết/soát skill, mở module — `minipower-toolbox-*`. Không cài workspace khách | [toolbox/README.md](src/toolbox/README.md) |
+| **Tài liệu (Outline)** — [`docs/`](src/docs/) | Module kênh | SOP MCP mặt `docs`: tra / publish / migrate Outline (`minipower-docs-outline`) | [docs/README.md](src/docs/README.md) |
+| **Việc (Lark Tasks)** — [`tasks/`](src/tasks/) | Module kênh | SOP MCP mặt `tasks` (`minipower-tasks-lark`); `none` thì `memory/tasks/` trên dự án đích | [tasks/README.md](src/tasks/README.md) |
+| **Chat (Lark IM)** — [`chat/`](src/chat/) | Module kênh | SOP MCP mặt `chat` (`minipower-chat-lark`) — tách khỏi task | [chat/README.md](src/chat/README.md) |
+| **Mã nguồn (GitLab)** — [`vcs/`](src/vcs/) | Module kênh | SOP MCP/git mặt `code` (`minipower-vcs-gitlab`) | [vcs/README.md](src/vcs/README.md) |
 | [`contracts/`](contracts/) | Tầng nền | Luật chơi chung giữa các module và giữa repo tài liệu ↔ repo code: trace spine, điểm bàn giao H1–H6, quy ước chung, schema `PACK.md` | [contracts/README.md](contracts/README.md) |
 | [`staging/`](staging/) | Kho tạm | Kiến thức nền .NET / DDD / testing, bộ phỏng vấn kỹ thuật — **nội dung cũ viết tạm, đang rút dần thành skill/template**; dùng bằng cách `@` thẳng file trong workspace, không cần cài. *(Kho chứa tài liệu chờ chuẩn hoá — không liên quan tới "môi trường staging" của việc triển khai.)* | [staging/](staging/) |
 
@@ -39,37 +45,202 @@ Không dự án nào cũng cần đủ 19 tài liệu. Quy trình phát triển 
 
 Chỉ `standard` có cảnh báo **chặn** (và luôn mở được bằng `BYPASS`); hai chế độ kia chỉ nhắc. Ở mọi chế độ, **con người là người ra lệnh** — hệ cảnh báo, bạn xác nhận là chạy.
 
-Chi tiết: [sdlc/SKILL.md § Chế độ dự án](sdlc/SKILL.md#chế-độ-dự-án-project_mode)
+Chi tiết: [sdlc/SKILL.md § Chế độ dự án](src/sdlc/SKILL.md#chế-độ-dự-án-project_mode)
 
 ---
 
 ## Hướng dẫn bắt đầu
 
-Ba bước từ số 0 tới phiên làm việc đầu tiên:
+**1. Cài** — một lệnh, script hỏi thư mục / client / pack (số + Enter). Không tự dò IDE.
 
-**1. Cài module cần dùng** vào công cụ AI đang xài (Cursor / Claude / OpenCode):
-
-- **Quy trình phát triển** — một symlink thành skill `minipower-sdlc` + bộ hook: [sdlc/INSTALL.md](sdlc/INSTALL.md)
-- **Code backend .NET** — symlink từng skill lá: [backend § Cài vào Cursor](backend/README.md#cài-vào-cursor)
-
-**2. Khởi tạo dự án** — trong workspace dự án, gõ:
-
-```text
-/minipower-sdlc
-Init project ten-du-an
+```bash
+node cli/minipower.mjs install
 ```
 
-Agent hỏi **trọn gói 7 câu** (tên & xưng hô · vai trò · dự án làm gì · giai đoạn · kinh nghiệm · chế độ dự án · nơi phê duyệt) rồi tự dựng khung `docs/` · `memory/` · `assets/` · `brainstorm/` và sinh `AGENTS.md` / `CLAUDE.md` cá nhân hoá theo chế độ đã chọn — từ đó trợ lý biết bạn là ai, dự án đang ở đâu, và phải dẫn bạn theo hướng nào.
+Flag (`--client`, `--with`, `--target`) chỉ khi script/CI. Thêm client sau: chạy `install` lại, chọn client mới.
 
-**3. Làm việc** — mỗi prompt khai giai đoạn + phạm vi, agent tự đọc đúng skill:
+Hook + dispatcher neo `sdlc/`: [sdlc/INSTALL.md](src/sdlc/INSTALL.md). Pack lá: symlink `*/skills/{tên}/` → `.cursor/skills/{tên}/`.
 
-```text
-Phase: requirements
-/minipower-sdlc
-Viết FR cho luồng đặt hàng, module ORD, DOC-06
+**2. Init dự án** — một lệnh, script hỏi từng bước (số + Enter = mặc định). Không JSON, không LLM.
+
+Trong folder đã `install` (ví dụ `sample`):
+
+```bash
+node .minipower/bin/minipower init
 ```
 
-Việc code .NET chỉ cần mô tả bằng lời — skill tương ứng tự kích hoạt: *"thêm cache Redis cho service đơn hàng"* → `minipower-backend-caching-dotnet` vào việc.
+Hoặc từ repo factory:
+
+```bash
+node cli/minipower.mjs init --target /path/toi/sample
+```
+
+`--answers file.json` chỉ cho CI/script. `init --check` soát cây đã ghi.
+
+**3. Làm việc — một phiên một pack** (ADR-033 QĐ-1/QĐ-11)
+
+| Cách | Khi nào | Ví dụ |
+|------|---------|--------|
+| **Agent / minipower chung** | Không nhớ tên lá | Chat Agent hoặc `/minipower-router` + mô tả việc — [§ Gọi chung](#gọi-chung--tự-chọn-skill) |
+| **Mô tả bằng lời** | Lá-rời (`description` kích hoạt) | *thêm cache Redis* → `minipower-backend-caching-dotnet` |
+| **`/` + tên skill** | Đã cài symlink, đã biết lá | `/minipower-analyst-srs` |
+| **`@` file** | Chỉ định đúng SOP | `@analyst/skills/minipower-analyst-srs/SKILL.md` |
+
+Kênh MCP: **L1 đọc tự do · L3 chỉ sau bảng preview và một lần OK**. Nghề soạn nháp trong chat; `support` chỉ đạo publish, không nuốt schema MCP.
+
+### Gọi chung — tự chọn skill
+
+**Có.** Không cần gõ đúng tên lá. Hai lớp:
+
+1. **Dispatcher Minipower** — `/minipower-router` hoặc câu có *minipower* / *làm gì tiếp*. Agent đọc [bảng intent → pack](src/router/skills/minipower-router/SKILL.md), chọn **đúng một** pack/lá.
+2. **Loader Cursor** — chat Agent thường: mô tả việc; Cursor khớp `description` của skill đã symlink. Không phải runtime spawn; độ chính xác phụ thuộc skill đã cài.
+
+**Trước khi đọc SOP / làm việc**, agent **thông báo một dòng** rồi mới chạy (không chờ OK trừ L3 MCP hoặc đụng Git):
+
+> Sẽ chạy **`minipower-…`** để xử lý **…** (pack `…`).
+
+Hai pack cùng lúc → hỏi người, không tự ghép. Không spawn agent khác. Hook `auto-routing` chỉ gắn **phase theo DOC** khi bạn `@` file DOC — không chọn lá nghề.
+
+### Chạy test (toàn Minipower)
+
+Node ≥ 18. Từ **gốc repo** (ủy quyền `src/sdlc/hooks/` — catalog mọi pack, không chỉ sdlc):
+
+```bash
+npm test              # mọi skill lá · kho SOP · agents · hook
+npm run gen:check     # bảng generated khớp rules.json
+npm run link:check    # link markdown gãy mới (ngoài baseline)
+```
+
+Cùng lệnh nếu đang ở `src/sdlc/hooks/`. Chạm `rules.json` / `lib/*.js`: `npm run gen` → `npm test` → `npm run gen:check`.
+
+Một file: `node --test test/minipower-catalog.test.js` (cwd `sdlc/hooks`). Trace ID trên **dự án đích**: `npm run trace:check`. CI: [minipower-hooks.yml](.github/workflows/minipower-hooks.yml).
+
+---
+
+## Danh mục skill & cách dùng
+
+Skill **đăng ký loader** = thư mục lá `minipower-…` (có `SKILL.md` + `description`). SOP phase cũ trong [`sdlc/skills/`](src/sdlc/skills/README.md) là **kho** — pack nghề trỏ tới, không còn cửa `/minipower-sdlc`.
+
+Hub: [router](src/router/README.md) · [discovery](src/discovery/README.md) · [analyst](src/analyst/README.md) · [architecture](src/architecture/README.md) · [pm](src/pm/README.md) · [support](src/support/README.md) · [qa](src/qa/README.md) · [presales](src/presales/README.md) · [ops](src/ops/README.md) · [backend](src/backend/README.md) · [toolbox](src/toolbox/README.md) · [docs](src/docs/README.md) · [tasks](src/tasks/README.md) · [chat](src/chat/README.md) · [vcs](src/vcs/README.md).
+
+### Dispatcher — [`router/`](src/router/)
+
+| Skill | Dùng khi (gõ) | Cách dùng |
+|-------|----------------|-----------|
+| **[minipower-router](src/router/skills/minipower-router/SKILL.md)** | làm gì tiếp, chọn pack | `/minipower-router` + mô tả việc; **không** L3 hộ nghề |
+| **[minipower-router-init](src/router/skills/minipower-router-init/SKILL.md)** | init project, khai báo tôi là ai | `/minipower-router-init` · `Init project …` |
+| **[minipower-router-deliberation](src/router/skills/minipower-router-deliberation/SKILL.md)** | có nên làm, premise | Trước việc Full; PROCEED/RESHAPE/STOP **do người** |
+| **[minipower-router-readiness](src/router/skills/minipower-router-readiness/SKILL.md)** | đủ chưa, trước code/test/deploy | Hỏi **một lượt** mọi thiếu; ghi nợ `doc-debt.md` |
+
+### Discovery — [`discovery/`](src/discovery/)
+
+| Skill | Dùng khi | Cách dùng |
+|-------|----------|-----------|
+| **[minipower-discovery-survey](src/discovery/skills/minipower-discovery-survey/SKILL.md)** | khảo sát, BRD, DOC-01…03 | *Khảo sát painpoint module X* — dừng trước FR/giá |
+| **[minipower-discovery-review](src/discovery/skills/minipower-discovery-review/SKILL.md)** | QC gói khảo sát | *Soi DOC-03 đã nhảy giải pháp chưa* |
+
+### Analyst — [`analyst/`](src/analyst/)
+
+| Skill | Dùng khi | Cách dùng |
+|-------|----------|-----------|
+| **[minipower-analyst-srs](src/analyst/skills/minipower-analyst-srs/SKILL.md)** | UC, FR, BR, AC, SRS, NFR, prototype | *Viết FR luồng đặt hàng, ORD, DOC-06* |
+| **[minipower-analyst-review](src/analyst/skills/minipower-analyst-review/SKILL.md)** | QC BA, trace UC→FR→AC | *Review SRS ORD trước baseline* |
+| **[minipower-analyst-cr](src/analyst/skills/minipower-analyst-cr/SKILL.md)** | CR **nội dung** đổi FR/AC | *Soạn CR đổi ORD-FR-012* — ticket = PM |
+
+### Architecture — [`architecture/`](src/architecture/)
+
+| Skill | Dùng khi | Cách dùng |
+|-------|----------|-----------|
+| **[minipower-architecture-solution-lite](src/architecture/skills/minipower-architecture-solution-lite/SKILL.md)** | giải pháp mức bán, trước ký | *Phương án module cho báo giá* — không ULNL |
+| **[minipower-architecture-sad](src/architecture/skills/minipower-architecture-sad/SKILL.md)** | SAD, ADR, API, data | *Viết DOC-08/12 cho ORD* |
+| **[minipower-architecture-review](src/architecture/skills/minipower-architecture-review/SKILL.md)** | QC SAD/ADR | *Soi ADR header DOC-09* |
+| **[minipower-architecture-as-built](src/architecture/skills/minipower-architecture-as-built/SKILL.md)** | maintain, legacy, CodeGraph | *Khai quật bounded context thanh toán* — người trigger |
+
+### PM — [`pm/`](src/pm/)
+
+| Skill | Dùng khi | Cách dùng |
+|-------|----------|-----------|
+| **[minipower-pm-plan](src/pm/skills/minipower-pm-plan/SKILL.md)** | WBS, Story Point, DOC-14/15 | *Lập kế hoạch từ FR must-have* — không ULNL |
+| **[minipower-pm-cr-track](src/pm/skills/minipower-pm-cr-track/SKILL.md)** | ticket CR, board | *Ghi CR-003 lên Lark/OP* — không soạn lại FR |
+
+### Support — [`support/`](src/support/)
+
+| Skill | Dùng khi | Cách dùng |
+|-------|----------|-----------|
+| **[minipower-support-registry](src/support/skills/minipower-support-registry/SKILL.md)** | registry, thiếu DOC theo mode | *Rà registry mvp còn thiếu gì* — nhắc, không sửa FR |
+| **[minipower-support-publish](src/support/skills/minipower-support-publish/SKILL.md)** | công bố Outline/chat | *Công bố ORD-FR-012 lên Outline* → Read skill kênh, L2/L3 |
+
+### QA — [`qa/`](src/qa/)
+
+| Skill | Dùng khi | Cách dùng |
+|-------|----------|-----------|
+| **[minipower-qa-strategy](src/qa/skills/minipower-qa-strategy/SKILL.md)** | DOC-16, TEST id | *Viết TEST cho ORD-AC-001* |
+| **[minipower-qa-review](src/qa/skills/minipower-qa-review/SKILL.md)** | QC test, không fake pass | *Soi suite ORD còn AC nào thiếu TEST* |
+
+### Presales — [`presales/`](src/presales/)
+
+| Skill | Dùng khi | Cách dùng |
+|-------|----------|-----------|
+| **[minipower-presales-estimation-ulnl](src/presales/skills/minipower-presales-estimation-ulnl/SKILL.md)** | MH, mã loại, trước ký | Số đếm được → máy `classify`/`sumMH`. Không khảo sát lại |
+| **[minipower-presales-quotation](src/presales/skills/minipower-presales-quotation/SKILL.md)** | MD, buffer, ROM, tờ giá | Đọc `estimate-v1.0.json`; `rate_md` local không commit |
+
+### Ops — [`ops/`](src/ops/)
+
+| Skill | Dùng khi | Cách dùng |
+|-------|----------|-----------|
+| **[minipower-ops-metrics](src/ops/skills/minipower-ops-metrics/README.md)** | Grafana, Prometheus, spike | *Lấy panel 6h job X* |
+| **[minipower-ops-deploy](src/ops/skills/minipower-ops-deploy/README.md)** | DOC-17, cutover | *Soạn runbook deploy staging* |
+| **[minipower-ops-incident](src/ops/skills/minipower-ops-incident/README.md)** | SEV, postmortem | *Ghi incident SEV2 + postmortem* |
+
+### Backend .NET — [`backend/`](src/backend/)
+
+Lá-rời: **mô tả việc**. Provider/pattern con chỉ đọc khi skill cha gọi. Cài: [backend § Cài vào Cursor](src/backend/README.md#cài-vào-cursor).
+
+| Skill | Dùng khi | Cách dùng |
+|-------|----------|-----------|
+| **[minipower-backend-scaffold-dotnet](src/backend/skills/minipower-backend-scaffold-dotnet/README.md)** | solution mới | *Scaffold backend Product=Acme* |
+| **[minipower-backend-architecture-dotnet](src/backend/skills/minipower-backend-architecture-dotnet/README.md)** | layer DDD, ArchUnit | *Thêm use case cắt dọc 5 layer* |
+| **[minipower-backend-convention-dotnet](src/backend/skills/minipower-backend-convention-dotnet/README.md)** | viết/sửa C# | Đi kèm mọi lá backend |
+| **[minipower-backend-authentication-dotnet](src/backend/skills/minipower-backend-authentication-dotnet/README.md)** | JWT, API Key, Cognito | *Bật Bearer cho API* |
+| **[minipower-backend-caching-dotnet](src/backend/skills/minipower-backend-caching-dotnet/README.md)** | Redis / memory cache | *Thêm cache Redis service đơn hàng* |
+| **[minipower-backend-entityframework-dotnet](src/backend/skills/minipower-backend-entityframework-dotnet/README.md)** | EF, multitenancy | *Init CoreDbContext hybrid tenant* |
+| **[minipower-backend-swashbuckle-dotnet](src/backend/skills/minipower-backend-swashbuckle-dotnet/README.md)** | Swagger | *Bọc BaseResponse + JWT trên Swagger* |
+| **[minipower-backend-healthcheck-dotnet](src/backend/skills/minipower-backend-healthcheck-dotnet/README.md)** | `/health/*` | *Thêm readiness Redis + SQL* |
+| **[minipower-backend-telemetry-dotnet](src/backend/skills/minipower-backend-telemetry-dotnet/README.md)** | OTEL | *Bật OTLP + enrich* |
+| **[minipower-backend-observability-dotnet](src/backend/skills/minipower-backend-observability-dotnet/README.md)** | Prometheus, Grafana | *Onboard metric service X* |
+| **[minipower-backend-notification-dotnet](src/backend/skills/minipower-backend-notification-dotnet/README.md)** | email SMTP | *Gửi mail transactional Mailkit* |
+| **[minipower-backend-blobstoring-dotnet](src/backend/skills/minipower-backend-blobstoring-dotnet/README.md)** | MinIO / filesystem | *Upload chứng từ MinIO* |
+| **[minipower-backend-realtime-dotnet](src/backend/skills/minipower-backend-realtime-dotnet/README.md)** | SignalR | *AddCoreRealtime + Redis backplane* |
+| **[minipower-backend-review-dotnet](src/backend/skills/minipower-backend-review-dotnet/README.md)** | review PR C# | *Review diff trước khi mở MR* |
+
+### Toolbox — [`toolbox/`](src/toolbox/) (chỉ repo minipower)
+
+| Skill | Dùng khi | Cách dùng |
+|-------|----------|-----------|
+| **[minipower-toolbox-skill-author](src/toolbox/skills/minipower-toolbox-skill-author/README.md)** | viết/soát skill lá | *Tạo skill gửi email đúng chuẩn minipower* |
+
+### Kênh MCP
+
+| Skill | Mặt profile | Dùng khi | Cách dùng |
+|-------|-------------|----------|-----------|
+| **[minipower-docs-outline](src/docs/skills/minipower-docs-outline/README.md)** | `docs=outline` | wiki Outline, publish | L1 đọc · L3 publish/migrate một bảng |
+| **[minipower-tasks-lark](src/tasks/skills/minipower-tasks-lark/README.md)** | `tasks=lark` | tasklist Lark | L1 list · L3 nếu MCP có tool ghi |
+| **[minipower-chat-lark](src/chat/skills/minipower-chat-lark/README.md)** | `chat=lark` | tin nhóm, nhắc việc | L1 đọc · L3 gửi sau OK |
+| **[minipower-vcs-gitlab](src/vcs/skills/minipower-vcs-gitlab/README.md)** | `code=gitlab` | MR, pipeline | L1 search · L3 MR/comment; commit sau preview |
+
+`tasks=none` → `memory/tasks/`. `docs=local` → git `docs/`.
+
+### Kho SOP `sdlc/skills/` (không đăng ký menu)
+
+Đọc khi pack nghề trỏ tới, hoặc `@sdlc/skills/…`. QC công ty = `*-review` trong pack, không load `doc-review` như gate toàn repo.
+
+| File | Vai |
+|------|-----|
+| [discovery](src/sdlc/skills/discovery/SKILL.md) · [requirements](src/sdlc/skills/requirements/SKILL.md) · [architecture](src/sdlc/skills/architecture/SKILL.md) · [planning](src/sdlc/skills/planning/SKILL.md) · [delivery](src/sdlc/skills/delivery/SKILL.md) · [change-control](src/sdlc/skills/change-control/SKILL.md) | SOP 6 phase (kho) |
+| [deliberation](src/sdlc/skills/deliberation/SKILL.md) · [readiness-gate](src/sdlc/skills/readiness-gate/SKILL.md) | Gate mềm — lá `minipower-router-*` |
+| [fan-out](src/sdlc/skills/fan-out/SKILL.md) | Playbook song song; spawn = harness |
+| [as-built](src/sdlc/skills/as-built/SKILL.md) | Kho; nhà mới = `minipower-architecture-as-built` |
+| [doc-review](src/sdlc/skills/doc-review/SKILL.md) | Kho 5 chiều |
 
 ---
 
@@ -79,38 +250,29 @@ Repo tổ chức theo **module** (đơn vị cài, chứa skill — mỗi module
 
 ```text
 minipower/
-├── sdlc/                  # Module: Quy trình phát triển (BA + SA + TPM)
-│   ├── SKILL.md           #   Router — routing intent → phase, init dự án, phân tầng chi phí
-│   ├── skills/            #   6 phase-skill + deliberation / doc-review / readiness-gate / fan-out / as-built
-│   ├── agents/            #   Guardrail markdown cho subagent
-│   ├── roles/             #   7 lăng kính vai trò (BA, SA, PM…)
-│   ├── templates/         #   19 DOC template + TPL phụ trợ
-│   ├── hooks/             #   Logic hook — Node ESM thuần, SSOT là lib/rules.json
-│   ├── docs/              #   pipeline, parallel-work, token-guard, decision-log
-│   ├── project-skeleton/  #   Khung dự án đích (docs/ · memory/ · assets/ · brainstorm/)
-│   └── install/           #   Hướng dẫn cài cho cursor / claude / opencode
-├── backend/               # Module: 15 skill code .NET (minipower-backend-*-dotnet)
-│   └── skills/
-├── ops/                   # Module: kỹ năng vận hành DevOps (minipower-ops-*)
-│   └── skills/
-├── toolbox/               # Module: công cụ làm ra chính minipower (minipower-toolbox-*)
-│   └── skills/
-├── contracts/             # Tầng nền: hợp đồng liên-pack — trace-spine, handoff H1–H6, schema PACK.md
-├── ADRs/                  # Tầng nền: quyết định định hướng — trạng thái khai ở ADRs/README.md
-└── staging/               # Kho tạm: nội dung cũ viết tạm, rút dần thành skill/template (interview/)
+├── router/ · discovery/ · analyst/ · architecture/ · pm/ · support/ · qa/ · presales/
+├── sdlc/                  # Kho neo: hook, skeleton, templates 19 DOC, plugin path
+│   ├── SKILL.md           #   Dispatcher đăng ký minipower-router
+│   ├── skills/            #   SOP phase (kho)
+│   ├── hooks/ · templates/ · project-skeleton/ · install/
+├── backend/ · ops/ · toolbox/
+├── docs/ · tasks/ · chat/ · vcs/
+├── contracts/ · ADRs/
+└── staging/
 ```
 
 Nguyên tắc tổ chức:
 
-- **Tên hai tầng:** `minipower` là thương hiệu; tên module là chức năng một-từ (`sdlc`, `backend`, `ops`, `toolbox`). Skill đăng ký theo mẫu `minipower-{module}-{capability}[-{stack}]` — gõ "minipower" trong ô search là thấy toàn bộ.
+- **Tên hai tầng:** `minipower` là thương hiệu; module một-từ. Skill lá: `minipower-{module}-{capability}[-{stack}]`.
 - **Mỗi thư mục một vai:** `SKILL.md` viết cho agent (quy tắc, workflow); `README.md` viết cho người (hướng dẫn, bảng tra). Module mới chỉ tạo khi đã có skill thật.
-- **Nguồn chân lý duy nhất:** các bảng routing/phase trong tài liệu được **sinh tự động** từ [`sdlc/hooks/lib/rules.json`](sdlc/hooks/lib/rules.json) — sửa rules rồi chạy `npm run gen`, không sửa tay vùng generated.
+- **Nguồn chân lý duy nhất:** các bảng routing/phase trong tài liệu được **sinh tự động** từ [`src/sdlc/hooks/lib/rules.json`](src/sdlc/hooks/lib/rules.json) — sửa rules rồi chạy `npm run gen`, không sửa tay vùng generated.
 
 ---
 
 ## Liên kết nhanh
 
-- [Quy trình phát triển — sdlc hub](sdlc/README.md) · [sdlc router (SKILL.md)](sdlc/SKILL.md) · [19 DOC templates](sdlc/templates/README.md)
-- [backend hub](backend/README.md)
-- [contracts — hợp đồng liên-pack](contracts/README.md)
-- [staging — kho tạm đang rút](staging/) · [interview](staging/interview/)
+- [Danh mục skill & cách dùng](#danh-mục-skill--cách-dùng) · [Gọi chung](#gọi-chung--tự-chọn-skill) · [Chạy test](#chạy-test-repo-này) · [dispatcher SKILL](src/sdlc/SKILL.md) · [19 DOC](src/sdlc/templates/README.md)
+- [router](src/router/README.md) · [discovery](src/discovery/README.md) · [analyst](src/analyst/README.md) · [architecture](src/architecture/README.md) · [pm](src/pm/README.md) · [support](src/support/README.md) · [qa](src/qa/README.md) · [presales](src/presales/README.md)
+- [backend](src/backend/README.md) · [ops](src/ops/README.md) · [toolbox](src/toolbox/README.md)
+- [docs](src/docs/README.md) · [tasks](src/tasks/README.md) · [chat](src/chat/README.md) · [vcs](src/vcs/README.md)
+- [contracts](contracts/README.md) · [staging](staging/) · [interview](staging/interview/)

@@ -1,0 +1,5 @@
+# Identity máy này (ADR-033 QĐ-20) — không commit tên người
+profile.user.json
+
+# Trace SQLite = projection (Đợt B); khuôn trace.sql nằm pack, không commit DB
+trace.db

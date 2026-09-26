@@ -8,7 +8,7 @@
 | **Ngoài phạm vi** | Thực thi việc chuyển từng file (mỗi file một đợt Full riêng — QĐ-4) · mở module `autotest/` / `frontend/` / skill proposal (ADR riêng — ADR-022 QĐ-7 luật 2) · nội dung chuyên môn bên trong từng tài liệu |
 | **Nối tiếp** | [ADR-027](ADR-027-2026-08-28-module-toolbox-cong-cu-lam-ra-minipower.md) §6 Q1 (nơi chủ repo xác nhận định hướng này) · [ADR-021](ADR-021-2026-08-24-doi-ten-pack-jarvis-thanh-backend.md) — **ADR này điều chỉnh QĐ-8** (giữ tên `fundamentals/`) và **QĐ-6** (`frontend/` chờ mở → không còn là điều kiện của `tabler-uikit-skill.md`) · [ADR-022](ADR-022-2026-08-24-minipower-nen-tang-cong-cu-ai-toan-cong-ty.md) QĐ-7 + §4 (đích `autotest/`) · [ADR-008](ADR-008-2026-07-25-minipower-proposal-suite.md) (đích của UCP · ULNL · GPKT) · [ADR-024](ADR-024-2026-08-25-backend-hub-publish-nguon-minipower.md) (`.opencode/` thôi làm nguồn — lý do 44 link chết) |
 | **Mục đích** | Ghi lại vì sao một thư mục đổi hẳn vai — từ "tầng nền ngang `contracts/`" thành "kho tạm đang rút dần" — và vì sao luật giữ nó **cố ý không có cổng máy** (QĐ-2), để người sau không đi tìm cái test không tồn tại |
-| **Ảnh hưởng** | Thư mục `fundamentals/` → `staging/` · [README.md](../README.md) (bảng §Minipower có gì · cây thư mục · §Liên kết nhanh) · [AGENTS.md](../AGENTS.md) (§0 · §Quy ước đặt tên & thư mục — cụm "Tầng nền") · [toolbox/README.md](../toolbox/README.md) + [toolbox skill README](../toolbox/skills/minipower-toolbox-skill-author/README.md) (2 chỗ trỏ `fundamentals/`) · [backend/skills/minipower-backend-convention-dotnet/README.md](../backend/skills/minipower-backend-convention-dotnet/README.md) (dòng *"Không dùng cho"*) · `sdlc/hooks/link-check.baseline.txt` (5 path còn lại) · [ADR-021](ADR-021-2026-08-24-doi-ten-pack-jarvis-thanh-backend.md) (thêm mục *Điều chỉnh 2026-08-28*) · ADR cũ (**chỉ href** — ADR-022 QĐ-11) |
+| **Ảnh hưởng** | Thư mục `fundamentals/` → `staging/` · [README.md](../README.md) (bảng §Minipower có gì · cây thư mục · §Liên kết nhanh) · [AGENTS.md](../AGENTS.md) (§0 · §Quy ước đặt tên & thư mục — cụm "Tầng nền") · [toolbox/README.md](../src/toolbox/README.md) + [toolbox skill README](../src/toolbox/skills/minipower-toolbox-skill-author/README.md) (2 chỗ trỏ `fundamentals/`) · [backend/skills/minipower-backend-convention-dotnet/README.md](../src/backend/skills/minipower-backend-convention-dotnet/README.md) (dòng *"Không dùng cho"*) · `sdlc/hooks/link-check.baseline.txt` (5 path còn lại) · [ADR-021](ADR-021-2026-08-24-doi-ten-pack-jarvis-thanh-backend.md) (thêm mục *Điều chỉnh 2026-08-28*) · ADR cũ (**chỉ href** — ADR-022 QĐ-11) |
 
 ---
 
@@ -33,7 +33,7 @@ Số liệu đọc 2026-08-28:
 
 1. **Cửa vào của "tầng nền" tự khai đã chết.** [README.md](../README.md) trỏ `fundamentals/tutorial-index.md` làm ô *"Bắt đầu"* và lặp lại ở §Liên kết nhanh. Nhưng dòng 3 của chính file đó viết *"Đã chuyển… giữ làm tham chiếu lịch sử"*, và 44 link trong nó trỏ `.opencode/` — path đã thôi làm nguồn từ [ADR-024](ADR-024-2026-08-25-backend-hub-publish-nguon-minipower.md). Người mới đọc theo README vào đúng chỗ chết đầu tiên.
 2. **Ba file .NET trỏ `skills/architechture-dotnet.md`** — path không tồn tại (sai chính tả sẵn trong nguồn). Chúng được viết như skill, chưa bao giờ thành skill.
-3. **Kho đã tự rút.** Cùng ngày, hai file rời `fundamentals/` thành skill: `dotnet-coding-convention.md` → [`minipower-backend-convention-dotnet`](../backend/skills/minipower-backend-convention-dotnet/README.md) · `template-skill.md` → [`minipower-toolbox-skill-author`](../toolbox/skills/minipower-toolbox-skill-author/SKILL.md). Chủ repo xác nhận tại [ADR-027 §6 Q1](ADR-027-2026-08-28-module-toolbox-cong-cu-lam-ra-minipower.md): *"các file trong fundamentals chỉ là nội dung cũ ngày trước viết tạm, bây giờ cần chuẩn hoá thành skill"*.
+3. **Kho đã tự rút.** Cùng ngày, hai file rời `fundamentals/` thành skill: `dotnet-coding-convention.md` → [`minipower-backend-convention-dotnet`](../src/backend/skills/minipower-backend-convention-dotnet/README.md) · `template-skill.md` → [`minipower-toolbox-skill-author`](../src/toolbox/skills/minipower-toolbox-skill-author/SKILL.md). Chủ repo xác nhận tại [ADR-027 §6 Q1](ADR-027-2026-08-28-module-toolbox-cong-cu-lam-ra-minipower.md): *"các file trong fundamentals chỉ là nội dung cũ ngày trước viết tạm, bây giờ cần chuẩn hoá thành skill"*.
 
 Cái đang thiếu không phải ý định — mà là **định vị đúng trong bản đồ**: một cái tên nói đúng vai, và một dòng luật cho biết kho này đi về đâu.
 
@@ -56,7 +56,7 @@ Còn **13 file `.md` ở gốc** + `interview/`. Việc này làm **trước** p
 | P2 | Tên **`fundamentals`** (nền tảng) nói **ngược hẳn** vai thật (nội dung cũ viết tạm) | Tên là thứ đọc trước nội dung; tên sai thì mọi chú thích phía sau phải đi sửa chữa nhận thức |
 | P3 | 75% nợ link gãy của repo nằm ở đây, và **không có cơ chế nào làm nó giảm** | `link:check` chỉ chặn gãy **mới**; nợ cũ nằm yên vĩnh viễn |
 | P4 | Không luật nào cấm nạp thêm file — mà chữ "tầng nền" nghe **hợp lệ** để đặt tài liệu mới | Kho phình; mỗi file mới là một nguồn cạnh tranh với skill |
-| P5 | Trùng vai đã xảy ra: `incident-template.md` (446 dòng) ↔ [`sdlc/templates/TPL-incident-report.md`](../sdlc/templates/TPL-incident-report.md) (34 dòng, đang trong pipeline) · `code_review.md` (110 dòng) ↔ [`minipower-backend-review-dotnet`](../backend/skills/minipower-backend-review-dotnet/README.md) | Hai nguồn cho một việc — thứ mà `contracts/` và `rules.json` tồn tại để tránh |
+| P5 | Trùng vai đã xảy ra: `incident-template.md` (446 dòng) ↔ [`sdlc/templates/TPL-incident-report.md`](../src/sdlc/templates/TPL-incident-report.md) (34 dòng, đang trong pipeline) · `code_review.md` (110 dòng) ↔ [`minipower-backend-review-dotnet`](../src/backend/skills/minipower-backend-review-dotnet/README.md) | Hai nguồn cho một việc — thứ mà `contracts/` và `rules.json` tồn tại để tránh |
 | P6 | Ba file .NET viết như skill nhưng không là skill | Nội dung sẵn sàng, chỉ thiếu chỗ đứng — nằm đó thì không bao giờ được agent gọi |
 
 ## §3. Ràng buộc
@@ -98,11 +98,11 @@ Còn **13 file `.md` ở gốc** + `interview/`. Việc này làm **trước** p
 
 | # | File | Dòng | Kết cục | Đích | Chờ gì |
 |---|---|---|---|---|---|
-| 1 | `code_review.md` | 110 | **Xoá** | [`minipower-backend-review-dotnet`](../backend/skills/minipower-backend-review-dotnet/README.md) đã phủ | — (soát ý còn thiếu, bơm vào skill trước khi xoá) |
-| 2 | `incident-template.md` | 446 | **Gộp** | [`sdlc/templates/TPL-incident-report.md`](../sdlc/templates/TPL-incident-report.md) (bản lõi 34 dòng) | — (chọn phần thật sự dùng, không bê nguyên 446 dòng) |
+| 1 | `code_review.md` | 110 | **Xoá** | [`minipower-backend-review-dotnet`](../src/backend/skills/minipower-backend-review-dotnet/README.md) đã phủ | — (soát ý còn thiếu, bơm vào skill trước khi xoá) |
+| 2 | `incident-template.md` | 446 | **Gộp** | [`sdlc/templates/TPL-incident-report.md`](../src/sdlc/templates/TPL-incident-report.md) (bản lõi 34 dòng) | — (chọn phần thật sự dùng, không bê nguyên 446 dòng) |
 | 3 | `dotnet-clean-architecture.md` | 54 | **→ skill** | `backend/` — skill kiến trúc layer (mới) | — (module có sẵn) |
 | 4 | `dotnet-ddd.md` | 121 | **→ skill** | cùng #3, hoặc `reference/` của nó | — |
-| 5 | `dotnet-structure.md` | 295 | **→ skill** | gộp vào [`minipower-backend-scaffold-dotnet`](../backend/skills/minipower-backend-scaffold-dotnet/README.md) | — (kiểm trùng với scaffold hiện có trước) |
+| 5 | `dotnet-structure.md` | 295 | **→ skill** | gộp vào [`minipower-backend-scaffold-dotnet`](../src/backend/skills/minipower-backend-scaffold-dotnet/README.md) | — (kiểm trùng với scaffold hiện có trước) |
 | 6 | `cursorignore.md` | 227 | **→ template** | `sdlc/project-skeleton/` — nội dung là file config `.cursorignore`, không phải tài liệu đọc | — |
 | 7 | `testing-overview.md` | 773 | **→ skill** | module `autotest/` | **Chờ ADR mở `autotest/`** ([ADR-022](ADR-022-2026-08-24-minipower-nen-tang-cong-cu-ai-toan-cong-ty.md) §4) |
 | 8 | `testing-types.md` | 260 | **→ skill** | cùng #7 | chờ `autotest/` |

@@ -3,12 +3,12 @@
 | | |
 |---|---|
 | **Ngày** | 2026-08-29 |
-| **Trạng thái** | đề xuất, chờ Confirm §6 — **bản 3** (§1.3 ghi đường đi: bản 1 đặt skill trong `sdlc/` → bị ba luận điểm bác; bản 2 mở module nhưng vẽ sai chiều boundary và bỏ sót nguy cơ nhân đôi khảo sát) — trạng thái việc xem [README index](README.md) |
-| **Phạm vi** | **Mở module thứ năm `presales/`** với **hai skill lá có nội dung thật**, rút từ hàng #11 bảng [ADR-028](ADR-028-2026-08-28-ha-fundamentals-thanh-kho-tam.md) §5a ([`staging/ULNL.md`](../staging/ULNL.md)). Đụng `presales/` (mới), `contracts/{handoff,pack-manifest}.md`, `sdlc/hooks/test/`, `README.md` + `AGENTS.md` gốc, `staging/` |
+| **Trạng thái** | **Thi hành D3 2026-09-26** (chủ repo bật theo ADR-033). Q1–Q9 §6: mặc định đề xuất ADR — `roles: [presales]` · `owner: hoangnh` · H0 giữ ULNL §4 · `risk()` tín hiệu đếm `*4`/assumption (catalog `risk-bands.json`) · `adjust_pct>0.10` **FAIL cứng** · **một** `rate_md` local · `mh_per_md=7.5` · survey hoãn |
+| **Phạm vi** | **Mở module thứ năm `presales/`** với **hai skill lá có nội dung thật**, rút từ hàng #11 bảng [ADR-028](ADR-028-2026-08-28-ha-fundamentals-thanh-kho-tam.md) §5a (`staging/ULNL.md` đã rút). Đụng `presales/`, `contracts/{handoff,pack-manifest}.md`, `sdlc/hooks/test/`, `README.md` + `AGENTS.md` gốc |
 | **Ngoài phạm vi** | **`sdlc/skills/discovery/` — không sửa một chữ** (QĐ-3) · skill `survey` · `proposal` (GPKT) · slide/pitch — chỉ là tên trong README (QĐ-2) · phương pháp UCP (QĐ-18) · timeline ([ADR-008](ADR-008-2026-07-25-minipower-proposal-suite.md) §5) |
 | **Nối tiếp** | [ADR-022](ADR-022-2026-08-24-minipower-nen-tang-cong-cu-ai-toan-cong-ty.md) QĐ-7 (3 câu hỏi — §1.3 chạy **đủ cả hai câu**, khác bản 2) · QĐ-8 (PACK.md) · [ADR-028](ADR-028-2026-08-28-ha-fundamentals-thanh-kho-tam.md) QĐ-4/QĐ-6 (*"chờ ADR mở module"* — đây là ADR đó) · [ADR-023](ADR-023-2026-08-25-tach-module-ops-tu-backend-troubleshooting.md) (khuôn mở module gần nhất) · [ADR-008](ADR-008-2026-07-25-minipower-proposal-suite.md) §3 (hướng gốc, hệ tên cũ) |
 | **Mục đích** | Ghi lại nơi ở của giai đoạn **trước khi ký hợp đồng**, và đặc biệt là **ranh giới với `discovery`** — thứ đã làm hai bản ADR trước đó sai |
-| **Ảnh hưởng** | `presales/` (mới: `PACK.md`, `README.md`, `skills/minipower-presales-estimation-ulnl/`, `skills/minipower-presales-quotation/`) · [`contracts/handoff.md`](../contracts/handoff.md) (**H0** mới) · [`contracts/pack-manifest.md`](../contracts/pack-manifest.md) (enum `stage`) · [`README.md`](../README.md) + [`AGENTS.md`](../AGENTS.md) (bản đồ module) · `sdlc/hooks/test/presales-pack.test.js` · `staging/ULNL.md` (xoá sau khi rút) |
+| **Ảnh hưởng** | `presales/` · [`contracts/handoff.md`](../contracts/handoff.md) (**H0**) · [`contracts/pack-manifest.md`](../contracts/pack-manifest.md) · README + AGENTS · `sdlc/hooks/test/presales-pack.test.js` |
 
 ---
 
@@ -16,11 +16,11 @@
 
 ### §1.1. File cần rút
 
-[`staging/ULNL.md`](../staging/ULNL.md) — 364 dòng: quy trình 5 bước (§5), 7 nhóm mã loại (§6), CSDL 23 mã × GP/PT/KT (§7), 12 hạng mục phi chức năng (§8), MH→MD→tiền (§10), buffer rủi ro (§10.3), format báo giá (§11), ví dụ kiểm chứng (§12: 77 MH ≈ 10.3 MD), anti-pattern (§13). [ADR-028](ADR-028-2026-08-28-ha-fundamentals-thanh-kho-tam.md) §5a hàng **#11** ghi đích *"→ skill · chờ ADR-008"*; [ADR-008](ADR-008-2026-07-25-minipower-proposal-suite.md) §3 chốt đúng hướng kỹ thuật nhưng viết **trước** [ADR-021](ADR-021-2026-08-24-doi-ten-pack-jarvis-thanh-backend.md)/[ADR-022](ADR-022-2026-08-24-minipower-nen-tang-cong-cu-ai-toan-cong-ty.md) — `minipower/skills/proposal-quotation/`, `minipower/tools/proposal/`, `SOPs/ULNL.md` đều không còn tồn tại. Sau 1 tháng, R1→R6 của ADR-008 chưa khởi động bước nào.
+File `staging/ULNL.md` (đã rút 2026-09-26 vào `presales/`) — 364 dòng: quy trình 5 bước (§5), 7 nhóm mã loại (§6), CSDL 23 mã × GP/PT/KT (§7), 12 hạng mục phi chức năng (§8), MH→MD→tiền (§10), buffer rủi ro (§10.3), format báo giá (§11), ví dụ kiểm chứng (§12: 77 MH ≈ 10.3 MD), anti-pattern (§13). [ADR-028](ADR-028-2026-08-28-ha-fundamentals-thanh-kho-tam.md) §5a hàng **#11** ghi đích *"→ skill · chờ ADR-008"*; [ADR-008](ADR-008-2026-07-25-minipower-proposal-suite.md) §3 chốt đúng hướng kỹ thuật nhưng viết **trước** [ADR-021](ADR-021-2026-08-24-doi-ten-pack-jarvis-thanh-backend.md)/[ADR-022](ADR-022-2026-08-24-minipower-nen-tang-cong-cu-ai-toan-cong-ty.md) — `minipower/skills/proposal-quotation/`, `minipower/tools/proposal/`, `SOPs/ULNL.md` đều không còn tồn tại. Sau 1 tháng, R1→R6 của ADR-008 chưa khởi động bước nào.
 
 ### §1.2. Vì sao không đặt trong `sdlc/` — ba luận điểm
 
-Đối chiếu template [`DOC-14`](../sdlc/templates/DOC-14-wbs-estimate.md) với ULNL ngày 2026-08-29:
+Đối chiếu template [`DOC-14`](../src/sdlc/templates/DOC-14-wbs-estimate.md) với ULNL ngày 2026-08-29:
 
 | # | Luận điểm | Đối chiếu |
 |---|---|---|
@@ -32,7 +32,7 @@
 
 Bản 2 mở module bằng câu 2 của [ADR-022](ADR-022-2026-08-24-minipower-nen-tang-cong-cu-ai-toan-cong-ty.md) QĐ-7 (*"người dùng khác hẳn"*) mà **chưa loại được câu 1** (*"tác động lên chính tài liệu/pipeline minipower sở hữu?"*) — trong khi ba câu hỏi đó **có thứ tự**. Chạy lại cho đủ:
 
-**Chỗ trùng — lớn hơn bản 2 thừa nhận.** Đối chiếu [`discovery/SKILL.md`](../sdlc/skills/discovery/SKILL.md) với ULNL §4 *"Đầu vào tối thiểu"*:
+**Chỗ trùng — lớn hơn bản 2 thừa nhận.** Đối chiếu [`discovery/SKILL.md`](../src/sdlc/skills/discovery/SKILL.md) với ULNL §4 *"Đầu vào tối thiểu"*:
 
 | ULNL §4 cần | Discovery đã sinh |
 |---|---|
@@ -108,7 +108,7 @@ Vết cắt **có sẵn trong chính tài liệu gốc**: ULNL §6–§8 là *ư
 |---|---|---|
 | **QĐ-1** | **Mở module `presales/`** — thứ năm, ngang hàng `sdlc`/`backend`/`ops`/`toolbox`; phạm vi: **giai đoạn trước khi ký hợp đồng**. Khuôn `ops/` ([ADR-023](ADR-023-2026-08-25-tach-module-ops-tu-backend-troubleshooting.md)): `PACK.md` + `README.md` + `skills/` lá-rời, **không router** | Thoả ADR-028 QĐ-6 và C7 |
 | **QĐ-2** | **Mở với đúng hai skill có nội dung thật**: `minipower-presales-estimation-ulnl` + `minipower-presales-quotation`. **`survey` · `proposal` (GPKT) · slide/pitch = tên trong `presales/README.md`**, không thư mục. `proposal` rút từ [staging #12](../staging/GiaiPhapKyThuat-KHUNG.md) bằng **ADR riêng** (ADR-028 QĐ-4: rút từng file một) | Thư mục rỗng là lời hứa, không phải năng lực |
-| **QĐ-3** | **Presales KHÔNG sở hữu discovery.** Không có skill khảo sát trong `presales/`; **không sửa một chữ** trong [`sdlc/skills/discovery/`](../sdlc/skills/discovery/SKILL.md). Skill presales **trỏ sang** discovery cho phần elicit và **chỉ chồng thêm lớp định giá**. Trùng phần thu thập là **cố ý dùng lại**, không phải thiếu sót | Trả lời trực tiếp P7 và câu 1 ADR-022 QĐ-7. Một quá trình nghiệp vụ đi xuyên nhiều module là hợp lệ; **hai bản scope thì không** |
+| **QĐ-3** | **Presales KHÔNG sở hữu discovery.** Không có skill khảo sát trong `presales/`; **không sửa một chữ** trong [`sdlc/skills/discovery/`](../src/sdlc/skills/discovery/SKILL.md). Skill presales **trỏ sang** discovery cho phần elicit và **chỉ chồng thêm lớp định giá**. Trùng phần thu thập là **cố ý dùng lại**, không phải thiếu sót | Trả lời trực tiếp P7 và câu 1 ADR-022 QĐ-7. Một quá trình nghiệp vụ đi xuyên nhiều module là hợp lệ; **hai bản scope thì không** |
 | **QĐ-4** | **Boundary `H0: Discovery (sơ bộ) → Estimation`** trong [`contracts/handoff.md`](../contracts/handoff.md) — producer owner: **BA/discovery** (không phải presales); input tối thiểu = **ULNL §4**: in/out scope + cây chức năng ở mức thao tác + assumption log. **Giữ nguyên H1–H6** | Bản 2 vẽ ngược (`Presales → Discovery`). Luồng thật: discovery **vắt ngang** vạch ký — chạy sơ bộ trước, **tiếp tục** từ chính DOC-01/02/03 đó sau khi ký, **không làm lại** |
 | **QĐ-5** | **Nới enum `stage:`** trong [`contracts/pack-manifest.md`](../contracts/pack-manifest.md) thêm `presales` (trước `discovery`) | Manifest là schema — thêm module thì schema phải biết |
 
@@ -162,15 +162,15 @@ Vết cắt **có sẵn trong chính tài liệu gốc**: ULNL §6–§8 là *ư
 
 | # | Câu hỏi | Trả lời |
 |---|---|---|
-| Q1 | Duyệt QĐ-1…QĐ-19? | |
-| Q2 | Tên module **`presales`** và hai tên skill **`minipower-presales-estimation-ulnl`** + **`minipower-presales-quotation`**? | |
-| Q3 | `PACK.md`: `roles:` khai gì (`presales` · `bidding` · `solution-consultant`)? `owner:` là ai? | |
-| Q4 | **H0** (QĐ-4): input tối thiểu *"in/out scope + cây chức năng mức thao tác + assumption log"* đã đủ chưa? | |
-| Q5 | `risk()` (QĐ-14): tín hiệu nào **thật sự** dùng ở công ty, ngưỡng mỗi bậc? | |
-| Q6 | `\|adjust_pct\| > 0.10`: `validate()` **FAIL cứng** (bắt buộc `approved_by`) hay chỉ cảnh báo? *(ULNL §5 nói "phê duyệt", không nói ai)* | |
-| Q7 | Đơn giá **tách theo vai trò** GP/PT/KT hay **một `rate_md`**? *(ADR-008 Q-Q6, chưa từng trả lời)* | |
-| Q8 | `mh_per_md = 7.5` — đúng policy hiện hành? | |
-| Q9 | `survey` hoãn (QĐ-2) — đồng ý, hay bạn đã có bộ câu hỏi khảo sát định lượng riêng để tách ngay? | |
+| Q1 | Duyệt QĐ-1…QĐ-19? | **Có** — bật D3 2026-09-26 |
+| Q2 | Tên module **`presales`** và hai tên skill **`minipower-presales-estimation-ulnl`** + **`minipower-presales-quotation`**? | **Có** |
+| Q3 | `PACK.md`: `roles:` khai gì (`presales` · `bidding` · `solution-consultant`)? `owner:` là ai? | **`[presales]` · `hoangnh`** |
+| Q4 | **H0** (QĐ-4): input tối thiểu *"in/out scope + cây chức năng mức thao tác + assumption log"* đã đủ chưa? | **Đủ** |
+| Q5 | `risk()` (QĐ-14): tín hiệu nào **thật sự** dùng ở công ty, ngưỡng mỗi bậc? | Catalog `risk-bands.json`: `*4` dòng/MH ratio / assumption mở → vague 25–40%; else 10–15% |
+| Q6 | `\|adjust_pct\| > 0.10`: `validate()` **FAIL cứng** (bắt buộc `approved_by`) hay chỉ cảnh báo? *(ULNL §5 nói "phê duyệt", không nói ai)* | **FAIL cứng** |
+| Q7 | Đơn giá **tách theo vai trò** GP/PT/KT hay **một `rate_md`**? *(ADR-008 Q-Q6, chưa từng trả lời)* | **Một `rate_md`** (local, không commit) |
+| Q8 | `mh_per_md = 7.5` — đúng policy hiện hành? | **Có** (ULNL §1) |
+| Q9 | `survey` hoãn (QĐ-2) — đồng ý, hay bạn đã có bộ câu hỏi khảo sát định lượng riêng để tách ngay? | **Hoãn** — dùng discovery |
 
 Chốt xong: ghi ngày vào **Trạng thái** + cập nhật ghi chú index.
 
@@ -187,7 +187,7 @@ Thứ tự cố ý: **module → schema → engine → skill**. Bước 3–6 ch
 | 5 | `estimation-ulnl`: `lib/calc.js` (`lineMH` + `sumMH`) + `bin/estimate.js` | Xuất đúng schema bước 3 | Bước 4 |
 | 6 | `quotation`: `catalog/risk-bands.json` + `lib/money.js` (`risk` · `toMD` · `price` · `rom`) + `validate()` + `bin/quote.js` | Golden §12 đúng số; 6 luật `validate()` đều FAIL được | Bước 3, Q5–Q8 |
 | 7 | `sdlc/hooks/test/presales-pack.test.js` (khuôn `ops-pack.test.js`) + `estimation.test.js` + `quotation.test.js` | `npm test` xanh | Bước 6 |
-| 8 | Hai `SKILL.md` + `README.md` — ba vai QĐ-12, **cách điền số** (không phải cách chọn mã), `estimation` trỏ sang [`discovery`](../sdlc/skills/discovery/SKILL.md) cho phần elicit (QĐ-3); frontmatter `name` ≡ thư mục + `description` | `presales-pack.test.js` xanh | Bước 7, Q2 |
+| 8 | Hai `SKILL.md` + `README.md` — ba vai QĐ-12, **cách điền số** (không phải cách chọn mã), `estimation` trỏ sang [`discovery`](../src/sdlc/skills/discovery/SKILL.md) cho phần elicit (QĐ-3); frontmatter `name` ≡ thư mục + `description` | `presales-pack.test.js` xanh | Bước 7, Q2 |
 | 9 | Xoá `staging/ULNL.md`, sửa href, hạ ratchet `link-check.baseline.txt` | `npm run link:check` 0 gãy mới | Bước 8 |
 | 10 | Cập nhật index ADR + ghi chú ADR-028 §5a #11 (kho 10 → 9) | Dòng index khớp repo thật | Bước 9 |
 
@@ -195,22 +195,22 @@ Thứ tự cố ý: **module → schema → engine → skill**. Bước 3–6 ch
 
 | # | Loại | Case | Expect | Trạng thái |
 |---|---|---|---|---|
-| T1 | Smoke | Ví dụ §12 ULNL qua `estimate` → `quote` | **77 MH · ≈10.3 MD**, ROM ≈ 9.3–11.3 MD | 🔴 |
-| T2 | Smoke | Bảng đã có cột số, không gọi LLM (QĐ-13) | Ra số đầy đủ, không bước nào đòi phán đoán | 🔴 |
-| T3 | Mới | `classify()` **hai phía biên**: 9↔10 trường, 20↔21 cột, 4↔5 và 10↔11 bước, 3↔4 tham chiếu | Mã nhảy đúng bậc tại đúng biên | 🔴 |
-| T4 | Mới | `classify()` cùng đầu vào chạy 2 lần | Bit-identical | 🔴 |
-| T5 | Mới | `unclear: true` | Ra `*4` + `open_question`; **không** ra mã thường | 🔴 |
-| T6 | Mới | `CN_WEB` 40 trường · `TT_DB` 24 bước | Tự tách `2 × CN_WEB2` / `2 × TT_DB2` | 🔴 |
-| T7 | Mới | 6 luật `validate()` (QĐ-15), mỗi luật một case sai | FAIL cả 6, có tên dòng vi phạm | 🔴 |
-| T8 | Mới | `risk()` chạy 2 lần; override không `reason` | Cùng bậc; override thiếu `reason` → FAIL (QĐ-14) | 🔴 |
-| T9 | Mới | **Hợp đồng QĐ-8**: `quotation` đọc file do `estimation-ulnl` sinh; thêm/xoá field schema | Chạy thông; đổi schema ⇒ test đỏ | 🔴 |
-| T10 | Mới | Grep `rate` / đơn giá trong `estimation-ulnl/` | 0 hit — đơn giá **chỉ** ở `quotation` (QĐ-7) | 🔴 |
-| T11 | Mới | `presales-pack.test.js`: `name` ≡ thư mục · tiền tố `minipower-presales-` · ≤64 · có `description` · README khớp thư mục · `PACK.md` tồn tại | xanh | 🔴 |
-| T12 | Mới | `presales/` không có thư mục skill rỗng | Đúng hai thư mục, mỗi cái có `SKILL.md` (QĐ-2, C7) | 🔴 |
-| T13 | Mới | `git diff` chạm `sdlc/skills/discovery/` | **Rỗng** (C6, QĐ-3) | 🔴 |
-| T14 | Mới | Grep bảng MH **và** ngưỡng §6 trong `SKILL.md` | 0 hit (QĐ-9, QĐ-11) | 🔴 |
-| T15 | Mới | Grep `rate_md` / đơn giá tiền toàn repo | 0 hit ngoài tên file ví dụ (C5) | 🔴 |
-| T16 | Regression | `npm test` + `gen:check` + `link:check` 0 gãy mới + grep `ULNL.md` tàn dư = 0 | xanh cả bốn | 🔴 |
+| T1 | Smoke | Ví dụ §12 ULNL qua `estimate` → `quote` | **77 MH · ≈10.3 MD**, ROM ≈ 9.3–11.3 MD | 🔴 chủ repo / khách |
+| T2 | Smoke | Bảng đã có cột số, không gọi LLM (QĐ-13) | Ra số đầy đủ, không bước nào đòi phán đoán | 🔴 chủ repo |
+| T3 | Mới | `classify()` **hai phía biên** | Mã nhảy đúng bậc | 🟢 `estimation.test.js` D3 |
+| T4 | Mới | `classify()` 2 lần bit-identical | | 🟢 |
+| T5 | Mới | `unclear: true` → `*4` | | 🟢 |
+| T6 | Mới | Tách dòng CN_WEB / TT_DB | | 🟢 |
+| T7 | Mới | 6 luật `validate()` | FAIL đúng chỗ | 🟢 `quotation.test.js` |
+| T8 | Mới | `risk()` + override thiếu `reason` | | 🟢 |
+| T9 | Mới | quotation đọc estimate schema | | 🟢 |
+| T10 | Mới | Đơn giá không trong `estimation-ulnl/` | | 🟢 |
+| T11 | Mới | `presales-pack.test.js` | | 🟢 |
+| T12 | Mới | Đúng hai thư mục skill | | 🟢 catalog |
+| T13 | Mới | Không đụng `sdlc/skills/discovery/` | | 🟢 D3 |
+| T14 | Mới | SKILL không nhét bảng MH §6 | | 🟢 |
+| T15 | Mới | `rate_md` không commit | | 🟡 `.gitignore` + example |
+| T16 | Regression | `npm test` + `gen:check` + `link:check` 0 gãy mới | | 🟢 2026-09-26 (suite gốc repo) |
 
 Icon: 🟢 xong · 🟡 có sẵn, cần giữ xanh · 🔴 chưa có. **Không 🟢 Done khi còn T đỏ.**
 

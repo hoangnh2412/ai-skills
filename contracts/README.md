@@ -13,6 +13,7 @@ Tách từ `COORDINATION.md` (draft v0.1) ngày 2026-08-25 — **mỗi chủ đ�
 | [lingua-franca.md](lingua-franca.md) | **Quy ước** | 🟡 Sống trong `sdlc/` | memory · decision-log · versioning · ownership dùng chung |
 | [cross-repo-bridge.md](cross-repo-bridge.md) | **Cơ chế** | ⚪ Thiết kế | Pin `docs@tag` + back-reference; kích hoạt khi docs tách repo |
 | [pack-manifest.md](pack-manifest.md) | **Schema** | 🟢 **Load-bearing** | Khuôn `PACK.md` mỗi pack tự khai consumes/produces/handoff |
+| [doc-mode.md](doc-mode.md) | **Bảng** | 🟢 Sinh từ `rules.json` | DOC × phase × pack nghề (ADR-033 E) |
 
 ## Nguyên tắc nền
 
@@ -34,4 +35,4 @@ Tách từ `COORDINATION.md` (draft v0.1) ngày 2026-08-25 — **mỗi chủ đ�
 
 ---
 
-*Liên quan:* [sdlc pipeline](../sdlc/docs/pipeline.md) · [parallel-work](../sdlc/docs/parallel-work.md) · [decision-log](../sdlc/docs/decision-log.md) · [backend publish](../backend/README.md)
+*Liên quan:* [sdlc pipeline](../src/sdlc/docs/pipeline.md) · [parallel-work](../src/sdlc/docs/parallel-work.md) · [decision-log](../src/sdlc/docs/decision-log.md) · [backend publish](../src/backend/README.md)

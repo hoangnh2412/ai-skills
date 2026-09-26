@@ -25,7 +25,7 @@ flowchart LR
 
 ## 1. Chiều xuống (docs → code) — tại H4
 
-- SA **đóng băng** DOC-08/11/12 → repo code nhận qua **con trỏ có version**: `docs@<tag>` (submodule / rsync / release script). **Tái dùng đúng cơ chế publish đã có** ([backend/README.md — publish](../backend/README.md)) — không phát minh cơ chế mới.
+- SA **đóng băng** DOC-08/11/12 → repo code nhận qua **con trỏ có version**: `docs@<tag>` (submodule / rsync / release script). **Tái dùng đúng cơ chế publish đã có** ([backend/README.md — publish](../src/backend/README.md)) — không phát minh cơ chế mới.
 - Không copy tay từng đoạn spec vào code. Chỉ pin version + đọc.
 
 ## 2. Chiều lên (code → docs) — tại H6
@@ -40,4 +40,4 @@ flowchart LR
 
 ---
 
-*Liên quan:* [handoff.md](handoff.md) (H4/H6) · [trace-spine.md](trace-spine.md) (`CMP` trace về FR) · [backend/README.md](../backend/README.md) (cơ chế publish submodule/rsync)
+*Liên quan:* [handoff.md](handoff.md) (H4/H6) · [trace-spine.md](trace-spine.md) (`CMP` trace về FR) · [backend/README.md](../src/backend/README.md) (cơ chế publish submodule/rsync)

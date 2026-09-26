@@ -42,4 +42,4 @@ interview/
 └── brainstoming.md       ← Ghi chú thiết kế ban đầu
 ```
 
-Hub repo gốc: [README.md](../README.md).
+Hub repo gốc: [README.md](../../README.md).

@@ -3,12 +3,12 @@
 | | |
 |---|---|
 | **Ngày** | 2026-09-01 |
-| **Trạng thái** | đề xuất, chờ Confirm §6 — trạng thái việc xem [README index](README.md) |
+| **Trạng thái** | Confirm đủ + CLI A+B unit 2026-09-26. Còn smoke máy thật / `--interactive` TTY / npx (QĐ-11) |
 | **Phạm vi** | Một CLI Node duy nhất cho **hai bề mặt deterministic** đang giao cho LLM/người làm tay: **(A) wire minipower vào client** (Claude Code · Cursor · OpenCode · Codex) và **(B) khởi tạo cấu trúc dự án đích**. Đụng `sdlc/install/`, `sdlc/SKILL.md` (mục Khởi tạo), `sdlc/hooks/{package.json,test}`, `*/PACK.md` (đọc, không sửa) |
 | **Ngoài phạm vi** | Không đổi logic guard trong `hooks/lib/*.js` · không đổi `rules.json` schema · không thêm hook thứ 7 · không tự động hoá phần **phán đoán** (chọn `project_mode`, viết nội dung DOC) · kênh Codex vẫn thuộc [ADR-025](ADR-025-2026-08-26-ho-tro-codex-kenh-cai-thu-tu.md) (ADR này chỉ chừa **chỗ cắm dữ liệu**, không mở kênh) · không làm packaging npm/`npx` (QĐ-11 ghi nhận là hướng, chưa quyết) |
 | **Nối tiếp** | [ADR-022](ADR-022-2026-08-24-minipower-nen-tang-cong-cu-ai-toan-cong-ty.md) QĐ-6 (`install --with <module>` — **ADR này đóng**) · QĐ-8 (`PACK.md` manifest = nguồn danh sách module) · [ADR-025](ADR-025-2026-08-26-ho-tro-codex-kenh-cai-thu-tu.md) QĐ-6 (parity 4 kênh có máy canh) · [ADR-020](ADR-020-2026-08-20-minipower-3-che-do-du-an-gate-bang-hook.md) QĐ-3 ("cứng bằng máy, mềm bằng lời" — nguyên tắc gốc) + QĐ-4 (mọi kênh cùng bộ guard) · [ADR-014](ADR-014-2026-07-28-minipower-spine-tong-hop-wrap-not-build.md) (wrap-not-build, không nền tảng thứ tư) · [ADR-011](ADR-011-2026-07-26-minipower-claude-code-plugin.md)/[ADR-012](ADR-012-2026-07-26-minipower-cursor-plugin.md) (kênh plugin — song song, không thay thế) |
 | **Mục đích** | Ghi lại một ranh giới: **việc có logic xác định thì viết thành script, LLM chỉ là kênh giao tiếp tự nhiên giữa người và script**. Cài đặt và khởi tạo phải đúng 100% mỗi lần, không phụ thuộc phiên bản model hay độ dài context |
-| **Ảnh hưởng** | `sdlc/install/minipower.mjs` (**mới** — CLI) · `sdlc/install/{claude,cursor,opencode}/` (README hạ xuống tham chiếu; fragment + rule giữ nguyên vai trò dữ liệu) · `sdlc/install/claude/install.mjs` (**hấp thụ** vào CLI, giữ shim mỏng) · [`sdlc/SKILL.md`](../sdlc/SKILL.md) mục "Thao tác agent khi init" + "Exit init" (viết lại theo QĐ-7/QĐ-9) · [`sdlc/hooks/package.json`](../sdlc/hooks/package.json) (script `install`/`init`) · `sdlc/hooks/test/{install-cli,init-cli}.test.js` (**mới**) + `install-parity.test.js` (mở rộng) · [`AGENTS.md`](../AGENTS.md) mục Build/Test/Run + Kiến trúc |
+| **Ảnh hưởng** | `sdlc/install/minipower.mjs` (**mới** — CLI) · `sdlc/install/{claude,cursor,opencode}/` (README hạ xuống tham chiếu; fragment + rule giữ nguyên vai trò dữ liệu) · `sdlc/install/claude/install.mjs` (**hấp thụ** vào CLI, giữ shim mỏng) · [`sdlc/SKILL.md`](../src/sdlc/SKILL.md) mục "Thao tác agent khi init" + "Exit init" (viết lại theo QĐ-7/QĐ-9) · [`sdlc/hooks/package.json`](../src/sdlc/hooks/package.json) (script `install`/`init`) · `sdlc/hooks/test/{install-cli,init-cli}.test.js` (**mới**) + `install-parity.test.js` (mở rộng) · [`AGENTS.md`](../AGENTS.md) mục Build/Test/Run + Kiến trúc |
 
 ---
 
@@ -24,11 +24,11 @@ Chủ repo đọc tài liệu [CodeGraph](https://github.com/colbymchenry/codegr
 
 | Bề mặt | Hiện trạng | Ai thi hành |
 |---|---|---|
-| **Wire vào client** — Claude Code | [`install/claude/install.mjs`](../sdlc/install/claude/install.mjs) — 150 dòng, idempotent, backup `.bak`, `--check`/`--print`, smoke-test 4 shim, xử lý escape path Windows | **script** ✅ |
+| **Wire vào client** — Claude Code | [`install/claude/install.mjs`](../cli/claude/install.mjs) — 150 dòng, idempotent, backup `.bak`, `--check`/`--print`, smoke-test 4 shim, xử lý escape path Windows | **script** ✅ |
 | — Cursor | `install/cursor/README.md`: người tự `New-Item -ItemType SymbolicLink` ×3 rule + tự merge `hooks.fragment.json` | người / LLM ❌ |
 | — OpenCode | `install/opencode/README.md`: symlink ×3 + merge `opencode.fragment.json` + đặt plugin `.ts` | người / LLM ❌ |
 | — Codex | chưa có ([ADR-025](ADR-025-2026-08-26-ho-tro-codex-kenh-cai-thu-tu.md) ⚪, chặn ở Q1–Q3 §6) | — |
-| **Khởi tạo dự án** | [`sdlc/SKILL.md:208`](../sdlc/SKILL.md) "Thao tác agent khi init": 8 bước bằng chữ (copy 2 skeleton, ghi `profile.json` v2, sinh `AGENTS.md`+`CLAUDE.md`, tạo 6 folder `memory/{phase}/`, điền README) + checklist "Exit init" 5 gạch đầu dòng | **LLM 100%** ❌ |
+| **Khởi tạo dự án** | [`sdlc/SKILL.md:208`](../src/sdlc/SKILL.md) "Thao tác agent khi init": 8 bước bằng chữ (copy 2 skeleton, ghi `profile.json` v2, sinh `AGENTS.md`+`CLAUDE.md`, tạo 6 folder `memory/{phase}/`, điền README) + checklist "Exit init" 5 gạch đầu dòng | **LLM 100%** ❌ |
 
 Hai việc treo sẵn có đã trỏ đúng về đây, cả hai đều **chưa mở**:
 
@@ -79,57 +79,129 @@ Học đúng chỗ CodeGraph làm tốt: **wire công cụ** và **khởi tạo 
 
 | Lệnh | Làm gì | Chạy ở đâu | Bao nhiêu lần |
 |---|---|---|---|
-| `minipower install` | Wire skill + hook + rule của **module đã chọn** vào **client đã dò được** | root dự án đích (hoặc bất kỳ, có `--target`) | mỗi máy / mỗi client, lặp lại vô hại |
-| `minipower init` | Dựng **cấu trúc dự án** + `profile.json` + persona từ 7 câu trả lời | root dự án đích | một lần / dự án (rồi `--check` lặp lại) |
+| `minipower install` | Wire skill + hook + rule của **module theo registry** vào **client người chọn** (một hoặc nhiều) | root dự án đích (`--target`) | lặp lại được — thêm client mới |
+| `minipower init` | Dựng cấu trúc + `.minipower/` (cá nhân hoá + DB, [ADR-034](ADR-034-2026-09-26-minipower-marker-always-on-dispatch.md)) từ câu trả lời **script** | root dự án đích | một lần / dự án (`--check` lặp) |
 
 | # | Quyết định | Chi tiết |
 |---|---|---|
-| **QĐ-1** | **Một CLI Node duy nhất, hai lệnh con `install` và `init`.** Vị trí `sdlc/install/minipower.mjs` (O2). Node ESM plain, không dependency, Node ≥ 18 | Đóng ADR-022 QĐ-6. `install/claude/install.mjs` **hấp thụ** vào CLI; giữ lại một shim mỏng gọi sang CLI để lệnh cũ trong README/ADR cũ không chết (C6) |
-| **QĐ-2** | **Ranh giới nền — LLM hỏi, script làm.** LLM chịu trách nhiệm: hỏi tự nhiên, giải thích, **gợi ý** `project_mode`, đọc kết quả và tóm tắt cho người. Script chịu trách nhiệm: mọi `mkdir`/`cp`/ghi JSON/merge fragment/symlink/verify. **Không LLM nào tự tay dựng cấu trúc nữa** | Đây là QĐ trung tâm của ADR. Viết thành **một dòng quy tắc** trong AGENTS.md, để lần sau không phải cãi lại (P6): *"việc có logic xác định → script; LLM là kênh giao tiếp, không phải kênh thi hành"* |
-| **QĐ-3** | **Auto-detect client theo dấu vết ở dự án đích** — `.claude/` · `.cursor/` · `.opencode/` · (`.codex/` khi ADR-025 mở). In ra **cái dò được + cái sẽ ghi**, rồi hỏi xác nhận. `--client <tên>` ép tay, `--all` làm hết, `--dry-run` chỉ in | Dò bằng **sự tồn tại thư mục**, không đoán bằng process/PATH — đơn giản, kiểm được, không sai lặng. Không dò được cái nào → in hướng dẫn tạo thư mục, **không** tự tạo |
-| **QĐ-4** | **Đơn vị cài = module, danh sách đọc từ `*/PACK.md`** — `--with sdlc,backend`; mặc định `sdlc`. Trường `pack` + `repo` trong manifest quyết định cài gì (skill router-gộp vs lá-rời) | Không hardcode danh sách module trong CLI (C2). Module thứ năm ([ADR-030](ADR-030-2026-08-29-mo-module-presales-skill-uoc-luong-ulnl.md) `presales/`) khi ra đời **không phải sửa CLI**. `toolbox/` mang cờ loại trừ khỏi mặc định (chỉ cài trong repo này) |
-| **QĐ-5** | **Kênh = dữ liệu, không phải code.** Mỗi kênh khai một entry: thư mục dò · nơi đặt skill · nơi đặt rule · file cấu hình + cách merge (JSON path). Thêm kênh thứ tư/năm = thêm **entry**, không thêm nhánh `if` | Trực tiếp hạ chi phí P4; và làm ADR-025 chỉ còn phải trả lời **4 ẩn số vòng thực nghiệm N**, không phải viết installer riêng |
-| **QĐ-6** | **Idempotent · backup · verify — cho cả 4 kênh, không riêng Claude.** Kế thừa nguyên khuôn `install.mjs` hiện có: nhận diện khối minipower cũ (cả path `sdlc/` lẫn `minipower/` trước ADR-022 QĐ-3) rồi thay, `.bak` trước khi ghi đè, **chỉ đụng khối minipower**, kết thúc bằng smoke-test shim | C6 + C7. `--check` = chỉ verify, không ghi (dùng được trong CI) |
-| **QĐ-7** | **`init` nhận câu trả lời, không tự hỏi bằng LLM.** Hai đường vào cùng một lõi: `--answers <file.json>` (LLM ghi ra sau khi hỏi 7 câu) hoặc `--interactive` (readline, **chạy được khi không có LLM nào**). Thiếu trường → **FAIL nêu đúng trường thiếu**, không tự điền | Đường `--interactive` là phép thử của QĐ-2: nếu init không chạy được khi không có LLM, nghĩa là vẫn còn logic nằm nhầm chỗ |
-| **QĐ-8** | **"Exit init" thành exit code.** `minipower init --check` verify: `profile.json` hợp lệ schema **v2** · đủ 4 nhánh (`memory/` 6 chủ đề · `assets/` · `brainstorm/` · `docs/` 7 folder) · `FAQ.md` · `memory/{phase}/{README,decision-log}.md` · `mvp`/`maintain` có `doc-debt.md` · `brainstorm/` không có folder con | Checklist bằng chữ ở SKILL.md **được thay**, không phải viết thêm cạnh nó. **Không** thành hook (C5) — người/CI gọi khi cần |
-| **QĐ-9** | **Router viết lại theo script.** [`sdlc/SKILL.md`](../sdlc/SKILL.md) mục "Thao tác agent khi init": 8 bước → **3 bước** (1. hỏi trọn gói 7 câu · 2. ghi `answers.json` · 3. gọi `init`, đọc kết quả và thuật lại). Xoá đoạn `cp -R` tham chiếu và checklist "Exit init" thủ công | Giữ nguyên **7 câu hỏi** và bảng gợi ý mode (`maintain` cho repo cũ, `mvp` cho sản phẩm mới vội) — đó là phần LLM làm tốt hơn script |
-| **QĐ-10** | **Không tự động hoá phần phán đoán.** CLI **không**: chọn `project_mode` thay người · viết nội dung DOC · sửa file đã tồn tại của dự án (init vào repo có sẵn giữ nguyên `README.md`/`AGENTS.md` cũ, chỉ báo cái thiếu) · đoán `approval_source` khác `local` | C4. Đây là đường ranh khiến ADR này **không** kéo repo về phía "agent tự động hoá" |
-| **QĐ-11** | **Chưa làm packaging.** Không `npm publish`, không `npx minipower`, không cài global. Gọi bằng đường dẫn: `node <MP>/install/minipower.mjs install`, kèm alias `npm run install:mp` trong `hooks/package.json` | Ghi nhận `npx` là **hướng tốt** (CodeGraph dùng) nhưng cần quyết riêng: tên gói, ai publish, versioning so với `PACK.md`. Không mở trong ADR này |
+| **QĐ-1** | **Một CLI Node duy nhất, hai lệnh `install` và `init`.** Vị trí `sdlc/install/minipower.mjs` (O2). Node ESM, không dependency, Node ≥ 18 | Chủ repo 2026-09-26: **OK** |
+| **QĐ-2** | **Script thi hành, hạn chế LLM.** Mọi `mkdir`/`cp`/ghi JSON/SQL/merge/symlink/verify = script. LLM không dựng cây, không ghi `.minipower/` | Chốt lại 2026-09-26: hỏi cũng bằng **readline/cờ**, không bằng model (QĐ-7) |
+| **QĐ-3** | **Không tự dò client.** Người **chọn loại** (cursor · claude · opencode · …) — **được nhiều client một lệnh**. Chạy lại `install` để **thêm** client, không xoá client cũ (trừ khi `--uninstall`) | **Lật** bản 2026-09-01 (auto-detect). `--client cursor,claude` hoặc menu interactive. Không `--all` im lặng |
+| **QĐ-4** | **Không hardcode list module trong CLI.** CLI đọc **module registry** sinh từ `*/PACK.md` (xem §5.1) — `--with`, `--list-modules` | Consumer ADR-022 QĐ-8. `toolbox` mặc định **off** trên dự án khách |
+| **QĐ-5** | **Client IDE = dữ liệu, không phải nhánh code.** Mỗi *client* (Cursor/Claude/…) một entry: đích skill/rule, file config, cách merge. **Không** nhầm với **module kênh** `docs/` `tasks/` `chat/` `vcs/` (ADR-033) | File: `clients.json` (đổi tên khỏi `channels.json` để hết đụng chữ “kênh”) |
+| **QĐ-6** | **Chạy lại an toàn:** lần 2 không nhân đôi hook; `.bak` trước khi đè khối minipower; `--check` chỉ kiểm, không ghi | Xem §5.2 |
+| **QĐ-7** | **`init` = script hỏi + ghi.** `--interactive` (readline) là đường chính. `--answers` chỉ khi đã có file do người/script khác xuất. Thiếu trường → FAIL, không đệm LLM | Bỏ luồng “LLM hỏi 7 câu rồi mới gọi init” làm đường chính |
+| **QĐ-8** | **`init --check` theo kiến trúc mới:** có `.minipower/` (file cá nhân hoá tối thiểu + DB mở được) · `profile.json` schema **v3** (ADR-033) · cây `docs/`/`memory/` theo skeleton · `doc-debt` khi `mvp`/`maintain` | Thay checklist chữ + schema v2 cũ |
+| **QĐ-9** | **Skill init:** không `cp -R` bằng lời. Agent (nếu có) chỉ *nhắc gọi CLI* hoặc người tự chạy `minipower init`. Kế hoạch ADR-034: *Khởi tạo dự án …* → `minipower-router-init` → **bảng lệnh script**, người OK rồi CLI chạy | Không 8 bước LLM copy folder |
+| **QĐ-10** | **CLI không phán đoán hộ người.** Không tự chọn `project_mode`, không viết nội dung FR/SAD, không đè README/AGENTS đã có, không đoán provider MCP | Xem §5.3 — khác với “chọn client” (QĐ-3): client là *cấu hình máy*, mode là *quyết định dự án* |
+| **QĐ-11** | **Chưa `npm publish` / `npx minipower`.** Lệnh gọi bằng `node …/minipower.mjs`. Packaging = phân phối như Codegraph (`npx`) — **việc khác**, cần tên gói npm + ai publish | Không chặn local install. Mở ADR riêng khi cần phát hành |
+
+### §5.1 Module registry (QĐ-4)
+
+**Vấn đề:** glob `*/PACK.md` trong CLI vẫn là “danh sách ẩn” nếu path pack hardcode.
+
+**Giải pháp (một SSOT, hai bước):**
+
+1. Mỗi pack giữ `PACK.md` (schema [pack-manifest](../contracts/pack-manifest.md)). Thêm khóa máy-đọc tuỳ chọn:
+
+```yaml
+install:
+  default: true | false    # mặc định cài cho dự án khách? toolbox = false
+  kind: role | channel | dispatcher | warehouse
+```
+
+2. `npm run gen` ghi `sdlc/hooks/lib/module-registry.json` (vùng generated): mảng `{ pack, path, repo, install.default, kind }`. CLI **chỉ** đọc file này + `--with` để lọc. Pack mới = thêm `PACK.md` + `gen` — **không sửa `minipower.mjs`**.
+
+Test: xóa một pack khỏi registry giả → CLI `--list-modules` không còn tên đó; thêm `PACK.md` giả trong fixture → sau gen thì xuất hiện.
+
+### §5.2 QĐ-6 — “idempotent / backup / verify” nghĩa là gì
+
+Không phải thuật ngữ ẩn. Ba hành vi khi **chạy `install` lần 2, 3, …**:
+
+| Từ | Việc máy làm | Nếu thiếu thì sao |
+|---|---|---|
+| Idempotent | Merge lần nữa **không** nhân đôi khối hook/rule minipower | File settings phình, hook chạy 2 lần |
+| Backup | Copy `settings.json` → `settings.json.bak` **trước** khi ghi | Hỏng merge thì còn bản người dùng |
+| Verify (`--check`) | Đọc config, báo thiếu shim/path — **exit 1**, không ghi | CI/người biết cài lệch mà không sợ bị đè |
+
+### §5.3 QĐ-10 — “không tự động hoá phán đoán”
+
+Script **được** làm: tạo folder, chép skeleton, ghi JSON đúng schema, wire client đã **chọn**.
+
+Script **không được** làm (người phải trả lời / giữ file cũ):
+
+- Chọn `mvp` vs `standard` vs `maintain`
+- Viết nội dung DOC, FR, báo giá
+- Đổi `README.md` dự án đã có
+- Đoán `docs=outline` khi người chưa nói
+
+Chọn Cursor+Claude (QĐ-3) **không** phải phán đoán nghiệp vụ — đó là “cài vào phần mềm nào trên máy này”.
+
+### §5.4 QĐ-11 — packaging / `npx` dùng để làm gì
+
+Hôm nay: clone repo factory, `node sdlc/install/minipower.mjs install --client cursor`.
+
+`npx minipower` (như `npx codegraph`) = **không cần clone**, gõ một lệnh là có CLI. Cần: gói npm, version, quyền publish. **Chưa có** thì vẫn cài được bằng path. QĐ-11 chỉ **hoãn** bước phân phối, không hoãn CLI local.
 
 ### Hình dạng sau khi thi hành
 
 ```text
 sdlc/install/
-├── minipower.mjs              MỚI  — CLI: install | init   (toàn bộ logic)
-├── channels.json              MỚI  — dữ liệu 4 kênh (QĐ-5): dò ở đâu, ghi vào đâu, merge kiểu gì
+├── minipower.mjs              MỚI  — CLI: install | init
+├── clients.json               MỚI  — dữ liệu client IDE (QĐ-5), không phải module kênh MCP
 ├── claude/
 │   ├── install.mjs            shim mỏng → minipower.mjs install --client claude   (C6)
 │   ├── settings.fragment.json (giữ — dữ liệu)
 │   └── README.md              hạ xuống: tham chiếu + cách cài tay khi cần
 ├── cursor/{hooks.fragment.json, rules/*.mdc, README.md}     (giữ — dữ liệu)
 ├── opencode/{opencode.fragment.json, plugins/, rules/, README.md}
-└── codex/                     chừa chỗ — mở khi ADR-025 chốt (chỉ thêm entry channels.json + fragment)
+└── codex/                     chừa chỗ — mở khi ADR-025 chốt (entry `clients.json` + fragment)
 ```
 
 ```text
-  người ──7 câu──> LLM ──answers.json──> minipower init ──> cấu trúc + profile.json
-                    │                          │
-                    │                          └── init --check ──> exit code (QĐ-8)
-                    └── thuật lại kết quả, gợi ý bước tiếp
+  người ──readline/cờ──> minipower init ──> cây + .minipower/ + profile v3
+                              └── init --check ──> exit code (QĐ-8)
 ```
 
-## §6. Confirm *(bắt buộc trước khi thi hành)*
+### §5.5 Confirm Q5 — “fragment” là gì, sinh từ `rules.json` nghĩa là gì
+
+Khi `install` wire **Cursor / Claude / OpenCode**, nó không bịa hook. Nó **chép/merge một mẫu JSON/Markdown có sẵn** vào máy bạn, ví dụ:
+
+- Cursor: `sdlc/install/cursor/hooks.fragment.json` — danh sách 6 lệnh hook (`token-guard`, `auto-routing`, …)
+- Claude: `sdlc/install/claude/settings.fragment.json`
+- OpenCode: tương tự
+
+Đó gọi là **fragment** = mảnh cấu hình IDE. **Hôm nay các file này viết tay.** Ba file phải **cùng 6 hook, cùng thứ tự**. Lệch một file là một IDE chạy thiếu cổng.
+
+`rules.json` là SSOT của **pipeline tài liệu** (DOC nào thuộc phase nào, mode mvp/standard…). Nó **không** đang chứa danh sách 6 hook IDE.
+
+Hai cách làm:
+
+| Cách | Việc | Ưu | Nhược |
+|------|------|----|--------|
+| **A — giữ viết tay** | `install` đọc 3 fragment như hiện có. Test `install-parity` FAIL nếu Cursor thiếu 1 hook mà Claude có | Làm CLI ngay, ít đụng generator | Thêm hook thứ 7 = sửa **tay 3 file** (vẫn có test bắt lệch) |
+| **B — sinh từ SSOT** | Thêm danh sách hook vào `rules.json` (hoặc file dữ liệu một chỗ), `npm run gen` **ghi ra** 3 fragment. Không sửa fragment tay | Thêm hook = 1 chỗ | Phình đợt CLI: phải thiết kế schema + generator + sửa test gen. **Không** bắt buộc để `install` chạy được |
+
+Câu hỏi Q5 chỉ là: **đợt viết CLI này làm A hay B?** Không phải “có hook hay không” — hook đã có. Đề xuất **A** để ship `install`/`init`; B tách việc (gần ADR-025 QĐ-6).
+
+## §6. Confirm
+
+### Chủ repo chốt trên bảng QĐ (2026-09-26)
+
+QĐ-1 OK · QĐ-2 OK · QĐ-3 **không auto-detect**, chọn 1..n client, chạy lại để thêm · QĐ-4 đồng ý + **registry** (§5.1) · QĐ-5–6–10–11 **đã giải thích trong §5.2–5.4** · QĐ-7 script không LLM · QĐ-8/9 cập nhật kiến trúc 033/034.
+
+### Câu §6 bản 2026-09-01
 
 | # | Câu hỏi | Trả lời |
 |---|---|---|
-| Q1 | Duyệt QĐ-1…QĐ-11? | |
-| Q2 | Vị trí CLI: `sdlc/install/minipower.mjs` (O2) — chấp nhận cái wart "installer của `backend`/`ops` sống trong `sdlc/`"? Hay muốn O3 (thư mục root mới)? | |
-| Q3 | `install` có tự **symlink skill** không, hay chỉ wire hook + rule? (Symlink cần quyền admin trên Windows — đề xuất: **có làm**, thất bại thì degrade sang copy + cảnh báo, không FAIL cả lệnh) | |
-| Q4 | `init --interactive` (readline, chạy không cần LLM) — làm ở **Đợt B** hay để sau? Đề xuất: **làm**, vì đó là phép thử ranh giới QĐ-2 | |
-| Q5 | Fragment 4 kênh có **sinh từ `rules.json` qua `npm run gen`** luôn trong đợt này không (đóng luôn ADR-025 QĐ-6), hay giữ fragment viết tay + chỉ mở rộng `install-parity.test.js`? Đề xuất: **giữ viết tay + test canh** ở đợt này; sinh-từ-SSOT tách việc riêng để đợt không phình | |
-| Q6 | Thứ tự: **Đợt A trước, dừng lại nghiệm thu, rồi Đợt B** — hay chạy liền hai đợt? | |
+| Q1 | Duyệt QĐ (bản đã điều chỉnh)? | **Có** — 2026-09-26, kèm lật QĐ-3 |
+| Q2 | Vị trí CLI O2 `sdlc/install/minipower.mjs`? | **OK** |
+| Q3 | `install` **symlink skill**? | **Có** — 2026-09-26. Fail (Windows không quyền) → copy + cảnh báo, không FAIL cả lệnh |
+| Q4 | `init --interactive` làm Đợt B? | **Có** — đường chính (QĐ-7) |
+| Q5 | Fragment viết tay hay `npm run gen`? | **B** — 2026-09-26. SSOT `rules.json` → `install_hooks`; `npm run gen` ghi fragment Claude/Cursor + `hooks.json` |
+| Q6 | A rồi B hay liền? | **Liền hai đợt** — 2026-09-26. Không dừng nghiệm thu giữa `install` và `init` |
 
-Chốt xong: ghi ngày vào **Trạng thái** + cập nhật ghi chú index.
+CLI: Confirm đủ. Sinh fragment (Q5 B) làm cùng đợt viết `minipower.mjs`.
 
 ## §7. Việc triển khai — hai đợt
 
@@ -137,8 +209,8 @@ Chốt xong: ghi ngày vào **Trạng thái** + cập nhật ghi chú index.
 
 | Bước | Việc | Done khi | Phụ thuộc |
 |---|---|---|---|
-| A1 | `channels.json` — khai 3 kênh hiện có (claude · cursor · opencode) theo QĐ-5: thư mục dò · đích skill · đích rule · file config + JSON path merge | 3 entry mô tả **đúng** những gì README hiện đang bảo người dùng gõ tay; diff README ↔ entry = 0 | Q1 |
-| A2 | `minipower.mjs install` — detect (QĐ-3) · `--with` đọc `*/PACK.md` (QĐ-4) · merge idempotent + `.bak` + chỉ-đụng-khối-minipower (QĐ-6) · `--check`/`--dry-run`/`--client`/`--all`/`--target` | Cài sạch từ folder trống trên **cả 3 kênh**; chạy lần 2 không nhân đôi; `--check` xanh | A1 |
+| A1 | `clients.json` — 3 client (claude · cursor · opencode): đích skill/rule, merge JSON | Diff README kênh ↔ entry = 0 | Q1, Q3 (symlink) |
+| A2 | `minipower.mjs install` — **chọn client** (QĐ-3) · `--with` đọc **registry** (QĐ-4) · idempotent (QĐ-6) · `--check`/`--dry-run`/`--target` | Cài N client; lần 2 thêm client không xoá cái cũ; `--check` xanh | A1 |
 | A3 | Hấp thụ `claude/install.mjs` → shim mỏng; giữ nguyên hành vi cờ cũ (`--check`, `--print`) | Lệnh cũ trong README/ADR-020 §8 vẫn chạy đúng | A2 |
 | A4 | Mở rộng `install-parity.test.js` + thêm `install-cli.test.js` (T1·T4·T6) | Suite xanh; parity 3 kênh do **máy** canh, không do README | A2 |
 | A5 | Viết lại 3 `README.md` kênh: lệnh CLI lên đầu, hướng dẫn tay xuống mục "khi không chạy được script"; cập nhật AGENTS.md §Build/Test/Run | `link:check` 0 gãy mới; không còn chỗ nào bảo người dùng merge JSON tay như **đường chính** | A2 |
@@ -147,8 +219,8 @@ Chốt xong: ghi ngày vào **Trạng thái** + cập nhật ghi chú index.
 
 | Bước | Việc | Done khi | Phụ thuộc |
 |---|---|---|---|
-| B1 | `minipower.mjs init` — `--answers <file.json>` + `--interactive` (QĐ-7): copy 2 skeleton · ghi `profile.json` v2 · sinh `AGENTS.md`/`CLAUDE.md` từ [TPL-agent-profile](../sdlc/templates/TPL-agent-profile.md) · tạo 6 `memory/{phase}/` · `doc-debt.md` cho `mvp`/`maintain` | Dự án dựng ra **giống hệt** kết quả 8 bước tay hiện tại, hai lần chạy cùng input cho kết quả byte-đối-byte như nhau | Đợt A nghiệm thu, Q4 |
-| B2 | `init --check` (QĐ-8) — verify đủ 4 nhánh + profile v2 + `doc-debt` + `brainstorm/` không folder con; exit code 0/1, in **đúng cái thiếu** | Xoá một folder bất kỳ ⇒ FAIL nêu đúng tên; dự án dựng bằng B1 ⇒ PASS | B1 |
+| B1 | `init --interactive` + `--answers` (QĐ-7): skeleton · profile **v3** · **`.minipower/`** (034) · persona từ TPL | Hai lần cùng input → cùng cây | A5 (cùng đợt, không dừng) |
+| B2 | `init --check` (QĐ-8) — `.minipower/` · profile v3 · cây skeleton · `doc-debt`; exit 0/1, in đúng cái thiếu | Xoá marker hoặc folder ⇒ FAIL đúng tên | B1 |
 | B3 | Đường **init vào repo đã có sẵn** (SKILL.md mục riêng): không đè file tồn tại, chỉ liệt kê cái thiếu + đề nghị; tài liệu cũ → `assets/archive/` | Chạy trên repo có sẵn `README.md`/`AGENTS.md` ⇒ **không file nào bị sửa**, in danh sách thiếu | B1 |
 | B4 | Viết lại `sdlc/SKILL.md` mục "Thao tác agent khi init" (8 bước → 3) + thay "Exit init" bằng `init --check` (QĐ-9); xoá đoạn `cp -R` tham chiếu | `router.test.js` + `skeleton.test.js` xanh; grep `cp -R "$MINIPOWER` = 0 hit trong SKILL.md | B2 |
 | B5 | `init-cli.test.js` (T2·T5) + một dòng quy tắc QĐ-2 vào AGENTS.md | Suite xanh; quy tắc ranh giới có chỗ đứng cố định | B4 |
@@ -157,14 +229,21 @@ Chốt xong: ghi ngày vào **Trạng thái** + cập nhật ghi chú index.
 
 | # | Loại | Case | Expect | Trạng thái |
 |---|---|---|---|---|
-| T1 | Smoke | `install` từ folder trống, không cờ | Dò đúng client có mặt, in cái sẽ ghi, cài xong `--check` xanh trên cả 3 kênh | 🔴 |
-| T2 | Smoke | `init --answers` với 7 trường đủ, rồi `init --check` | Cấu trúc đủ 4 nhánh + `profile.json` v2 hợp lệ; `--check` exit 0 | 🔴 |
-| T3 | Regression | `npm test` + `npm run gen:check` + `npm run link:check` (0 gãy **mới**) + grep tàn dư đường dẫn cũ = 0 | xanh cả bốn | 🔴 |
-| T4 | Mới | Parity: `channels.json` khai **cùng bộ 6 hook / cùng thứ tự shim** cho mọi kênh; lệch một hook ⇒ test đỏ | test đỏ khi cố tình bỏ 1 hook | 🔴 |
-| T5 | Mới | `init --check` bắt được từng thiếu sót: xoá `memory/planning/` · hạ `profile.json` về v1 · `mvp` thiếu `doc-debt.md` · tạo folder con trong `brainstorm/` | FAIL, message nêu **đúng** cái thiếu (4 case) | 🔴 |
-| T6 | Mới | Windows: `PACK_ROOT` dạng `D:\…` chèn vào JSON hợp lệ; symlink thất bại ⇒ degrade copy + cảnh báo, **không** crash | Không lặp lại bug ADR-020 việc #4 | 🔴 |
-| T7 | Mới | **Ranh giới QĐ-2**: `init --interactive` chạy trọn vẹn **không có LLM**; và không file nào trong `hooks/lib`/`hooks/bin` import CLI | 2 assert xanh — tầng cứng không phụ thuộc CLI, CLI không phụ thuộc LLM | 🔴 |
-| T8 | Smoke | Idempotent: chạy `install` 3 lần liên tiếp; và chạy trên `.claude/settings.json` **có sẵn hook của người dùng** | Không nhân đôi khối minipower; hook người dùng còn nguyên; có `.bak` | 🔴 |
+| T1 | Smoke | `install` hỏi client rồi thêm client khác | Cả hai; không nhân đôi | 🟡 wizard stdin unit 2026-09-26. Smoke 2 IDE máy chủ repo còn |
+| T2 | Smoke | `init --answers` đủ trường, `init --check` | Cây + `.minipower/` + profile v3 | 🟢 unit. Interactive: stdin lựa chọn 🟢 2026-09-26 |
+| T3 | Regression | `npm test` + `gen:check` + `link:check` 0 gãy mới | xanh | 🟢 2026-09-26 gốc repo |
+| T4 | Mới | Cùng 6 hook mọi client; lệch 1 hook ⇒ đỏ | | 🟢 `install_hooks` + `install-parity` + `gen:check` |
+| T5 | Mới | `init --check` thiếu `.minipower/` | FAIL | 🟢 `install-cli.test.js` |
+| T6 | Mới | Windows path JSON; symlink fail → copy | không crash | 🟡 CI matrix 3 OS cho hook; CLI copy-fallback có trong code, **chưa** case Windows riêng |
+| T7 | Mới | `init` hỏi lựa chọn không LLM; `hooks/lib` không import CLI | | 🟢 stdin numbered options; CLI import `hooks/lib` một chiều |
+| T8 | Smoke | `install` 3 lần; giữ hook người dùng | `.bak` · không nhân đôi | 🟡 unit 2 lần cursor. Merge Claude settings có sẵn **chưa** fixture riêng |
+
+## Kết quả thi hành 2026-09-26
+
+- `sdlc/install/minipower.mjs` — `install --client` (không dò) · `--with` registry · symlink/copy · `init --answers` / `--check` · ghi `.minipower/`
+- `rules.json` `install_hooks` → `npm run gen` fragment Claude/Cursor + `hooks.json` + `module-registry.json`
+- `claude/install.mjs` shim; `npm run minipower`; README/AGENTS lệnh CLI
+- **Chưa:** packaging npx (QĐ-11) · Codex (ADR-025) · dời vào `cli/` (ADR-032)
 
 Icon: 🟢 xong · 🟡 có sẵn, cần giữ xanh · 🔴 chưa có. **Không 🟢 Done khi còn T đỏ.**
 
@@ -177,7 +256,7 @@ Icon: 🟢 xong · 🟡 có sẵn, cần giữ xanh · 🔴 chưa có. **Không 
 | **Tốt** | `PACK.md` có **consumer thật** đầu tiên (ADR-022 QĐ-8 thôi là lời hứa); module thứ năm của [ADR-030](ADR-030-2026-08-29-mo-module-presales-skill-uoc-luong-ulnl.md) cài được mà không sửa CLI (P5) |
 | **Tốt** | Ranh giới *LLM hỏi ↔ script làm* có chỗ đứng cố định trong AGENTS.md — lần sau không phải cãi lại (P6) |
 | **Xấu / chi phí** | Thêm **~400–500 dòng** Node phải bảo trì, và một bề mặt lỗi mới: CLI hỏng thì **cả 4 kênh** hỏng (trước đây hỏng lẻ từng kênh). Giảm thiểu bằng T1/T4/T8 + đường cài tay giữ trong README |
-| **Xấu / chi phí** | `channels.json` là **bản mô tả** hành vi client bên ngoài — client đổi format cấu hình thì entry lệch **âm thầm**. Không có cách tự phát hiện; phải smoke thật khi nâng phiên bản client |
-| **Xấu / chi phí** | Hai đợt kéo dài; giữa hai đợt repo ở trạng thái **lệch nhịp** (install đã script, init còn LLM). Chấp nhận được vì hai bề mặt độc lập, không có ràng buộc chéo |
+| **Xấu / chi phí** | `clients.json` mô tả IDE bên ngoài — client đổi format thì lệch âm thầm; phải smoke khi nâng IDE |
+| **Trung lập** | Hai đợt A+B **làm liền** (Confirm Q6) — không còn trạng thái “install script / init vẫn LLM” kéo dài |
 | **Trung lập** | Kênh **plugin** ([ADR-011](ADR-011-2026-07-26-minipower-claude-code-plugin.md)/[ADR-012](ADR-012-2026-07-26-minipower-cursor-plugin.md)) **không đổi** — plugin và CLI là hai đường cài song song, ADR-020 QĐ-4 vẫn buộc chúng cùng hành vi |
 | **Trung lập** | Số điều kiện cứng **vẫn là 7** (C5) — `init --check` là verifier gọi theo yêu cầu, không phải hook thứ 7 |

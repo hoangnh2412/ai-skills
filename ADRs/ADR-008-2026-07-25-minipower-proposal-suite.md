@@ -330,5 +330,5 @@ ADR này **gộp và thay** cụm 4 ADR cha–con (2026-07-25), nay giữ ở tr
 
 **Tham chiếu:**
 - [`SOPs/ULNL.md`](../SOPs/ULNL.md) · [`SOPs/GiaiPhapKyThuat-KHUNG.md`](../SOPs/GiaiPhapKyThuat-KHUNG.md)
-- [`minipower/SKILL.md`](../sdlc/SKILL.md) · [`minipower/docs/pipeline.md`](../sdlc/docs/pipeline.md)
-- [`minipower/skills/planning/SKILL.md`](../sdlc/skills/planning/SKILL.md) · [`minipower/skills/architecture/SKILL.md`](../sdlc/skills/architecture/SKILL.md) — upstream DOC-14/15, DOC-08
+- [`minipower/SKILL.md`](../src/sdlc/SKILL.md) · [`minipower/docs/pipeline.md`](../src/sdlc/docs/pipeline.md)
+- [`minipower/skills/planning/SKILL.md`](../src/sdlc/skills/planning/SKILL.md) · [`minipower/skills/architecture/SKILL.md`](../src/sdlc/skills/architecture/SKILL.md) — upstream DOC-14/15, DOC-08

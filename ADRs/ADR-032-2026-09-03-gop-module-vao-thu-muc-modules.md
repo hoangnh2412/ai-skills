@@ -3,12 +3,12 @@
 | | |
 |---|---|
 | **Ngày** | 2026-09-03 |
-| **Trạng thái** | đề xuất, chờ Confirm §6 (Q1–Q2 · Q6 mở lại sau §5a) — trạng thái việc xem [README index](README.md) |
+| **Trạng thái** | Confirm 2026-09-26 — Q1 **Có** (pack → `src/`, installer → `cli/`). Q6 **giữ QĐ-8** (`hooks/` không vào `cli/`). Đang thi hành |
 | **Phạm vi** | Vị trí thư mục ở **gốc repo**: gom 5 module cài được vào `src/`, tách code cài đặt ra `cli/`. Đụng: đường dẫn thư mục · 298 link markdown · hằng `MODULES` + path join trong test · `settings.fragment.json` · CI path filter · `README.md` + `AGENTS.md` |
 | **Ngoài phạm vi** | **Không** đổi tên module · **không** đổi tên skill đăng ký (QĐ-4) · không đổi nội dung skill/hook/template một chữ · không mở module mới ([ADR-030](ADR-030-2026-08-29-mo-module-presales-skill-uoc-luong-ulnl.md)) · không quyết vị trí `evals/` (đã chốt [ADR-026](ADR-026-2026-08-27-phuong-phap-danh-gia-chat-luong-minipower.md) Q5) · không viết CLI (việc của [ADR-031](ADR-031-2026-09-01-cli-install-init-thay-llm-thi-hanh.md) — ADR này chỉ **chừa chỗ** cho nó) |
 | **Nối tiếp** | [ADR-022](ADR-022-2026-08-24-minipower-nen-tang-cong-cu-ai-toan-cong-ty.md) QĐ-2/QĐ-4 (hệ tên hai tầng — **không** đụng) · [ADR-031](ADR-031-2026-09-01-cli-install-init-thay-llm-thi-hanh.md) (CLI — `cli/` là nhà của nó) · [ADR-011](ADR-011-2026-07-26-minipower-claude-code-plugin.md) (`--plugin-dir …/sdlc` đã smoke PASS — đường dẫn đổi, **cơ chế không được đổi**) · [ADR-026](ADR-026-2026-08-27-phuong-phap-danh-gia-chat-luong-minipower.md) Q5 · [ADR-030](ADR-030-2026-08-29-mo-module-presales-skill-uoc-luong-ulnl.md) |
 | **Mục đích** | Ghi lại **hình dạng gốc repo**: nhìn vào cây thư mục phải biết ngay thứ nào cài được, thứ nào là code cài đặt, thứ nào chỉ đọc, thứ nào là kho nội bộ |
-| **Ảnh hưởng** | `src/{sdlc,backend,ops,toolbox,presales}/` (đích di trú) · `cli/{claude,cursor,opencode}/` + `cli/minipower.mjs` (nhà của [ADR-031](ADR-031-2026-09-01-cli-install-init-thay-llm-thi-hanh.md)) · [`README.md`](../README.md) + [`AGENTS.md`](../AGENTS.md) · `src/sdlc/hooks/test/pack-manifest.test.js` (hằng `MODULES`) + 5 test pack · [`settings.fragment.json`](../sdlc/install/claude/settings.fragment.json) · [`minipower-hooks.yml`](../.github/workflows/minipower-hooks.yml) · `link-check.baseline.txt` |
+| **Ảnh hưởng** | `src/{sdlc,backend,ops,toolbox,presales}/` (đích di trú) · `cli/{claude,cursor,opencode}/` + `cli/minipower.mjs` (nhà của [ADR-031](ADR-031-2026-09-01-cli-install-init-thay-llm-thi-hanh.md)) · [`README.md`](../README.md) + [`AGENTS.md`](../AGENTS.md) · `src/sdlc/hooks/test/pack-manifest.test.js` (hằng `MODULES`) + 5 test pack · [`settings.fragment.json`](../cli/claude/settings.fragment.json) · [`minipower-hooks.yml`](../.github/workflows/minipower-hooks.yml) · `link-check.baseline.txt` |
 
 ---
 
@@ -123,12 +123,12 @@ flowchart LR
 
 | # | Câu hỏi | Trả lời |
 |---|---|---|
-| Q1 | Duyệt QĐ-1…QĐ-8? | |
+| Q1 | Duyệt QĐ-1…QĐ-8? | **Có** — 2026-09-26. Pack vào `src/`, installer vào `cli/` |
 | Q2 | Tên thư mục gom module | **`src/`** — chủ repo chốt 2026-09-03. *Ghi nhận một quan ngại, chủ repo đã nghe và giữ nguyên:* repo này là **bộ skill + tài liệu**, không phải codebase biên dịch (AGENTS.md: *"Repo này là bản thân bộ công cụ… không phải một sản phẩm ứng dụng"*, và cố ý **không có build step**) — `src/` thường khiến người đọc đi tìm `dist/`. Đổi lại, `src/` ngắn, quen mắt, và **không** đụng tên skill (QĐ-4) |
 | Q3 | Thời điểm | **Làm ngay, không chờ ADR-031** — chủ repo chốt 2026-09-03 (→ QĐ-2) |
 | Q4 | Có nơi nào ngoài repo đang trỏ `…/sdlc/hooks/bin/`? | **Không — chưa cài đâu thật sự** (2026-09-03). Đây là căn cứ của QĐ-2 và QĐ-3 |
 | Q5 | Bản đồ bốn loại vào README + AGENTS | Làm **trong cùng đợt** (→ QĐ-6) |
-| **Q6** | **`cli/` có kéo `hooks/` theo không?** Chủ repo đã chọn *"cả install lẫn hooks"*, nhưng §5a là dữ kiện tìm ra **sau** câu trả lời đó: gộp `hooks/` làm chết kênh plugin (`${CLAUDE_PLUGIN_ROOT}/hooks/bin/`), và hai đường thoát E1/E2 đều đắt hơn cái được. QĐ-8 hiện viết theo **`cli/` chỉ chứa install**. Giữ QĐ-8, hay vẫn gộp và chấp nhận E1 (kèm một vòng thực nghiệm xem loader có thấy skill ở `src/sdlc/skills/` không)? | |
+| **Q6** | **`cli/` có kéo `hooks/` theo không?** … | **Giữ QĐ-8** — 2026-09-26. `cli/` chỉ install; `hooks/` ở `src/sdlc/hooks/` |
 
 Chốt xong: ghi ngày vào **Trạng thái** + cập nhật ghi chú index.
 
@@ -138,7 +138,7 @@ Chốt xong: ghi ngày vào **Trạng thái** + cập nhật ghi chú index.
 |---|---|---|---|
 | 1 | `git mv` 4 module hiện có → `src/`; `git mv sdlc/install` → `cli/` | Cây thư mục đúng QĐ-1; `git status` thấy toàn `R` (rename), không `D`+`A` | Q1, Q6 |
 | 2 | Script thay chuỗi đường dẫn: 298 link md + 17 hard-code + hằng `MODULES` + CI path filter + `settings.fragment.json` (placeholder `…/minipower/sdlc` → `…/minipower/src/sdlc`) | `npm test` xanh · `gen:check` xanh · `link:check` **0 gãy mới** | 1 |
-| 3 | Sửa `PACK_ROOT` trong [install.mjs](../sdlc/install/claude/install.mjs) — hiện là `resolve(HERE,"..","..")` (= `sdlc/`), sau khi dời sẽ trỏ **gốc repo**, phải trỏ `src/sdlc` | `install.mjs --print` in ra path đúng; smoke 6 shim chạy | 2 |
+| 3 | Shim [install.mjs](../cli/claude/install.mjs) uỷ quyền `cli/minipower.mjs`; plugin root = `src/sdlc` | `install.mjs --print` in ra path đúng; smoke 6 shim chạy | 2 |
 | 4 | Bản đồ **bốn loại** vào [README.md](../README.md) + [AGENTS.md](../AGENTS.md) (QĐ-6) + mục Build/Test/Run đổi `sdlc/hooks/` → `src/sdlc/hooks/` | README/AGENTS khai đủ, không dùng chữ "bắt buộc" | 2 |
 | 5 | Soát `link-check.baseline.txt`: 27 nợ phải **đổi tiền tố chứ không biến mất** | Diff baseline chỉ thay đường dẫn; số nợ không giảm bất thường | 2 |
 | 6 | Sửa **href** trong ADR cũ, **giữ nguyên chữ** (C4) | grep đường dẫn cũ = 0 hit ngoài câu cố ý nhắc lịch sử | 2 |
@@ -149,12 +149,14 @@ Chốt xong: ghi ngày vào **Trạng thái** + cập nhật ghi chú index.
 | # | Loại | Case | Expect | Trạng thái |
 |---|---|---|---|---|
 | T1 | Smoke | `claude --plugin-dir <repo>/src/sdlc` từ thư mục sạch | Plugin nạp, skill namespaced hiện đủ, **6 hook chạy** (lặp lại smoke [ADR-011](ADR-011-2026-07-26-minipower-claude-code-plugin.md) ở path mới) — **chủ repo tự chạy** | 🔴 |
-| T2 | Smoke | `node cli/claude/install.mjs --print` trên một dự án trống | In JSON trỏ `…/src/sdlc/hooks/bin/*`, 6 shim đủ | 🔴 |
-| T3 | Regression | `npm test` + `gen:check` + `link:check` 0 gãy mới + grep đường dẫn cũ = 0 hit | xanh | 🔴 |
-| T4 | Regression | Tên skill đăng ký **không đổi một ký tự** (C1, QĐ-4) | `git diff` trên mọi `name:` của SKILL.md = rỗng | 🔴 |
-| T5 | Mới | Test canh hằng `MODULES` ↔ cây `src/` | xanh; cố tình thêm thư mục lạ → đỏ đúng chỗ | 🔴 |
+| T2 | Smoke | `node cli/claude/install.mjs --print` trên một dự án trống | In JSON trỏ `…/src/sdlc/hooks/bin/*`, 6 shim đủ | 🟢 2026-09-26 |
+| T3 | Regression | `npm test` + `gen:check` + `link:check` 0 gãy mới + grep đường dẫn cũ = 0 hit | xanh | 🟢 `npm test` 583 · `gen:check` · `link:check` 0 MỚI (baseline đổi tiền tố `backend/`·`sdlc/` → `src/…`) |
+| T4 | Regression | Tên skill đăng ký **không đổi một ký tự** (C1, QĐ-4) | `git diff` trên mọi `name:` của SKILL.md = rỗng | 🟢 không đụng `name:` |
+| T5 | Mới | Test canh hằng `MODULES` ↔ cây `src/` | xanh; cố tình thêm thư mục lạ → đỏ đúng chỗ | 🟢 `MODULES khớp cây src/` |
 
 Icon: 🟢 xong · 🟡 có sẵn, cần giữ xanh · 🔴 chưa có. **Không 🟢 Done khi còn T đỏ.**
+
+**Ghi nhận 2026-09-26:** Thi hành xong Q1+Q6: pack → `src/`, installer → `cli/`, `hooks/` giữ `src/sdlc/hooks/`. Còn **T1** (plugin Claude `--plugin-dir …/src/sdlc`).
 
 ## §9. Hệ quả
 

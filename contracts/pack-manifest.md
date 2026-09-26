@@ -12,14 +12,14 @@ version: <semver>
 owner: <người chịu trách nhiệm>
 roles: [<vai trò>, ...]          # bố trí theo vị trí công ty
 stage: discovery | requirements | architecture | planning
-       | implementation | qa | delivery | ops | cross-cutting
+       | implementation | qa | delivery | ops | cross-cutting | presales
 repo: docs | code | any | minipower  # pack tác động lên loại repo nào (minipower = chính repo công cụ)
 consumes: [<ID hoặc pattern>, ...]   # artifact đầu vào
 produces: [<ID hoặc pattern>, ...]   # artifact đầu ra
 handoff-in:  [<boundary>, ...]   # nhận tại boundary nào (H1…H6 — xem handoff.md)
 handoff-out: [<boundary>, ...]   # giao tại boundary nào
 memory: memory/<namespace>/      # nơi ghi/đọc context
-mcp: [<tên trừu tượng>, ...]     # tool cần qua MCP, bằng TÊN (docs·tasks·code·…), không endpoint
+mcp: [<tên trừu tượng>, ...]     # tool cần qua MCP, bằng TÊN (docs·tasks·chat·code·…), không endpoint
 ```
 
 ## 2. Ví dụ — `sdlc`
