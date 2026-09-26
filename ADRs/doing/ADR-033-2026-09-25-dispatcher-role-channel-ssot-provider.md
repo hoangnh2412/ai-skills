@@ -754,3 +754,17 @@ Nguyên tắc đợt: **một đợt = một thay đổi Full** (đụng baselin
 | Kênh wrap MCP đúng **một** mặt | Kênh viết luật UC/FR; một skill Lark ôm cả task lẫn chat trong cùng lần load |
 | `tasks=lark` + `chat=slack` | `tasks=lark` **và** `tasks=openproject` |
 | Intel CodeGraph cho architecture/backend | CodeGraph thay analyst |
+
+---
+
+## §11. Điều chỉnh 2026-09-26 — §5.3 bị [ADR-035](../done/ADR-035-2026-09-26-memory-mot-file-thay-overview.md) QĐ-9 thay
+
+Chữ §5.3 / một số hàng catalog vẫn mô tả cây `memory/tasks/T-NNN.md`. **Thôi hiệu lực** phần “một file markdown / một việc” khi `tasks_provider=none`. Phần còn lại của ADR-033 (profile v3 · bốn mặt · SQLite projection · L1–L3) **giữ**.
+
+| Mục | Nội dung cũ (§5.3) | Thay bằng (ADR-035 QĐ-9) |
+|---|---|---|
+| SSOT việc `tasks=none` | `memory/tasks/T-NNN.md` (+ đổ sang `artifact`) | Chỉ hàng `artifact` (`type=task`, `provider=none`) trong `memory/trace.db` |
+| Cây skeleton | Có `memory/tasks/` | **Không** còn folder `tasks/` |
+| Nhắc việc cá nhân | (không tách) | `memory/memory.md` khối «Nhắc việc» — không phải board đội |
+
+*Chữ lịch sử trong §5.3 / T1–T2 giữ nguyên để đọc ngữ cảnh; thi hành theo bảng trên.*

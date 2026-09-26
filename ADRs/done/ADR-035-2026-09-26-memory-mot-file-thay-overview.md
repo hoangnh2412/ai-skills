@@ -3,10 +3,10 @@
 | | |
 |---|---|
 | **Ngày** | 2026-09-26 |
-| **Trạng thái** | **Confirm §6 chốt 2026-09-26 · thi hành skeleton/hook/CLI xong cùng ngày** — còn smoke Cursor nếu cần |
+| **Trạng thái** | **Done** 2026-09-26. Confirm §6 · T1–T7 🟢. Chủ repo **bỏ smoke Cursor** (đủ unit + CLI `--check`). |
 | **Phạm vi** | Dự án đích: bỏ `docs/05-traceability/overview.md`; **một** file memory làm entry agent đầu phiên (hiện trạng theo góc nhìn người đang làm + tiến độ cá nhân + nhắc việc). Skeleton/docs/skill/agent trỏ tới file đó. |
 | **Ngoài phạm vi** | Không xoá `trace-matrix.md` / `doc-registry.md` · không quyết DEC/`doc-debt` trong ADR này (nợ nối) · **có** siết ADR-033 §5.3 (`memory/tasks/` → SQLite, QĐ-9) · không viết CLI mới (ADR-031) · không đổi marker `.minipower/` (ADR-034) trừ khi Q2 chọn đặt memory trong đó |
-| **Nối tiếp** | [ADR-033](../doing/ADR-033-2026-09-25-dispatcher-role-channel-ssot-provider.md) QĐ-20 (identity ≠ dự án) · [ADR-034](../done/ADR-034-2026-09-26-minipower-marker-always-on-dispatch.md) (`.minipower/`) · [ADR-020](../todo/ADR-020-2026-08-20-minipower-3-che-do-du-an-gate-bang-hook.md) §3c (memory theo phase — **siết** bởi ADR này) · [lingua-franca](../../contracts/lingua-franca.md) · token-guard / context-load / TPL-agent-profile |
+| **Nối tiếp** | [ADR-033](../doing/ADR-033-2026-09-25-dispatcher-role-channel-ssot-provider.md) QĐ-20 (identity ≠ dự án; §5.3 siết bởi QĐ-9) · [ADR-034](../done/ADR-034-2026-09-26-minipower-marker-always-on-dispatch.md) (`.minipower/`) · [ADR-020](../todo/ADR-020-2026-08-20-minipower-3-che-do-du-an-gate-bang-hook.md) §3c (memory theo phase — **siết** bởi ADR này) · [lingua-franca](../../contracts/lingua-franca.md) · token-guard / context-load / TPL-agent-profile |
 | **Mục đích** | Agent có **một** chỗ đọc trước khi làm việc; bỏ rollup đội `overview.md` trùng vai trò; memory = sổ **cá nhân** (tiến độ + nhắc việc), không phải board dự án |
 | **Ảnh hưởng** | `src/sdlc/docs-skeleton/05-traceability/overview.md` (**xoá**) · bản sao `sdlc/docs-skeleton/…` nếu còn · `src/sdlc/project-skeleton/memory/memory.md` (viết lại khuôn) · `.gitignore` skeleton · `TPL-agent-profile` · `agents/token-guard.md` · `agents/context-load.md` · `docs/token-guard.md` · `docs/parallel-work.md` · `skills/fan-out/SKILL.md` · README skeleton · test skeleton / docs-consistency / link-check baseline |
 
@@ -73,7 +73,7 @@ Số liệu grep 2026-09-26: `overview.md` được dẫn từ token-guard, TPL-
 | **QĐ-6** | **Việc đội / milestone dự án** không sống trong `memory/memory.md` (file đó chỉ nhắc việc *cá nhân*). Việc đội khi `tasks_provider=none` → **SQLite `artifact` (`type=task`)** — xem QĐ-9. Khi có OpenProject/Lark → provider. Kế hoạch → DOC-14/15 · truy vết → matrix/registry | Tránh memory = Kanban giả |
 | **QĐ-7** | **Giữ `decision-log.md` + `open-questions.md` — phẳng, không theo phase.** Xoá 6 folder `memory/{phase}/`. Một `memory/decision-log.md` (mọi DEC; ID vẫn `DEC-{PHASE}-NNN` trong nội dung) · một `memory/open-questions.md` (câu hỏi đội / nợ tiền đề). **`memory.md` chỉ link** tới hai file đó ở khối «Con trỏ nhanh» — không nhúng nội dung DEC/Q. Siết ADR-020 §3c + schema path `memory/{phase}/decision-log.md` (docs/decision-log, lingua-franca, context-load, rules.json `context_chain`) | Một sổ DEC, một sổ hỏi; entry vẫn mỏng |
 | **QĐ-8** | **Sửa chữ / test:** mọi ref `overview.md` trong `src/sdlc/` (+ bản sao `sdlc/` nếu parity) → `memory/memory.md`; parallel-work bỏ `overview` khỏi “file dùng chung”; fan-out rollup trỏ registry/matrix + cập nhật memory **cá nhân** khi người yêu cầu cuối phiên; path DEC/open-questions → file phẳng | Regression link-check + grep = 0 |
-| **QĐ-9** | **`tasks_provider=none` → không còn `memory/tasks/`.** SSOT việc = hàng `artifact` trong `trace.db` (`type=task`, `provider=none`: id, title, status, due qua convention / cột sẵn có, `link` tới FR). SQLite vốn là projection cho FR/SRS body — nhưng **task metadata không có body DOC**, nên không cần file markdown song song. **Siết** [ADR-033](../doing/ADR-033-2026-09-25-dispatcher-role-channel-ssot-provider.md) §5.3 (bỏ cây `T-NNN.md`). Mô tả dài nếu cần → một đoạn trong chat rồi L3 ghi title/status đủ dùng, hoặc pointer `docs/` / DEC — không nhân bản tracker | Một nhà cho việc đội khi không có MCP |
+| **QĐ-9** | **`tasks_provider=none` → không còn `memory/tasks/`.** SSOT việc = hàng `artifact` trong `trace.db` (`type=task`, `provider=none`: id, title, status, due qua convention / cột sẵn có, `link` tới FR). SQLite vốn là projection cho FR/SRS body — nhưng **task metadata không có body DOC**, nên không cần file markdown song song. **Siết** [ADR-033](../doing/ADR-033-2026-09-25-dispatcher-role-channel-ssot-provider.md) §5.3 / §11 (bỏ cây `T-NNN.md`). Mô tả dài nếu cần → một đoạn trong chat rồi L3 ghi title/status đủ dùng, hoặc pointer `docs/` / DEC — không nhân bản tracker | Một nhà cho việc đội khi không có MCP |
 
 ### Khuôn `memory/memory.md` (skeleton / example)
 
@@ -220,14 +220,14 @@ Chốt xong: ghi ngày vào **Trạng thái** + dòng index README.
 
 ## §7. Việc triển khai
 
-| Bước | Việc | Done khi | Phụ thuộc |
+| Bước | Việc | Done khi | Trạng thái |
 |---|---|---|---|
-| 1 | Confirm Q1–Q5 | Có trả lời trong §6 | — |
-| 2 | Xoá `overview.md`; cập nhật README `05-traceability` | File không còn; link-check | Q1 |
-| 3 | Skeleton: khuôn `memory.md` (+ `.example`, gitignore) · **`decision-log.md` + `open-questions.md` phẳng** · xoá 6 folder `{phase}/` + `tasks/` · sửa path DEC trong docs/decision-log, lingua-franca, `rules.json` `context_chain`, decision-staleness | Cây khớp QĐ-7/9 | Q2, Q3, Q5 |
-| 4 | Sửa TPL-agent-profile, token-guard, context-load, parallel-work, fan-out, FAQ, INIT | grep `overview.md` và `memory/{phase}` = 0 ngoài ADRs/CHANGELOG | Q1 |
-| 5 | Test skeleton / docs-consistency; `link:check`; `npm test` (+ `gen` nếu đụng `rules.json`) | T xanh | 2–4 |
-| 6 | Note migrate: gộp DEC/open-Q theo phase → file phẳng (Q4) | Có hướng dẫn trong INIT/FAQ | Q4 |
+| 1 | Confirm Q1–Q5 | Có trả lời trong §6 | 🟢 |
+| 2 | Xoá `overview.md`; cập nhật README `05-traceability` | File không còn; link-check | 🟢 |
+| 3 | Skeleton: khuôn `memory.md` (+ `.example`, gitignore) · **`decision-log.md` + `open-questions.md` phẳng** · xoá 6 folder `{phase}/` + `tasks/` · sửa path DEC trong docs/decision-log, lingua-franca, `rules.json` `context_chain`, decision-staleness | Cây khớp QĐ-7/9 | 🟢 |
+| 4 | Sửa TPL-agent-profile, token-guard, context-load, parallel-work, fan-out, FAQ, INIT | grep `overview.md` và `memory/{phase}` = 0 ngoài ADRs/CHANGELOG | 🟢 |
+| 5 | Test skeleton / docs-consistency; `link:check`; `npm test` (+ `gen` nếu đụng `rules.json`) | T xanh | 🟢 |
+| 6 | Note migrate: gộp DEC/open-Q theo phase → file phẳng (Q4) | Có hướng dẫn trong INIT/FAQ | 🟢 |
 
 ---
 
@@ -240,7 +240,7 @@ Chốt xong: ghi ngày vào **Trạng thái** + dòng index README.
 | T3 | Regression | `npm test` + `gen:check` + `link:check` 0 gãy mới | xanh | 🟢 |
 | T4 | Regression | `rg overview` / phase memory ngoài ADRs/CHANGELOG | dọn src/cli | 🟢 |
 | T5 | Mới | Test skeleton cấm overview / tasks / phase dirs | 🟢 |
-| T6 | Mới | `tasks_provider=none`: việc qua `artifact` — unit sẵn trace; CLI bỏ tasks/ | 🟢 partial |
+| T6 | Mới | `tasks_provider=none`: việc qua `artifact` — unit sẵn trace; CLI bỏ tasks/ | 🟢 (skill/CLI tạo T-NNN chỉ DB = ngoài phạm vi — nợ pack `tasks` / ADR-033) |
 | T7 | Mới | `decision-staleness` đọc `memory/decision-log.md` phẳng | 🟢 |
 
 ---
