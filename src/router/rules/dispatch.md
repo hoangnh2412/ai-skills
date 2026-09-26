@@ -2,8 +2,12 @@
 
 Một phiên: contracts tối thiểu + **một** pack. Không spawn. Không L3 hộ nghề.
 
-**Thông báo trước khi chạy.** Khi người gọi Agent / `/minipower-router` / mô tả việc mà chưa chỉ định lá: phân loại intent → **một** skill (hoặc pack rồi lá trong pack). In một dòng rồi mới đọc `SKILL.md` / làm việc:
+**Route = LLM** (ADR-034 QĐ-4). Chọn **đúng một** `name:` skill lá trong catalog. Keyword `intent-dispatch.js` = gợi ý / test, không thay LLM.
+
+**Thông báo trước khi chạy.** In một dòng rồi mới đọc `SKILL.md`:
 
 `Sẽ chạy {tên skill} để xử lý {việc người hỏi}.`
 
-Không chờ OK cho bước này (gatekeeper vẫn giữ L3 MCP, Git, baseline). Hai ứng viên → hỏi, không đoán.
+Không chắc hai lá → hỏi người. Gatekeeper: kế hoạch nhiều bước, L3 MCP, Git, baseline — chờ người OK trước khi thực thi.
+
+**Ngoại lệ script:** init / install → nhắc CLI, không route bằng phỏng vấn LLM.

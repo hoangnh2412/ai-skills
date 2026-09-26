@@ -1,6 +1,5 @@
 /**
- * Intent → đúng một skill lá (SSOT máy cho dispatcher).
- * Agent vẫn thông báo trước khi đọc SOP. Không spawn pack thứ hai.
+ * Intent → gợi ý skill (test vàng / khóa). Route lúc làm việc = LLM (ADR-034 QĐ-4).
  *
  * Không đặt trong sdlc/hooks/lib — tầng cứng hook cấm phụ thuộc SOP maintain.
  */

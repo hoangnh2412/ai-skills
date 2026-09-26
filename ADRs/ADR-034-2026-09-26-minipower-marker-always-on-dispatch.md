@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Ngày** | 2026-09-26 |
-| **Trạng thái** | QĐ chốt 2026-09-26. A+B unit: catalog, intent golden, CLI `.minipower/`, always-on mdc. Còn smoke T4/T5, LLM xếp hạng (QĐ-4 nửa), rename GitHub (QĐ-6) |
+| **Trạng thái** | QĐ chốt 2026-09-26. **QĐ-4 siết:** install/init = CLI; route = LLM. T4 🟢. Còn T5 folder không marker, rename GitHub |
 | **Phạm vi** | Marker `.minipower/` ở gốc **dự án đích** (file cá nhân hoá + DB, học `.codegraph/`); rule always-on; intent **keyword + LLM**; kế hoạch đa skill **do người xác nhận**. CLI tạo folder: [ADR-031](ADR-031-2026-09-01-cli-install-init-thay-llm-thi-hanh.md) |
 | **Ngoài phạm vi** | Không viết CLI (031) · không `src/` ([ADR-032](ADR-032-2026-09-03-gop-module-vao-thu-muc-modules.md)) · không tự chạy kế hoạch khi chưa có OK người · rename GitHub remote (QĐ-6 — đợt riêng) |
 | **Nối tiếp** | ADR-031 CLI · ADR-033 atomic *khi đang thực thi một bước* · ADR-022 QĐ-1: không runtime tự bàn giao — **kế hoạch** do người điều phối |
@@ -21,7 +21,7 @@ Minipower 2026-09-26:
 | Mảnh | Hiện trạng |
 |---|---|
 | CLI wire + dựng cây | **ADR-031** — CLI unit 2026-09-26 (`minipower.mjs`) |
-| Dispatcher | [minipower-router](../src/router/skills/minipower-router/SKILL.md) + `intent-dispatch` keyword; LLM xếp hạng **chưa** code |
+| Dispatcher | [minipower-router](../src/router/skills/minipower-router/SKILL.md): **route = LLM**; `intent-dispatch` = test vàng / gợi ý |
 | Kích hoạt lá | always-on mdc + `description` Cursor; smoke T4/T5 còn |
 | Marker dự án | `init` ghi `.minipower/` (identity + sqlite); **chưa** smoke workspace thật |
 
@@ -63,7 +63,7 @@ ADR-031 **không** quyết `.minipower/` hay always-on rule — nên **không** 
 | **QĐ-1** | **Marker = thư mục `.minipower/`** (không file đơn) tại gốc **dự án đích**, cùng vai `.codegraph/`. Bên trong: **file cá nhân hoá** (identity, client đã cài, tuỳ chọn) + **DB** (SQLite — log intent/kế hoạch/trace local, học index Codegraph). Có mặt ⇒ Agent phải dùng Minipower. Không có ⇒ không ép | Không commit secret/token. Schema file+DDL chốt lúc thi hành 031 Đợt B; gitignore DB nếu cần |
 | **QĐ-2** | **CLI tạo folder** (031). Thiếu trường → FAIL. **Hạn chế LLM:** không mkdir/ghi JSON/SQL bằng model | Script = thi hành |
 | **QĐ-3** | **Always-on cả hai lớp:** rule **user-global** dò `.minipower/` (leo CWD) + bản **project** sau `install`. Cả `install` lẫn `init` đảm bảo marker (idempotent) | Không tag `/` |
-| **QĐ-4** | **Intent = keyword ∪ LLM.** Máy (`intent-dispatch`) đề cử / cắt nhiễu; LLM xếp hạng / bổ sung khi khóa yếu hoặc đa nghĩa. Output bắt buộc: **đúng pack + đúng lá** (và agent/persona nếu có). Skill mới phải có khóa test được | Sai skill ⇒ kế hoạch sai — đây là cổng chất lượng chính |
+| **QĐ-4** | **Install/init = script. Route = LLM.** `install`/`init` không phỏng vấn model (QĐ-2). **Chọn skill lúc làm việc:** LLM đọc catalog lá (`name:`) rồi chọn **đúng một** skill; bảng keyword `intent-dispatch` chỉ là gợi ý / test vàng, **không** thay LLM khi route. Output bắt buộc: đúng pack + đúng lá. Skill mới phải có `description` + khóa test được | Sai skill ⇒ kế hoạch sai — cổng chất lượng vẫn là **OK kế hoạch** (QĐ-5) |
 | **QĐ-5** | **Kế hoạch rồi người điều phối.** Sau QĐ-4: soạn kế hoạch (thứ tự pack/skill, I/O, gate). **Cấm thực thi** (code, L3, ghi DOC cuối) trước khi người **OK kế hoạch**. Người điều phối; AI không tự nhảy pack B | Siết ADR-033: một *bước đang chạy* = một pack; chuỗi bước = do người duyệt, không spawn im lặng |
 | **QĐ-6** | Repo Git hiện tại **đổi tên thành `minipower`**. Đây là **repo làm ra** Minipower (source/factory), **không** phải repo *sử dụng* trên dự án khách. Khách có `.minipower/` trên product; factory không giả làm consumer | Đợt rename remote/folder = việc riêng, không gói trong CLI |
 
@@ -72,14 +72,14 @@ minipower install  →  người chọn 1..n client  →  wire (script)
          ↓
    init / identity (script)  →  .minipower/{cá nhân hoá + DB}
          ↓
-Agent: keyword ∪ LLM → kế hoạch → người OK → từng bước
+Agent: **LLM chọn skill** (keyword chỉ gợi ý) → kế hoạch → người OK → từng bước
 ```
 
 ## §6. Confirm *(chốt 2026-09-26)*
 
 | # | Câu hỏi | Trả lời |
 |---|---|---|
-| Q1 | Duyệt QĐ-1…6? | **Có** — QĐ viết lại theo chốt cùng ngày (thư mục+DB · CLI · always-on hai lớp · keyword∪LLM · kế hoạch+người · đổi tên repo factory) |
+| Q1 | Duyệt QĐ-1…6? | **Có** — 2026-09-26. **Siết QĐ-4 cùng ngày:** script chỉ `install`/`init`; **route = LLM** chọn lá |
 | Q2 | Thư mục hay file đơn? | **Thư mục**; trong đó file cá nhân hoá + DB |
 | Q3 | Rule global / project? | **Cả hai** |
 | Q4 | Marker lúc install / init? | **Cả hai**, idempotent |
@@ -91,7 +91,7 @@ Agent: keyword ∪ LLM → kế hoạch → người OK → từng bước
 |---|---|---|---|
 | A | Catalog + `intent-dispatch` + `npm test` gốc | Suite xanh; *Khởi tạo dự án sample* → `minipower-router-init` | 🟢 2026-09-26 |
 | B | ADR-031 Confirm + CLI ghi `.minipower/` | `init --check` thấy marker | 🟢 unit 031 |
-| C | Rule always-on + **kế hoạch trên chat, chờ OK** | File `minipower-always-on.mdc` + `dispatch.md`; **smoke** không `/` | 🟡 file có · smoke T4 🔴 |
+| C | Rule always-on + **kế hoạch trên chat, chờ OK** | File `minipower-always-on.mdc` + `dispatch.md`; init = CLI (không smoke LLM) | 🟢 file + T4 |
 | D | README/AGENTS: factory vs consumer | Catalog + gọi chung | 🟢 chữ; 0 gãy mới |
 | E | Đổi tên repo Git `ai-skills` → `minipower` | Remote | 🔴 QĐ-6, chủ repo GitHub |
 
@@ -102,9 +102,9 @@ Agent: keyword ∪ LLM → kế hoạch → người OK → từng bước
 | T1 | Mới | `matchIntent("Khởi tạo dự án sample")` | `minipower-router-init` | 🟢 2026-09-26 (`intent-dispatch.test.js`) |
 | T2 | Mới | Catalog 43 lá + 11 kho SOP + agents trong README | `minipower-catalog.test.js` | 🟢 cùng ngày |
 | T3 | Regression | `npm test` từ gốc repo | xanh | 🟢 2026-09-26 (sau CLI) |
-| T4 | Smoke | Workspace có `.minipower/`, prompt không slash | Agent thông báo + kế hoạch chờ OK | 🔴 chủ repo |
+| T4 | Smoke | Init đã có `.minipower/` | **CLI** `init --check OK` — không kiểm thử bằng LLM (chủ repo 2026-09-26). Always-on không-slash: prompt việc khác (T2 ADR-033 Lark) | 🟢 |
 | T5 | Smoke | Workspace **không** `.minipower/` | Không ép pack minipower | 🔴 |
-| T6 | Mới | QĐ-4 nửa LLM: matcher keyword + chỗ gọi LLM khi khóa yếu | golden keyword có; **LLM chưa** | 🟡 / 🔴 LLM |
+| T6 | Mới | Route: LLM chọn một `name:` catalog; keyword không thay LLM | lời always-on + router SKILL; golden keyword giữ cho test | 🟢 lời 2026-09-26 · smoke Cursor 🟡 |
 
 ## §9. Hệ quả
 

@@ -128,7 +128,7 @@ Hub: [router](src/router/README.md) · [discovery](src/discovery/README.md) · [
 | Skill | Dùng khi (gõ) | Cách dùng |
 |-------|----------------|-----------|
 | **[minipower-router](src/router/skills/minipower-router/SKILL.md)** | làm gì tiếp, chọn pack | `/minipower-router` + mô tả việc; **không** L3 hộ nghề |
-| **[minipower-router-init](src/router/skills/minipower-router-init/SKILL.md)** | init project, khai báo tôi là ai | `/minipower-router-init` · `Init project …` |
+| **[minipower-router-init](src/router/skills/minipower-router-init/SKILL.md)** | nhắc CLI init | `node cli/minipower.mjs init` (hoặc `.minipower/bin/minipower init`) |
 | **[minipower-router-deliberation](src/router/skills/minipower-router-deliberation/SKILL.md)** | có nên làm, premise | Trước việc Full; PROCEED/RESHAPE/STOP **do người** |
 | **[minipower-router-readiness](src/router/skills/minipower-router-readiness/SKILL.md)** | đủ chưa, trước code/test/deploy | Hỏi **một lượt** mọi thiếu; ghi nợ `doc-debt.md` |
 

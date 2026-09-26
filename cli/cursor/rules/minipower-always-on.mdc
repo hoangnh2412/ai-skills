@@ -1,10 +1,11 @@
 ---
-description: Dự án có .minipower/ — bật Minipower, chọn skill, chờ người OK kế hoạch.
+description: Dự án có .minipower/ — bật Minipower, LLM chọn skill, chờ người OK kế hoạch.
 alwaysApply: true
 ---
 
 Nếu thư mục `.minipower/` tồn tại (từ CWD đi lên): đây là dự án Minipower.
 
-1. Chọn skill bằng keyword (`router/lib/intent-dispatch.js`) kết hợp LLM.
-2. Thông báo: `Sẽ chạy {skill} để xử lý {việc}.`
-3. Việc nhiều bước → bảng kế hoạch. **Không** ghi artifact cuối / L3 MCP / Git trước khi người xác nhận và điều phối.
+1. **Install / init** = script (`minipower install` · `minipower init`). Intent khởi tạo dự án → in lệnh CLI, **không** phỏng vấn, không ghi profile.
+2. **Route (mọi việc khác)** = **LLM** chọn **đúng một** skill `name:` trong catalog Minipower đã cài (README / `PACK.md` / lá `minipower-*`). Bảng keyword `intent-dispatch.js` chỉ gợi ý, **không** lấy làm kết quả route.
+3. Thông báo: `Sẽ chạy {skill} để xử lý {việc}.` Không bịa tên skill ngoài catalog. Không chắc → hỏi người, không đoán.
+4. Việc nhiều bước → bảng kế hoạch. **Không** ghi artifact cuối / L3 MCP / Git trước khi người xác nhận và điều phối.

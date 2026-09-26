@@ -23,7 +23,7 @@ Skill lá: [`minipower-router`](../router/skills/minipower-router/SKILL.md) · [
 | **A — intent** | Mô tả việc / Agent / `/minipower-router` → [bảng pack](../router/skills/minipower-router/SKILL.md) → **một** pack. **Thông báo** `Sẽ chạy {skill} để xử lý {việc}` rồi mới đọc SOP |
 | **B — `@` pack** | `@discovery/skills/…` / `@analyst/skills/…` |
 | **C — overview** | Không rõ pack → dispatcher hỏi/gợi ý |
-| **D — khởi tạo** | `Init project` → [minipower-router-init](../router/skills/minipower-router-init/SKILL.md) |
+| **D — khởi tạo** | CLI `minipower init` — [minipower-router-init](../router/skills/minipower-router-init/SKILL.md) chỉ nhắc lệnh |
 
 Chi tiết + ví dụ prompt: [README.md](README.md)
 
@@ -186,63 +186,30 @@ Khi user yêu cầu **khởi tạo / init dự án** mới → agent **bắt bu�
 Trước khi làm bất kỳ việc minipower nào (DOC, phase, sync), agent **bắt buộc** có `memory/profile.json` **v3** hợp lệ **và** identity local (`profile.user.json`).
 Hook [profile-guard](agents/profile-guard.md) **chặn cứng** prompt làm việc nếu thiếu — không chỉ dựa vào prompt mềm.
 
-**Khi `Init project {name}` — hỏi trọn gói một lượt** (không hỏi nhỏ giọt, **không** copy skeleton trước khi có đủ câu trả lời):
+**Khởi tạo = CLI**, không phỏng vấn LLM ([ADR-031](../../ADRs/ADR-031-2026-09-01-cli-install-init-thay-llm-thi-hanh.md) QĐ-9):
 
-| # | Câu hỏi | Ghi vào |
-|---|----------|---------|
-| 1 | Tên bạn là gì? (và xưng **anh** hay **chị**?) | `profile.user.json` — `user_name`, `honorific` |
-| 2 | Bạn làm vị trí gì? (chọn nhiều) | `profile.user.json` — `roles[]` |
-| 3 | Đã từng dùng minipower chưa? | `profile.user.json` — `minipower_experience` |
-| 4 | Dự án làm về gì? | `profile.json` — `project_summary` |
-| 5 | Dự án đang ở giai đoạn nào? | `profile.json` — `current_phase` |
-| 6 | Dự án cần bao nhiêu tài liệu? — *chỉ cần chạy được* / *đầy đủ* / *tiếp quản hệ cũ* | `profile.json` — `project_mode` (`mvp` \| `standard` \| `maintain`) |
-| 7 | Tài liệu / việc / chat / code sống ở đâu? | `docs_provider` · `tasks_provider` · `chat_provider` · `code_provider` |
+```text
+node <factory>/cli/minipower.mjs init
+# sau install:  node .minipower/bin/minipower init
+```
 
-**Câu 7 — mặc định an toàn:** `docs_provider=local`, `tasks_provider=none`, `chat_provider=none`, `code_provider=local`. Có Outline/OpenProject/Lark/GitLab MCP thì điền đúng mặt + `mcp.*`. Việc không board = `none` (không viết `local` cho tasks).
+CLI hỏi từng bước (số + Enter), ghi `profile.json` v3 + `profile.user.json`, copy skeleton. Agent gặp `Init project` / *khởi tạo dự án* → in lệnh trên rồi dừng.
 
-Sau khi user trả lời:
-
-1. Ghi `memory/profile.json` (schema **v3** — [TPL-agent-profile](templates/TPL-agent-profile.md)) **không** `user_name`. Ghi `memory/profile.user.json` (gitignore) kèm `os_username`. *v1/v2 vẫn hợp lệ; không xưng hô từ `user_name` trên git.*
-2. Sinh **`AGENTS.md`** và **`CLAUDE.md`** **không nhúng tên người**.
-3. Copy skeleton + docs (bước dưới), điền `README.md`, `memory/memory.md`, `memory/{current_phase}/`.
-4. Nếu `new` → mỗi lần vào phase mới: nhắc skill + DOC + readiness-gate trọn gói.
-
-Lệnh cập nhật sau: `Reconfigure agent` / `Hoàn tất profile` / `Cập nhật profile` / **Khai báo tôi là ai** — hỏi lại, ghi đúng file (dự án vs local).
+Đổi cấu hình sau: chạy lại `minipower init` (idempotent) hoặc sửa JSON rồi `init --check`.
 
 **Đổi `project_mode` không phải việc sửa một trường.** Nó là sự kiện có nghi thức, đi qua [change-control](skills/change-control/SKILL.md) và **phải kèm DEC**. Đổi provider: migrate (ADR-033 QĐ-10), không im lặng.
 
-### Thao tác agent khi init
+### Thao tác khi init
 
-1. Xác nhận `{project}/` path (hoặc tạo folder mới theo tên user cung cấp).
-2. **Cá nhân hoá** — hỏi 7 câu trên; chờ đủ trả lời.
-3. Copy [`project-skeleton/`](project-skeleton/) → `{project}/` (README, memory, assets, brainstorm).
-4. Copy [`docs-skeleton/`](docs-skeleton/) → `{project}/docs/` — **đủ khung ở mọi chế độ**, kể cả `mvp`/`maintain`. Folder ngoài `docs_focus` để **rỗng kèm README** ghi *"chưa điền vì đang ở chế độ {mode}"*. **Không** cắt folder theo chế độ.
-5. Ghi `memory/profile.json` (v3), `memory/profile.user.json`, `AGENTS.md`, `CLAUDE.md` từ [TPL-agent-profile](templates/TPL-agent-profile.md) — AGENTS **không** chứa tên người.
-6. Điền `README.md`, `memory/memory.md` (chỉ meta chung), `memory/{current_phase}/` (bắt đầu phase).
-7. **Không** gom context dài vào `memory/memory.md` — cập nhật đúng `memory/{phase}/`.
-8. **Không** tạo thêm cấu trúc lệch chuẩn trừ khi user yêu cầu rõ.
+Agent **không** `cp -R` và **không** hỏi 7 câu. Người chạy CLI (cwd = thư mục dự án):
 
 ```bash
-# Tham chiếu — chạy từ thư mục cha của dự án
-PROJECT={tên-dự-án}
-MINIPOWER={path-tới-minipower-skill-pack}
-
-mkdir -p "$PROJECT"
-cp -R "$MINIPOWER/project-skeleton/"* "$PROJECT/"
-cp -R "$MINIPOWER/docs-skeleton" "$PROJECT/docs"
+node <factory>/cli/minipower.mjs init
+# hoặc
+node .minipower/bin/minipower init
 ```
 
-Nguồn skeleton: [project-skeleton/INIT.md](project-skeleton/INIT.md)
-
-### Init vào repo đã có sẵn
-
-Dự án đang chạy, chưa từng dùng minipower — **không** tạo folder mới, cài **tại chỗ**:
-
-1. Hỏi đủ 7 câu như trên. Repo có code chạy nhiều năm, tài liệu rời rạc → gợi ý chế độ **`maintain`**; sản phẩm mới đang code vội → **`mvp`**.
-2. Copy skeleton **không đè**: file nào đã tồn tại (`README.md`, `AGENTS.md`…) thì **giữ nguyên**, chỉ bổ sung phần thiếu và hỏi trước khi sửa file có sẵn.
-3. Tài liệu cũ rời rạc → đổ vào `assets/archive/`, **không** phải `docs/`. Chúng là **nguồn tham chiếu**, chưa phải artifact; kèm `archive/README.md` ghi độ tin cậy từng nguồn (*còn đúng / nghi ngờ / đã lỗi thời*).
-4. Code cũ đã có chỗ đứng riêng → `docs/03-modules/_legacy/` (chế độ `maintain` mở đọc; hai chế độ kia vẫn chặn).
-5. Ghi ngay `memory/doc-debt.md` — cái gì còn thiếu so với `docs_focus` của chế độ. Đây là **điều kiện vào** luồng lên `standard`.
+Skeleton: [project-skeleton/INIT.md](project-skeleton/INIT.md). Repo đã có sẵn: cùng lệnh, CLI không đè file đã tồn tại.
 
 ### Exit init
 

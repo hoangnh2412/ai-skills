@@ -724,7 +724,7 @@ Nguyên tắc đợt: **một đợt = một thay đổi Full** (đụng baselin
 | # | Loại | Case | Expect | Trạng thái |
 |---|---|---|---|---|
 | T1 | Smoke | Init `docs=local`, `tasks=none` → `memory/tasks/`, profile v3 | cây skeleton + **CLI `init --answers` unit (031)**; smoke Cursor còn | 🟡 |
-| T2 | Smoke | Intent “tóm tắt task Lark” → `minipower-tasks-lark`, không nạp `analyst` | atomic trên Cursor | 🔴 |
+| T2 | Smoke | Intent “tóm tắt task Lark” → `minipower-tasks-lark`, không nạp `analyst` | atomic trên Cursor | 🟢 2026-09-26: `none` → không MCP Lark, trỏ `memory/tasks/`, không analyst |
 | T3 | Mới | `profile-guard` face lệch | | 🟢 `profile-guard.test.js` |
 | T4 | Mới | `trace:check` sqlite thiếu FR→AC → WARN | | 🟢 |
 | T5 | Regression | `npm test` + `gen:check` + `link:check` 0 gãy mới | | 🟢 2026-09-26 (sau CLI + catalog) |

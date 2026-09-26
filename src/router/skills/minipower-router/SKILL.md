@@ -8,9 +8,23 @@ metadata:
 
 # minipower-router
 
-Dispatcher, không orchestrator runtime.
+Dispatcher, không orchestrator runtime. **Route = LLM** (ADR-034 QĐ-4). Keyword [`intent-dispatch.js`](../../lib/intent-dispatch.js) chỉ gợi ý / test vàng — *Khởi tạo dự án sample* → lá init **để nhắc CLI**, không để LLM ghi profile.
 
-## Bảng intent → pack (một phiên = một pack)
+## Cách chọn lá
+
+1. Đọc catalog lá đã cài (`minipower-*`, `name:` trong SKILL.md).
+2. LLM chọn **đúng một** lá khớp việc (đúng pack + đúng capability). Không bịa tên.
+3. **Thông báo rồi mới đọc SOP:**
+
+   `Sẽ chạy \`minipower-…\` để xử lý {việc}.`
+
+4. Việc nhiều bước: kế hoạch, **chờ người OK** rồi mới làm. Không spawn pack thứ hai. Không L3 hộ nghề.
+
+Hai lá ngang nhau → hỏi người.
+
+Bảng dưới là **gợi ý pack** khi LLM định hướng, không phải matcher máy thay bước 2.
+
+## Gợi ý pack (một phiên = một pack)
 
 | Intent (gõ) | Pack / skill |
 |---|---|
@@ -31,20 +45,17 @@ Dispatcher, không orchestrator runtime.
 | MR GitLab commit push | `vcs/` |
 | code .NET Jarvis | `backend/` |
 
-Thiếu input tối thiểu của pack → **hỏi một lượt**, không bịa, không làm hộ pack trước (QĐ-19). Bảng máy: [`intent-dispatch.js`](../../lib/intent-dispatch.js) — ví dụ *Khởi tạo dự án sample* → `minipower-router-init`.
+Thiếu input tối thiểu của pack → **hỏi một lượt**, không bịa, không làm hộ pack trước (QĐ-19).
 
 ## Gọi chung
 
 Người không cần nhớ tên lá. Prompt kiểu *minipower* · *làm gì tiếp* · mô tả việc trong Agent là đủ.
 
-1. Map intent → **một** dòng bảng trên (pack, rồi lá nếu đã rõ).
-2. **Thông báo rồi mới chạy** — một dòng, không chờ OK:
+1. LLM map việc → **một** lá catalog (bảng pack chỉ định hướng).
+2. **Thông báo** — một dòng `Sẽ chạy \`minipower-…\` để xử lý {việc}.`
+3. Đọc `SKILL.md` của đúng lá. Không spawn pack thứ hai. Không L3 hộ nghề.
 
-   `Sẽ chạy \`minipower-…\` để xử lý {việc}.`
-
-3. Đọc `SKILL.md` của đúng lá đó. Không spawn pack thứ hai. Không L3 hộ nghề.
-
-Hai pack đều khớp → hỏi người. Loader Cursor có thể tự gắn lá theo `description` nếu đã cài symlink; dispatcher vẫn bắt buộc bước 2 khi bạn đang ở skill này.
+Loader Cursor có thể tự gắn lá theo `description`; dispatcher vẫn bắt buộc bước 2.
 
 Workflow phase cũ (kho chuyển): [sdlc/skills/](../../../sdlc/skills/README.md).
 
