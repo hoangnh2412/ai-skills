@@ -44,7 +44,7 @@ test("token-guard-read: cho qua", async (t) => {
 
   await t.test("file ngoài docs/", () => {
     assert.equal(action("src/auth.js"), "allow")
-    assert.equal(action("memory/requirements/decision-log.md"), "allow")
+    assert.equal(action("memory/decision-log.md"), "allow")
   })
 
   await t.test("tên module chứa chữ 'baseline' nhưng không phải 02-baseline", () => {

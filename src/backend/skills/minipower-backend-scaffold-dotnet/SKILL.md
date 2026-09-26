@@ -2,7 +2,6 @@
 name: minipower-backend-scaffold-dotnet
 description: Scaffold solution .NET 9 phân lớp + cài Jarvis framework từ folder trống — F5 chạy Swagger. Dùng khi tạo project backend mới, cài package Jarvis, hoặc thêm module vào solution có sẵn.
 metadata:
-  audience: hoangnh
   workflow: github
 ---
 

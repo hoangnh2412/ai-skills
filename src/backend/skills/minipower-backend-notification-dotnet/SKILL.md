@@ -2,7 +2,6 @@
 name: minipower-backend-notification-dotnet
 description: Thiết lập Jarvis.Notification — email SMTP qua Mailkit IEmailSender, NotificationBuilder. Dùng khi app gửi email transactional qua section Smtp.
 metadata:
-  audience: hoangnh
   workflow: github
 ---
 

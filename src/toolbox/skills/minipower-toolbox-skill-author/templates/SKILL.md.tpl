@@ -2,7 +2,6 @@
 name: minipower-{module}-{capability}
 description: {WHAT — một câu, ngôi thứ ba}. Dùng khi {WHEN — từ khoá người dùng thật sự gõ: package, endpoint, config key, triệu chứng}.
 metadata:
-  audience: hoangnh
   workflow: github
 ---
 

@@ -1,11 +1,13 @@
 ---
 name: change-control
 description: >-
-  [minipower] Change Request sau baseline — DOC-18, delta,
-  re-baseline. Dùng khi CR, RFC, sửa requirement đã sign-off, impact analysis.
+  [KHO] SOP CR sau baseline. Nội dung FR mở minipower-analyst-cr;
+  ticket mở minipower-pm-cr-track. Không route vào skill này.
 ---
 
 # BA Change Control
+
+> Kho. Nội dung: [minipower-analyst-cr](../../../analyst/skills/minipower-analyst-cr/SKILL.md). Ticket: [minipower-pm-cr-track](../../../pm/skills/minipower-pm-cr-track/SKILL.md).
 
 **Pack:** minipower · **Tiên quyết:** baseline DOC-01–07.
 

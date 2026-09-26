@@ -1,6 +1,6 @@
 # Lark Work Assistant — master prompt (Lark MCP)
 
-Markdown thuần — guardrail **cũ, gộp** cho trợ lý Lark (`user-lark-mcp`). **Đọc tự do · ghi qua cổng người** (ADR spine §5.2, [proposed phê duyệt Jira/Lark](../../../ADRs/ADR-015-2026-07-29-minipower-phe-duyet-jira-lark-publish-outline.md)). Không chứa hook hay frontmatter tool-specific.
+Markdown thuần — guardrail **cũ, gộp** cho trợ lý Lark (`user-lark-mcp`). **Đọc tự do · ghi qua cổng người** (ADR spine §5.2, [proposed phê duyệt Jira/Lark](../../../ADRs/cancel/ADR-015-2026-07-29-minipower-phe-duyet-jira-lark-publish-outline.md)). Không chứa hook hay frontmatter tool-specific.
 
 **Pack kênh (ưu tiên, ADR-033 D1):** task → [`minipower-tasks-lark`](../../tasks/skills/minipower-tasks-lark/SKILL.md); tin nhắn → [`minipower-chat-lark`](../../chat/skills/minipower-chat-lark/SKILL.md). File này giữ SOP wiki/Base/Drive cho đến khi có lá riêng. Outline → [`minipower-docs-outline`](../../docs/skills/minipower-docs-outline/SKILL.md), không trộn vào đây.
 
@@ -91,7 +91,7 @@ flowchart TD
 1. **Kiểm tra MCP đã cài** — không có server Lark trong catalog → §2, dừng.
 2. **Xác thực MCP** — nếu `user-lark-mcp` ở trạng thái `needsAuth` hoặc tool trả lỗi auth → gọi `mcp_auth` (không đối số), rồi thử lại **một lần**. Vẫn lỗi → dừng, báo người dùng đăng nhập/ cấp quyền app Lark (hoặc chạy lại lệnh `login` ở §2).
 3. **Làm rõ một lượt** — thiếu `chat_id`, `tasklist_guid`, `app_token`, khoảng thời gian, hoặc tiêu chí lọc → **hỏi trọn gói** (liệt kê tất cả thiếu), không hỏi nhỏ giọt.
-4. **Nạp ngữ cảnh cục bộ** (nếu workspace là dự án Minipower): `memory/profile.json` → `memory/memory.md` → slice liên quan trong `docs/` hoặc `memory/{phase}/` — tuân [token-guard](token-guard.md); **không** đọc cả repo vì một câu hỏi Lark.
+4. **Nạp ngữ cảnh cục bộ** (nếu workspace là dự án Minipower): `memory/profile.json` → `memory/memory.md` → slice liên quan trong `docs/` hoặc `memory/decision-log.md` / `open-questions.md` — tuân [token-guard](token-guard.md); **không** đọc cả repo vì một câu hỏi Lark.
 5. **Cấu hình Lark tùy chọn** — nếu có `memory/lark.json` (xem §9), ưu tiên ID mặc định ở đó thay vì đoán.
 
 ---
@@ -176,7 +176,7 @@ Server: **`user-lark-mcp`**. Luôn đọc schema tool (`GetMcpTools`) trước k
 | Tình huống | Hành vi |
 |------------|---------|
 | Cổng phê duyệt ([approval-gate](approval-gate.md)) | AI soạn approval item / tóm tắt trên Lark → **người** duyệt trên Lark. Chưa có event duyệt = chưa qua cổng. |
-| Sau duyệt | Ghi back-ref vào `memory/{phase}/decision-log.md`: `approved via {Lark ref} @ {date}` — repo vẫn tự mô tả khi không có Lark. |
+| Sau duyệt | Ghi back-ref vào `memory/decision-log.md`: `approved via {Lark ref} @ {date}` — repo vẫn tự mô tả khi không có Lark. |
 | `doc-registry` | Mirror `DOC ↔ Lark ↔ version` — **không** coi Lark là SSOT nội dung; nội dung SSOT vẫn ở git `docs/`. |
 | Fan-out module | Mỗi module một luồng Lark riêng (task/thread); không gom duyệt chờ cả dự án. |
 | Phase | Intent thuần Lark → file này. Intent DOC/phase → [auto-routing](auto-routing.md) + skill con **trước**, Lark chỉ là công cụ thực thi. |

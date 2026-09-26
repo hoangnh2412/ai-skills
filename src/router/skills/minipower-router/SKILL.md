@@ -2,13 +2,14 @@
 name: minipower-router
 description: Phân loại intent Minipower rồi gợi ý đúng một pack nghề hoặc kênh. Dùng khi làm gì tiếp, chọn skill, dispatcher, không biết mở pack nào — không tự gọi MCP L3, không spawn agent.
 metadata:
-  audience: hoangnh
   workflow: github
 ---
 
 # minipower-router
 
 Dispatcher, không orchestrator runtime. **Route = LLM** (ADR-034 QĐ-4). Keyword [`intent-dispatch.js`](../../lib/intent-dispatch.js) chỉ gợi ý / test vàng — *Khởi tạo dự án sample* → lá init **để nhắc CLI**, không để LLM ghi profile.
+
+Bảng `project_mode` (generated): [kho sdlc](../../../sdlc/SKILL.md#chế-độ-dự-án-project_mode).
 
 ## Cách chọn lá
 

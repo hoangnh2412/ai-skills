@@ -4,7 +4,7 @@
 
 Memory hiện tại lưu **trạng thái**; decision log lưu **lý do**: quyết định gì, **phương án bị loại**, vì sao. Đây là tri thức thật của dự án — thứ người mới join cần, thứ CR cần khi lật lại.
 
-**Ở đâu:** `memory/{phase}/decision-log.md` (theo phase nơi quyết định phát sinh). Quyết định kiến trúc nặng → nâng lên **ADR** (DOC-09); decision log là bản nhẹ cho mọi phase và **trỏ tới ADR** khi được formal hóa.
+**Ở đâu:** `memory/decision-log.md` (một file cho cả dự án — ADR-035; phase nằm trong ID `DEC-{PHASE}-`). Quyết định kiến trúc nặng → nâng lên **ADR** (DOC-09); decision log là bản nhẹ cho mọi phase và **trỏ tới ADR** khi được formal hóa.
 
 ## Schema một entry
 
@@ -44,7 +44,7 @@ Memory hiện tại lưu **trạng thái**; decision log lưu **lý do**: quyế
 
 | Khi | Hành động |
 |-----|-----------|
-| **Đầu phiên** | Đọc `memory/memory.md` → mở `memory/{phase}/decision-log.md` của phase đang làm |
+| **Đầu phiên** | Đọc `memory/memory.md` → mở `memory/decision-log.md` khi cần DEC liên quan |
 | **Trước khi quyết lại** | Tìm DEC liên quan; nếu đã có → **không** quyết lại từ đầu, kế thừa hoặc supersede |
 | **Hỏi "vì sao X đổi?"** | Tìm `Affects:` chứa X (module/API/release) → lần ngược về DEC/ADR gốc + ngày (N6) |
 | **Có bằng chứng mới** | Chạy [deliberation](../skills/deliberation/SKILL.md) Premise Check; nếu đổi → thêm DEC mới `superseded-by` |
@@ -54,7 +54,7 @@ Memory hiện tại lưu **trạng thái**; decision log lưu **lý do**: quyế
 
 - Mỗi DEC có **ngày** + **Status**. Quyết định trước baseline mà chưa `accepted` → nghi ngờ, xác nhận lại.
 - `superseded-by` giữ vết lịch sử — **không xóa** DEC cũ.
-- **Hook tự động** — decision-staleness: quét `memory/{phase}/decision-log.md`, so ngày DEC (còn hiệu lực) với lịch sử git của DOC trong dòng `Trace:`. DOC đổi **sau** ngày quyết định → cảnh báo "cần review / supersede". Advisory, non-blocking. Git thuần, không cần python. SSOT: [`hooks/lib/decision-staleness.js`](../hooks/lib/decision-staleness.js) (một implementation dùng chung).
+- **Hook tự động** — decision-staleness: quét `memory/decision-log.md`, so ngày DEC (còn hiệu lực) với lịch sử git của DOC trong dòng `Trace:`. DOC đổi **sau** ngày quyết định → cảnh báo "cần review / supersede". Advisory, non-blocking. Git thuần, không cần python. SSOT: [`hooks/lib/decision-staleness.js`](../hooks/lib/decision-staleness.js) (một implementation dùng chung).
   - **Claude Code:** `UserPromptSubmit` keyword-gated — [install/claude/README.md](../../../cli/claude/README.md).
   - **Cursor:** `beforeSubmitPrompt` keyword-gated (bàn về quyết định) — [install/cursor/README.md](../../../cli/cursor/README.md).
   - **OpenCode:** message đầu phiên (mô phỏng SessionStart), gọi lib `.js` chung — [install/opencode/README.md](../../../cli/opencode/README.md).

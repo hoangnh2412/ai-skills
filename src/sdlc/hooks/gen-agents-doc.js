@@ -141,15 +141,18 @@ function docModeTable() {
     requirements: "`analyst/`",
     architecture: "`architecture/`",
     planning: "`pm/`",
-    delivery: "`qa/` + `ops/` (DOC-16 vs DOC-17)",
     "change-control": "`analyst/` + `pm/` + `support/`",
+  }
+  const packByDoc = {
+    "16": "`qa/`",
+    "17": "`ops/`",
   }
   const rows = [
     "| DOC | Phase (`rules.json`) | Pack nghề (ADR-033) |",
     "|-----|----------------------|---------------------|",
   ]
   for (const [num, phase] of Object.entries(PHASE_BY_DOC)) {
-    rows.push(`| DOC-${num} | \`${phase}\` | ${packByPhase[phase] || "—"} |`)
+    rows.push(`| DOC-${num} | \`${phase}\` | ${packByDoc[num] || packByPhase[phase] || "—"} |`)
   }
   return rows.join("\n")
 }

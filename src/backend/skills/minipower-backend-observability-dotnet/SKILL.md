@@ -2,7 +2,6 @@
 name: minipower-backend-observability-dotnet
 description: Thiết lập observability metric cho service .NET — OTEL instrumentation, Prometheus scrape, Grafana dashboard, Prometheus/Alertmanager rules và vận hành. Dùng khi onboard metric mới, tạo dashboard, gắn alert, hoặc chuẩn hóa pipeline OTEL → Prometheus → Grafana.
 metadata:
-  audience: hoangnh
   workflow: github
 ---
 

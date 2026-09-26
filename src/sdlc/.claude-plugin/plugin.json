@@ -1,6 +1,6 @@
 {
   "name": "minipower",
-  "description": "AI SDLC pipeline (BA + Solution Architect + TPM) — con người gatekeeper, AI fan-out song song theo module. Skill 6 phase + cross-phase (deliberation, doc-review, readiness-gate, fan-out); hook token-guard/auto-routing/profile-guard.",
+  "description": "Kho Minipower — hook và SOP phase. Dispatcher là skill minipower-router. Plugin root là src/sdlc (hook). Con người gatekeeper.",
   "version": "0.1.0",
   "agents": []
 }

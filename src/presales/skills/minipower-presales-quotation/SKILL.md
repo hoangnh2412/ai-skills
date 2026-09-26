@@ -2,7 +2,6 @@
 name: minipower-presales-quotation
 description: Quy đổi MH sang MD, buffer rủi ro, ROM, thành tiền từ rate local. Dùng khi tờ giá, quotation, buffer ROM — không gán mã loại, không commit đơn giá.
 metadata:
-  audience: hoangnh
   workflow: github
 ---
 

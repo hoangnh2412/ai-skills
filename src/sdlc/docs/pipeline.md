@@ -46,7 +46,7 @@ flowchart LR
 |------|---------|--------|--------|
 | 1 | `assets/` | PM, BA | Lưu bản gốc khảo sát, biên bản — **không sửa** |
 | 2 | `brainstorm/` | BA, SA | Draft, trao đổi, decision log — file theo ngày |
-| 3 | `memory/{phase}/` | BA, SA, PM | Tóm tắt context **theo chủ đề** — index nhanh |
+| 3 | `memory/memory.md` + DEC/open-Q | BA, SA, PM | Entry cá nhân + sổ đội phẳng |
 | 4 | `docs/` | BA, SA | Artifact chính thức — distill từ brainstorm/memory |
 | 5 | `docs/02-baseline/` | PM, sponsor | Snapshot đã sign-off — **chỉ đọc** |
 | 6 | `docs/06-changes/` | BA, SA | CR và delta sau baseline |
@@ -55,12 +55,12 @@ flowchart LR
 
 | Phase | Skill / prompt | Memory | Docs | DOC |
 |-------|----------------|--------|------|-----|
-| Discovery | `Phase: discovery` | `memory/discovery/` | `docs/01-project/` | 01–03 |
-| Requirements | `Phase: requirements` | `memory/requirements/` | `docs/03-modules/{module}/` | 04–07, 19 |
-| Architecture | `Phase: architecture` | `memory/architecture/` | `docs/04-platform/` | 08–12 |
-| Planning | `Phase: planning` | `memory/planning/` | `00-governance/`, `04-platform/` | 14–15 |
-| Delivery | `Phase: delivery` | `memory/delivery/` | `03-modules/`, `04-platform/` | 16–17 |
-| Change control | `Phase: change-control` | `memory/change-control/` | `docs/06-changes/` | 18 |
+| Discovery | `Phase: discovery` | `memory/` | `docs/01-project/` | 01–03 |
+| Requirements | `Phase: requirements` | `memory/` | `docs/03-modules/{module}/` | 04–07, 19 |
+| Architecture | `Phase: architecture` | `memory/` | `docs/04-platform/` | 08–12 |
+| Planning | `Phase: planning` | `memory/` | `00-governance/`, `04-platform/` | 14–15 |
+| Delivery | `Phase: delivery` | `memory/` | `03-modules/`, `04-platform/` | 16–17 |
+| Change control | `Phase: change-control` | `memory/` | `docs/06-changes/` | 18 |
 
 **Tiên quyết phase:**
 
@@ -80,7 +80,7 @@ flowchart LR
   AC -.-> TM
 ```
 
-> **Điểm chốt của người ([ADR-020](../../../ADRs/ADR-020-2026-08-20-minipower-3-che-do-du-an-gate-bang-hook.md) QĐ-11):** giữa các bước có những điểm **nên** có người chốt và ghi DEC — nhưng **không hook nào chặn trên chữ ký**. Cái chặn được bằng máy là *tồn tại DOC tiền đề* (`prereq-gate`, theo module), và cả nó cũng mở bằng `BYPASS`. Bảng điểm chốt: [agents/approval-gate.md](../agents/approval-gate.md) — **dữ liệu tham chiếu**, không phải rào. Mỗi module đi theo nhịp riêng (QĐ-14). Prototype (DOC-19) sinh HTML wireframe qua MCP ngoài (hoãn).
+> **Điểm chốt của người ([ADR-020](../../../ADRs/todo/ADR-020-2026-08-20-minipower-3-che-do-du-an-gate-bang-hook.md) QĐ-11):** giữa các bước có những điểm **nên** có người chốt và ghi DEC — nhưng **không hook nào chặn trên chữ ký**. Cái chặn được bằng máy là *tồn tại DOC tiền đề* (`prereq-gate`, theo module), và cả nó cũng mở bằng `BYPASS`. Bảng điểm chốt: [agents/approval-gate.md](../agents/approval-gate.md) — **dữ liệu tham chiếu**, không phải rào. Mỗi module đi theo nhịp riêng (QĐ-14). Prototype (DOC-19) sinh HTML wireframe qua MCP ngoài (hoãn).
 
 ## Luồng kiến trúc (SA)
 

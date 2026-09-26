@@ -1,16 +1,13 @@
 ---
-name: minipower-router
 description: >-
-  Dispatcher Minipower — gợi ý đúng một pack nghề/kênh mỗi phiên; init project
-  (project_mode + 4 provider). Gõ /minipower-router hoặc @minipower-router.
-  Không spawn agent, không L3 hộ nghề. Kho chuyển phase cũ: sdlc/skills/.
-  Pack: discovery analyst architecture pm support qa ops backend presales
-  docs tasks chat vcs toolbox.
+  [KHO] Bảng project_mode, phân tầng, init. Không đăng ký skill.
+  Dispatcher là minipower-router. Hook ở src/sdlc/hooks (ADR-032 QĐ-8);
+  chuyển router/hooks là nợ ADR-033 Đợt E.
 ---
 
-# Minipower — dispatcher (kho `sdlc/` neo plugin)
+# Minipower — kho `sdlc/` (neo plugin và hook)
 
-**Đăng ký loader:** `minipower-router` (ADR-033 Đợt E). Path plugin/hook vẫn `sdlc/` cho đến ADR-032.
+File này không có `name:`. Skill làm việc là [`minipower-router`](../router/skills/minipower-router/SKILL.md). Symlink cài vẫn tên folder `.cursor/skills/minipower-sdlc` vì hook nằm trong pack này.
 
 Skill lá: [`minipower-router`](../router/skills/minipower-router/SKILL.md) · [`minipower-router-init`](../router/skills/minipower-router-init/SKILL.md).
 
@@ -29,7 +26,7 @@ Chi tiết + ví dụ prompt: [README.md](README.md)
 
 ### Routing — agent bắt buộc
 
-Phân tầng **trước** ([micro/light/full](#phân-tầng-công-việc-micro--light--full)). Init: [khởi tạo](#khởi-tạo-cấu-trúc-dự-án-mặc-định). Mode: [project_mode](#chế-độ-dự-án-project_mode). Kết thúc phiên → `memory/{phase}/`. **Không** spawn pack khác.
+Phân tầng **trước** ([micro/light/full](#phân-tầng-công-việc-micro--light--full)). Init: [khởi tạo](#khởi-tạo-cấu-trúc-dự-án-mặc-định). Mode: [project_mode](#chế-độ-dự-án-project_mode). Kết thúc phiên → cập nhật `memory/memory.md` (cá nhân) + DEC/open-Q nếu cần. **Không** spawn pack khác.
 
 | Intent | Đọc |
 |--------|-----|
@@ -121,20 +118,17 @@ Khi user yêu cầu **khởi tạo / init dự án** mới → agent **bắt bu�
 ├── CLAUDE.md              ← Persona agent (Claude Code) — cùng nội dung + @import pack
 ├── README.md              ← Entry dự án
 ├── FAQ.md                  ← FAQ hướng dẫn thiết lập sẵn (làm gì / làm thế nào / thiếu gì)
-├── memory/                ← Context nhanh — index theo chủ đề (đọc trước khi làm việc)
+├── memory/                ← Entry cá nhân + sổ đội phẳng + SQLite (ADR-035)
 │   ├── profile.json       ← v3 dự án: project_mode + 4 provider (hook profile-guard)
 │   ├── profile.user.json  ← gitignore — tên/xưng hô máy này
 │   ├── profile.user.json.example
+│   ├── memory.md.example  ← khuôn entry agent (commit)
+│   ├── memory.md          ← gitignore — hiện trạng tôi + tiến độ + nhắc việc
+│   ├── decision-log.md    ← DEC đội (một file, không theo phase)
+│   ├── open-questions.md  ← câu hỏi / nợ tiền đề đội
+│   ├── doc-debt.md        ← sổ nợ tài liệu — điều kiện lên `standard`
 │   ├── trace.sql          ← khuôn SQLite (DB `trace.db` gitignore)
-│   ├── tasks/             ← tracker file khi `tasks_provider=none` (không nhét board vào SRS)
-│   ├── memory.md          ← Index gốc (chung) — link 6 chủ đề bên dưới
-│   ├── doc-debt.md        ← Sổ nợ tài liệu — thiếu gì & vì sao; điều kiện lên `standard`
-│   ├── discovery/         ← Phạm vi, stakeholder, khảo sát (→ DOC-01–03)
-│   ├── requirements/      ← UC, FR, SRS theo module (→ DOC-04–07, 13)
-│   ├── architecture/      ← SAD, ADR, tích hợp, API (→ DOC-08–12)
-│   ├── planning/          ← WBS, ước lượng, kế hoạch (→ DOC-14–15)
-│   ├── delivery/          ← Chiến lược test, triển khai (→ DOC-16–17)
-│   └── change-control/    ← CR, delta baseline sau ký (→ DOC-18)
+│   └── trace.db           ← index + việc đội khi tasks=none
 ├── assets/                ← Tài liệu thô từ khách hàng / họp nội bộ
 │   ├── public/            ← Đã share với khách hàng
 │   ├── internal/          ← Nội bộ — không gửi khách
@@ -146,7 +140,7 @@ Khi user yêu cầu **khởi tạo / init dự án** mới → agent **bắt bu�
     ├── 02-baseline/       ← Snapshot đã ký — chỉ đọc
     ├── 03-modules/        ← UC, FR, SRS, test theo module (DOC-04–07, 16)
     ├── 04-platform/       ← SAD, tích hợp, NFR, triển khai (DOC-08–14, 17)
-    ├── 05-traceability/   ← Overview, ma trận trace, doc registry
+    ├── 05-traceability/   ← Ma trận trace, doc registry (không còn overview)
     └── 06-changes/        ← CR và delta thay đổi (DOC-18)
         └── incident/      ← Báo cáo sự cố + postmortem (hệ đang vận hành)
 ```
@@ -156,9 +150,9 @@ Khi user yêu cầu **khởi tạo / init dự án** mới → agent **bắt bu�
 | Thư mục | Vai trò |
 |---------|---------|
 | [`assets/`](assets/) | Giữ **bản gốc** khảo sát, checklist, biên bản — **không sửa file gốc** |
-| [`brainstorm/`](brainstorm/) | Phân tích, trao đổi, decision log theo ngày; chốt → **distill** vào `docs/` |
+| [`brainstorm/`](brainstorm/) | Phân tích, trao đổi theo ngày; chốt → **distill** vào `docs/` |
 | [`docs/`](docs/) | Tài liệu baseline (Vision, BRD, kiến trúc, traceability, CR…) |
-| [`memory/`](memory/) | Index context theo chủ đề — `memory.md` gốc + `memory/{phase}/` |
+| [`memory/`](memory/) | Entry cá nhân (`memory.md`) + DEC / open-Q / doc-debt + SQLite |
 | [`FAQ.md`](project-skeleton/FAQ.md) | FAQ hướng dẫn thiết lập sẵn — user hỏi meta / bước tiếp → agent đọc đây |
 
 **Bổ sung:**
@@ -169,14 +163,14 @@ Khi user yêu cầu **khởi tạo / init dự án** mới → agent **bắt bu�
 | `assets/internal/` | Họp nội bộ — không gửi khách |
 | `assets/archive/` | Tài liệu cũ từ trước khi dùng minipower. **Không** copy thẳng sang `docs/` — phải có người xác nhận. README ghi **độ tin cậy** từng nguồn (còn đúng / nghi ngờ / đã lỗi thời) |
 | `memory/doc-debt.md` | Nợ tài liệu của `mvp`/`maintain`. Ghi khi `prereq-gate` nhắc mà vẫn quyết làm tiếp |
-| `memory/tasks/` | Tracker file khi `tasks_provider=none`. **Không** cắt folder nếu đang dùng OP/Lark — để trống + README |
+| `memory/decision-log.md` | DEC đội — một file ([schema](docs/decision-log.md)); ID vẫn `DEC-{PHASE}-` |
+| `memory/open-questions.md` | Câu hỏi / nợ tiền đề đội |
+| `memory/memory.md` | Entry agent **đầu session** (gitignore; copy từ `.example`) — hiện trạng + nhắc việc + link |
+| `memory/trace.db` | SQLite: index trace + **việc đội** khi `tasks_provider=none` (không còn `memory/tasks/`) |
 | `brainstorm/` | File: `YYYY-MM-DD.md` hoặc `YYYY-MM-DD-<mo-ta>.md` — **không** tạo folder con |
 | `docs/03-modules/` | Copy `_template/` → `{module-id}/` khi mở module |
-| `memory/memory.md` | Index gốc — đọc **đầu session**, rồi mở `memory/{phase}/` |
 | `memory/profile.json` | Cấu hình **dự án** (v3) — mode + 4 provider; schema: [TPL-agent-profile](templates/TPL-agent-profile.md) |
 | `memory/profile.user.json` | Identity máy này — **gitignore**; thiếu/`os_username` lệch → hook chặn |
-| `memory/{phase}/` | Ghi memory **theo chủ đề** — tránh nhồi hết vào `memory.md` |
-| `memory/{phase}/decision-log.md` | Quyết định có phương án bị loại — lưu "tại sao" ([schema](docs/decision-log.md)) |
 | `FAQ.md` | FAQ cố định do maintainer thiết lập — **không** ghi Q&A dự án hay open-questions |
 
 **Luồng:** `assets/` → `brainstorm/` → `docs/` → `02-baseline/` · sau baseline → `06-changes/CR-xxx/`
@@ -186,7 +180,7 @@ Khi user yêu cầu **khởi tạo / init dự án** mới → agent **bắt bu�
 Trước khi làm bất kỳ việc minipower nào (DOC, phase, sync), agent **bắt buộc** có `memory/profile.json` **v3** hợp lệ **và** identity local (`profile.user.json`).
 Hook [profile-guard](agents/profile-guard.md) **chặn cứng** prompt làm việc nếu thiếu — không chỉ dựa vào prompt mềm.
 
-**Khởi tạo = CLI**, không phỏng vấn LLM ([ADR-031](../../ADRs/ADR-031-2026-09-01-cli-install-init-thay-llm-thi-hanh.md) QĐ-9):
+**Khởi tạo = CLI**, không phỏng vấn LLM ([ADR-031](../../ADRs/doing/ADR-031-2026-09-01-cli-install-init-thay-llm-thi-hanh.md) QĐ-9):
 
 ```text
 node <factory>/cli/minipower.mjs init
@@ -209,14 +203,14 @@ node <factory>/cli/minipower.mjs init
 node .minipower/bin/minipower init
 ```
 
-Skeleton: [project-skeleton/INIT.md](project-skeleton/INIT.md). Repo đã có sẵn: cùng lệnh, CLI không đè file đã tồn tại.
+Skeleton: [project-skeleton/INIT.md](project-skeleton/INIT.md). **Init vào repo đã có sẵn:** cùng lệnh, CLI không đè file đã tồn tại.
 
 ### Exit init
 
-- [ ] `memory/profile.json` hợp lệ (**v3**: `project_mode` + bốn `*_provider`) + `memory/profile.user.json` (local) + `AGENTS.md` / `CLAUDE.md` **không** nhúng tên người
-- [ ] Đủ 4 nhánh: `memory/` (6 chủ đề), `assets/`, `brainstorm/`, `docs/` (7 folder) + `FAQ.md` — **đủ ở mọi chế độ**, folder chưa dùng thì rỗng kèm README
+- [ ] `memory/profile.json` hợp lệ (**v3**: `project_mode` + `docs_provider` + `tasks_provider` + `chat_provider` + `code_provider`) + `memory/profile.user.json` (local) + `AGENTS.md` / `CLAUDE.md` **không** nhúng tên người
+- [ ] Đủ 4 nhánh: `memory/` (phẳng ADR-035), `assets/`, `brainstorm/`, `docs/` (7 folder) + `FAQ.md` — **đủ ở mọi chế độ**, folder docs chưa dùng thì rỗng kèm README
 - [ ] `mvp`/`maintain`: có `memory/doc-debt.md` ghi nợ so với `docs_focus`
-- [ ] `memory/memory.md` + 6 folder `memory/{phase}/` (README.md + decision-log.md) + `memory/tasks/` (README + example)
+- [ ] `memory/memory.md.example` + copy `memory.md` · `decision-log.md` · `open-questions.md` · `trace.sql` (không `{phase}/`, không `tasks/`)
 - [ ] `brainstorm/README.md` — **không** folder con trong `brainstorm/`
 
 ## Pipeline

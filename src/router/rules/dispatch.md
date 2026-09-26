@@ -1,5 +1,7 @@
 # dispatch
 
+Chỉ khi workspace (CWD đi lên) **có** `.minipower/`. Không có marker → không pack, không soi folder khác, làm đúng việc người hỏi.
+
 Một phiên: contracts tối thiểu + **một** pack. Không spawn. Không L3 hộ nghề.
 
 **Route = LLM** (ADR-034 QĐ-4). Chọn **đúng một** `name:` skill lá trong catalog. Keyword `intent-dispatch.js` = gợi ý / test, không thay LLM.

@@ -15,6 +15,6 @@ consumes: ["biên bản", "painpoint", "tài liệu nguồn"]
 produces: [DOC-01, DOC-02, DOC-03, SUR-*]
 handoff-in: []
 handoff-out: [H0, H1]
-memory: memory/discovery/
+memory: memory/
 mcp: []
 ```

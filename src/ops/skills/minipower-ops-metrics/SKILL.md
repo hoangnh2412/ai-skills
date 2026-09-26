@@ -2,7 +2,6 @@
 name: minipower-ops-metrics
 description: Thu thập metrics từ Grafana/Prometheus — lấy panel PromQL, thay biến dashboard, query 24h, chuẩn hóa JSON cho AI. Dùng khi sự cố production, spike CPU/memory, panel Grafana trống, hoặc cần số liệu thực từ Prometheus để chẩn đoán.
 metadata:
-  audience: hoangnh
   workflow: github
 ---
 

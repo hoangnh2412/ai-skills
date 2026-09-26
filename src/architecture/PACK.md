@@ -15,6 +15,6 @@ consumes: [DOC-03, DOC-06, DOC-13]
 produces: [SOL-*, DOC-08, DOC-09, DOC-10, DOC-11, DOC-12, ADR-*]
 handoff-in: [H2]
 handoff-out: [H4]
-memory: memory/architecture/
+memory: memory/
 mcp: [code-intel]
 ```

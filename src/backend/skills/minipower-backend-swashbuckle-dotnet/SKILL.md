@@ -2,7 +2,6 @@
 name: minipower-backend-swashbuckle-dotnet
 description: Thiết lập Jarvis.Swashbuckle — Swagger/OpenAPI đa phiên bản, BaseResponse schema, security JWT/API Key. Dùng khi tích hợp Swagger .NET với Jarvis API response wrapper.
 metadata:
-  audience: hoangnh
   workflow: github
 ---
 

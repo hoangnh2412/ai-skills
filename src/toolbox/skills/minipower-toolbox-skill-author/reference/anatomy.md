@@ -36,7 +36,7 @@ Một skill dùng **một trong hai**, không dùng cả hai. Chọn sai thì ng
 
 | | Lá-rời (`backend` · `ops` · `toolbox`) | Skill trong `sdlc/` |
 |---|---|---|
-| Đăng ký với loader | Từng lá, tên `minipower-{module}-{capability}` | Một mình router `minipower-sdlc` |
+| Đăng ký với loader | Từng lá, tên `minipower-{module}-{capability}` | Kho — `name` trơn; cửa dispatcher là `minipower-router` |
 | Cách được chọn | `description` khớp lời người dùng | Router đọc intent → phase |
 | Tên thư mục | Có tiền tố `minipower-{module}-` | **Tên trơn** ≡ thư mục (`discovery`, `doc-review`) — ADR-023 QĐ-5 |
 | Khai trigger ở đâu | Chính `description` | `rules.json` (`phase_by_doc`) hoặc bảng trigger trong `sdlc/SKILL.md` |

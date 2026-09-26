@@ -1,12 +1,13 @@
 ---
 name: architecture
 description: >-
-  [minipower] Thiết kế kiến trúc — SAD, ADR, Integration, Data
-  Model, API (OpenAPI). Bước 9, DOC-08–12. Dùng khi solution architecture, SAD,
-  ADR, integration, API spec.
+  [KHO] SOP SAD/ADR/API. Làm việc mở minipower-architecture-sad
+  (trước ký: minipower-architecture-solution-lite). Không route vào skill này.
 ---
 
 # Solution Architecture
+
+> Kho. Mở [minipower-architecture-sad](../../../architecture/skills/minipower-architecture-sad/SKILL.md).
 
 **Pack:** minipower · **Phase:** 9 · **Tiên quyết:** DOC-06 + DOC-13 baseline.
 

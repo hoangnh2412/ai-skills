@@ -1,12 +1,12 @@
 # Handoff boundaries — điểm bàn giao H1–H6 (GIAO THỨC)
 
-**Trạng thái:** 🟢 Nguyên tắc **per-module đã sống** ([ADR-020](../ADRs/ADR-020-2026-08-20-minipower-3-che-do-du-an-gate-bang-hook.md) QĐ-13/14 — `prereq-gate` kiểm tiền đề theo module, `fan-out` = pipeline theo module). Hai điểm liên-repo **H4/H6** chờ mô hình 2 repo — xem [cross-repo-bridge.md](cross-repo-bridge.md).
+**Trạng thái:** 🟢 Nguyên tắc **per-module đã sống** ([ADR-020](../ADRs/todo/ADR-020-2026-08-20-minipower-3-che-do-du-an-gate-bang-hook.md) QĐ-13/14 — `prereq-gate` kiểm tiền đề theo module, `fan-out` = pipeline theo module). Hai điểm liên-repo **H4/H6** chờ mô hình 2 repo — xem [cross-repo-bridge.md](cross-repo-bridge.md).
 
 Tổng quát bảng *"Mức tối thiểu để dev bắt đầu"* của [parallel-work.md](../src/sdlc/docs/parallel-work.md) thành boundary có tên. **H0** (trước ký) bổ sung ADR-030/033; **H1–H6** không đổi sau ký.
 
 | ID | Từ → đến | Input tối thiểu | Liên repo |
 |----|----------|-----------------|:---------:|
-| **H0** | Discovery (sơ bộ) → Presales | In/out scope + cây chức năng mức thao tác + assumption log (ULNL §4). Producer: discovery/BA — **không** phải presales | — |
+| **H0** | Discovery → Architecture lite → Presales | (1) Gói khảo sát (pain, in/out scope, cây phân hệ, nguồn) → (2) `SOL-*` mức bán (`minipower-architecture-solution-lite`) → (3) estimate + quotation. Presales không khảo sát lại và không vẽ giải pháp | — |
 | **H1** | Discovery → Requirements | DOC-03 scope đã review; module đăng ký trong BRD | — |
 | **H2** | Requirements → Architecture | DOC-06 + DOC-13 draft (theo module thiết kế) | — |
 | **H3** | Requirements → Planning | DOC-06 Must-have (từng module) | — |
@@ -18,7 +18,7 @@ Tổng quát bảng *"Mức tối thiểu để dev bắt đầu"* của [parall
 
 ## 1. Handoff là **per-module**, không phải per-project
 
-Sau [ADR-020](../ADRs/ADR-020-2026-08-20-minipower-3-che-do-du-an-gate-bang-hook.md) QĐ-14, mỗi boundary xảy ra **cho từng module một**, theo nhịp riêng của module đó:
+Sau [ADR-020](../ADRs/todo/ADR-020-2026-08-20-minipower-3-che-do-du-an-gate-bang-hook.md) QĐ-14, mỗi boundary xảy ra **cho từng module một**, theo nhịp riêng của module đó:
 
 > `ORD` qua **H4** sang code trong khi `INV` còn chưa qua **H2**. Đó là trạng thái **đúng**, không phải lệch pha cần đồng bộ.
 

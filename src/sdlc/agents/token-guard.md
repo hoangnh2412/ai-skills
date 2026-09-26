@@ -4,14 +4,14 @@
 
 1. Nếu user **không** @ file và **không** nêu rõ `module + DOC + section` → **hỏi 1 câu** thay vì search/read repo.
 2. **Không** tự đọc: `docs/02-baseline/`, `docs/03-modules/_legacy/`, toàn bộ `trace-matrix.md`, `doc-registry.md` trừ khi user yêu cầu rõ.
-3. Context theo lớp: `overview.md` (30s) → `memory/{phase}/` → **1 DOC đích** (+ tối đa 1 dependency).
+3. Context theo lớp: `memory/memory.md` → (khi cần) DEC/open-Q → **1 DOC đích** (+ tối đa 1 dependency).
 4. Tối đa **3 file** đọc thêm so với file user @; vượt → hỏi trước.
 
 ## Trước khi sửa
 
 - Một phiên = **một slice**: `{module}/{DOC-XX}` + section hoặc ID (`MGS-FR-010`).
 - Chỉ diff section được yêu cầu; không rewrite cả file.
-- Không cập nhật `overview.md` / `doc-registry.md` / `trace-matrix.md` trừ khi user nói "rollup" hoặc "sync registry".
+- Không cập nhật `doc-registry.md` / `trace-matrix.md` trừ khi user nói "rollup" hoặc "sync registry"; `memory.md` chỉ khi người yêu cầu cập nhật sổ cá nhân.
 
 ## Prompt thiếu scope (ví dụ)
 

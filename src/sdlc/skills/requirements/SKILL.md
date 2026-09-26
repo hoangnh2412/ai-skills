@@ -1,12 +1,13 @@
 ---
 name: requirements
 description: >-
-  [minipower] Phân tích yêu cầu — Actor, UC, BR, Prototype, FR, NFR, AC
-  (Gherkin). Bước 3–9, DOC-04–07, 13, 19. Dùng khi requirements, use case, SRS,
-  business rule, prototype, wireframe, acceptance criteria.
+  [KHO] SOP UC/FR/BR/AC/SRS. Làm việc mở minipower-analyst-srs
+  (CR nội dung: minipower-analyst-cr). Không route vào skill này.
 ---
 
 # BA Requirements Analysis
+
+> Kho. Mở [minipower-analyst-srs](../../../analyst/skills/minipower-analyst-srs/SKILL.md).
 
 **Pack:** minipower · **Phase:** 3–9 · **Tiên quyết:** DOC-03 scope.
 
@@ -26,7 +27,7 @@ description: >-
 | 8 | NFR | DOC-13 |
 | 9 | Acceptance Criteria | DOC-07 |
 
-> **Thứ tự khuyến nghị:** DOC-04 Business Rules → DOC-19 Prototype → DOC-06 SRS. Đây là **thứ tự tốt**, không phải cổng chặn ([ADR-020](../../../../ADRs/ADR-020-2026-08-20-minipower-3-che-do-du-an-gate-bang-hook.md) QĐ-11). `prereq-gate` nhắc khi thiếu DOC upstream **của đúng module đó**; ở `standard` nó chặn và bạn gõ `BYPASS` để đi tiếp — **người quyết cuối**. Chốt bước nào thì ghi DEC làm bản ghi ([approval-gate](../../agents/approval-gate.md) — dữ liệu tham chiếu). Wireframe HTML sinh qua MCP ngoài (hoãn).
+> **Thứ tự khuyến nghị:** DOC-04 Business Rules → DOC-19 Prototype → DOC-06 SRS. Đây là **thứ tự tốt**, không phải cổng chặn ([ADR-020](../../../../ADRs/todo/ADR-020-2026-08-20-minipower-3-che-do-du-an-gate-bang-hook.md) QĐ-11). `prereq-gate` nhắc khi thiếu DOC upstream **của đúng module đó**; ở `standard` nó chặn và bạn gõ `BYPASS` để đi tiếp — **người quyết cuối**. Chốt bước nào thì ghi DEC làm bản ghi ([approval-gate](../../agents/approval-gate.md) — dữ liệu tham chiếu). Wireframe HTML sinh qua MCP ngoài (hoãn).
 
 **NFR:** Performance · SLA · Security · Audit · HA/DR
 

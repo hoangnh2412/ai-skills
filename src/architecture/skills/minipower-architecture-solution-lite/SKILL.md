@@ -2,7 +2,6 @@
 name: minipower-architecture-solution-lite
 description: Dựng giải pháp tổng thể mức bán: module phương án SOL, chưa SAD đầy đủ. Dùng khi presale kiến trúc, solution-lite, trước ký — không báo giá, không convention .NET.
 metadata:
-  audience: hoangnh
   workflow: github
 ---
 

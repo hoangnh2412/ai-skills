@@ -6,7 +6,7 @@ Dự án lớn thường chia **theo bounded context (module)** và **theo vai t
 
 > **Hai kiểu song song:** (1) **nhiều người** (multi-BA/SA/PM) — trang này; (2) **AI fan-out** theo module — điều phối bởi [skills/fan-out](../skills/fan-out/SKILL.md). Cả hai **dùng chung** quy tắc bên dưới: một module = một owner, tránh sửa file chung đồng thời.
 >
-> **Mỗi module một nhịp riêng** ([ADR-020](../../../ADRs/ADR-020-2026-08-20-minipower-3-che-do-du-an-gate-bang-hook.md) QĐ-14): module xong trước đi tiếp trước, **không** chờ nhau ở vạch đích nào. Con người quyết từng nhánh đã đủ thông tin để chảy tiếp chưa — đó chính là mô hình cả trang này mô tả.
+> **Mỗi module một nhịp riêng** ([ADR-020](../../../ADRs/todo/ADR-020-2026-08-20-minipower-3-che-do-du-an-gate-bang-hook.md) QĐ-14): module xong trước đi tiếp trước, **không** chờ nhau ở vạch đích nào. Con người quyết từng nhánh đã đủ thông tin để chảy tiếp chưa — đó chính là mô hình cả trang này mô tả.
 
 ## Phân vai mẫu
 
@@ -15,7 +15,7 @@ Dự án lớn thường chia **theo bounded context (module)** và **theo vai t
 | **BA1** | Requirements | `docs/03-modules/{module-a}/` | Thu thập, phân tích module A |
 | **BA2** | Requirements | `docs/03-modules/{module-b}/` | Thu thập, phân tích module B |
 | **SA** | Architecture | `docs/04-platform/` | SAD, ERD, API, integration — phần dùng chung |
-| **PM** | Discovery, Planning | `docs/00-governance/`, `memory/planning/` | Scope, WBS, timeline, milestone |
+| **PM** | Discovery, Planning | `docs/00-governance/`, `memory/` (DEC / open-Q) | Scope, WBS, timeline, milestone |
 
 ```mermaid
 flowchart LR
@@ -29,7 +29,7 @@ flowchart LR
     PLT["04-platform/ DOC-08–12"]
   end
   subgraph PM_ROLE["PM — Planning"]
-    PLAN["DOC-14/15 · memory/planning/"]
+    PLAN["DOC-14/15 · memory/"]
   end
   subgraph SYNC["Đồng bộ"]
     TM["trace-matrix.md"]
@@ -57,7 +57,7 @@ Trong lúc BA đang elicit từng module, SA có thể **song song** thiết k�
 | Hạng mục | Khi nào làm | Ghi chú |
 |----------|-------------|---------|
 | **Core base** | Sớm — sau DOC-03 + vài FR Must đầu tiên | Auth, tenant, logging, error model, pattern API chung |
-| **Shared data model** | Khi có FR Must từ ≥1 module | Entity dùng chung; phần chưa rõ → **TBD** trong `memory/architecture/` |
+| **Shared data model** | Khi có FR Must từ ≥1 module | Entity dùng chung; phần chưa rõ → **TBD** trong `memory/open-questions.md` |
 | **Integration contract** | Khi 2 module cần gọi nhau | DOC-10 / sequence trong `brainstorm/` hoặc `04-platform/` |
 | **API slice theo module** | Khi module có DOC-06 Must | OpenAPI từng phần — không chờ hết 18 DOC |
 
@@ -74,7 +74,7 @@ PM **không cần chờ** toàn bộ SRS hoàn chỉnh để bắt đầu planni
 | SA assumption / TBD platform | Buffer rủi ro kiến trúc |
 | Complexity (planning skill) | Roadmap, milestone |
 
-Cập nhật `memory/planning/` và DOC-14/15 **lặp lại** khi BA/SA làm rõ thêm — plan là living document đến trước baseline.
+Cập nhật DOC-14/15 và `memory/memory.md` / open-questions **lặp lại** khi BA/SA làm rõ thêm — plan là living document đến trước baseline.
 
 ## Quy tắc song song
 
@@ -82,8 +82,8 @@ Cập nhật `memory/planning/` và DOC-14/15 **lặp lại** khi BA/SA làm rõ
 |---|---------|
 | 1 | **Một module = một owner** — chỉ owner sửa DOC-04–07 trong folder module đó |
 | 2 | **SA chỉ `04-platform/`** — không sửa FR/UC của BA; thiếu thì TBD + note |
-| 3 | **File dùng chung — tránh sửa cùng lúc:** DOC-03, `overview.md`, `trace-matrix.md`, `doc-registry.md` |
-| 4 | **Cross-module** — thống nhất qua `memory/architecture/`, DOC-10, không meeting dài không ghi |
+| 3 | **File dùng chung — tránh sửa cùng lúc:** DOC-03, `trace-matrix.md`, `doc-registry.md` |
+| 4 | **Cross-module** — thống nhất qua `memory/open-questions.md` / DEC, DOC-10, không meeting dài không ghi |
 | 5 | **MOD prefix cố định** — khai báo trong README module (`{MOD}-FR-001`, …) |
 | 6 | **Đăng ký module mới** — thêm vào DOC-03 trước khi tạo folder `03-modules/{id}/` |
 | 7 | **DOC versioning** — Version chỉ sau REQ owner sign-off; trước đó `—` + Draft — [`doc-versioning.md`](../docs-skeleton/00-governance/doc-versioning.md) |
@@ -93,8 +93,8 @@ Cập nhật `memory/planning/` và DOC-14/15 **lặp lại** khi BA/SA làm rõ
 | File / nơi | Vai trò |
 |------------|---------|
 | `memory/memory.md` | Phase hiện tại, link chủ đề |
-| `memory/{phase}/` | Tóm tắt theo BA/SA/PM phụ trách |
-| `docs/05-traceability/overview.md` | Tổng quan 30s — phase, pipeline module, blocker |
+| `memory/memory.md` | Entry cá nhân — hiện trạng + nhắc việc |
+| `memory/decision-log.md` · `open-questions.md` | DEC / hỏi đội |
 | `docs/05-traceability/trace-matrix.md` | Trace UC → FR → AC |
 | `docs/05-traceability/doc-registry.md` | Version, owner từng DOC |
 | `docs/01-project/DOC-03-brd.md` | Module index, in/out scope |
@@ -128,10 +128,10 @@ Phase: requirements — module {module-a}, cập nhật DOC-05/06, owner BA1
 ```text
 /minipower
 Phase: architecture — shared data model + API contract giữa {module-a} và {module-b};
-đọc FR Must hiện có, phần chưa rõ ghi TBD trong memory/architecture/
+đọc FR Must hiện có, phần chưa rõ ghi TBD trong memory/open-questions.md
 ```
 
 ```text
 /minipower
-Phase: planning — WBS sơ bộ từ DOC-03 và FR Must đã có; ghi assumption vào memory/planning/
+Phase: planning — WBS sơ bộ từ DOC-03 và FR Must đã có; ghi assumption vào memory/open-questions.md hoặc decision-log.md
 ```

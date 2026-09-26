@@ -2,7 +2,6 @@
 name: minipower-toolbox-skill-author
 description: Viết và soát skill lá-rời Minipower (minipower-{module}-{capability}) — chọn module bằng 3 câu hỏi ADR-022, dựng cây SKILL.md/README.md/workflows/providers, đặt description kích hoạt được, cập nhật hub và test canh. Hỏi người xác nhận trước mọi quyết định, không tự chốt. Dùng khi tạo skill mới, thêm provider/pattern/workflow, mở module mới, hoặc soát skill có sẵn lệch chuẩn.
 metadata:
-  audience: hoangnh
   workflow: github
 ---
 

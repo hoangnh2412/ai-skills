@@ -3,13 +3,13 @@
  * SSOT. Port từ minipower-decision-staleness.py + decision-staleness.ts.
  * Git thuần (execFileSync) + fs — KHÔNG cần python runtime.
  *
- * Quét memory/{phase}/decision-log.md, so ngày mỗi DEC (còn hiệu lực) với git log của
+ * Quét memory/decision-log.md (phẳng — ADR-035), so ngày mỗi DEC (còn hiệu lực) với git log của
  * các DOC trong dòng Trace:. DOC đổi sau ngày quyết định → nhắc chạy Premise Check.
  * Chỉ để NHẮC — verdict cuối do người/deliberation (xem docs/decision-log.md).
  */
 
 import { execFileSync } from "node:child_process"
-import { existsSync, readdirSync, readFileSync } from "node:fs"
+import { existsSync, readFileSync } from "node:fs"
 import { join } from "node:path"
 
 function git(root, args) {
@@ -58,8 +58,8 @@ export function parseEntries(text) {
  */
 export function checkDecisionStaleness(root) {
   if (git(root, ["rev-parse", "--is-inside-work-tree"]) !== "true") return null
-  const memDir = join(root, "memory")
-  if (!existsSync(memDir)) return null
+  const logPath = join(root, "memory", "decision-log.md")
+  if (!existsSync(logPath)) return null
 
   const docsFiles = git(root, ["ls-files", "docs"])
     .split(/\r?\n/)
@@ -81,33 +81,20 @@ export function checkDecisionStaleness(root) {
     return files
   }
 
-  let phases
+  let text
   try {
-    phases = readdirSync(memDir, { withFileTypes: true })
-      .filter((d) => d.isDirectory())
-      .map((d) => d.name)
-      .sort()
+    text = readFileSync(logPath, "utf8")
   } catch {
     return null
   }
 
   const findings = []
-  for (const ph of phases) {
-    const logPath = join(memDir, ph, "decision-log.md")
-    if (!existsSync(logPath)) continue
-    let text
-    try {
-      text = readFileSync(logPath, "utf8")
-    } catch {
-      continue
-    }
-    for (const e of parseEntries(text)) {
-      if (e.status.toLowerCase().includes("superseded-by")) continue
-      if (!e.trace) continue
-      for (const doc of resolveDocs(e.trace)) {
-        const cd = git(root, ["log", "-1", "--format=%cs", "--", doc])
-        if (cd && cd > e.date) findings.push(`  - ${e.id} (${e.date}) ← ${doc} đổi ${cd}`)
-      }
+  for (const e of parseEntries(text)) {
+    if (e.status.toLowerCase().includes("superseded-by")) continue
+    if (!e.trace) continue
+    for (const doc of resolveDocs(e.trace)) {
+      const cd = git(root, ["log", "-1", "--format=%cs", "--", doc])
+      if (cd && cd > e.date) findings.push(`  - ${e.id} (${e.date}) ← ${doc} đổi ${cd}`)
     }
   }
 

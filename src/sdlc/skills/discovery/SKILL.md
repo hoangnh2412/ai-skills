@@ -1,11 +1,13 @@
 ---
 name: discovery
 description: >-
-  [minipower] Khám phá bài toán, stakeholder, scope — bước 1–2,
-  DOC-01–03. Dùng khi brainstorm, business case, stakeholder, in/out scope.
+  [KHO] SOP khảo sát DOC-01–03. Làm việc mở minipower-discovery-survey.
+  Không route vào skill này.
 ---
 
 # BA Discovery
+
+> Kho. Mở [minipower-discovery-survey](../../../discovery/skills/minipower-discovery-survey/SKILL.md).
 
 **Pack:** minipower · **Phase:** 1–2 · **Không** UC/FR chi tiết / thiết kế kỹ thuật.
 

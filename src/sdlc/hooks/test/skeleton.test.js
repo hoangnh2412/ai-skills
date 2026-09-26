@@ -1,12 +1,9 @@
 /**
- * Golden test — skeleton dự án đích (ADR-020 QĐ-2, việc #6).
+ * Golden test — skeleton dự án đích (ADR-020 QĐ-2 · ADR-035).
  *
- * Router [SKILL.md] hứa với người dùng rằng init sinh ra `memory/doc-debt.md`,
- * `assets/archive/` và **đủ 7 folder `docs/` ở mọi chế độ**. Test này khoá lời hứa
- * đó vào file thật — hứa mà thiếu file thì đỏ, không chờ ai init thử mới phát hiện.
- *
- * QĐ-2: mode KHÔNG cắt folder. Vì vậy chỉ có MỘT khung để kiểm, không rẽ nhánh
- * theo mode — đó chính là cái lợi đã đánh đổi khi chọn không cắt.
+ * Router [SKILL.md] hứa init sinh `memory/doc-debt.md`, `assets/archive/` và
+ * **đủ 7 folder `docs/` ở mọi chế độ**. ADR-035: memory phẳng (không phase/),
+ * không overview.md, không memory/tasks/.
  */
 
 import test from "node:test"
@@ -15,19 +12,10 @@ import { existsSync, readdirSync, readFileSync } from "node:fs"
 import { fileURLToPath } from "node:url"
 import { dirname, join } from "node:path"
 
-// test/ → hooks/ → minipower/
 const PACK = dirname(dirname(dirname(fileURLToPath(import.meta.url))))
 const PROJECT_SKELETON = join(PACK, "project-skeleton")
 const DOCS_SKELETON = join(PACK, "docs-skeleton")
-
-const MEMORY_TOPICS = [
-  "discovery",
-  "requirements",
-  "architecture",
-  "planning",
-  "delivery",
-  "change-control",
-]
+const MEMORY = join(PROJECT_SKELETON, "memory")
 
 const DOCS_FOLDERS = [
   "00-governance",
@@ -39,32 +27,53 @@ const DOCS_FOLDERS = [
   "06-changes",
 ]
 
+const FORBIDDEN_PHASE_DIRS = [
+  "discovery",
+  "requirements",
+  "architecture",
+  "planning",
+  "delivery",
+  "change-control",
+  "tasks",
+]
+
 test("project-skeleton — đủ 4 nhánh + FAQ (exit init §SKILL.md)", () => {
   for (const p of ["README.md", "FAQ.md", "INIT.md", "memory", "assets", "brainstorm"]) {
     assert.ok(existsSync(join(PROJECT_SKELETON, p)), `thiếu project-skeleton/${p}`)
   }
 })
 
-test("project-skeleton — memory/ đủ 6 folder chủ đề, mỗi folder có decision-log", () => {
-  for (const topic of MEMORY_TOPICS) {
-    const dir = join(PROJECT_SKELETON, "memory", topic)
-    assert.ok(existsSync(join(dir, "README.md")), `thiếu memory/${topic}/README.md`)
-    assert.ok(existsSync(join(dir, "decision-log.md")), `thiếu memory/${topic}/decision-log.md`)
-  }
+test("ADR-035 — memory phẳng: decision-log + open-questions + memory.md.example", () => {
+  assert.ok(existsSync(join(MEMORY, "decision-log.md")), "thiếu memory/decision-log.md")
+  assert.ok(existsSync(join(MEMORY, "open-questions.md")), "thiếu memory/open-questions.md")
+  assert.ok(existsSync(join(MEMORY, "memory.md.example")), "thiếu memory/memory.md.example")
+  assert.ok(existsSync(join(MEMORY, "doc-debt.md")), "thiếu memory/doc-debt.md")
+  assert.ok(existsSync(join(MEMORY, "profile.user.json.example")))
+  assert.ok(existsSync(join(MEMORY, "trace.sql")))
+  const example = readFileSync(join(MEMORY, "memory.md.example"), "utf8")
+  assert.match(example, /decision-log\.md/)
+  assert.match(example, /open-questions\.md/)
+  assert.match(example, /Nhắc việc/)
+  assert.match(example, /Hiện trạng/)
+  const gi = readFileSync(join(MEMORY, ".gitignore"), "utf8")
+  assert.match(gi, /^memory\.md$/m)
 })
 
-test("ADR-020 #6 — memory/doc-debt.md ở GỐC memory (cắt ngang mọi phase, §3c)", () => {
-  const p = join(PROJECT_SKELETON, "memory", "doc-debt.md")
-  assert.ok(existsSync(p), "thiếu memory/doc-debt.md — router SKILL.md có hứa file này")
+test("ADR-035 — cấm memory/{phase}/, memory/tasks/, overview.md", () => {
+  for (const name of FORBIDDEN_PHASE_DIRS) {
+    assert.ok(!existsSync(join(MEMORY, name)), `không được còn memory/${name}/`)
+  }
+  assert.ok(
+    !existsSync(join(DOCS_SKELETON, "05-traceability", "overview.md")),
+    "docs-skeleton không được còn overview.md",
+  )
+})
+
+test("ADR-020 #6 — memory/doc-debt.md ở GỐC memory", () => {
+  const p = join(MEMORY, "doc-debt.md")
+  assert.ok(existsSync(p), "thiếu memory/doc-debt.md")
   const text = readFileSync(p, "utf8")
   assert.match(text, /standard/, "phải nêu điều kiện lên standard")
-  // Không được nằm trong memory/{phase}/ — nợ tài liệu không thuộc phase nào.
-  for (const topic of MEMORY_TOPICS) {
-    assert.ok(
-      !existsSync(join(PROJECT_SKELETON, "memory", topic, "doc-debt.md")),
-      `doc-debt.md không được nằm trong memory/${topic}/`,
-    )
-  }
 })
 
 test("ADR-020 #6 — assets/archive/ có README kèm cột độ tin cậy (Q5)", () => {
@@ -85,30 +94,21 @@ test("QĐ-2 — docs-skeleton đủ 7 folder, một khung cho cả 3 chế độ
   assert.deepEqual(dirs, DOCS_FOLDERS, "cây docs/ lệch §2b — mode KHÔNG được cắt folder")
 })
 
-test("INIT.md — có README chuẩn cho folder chưa dùng (QĐ-2)", () => {
+test("INIT.md — có README chuẩn cho folder chưa dùng (QĐ-2) + migrate ADR-035", () => {
   const text = readFileSync(join(PROJECT_SKELETON, "INIT.md"), "utf8")
   assert.match(text, /chưa điền/i, "INIT.md phải định nghĩa README cho folder rỗng")
   assert.match(text, /doc-debt/, "README folder rỗng phải trỏ về sổ nợ")
   assert.match(text, /mọi ch[eế] đ[oộ]/i, "INIT.md phải nói rõ copy đủ khung ở mọi chế độ")
+  assert.match(text, /memory\.md\.example|decision-log\.md/, "INIT phải mô tả memory phẳng ADR-035")
 })
 
-test("ADR-033 C — memory/tasks/ khuôn (không cắt theo mode)", () => {
-  const dir = join(PROJECT_SKELETON, "memory", "tasks")
-  const readme = readFileSync(join(dir, "README.md"), "utf8")
-  assert.match(readme, /T-NNN/)
-  assert.match(readme, /không phải bảng Kanban|cấm nhúng/i)
-  assert.ok(existsSync(join(dir, "T-NNN.md.example")))
-  const mem = readFileSync(join(PROJECT_SKELETON, "memory", "memory.md"), "utf8")
-  assert.match(mem, /tasks\//)
-})
-
-test("ADR-033 C — DOC-06/14/15 không dùng làm task board", () => {
+test("ADR-035 — DOC-06/14/15 không dùng làm task board; tasks=none → SQLite", () => {
   const TPL = join(PACK, "templates")
   const srs = readFileSync(join(TPL, "DOC-06-srs.md"), "utf8")
   assert.match(srs, /Không.*task board|không dùng SRS làm task board/i)
-  assert.match(srs, /memory\/tasks/)
+  assert.match(srs, /tasks_provider|trace\.db|SQLite|artifact/i)
   const wbs = readFileSync(join(TPL, "DOC-14-wbs-estimate.md"), "utf8")
-  assert.match(wbs, /memory\/tasks/)
+  assert.match(wbs, /tasks_provider|trace\.db|SQLite|artifact/i)
   const plan = readFileSync(join(TPL, "DOC-15-project-plan.md"), "utf8")
   assert.match(plan, /không.*board/i)
 })

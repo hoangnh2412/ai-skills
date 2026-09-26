@@ -2,18 +2,17 @@
  * Minipower — OpenCode plugin (token guard + auto-routing + prereq gate + baseline guard
  * + decision staleness).
  *
- * SSOT logic: sdlc/hooks/lib/*.js (dùng chung với Cursor/Claude qua Node).
+ * SSOT logic: src/sdlc/hooks/lib/*.js (dùng chung với Cursor/Claude qua Node).
  * OpenCode chạy Bun → import .js trực tiếp, không build. Chỉ phần glue OpenCode
- * (parts.ts) là .ts riêng nền tảng. Đường dẫn ../../../hooks/lib resolve theo
- * realpath của pack (yêu cầu symlink pack, không copy rời file này).
+ * (parts.ts) là .ts riêng nền tảng. Import tính từ file này trong cli/opencode/plugins/.
  */
 
-import { checkAutoRouting } from "../../../hooks/lib/auto-routing.js"
-import { checkTokenGuard } from "../../../hooks/lib/token-guard.js"
-import { checkBaselineGuard } from "../../../hooks/lib/baseline-guard.js"
-import { checkPrereqGate } from "../../../hooks/lib/prereq-gate.js"
-import { checkProfileGuard } from "../../../hooks/lib/profile-guard.js"
-import { checkDecisionStaleness } from "../../../hooks/lib/decision-staleness.js"
+import { checkAutoRouting } from "../../../src/sdlc/hooks/lib/auto-routing.js"
+import { checkTokenGuard } from "../../../src/sdlc/hooks/lib/token-guard.js"
+import { checkBaselineGuard } from "../../../src/sdlc/hooks/lib/baseline-guard.js"
+import { checkPrereqGate } from "../../../src/sdlc/hooks/lib/prereq-gate.js"
+import { checkProfileGuard } from "../../../src/sdlc/hooks/lib/profile-guard.js"
+import { checkDecisionStaleness } from "../../../src/sdlc/hooks/lib/decision-staleness.js"
 import {
   blockParts,
   filePaths,

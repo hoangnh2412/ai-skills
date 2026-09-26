@@ -13,4 +13,4 @@ Manifest: [PACK.md](PACK.md).
 ## Liên quan
 
 - Chat Lark: [`chat/`](../chat/README.md) — tin nhắn, không task
-- Task local (`tasks_provider: none`): `memory/tasks/` trên dự án đích, không MCP
+- Task local (`tasks_provider: none`): SQLite `memory/trace.db` (`artifact` type=task), không MCP / không `memory/tasks/`

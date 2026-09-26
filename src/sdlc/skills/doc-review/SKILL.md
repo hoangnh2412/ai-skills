@@ -53,7 +53,7 @@ Vì sao `mvp` giữ chiều 1 · 3 · 5: chúng canh thứ **không sửa lại 
 | 🟡 **Major** | Rủi ro cao (mơ hồ, thiếu negative case) | Sửa trong phase, ghi vào backlog |
 | ⚪ **Minor** | Hình thức, nhất quán nhỏ | Gộp sửa cuối phase |
 
-> **Gate này mềm — verdict cuối là của người** ([ADR-020](../../../../ADRs/ADR-020-2026-08-20-minipower-3-che-do-du-an-gate-bang-hook.md) QĐ-11). Không hook nào chặn trên PASS/BLOCK: chất lượng nội dung là **phán đoán ngữ nghĩa**, máy không kiểm được. "Blocker chặn baseline" nghĩa là *người review không ký* — không phải máy khoá lại. Thứ máy kiểm được đứng cạnh gate này là `trace:check` (ID trỏ sai / trùng) và `prereq-gate` (DOC tiền đề có tồn tại không).
+> **Gate này mềm — verdict cuối là của người** ([ADR-020](../../../../ADRs/todo/ADR-020-2026-08-20-minipower-3-che-do-du-an-gate-bang-hook.md) QĐ-11). Không hook nào chặn trên PASS/BLOCK: chất lượng nội dung là **phán đoán ngữ nghĩa**, máy không kiểm được. "Blocker chặn baseline" nghĩa là *người review không ký* — không phải máy khoá lại. Thứ máy kiểm được đứng cạnh gate này là `trace:check` (ID trỏ sai / trùng) và `prereq-gate` (DOC tiền đề có tồn tại không).
 
 ## Cơ chế subagent
 
@@ -77,7 +77,7 @@ Vì sao lỗi: <hệ quả downstream — dev hiểu sai / test không viết đ
 2. **Bảng finding** — sắp Blocker → Minor
 3. **Trace gaps** — bảng UC→FR→AC chỗ đứt
 4. **Verdict gate** — ✅ PASS / ⛔ BLOCK baseline (kèm số Blocker)
-5. **Ghi lại** — Blocker/Major → `memory/{phase}/` + liên kết [decision-log](../../docs/decision-log.md) nếu là lựa chọn có chủ đích, **không** phải lỗi
+5. **Ghi lại** — Blocker/Major → `memory/open-questions.md` hoặc `decision-log.md` + liên kết [decision-log](../../docs/decision-log.md) nếu là lựa chọn có chủ đích, **không** phải lỗi
 
 ## Exit criteria
 

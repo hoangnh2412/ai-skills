@@ -1,13 +1,13 @@
 ---
 name: as-built
 description: >-
-  [minipower] Khai quật hệ thống ĐÃ XÂY thành tài liệu trace được — bản vẽ hoàn
-  công. Dùng khi: tiếp quản hệ cũ, tài liệu thất lạc/không còn đúng, cần biết code
-  đang làm gì trước khi sửa, chế độ maintain. Người trigger cho MỘT vùng chạm;
-  wrap codegraph nếu có, không có thì Read/Grep. Không chạy nền, không quét cả repo.
+  [KHO] SOP as-built. Làm việc mở minipower-architecture-as-built.
+  Không route vào skill này.
 ---
 
 # As-built — bản vẽ hoàn công
+
+> Kho. Mở [minipower-architecture-as-built](../../../architecture/skills/minipower-architecture-as-built/SKILL.md).
 
 **Pack:** minipower · **Loại:** skill cross-phase · **Người trigger** — không hook nào tự gọi.
 
@@ -59,7 +59,7 @@ Wrap [codegraph](https://github.com/colbymchenry/codegraph) (tree-sitter → SQL
    | ⛔ **Mâu thuẫn** | Code khác `assets/archive/` — nêu cả hai, **không** tự chọn bên đúng |
 
 6. **Trình người**: bản nháp + **danh sách câu hỏi**. Người xác nhận từng mục.
-7. **Chỉ mục đã xác nhận mới thành DOC**, có ID (`{MOD}-BR-001`…) để `trace:check` kiểm được. Mục chưa xác nhận → `memory/{phase}/open-questions.md`.
+7. **Chỉ mục đã xác nhận mới thành DOC**, có ID (`{MOD}-BR-001`…) để `trace:check` kiểm được. Mục chưa xác nhận → `memory/open-questions.md`.
 8. **Ghi nợ.** Vùng chưa khảo sát → [`memory/doc-debt.md`](../../project-skeleton/memory/doc-debt.md).
 
 ## Đích đến theo DOC

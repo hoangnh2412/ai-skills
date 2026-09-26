@@ -39,7 +39,7 @@ test("router — bốn mặt provider được hỏi (init, ADR-033)", () => {
     assert.match(ROUTER, new RegExp(face), `init chưa hỏi ${face}`)
   }
   assert.match(ROUTER, /profile\.user\.json/)
-  assert.match(ROUTER, /`none`/)
+  assert.match(ROUTER, /tasks_provider=none|`none`/)
 })
 
 test("router — số hiệu schema profile khớp code (không hứa v cũ)", () => {

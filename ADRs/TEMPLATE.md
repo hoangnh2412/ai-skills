@@ -1,7 +1,7 @@
 # ADR Template — repo `ai-skills`
 
 > Khuôn chuẩn cho quyết định định hướng của repo này. Chưng cất từ khuôn de-facto (ADR-011/012/020/022) + vay cấu trúc mục và hệ mã vai trò từ template Platform (họ [Nygard ADR](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions) / [MADR](https://adr.github.io/madr/)).
-> **Cách dùng:** copy phần từ dấu `---` thứ hai trở xuống → `ADR-NNN-yyyy-MM-dd-slug.md` (mã NNN lấy ở dòng cuối [README.md](README.md)), điền nội dung, xoá mục *(tuỳ chọn)* không dùng, thêm **một dòng** vào bảng index + tăng "mã kế tiếp" trong **cùng commit**.
+> **Cách dùng:** copy phần từ dấu `---` thứ hai trở xuống → `ADRs/todo/ADR-NNN-yyyy-MM-dd-slug.md` (mã NNN lấy ở dòng cuối [README.md](README.md)), điền nội dung, xoá mục *(tuỳ chọn)* không dùng, thêm **một dòng** vào bảng index + tăng "mã kế tiếp" trong **cùng commit**.
 
 ---
 
@@ -10,7 +10,8 @@
 ### Tên file & trạng thái — theo repo, KHÔNG theo Platform
 
 - Tên file: `ADR-NNN-yyyy-MM-dd-slug.md` — **mã `ADR-NNN` bất biến**, cấp tuần tự, không tái sử dụng. Ngày = ngày **tạo**, không đổi.
-- **Trạng thái sống ở [README.md](README.md)** (🟡 Doing · ⚪ Todo · 🔴 Pending · 🟢 Done · 🟣 Cancel) — index là chân lý; dòng Trạng thái trong file chỉ là phụ, ghi mốc sự kiện ("chốt/PASS/mở lại ngày…"). **Không** dùng hệ Proposed/Accepted/Superseded và không gán nghĩa khác cho 🔴/🟡.
+- **Thư mục = trạng thái:** `ADRs/doing/` · `todo/` · `pending/` · `done/` · `cancel/` (khớp [README.md](README.md)). Đổi trạng thái = `git mv` + sửa index trong **cùng commit**.
+- **Index [README.md](README.md)** vẫn là bảng tra (🟡 Doing · ⚪ Todo · 🔴 Pending · 🟢 Done · 🟣 Cancel). Dòng Trạng thái trong file chỉ là phụ. **Không** dùng hệ Proposed/Accepted/Superseded.
 - ADR đã chốt **không rewrite** để đổi ý: đổi hướng nhỏ → thêm mục "Điều chỉnh yyyy-MM-dd" (khuôn ADR-012 §7); đổi hẳn → ADR mới + index đánh 🟣 Cancel kèm ghi "ADR nào thay, kế thừa gì".
 - Cross-ref bằng **mã**: `ADR-014`, `ADR-020 QĐ-11` — không dựa vào tên file.
 

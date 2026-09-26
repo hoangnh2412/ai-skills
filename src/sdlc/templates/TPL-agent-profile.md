@@ -56,7 +56,7 @@ Khi `docs_provider=outline` (và tương tự MCP khác `local`/`none`): thêm `
 | `version` | `3` bản mới. **`1` và `2` vẫn hợp lệ** — không chặn dự án cũ |
 | `project_mode` | `mvp` · `standard` · `maintain` — đổi **phải kèm DEC** |
 | `docs_provider` | `local` \| `outline` |
-| `tasks_provider` | `openproject` \| `lark` \| `none` (`none` = file `memory/tasks/`, không phải `local`) |
+| `tasks_provider` | `openproject` \| `lark` \| `none` (`none` = SQLite `artifact` trong `trace.db`, không phải `local`) |
 | `chat_provider` | `slack` \| `lark` \| `none` |
 | `code_provider` | `local` (git trên đĩa, không L3 GitLab) \| `gitlab` (cần `mcp.code`) |
 | `trace_store` | `sqlite` — DB `memory/trace.db` gitignore |
@@ -122,7 +122,7 @@ Ba nguyên tắc áp cho mọi chế độ, mọi phase:
 
 ## Việc phải làm (mọi chế độ)
 
-- Đầu session: đọc `memory/profile.json` (dự án) → `memory/profile.user.json` (người) → `memory/memory.md` → `docs/05-traceability/overview.md`.
+- Đầu session: đọc `memory/profile.json` (dự án) → `memory/profile.user.json` (người) → `memory/memory.md` (entry cá nhân).
 - Prompt làm việc: khai phạm vi + DOC; gọi `/minipower-router` hoặc skill pack nghề. Xưng hô chỉ từ `memory/profile.user.json`.
 - Một phiên = **một slice** (một module + một DOC + section/ID); thiếu scope → hỏi trọn gói, không search repo.
 - Chốt nội dung → `docs/`; trao đổi chi tiết → `brainstorm/`; bản gốc khách → `assets/` (không sửa file gốc).
@@ -154,15 +154,15 @@ Ba nguyên tắc áp cho mọi chế độ, mọi phase:
 
 ### Quy tắc đọc / sửa tài liệu
 
-- **Phải đọc** `README.md` (root dự án), `docs/03-modules/{module}/README.md`, `memory/{phase}/README.md` trước khi làm sâu.
+- **Phải đọc** `README.md` (root dự án), `docs/03-modules/{module}/README.md`, `memory/decision-log.md` / `memory/open-questions.md` trước khi làm sâu.
 - Không tự đọc `docs/02-baseline/`, `docs/03-modules/_legacy/`, toàn bộ `trace-matrix.md` trừ khi người dùng yêu cầu rõ.
-- Context theo lớp: `overview.md` (30s) → `memory/{phase}/` → **1 DOC đích** (+ tối đa 1 dependency).
-- Không cập nhật `overview.md` / `trace-matrix.md` / `doc-registry.md` trừ khi được nói "rollup" hoặc "sync registry".
+- Context theo lớp: `memory/memory.md` → (khi cần) `decision-log` / `open-questions` → **1 DOC đích** (+ tối đa 1 dependency).
+- Không cập nhật `trace-matrix.md` / `doc-registry.md` trừ khi được nói "rollup" hoặc "sync registry"; cập nhật `memory.md` cá nhân khi người yêu cầu cuối phiên.
 
 ### Tham chiếu tài liệu
 
 - `README.md` — entry dự án · `memory/memory.md` — index context
-- `docs/05-traceability/overview.md` — tổng quan 30s (phase, module, blocker)
+- `memory/memory.md` — tổng quan 30s (phase, module, blocker)
 - `docs/01-project/DOC-01` … `DOC-03` — vision, stakeholder, scope
 - Pack Minipower: `sdlc/SKILL.md` (router), `sdlc/docs/pipeline.md`, `sdlc/docs/parallel-work.md`
 - Hook đã cài: token-guard, auto-routing, profile-guard — xem `sdlc/agents/`
@@ -174,7 +174,7 @@ Khi người dùng yêu cầu thêm scope / đổi hướng lớn: chạy delibe
 - Không nhảy giải pháp sớm khi tiền đề chưa rõ.
 - Không sửa `docs/02-baseline/` (chỉ đọc).
 - Không tự bàn giao giữa agent — con người điều phối qua ID ổn định.
-- Không gom context dài vào `memory/memory.md` — ghi đúng `memory/{phase}/`.
+- Không nhồi DEC/SRS vào `memory/memory.md` — DEC → `decision-log.md`; hỏi đội → `open-questions.md`; nhắc việc cá nhân giữ ngắn.
 - Không `@docs/` hoặc cả thư mục module khi chưa khai scope cụ thể.
 
 ---
@@ -290,7 +290,7 @@ Chọn đúng **một** biến thể theo `project_mode`.
 ```markdown
 ### Việc phải làm — riêng Standard
 
-- Trước khi **thực thi** (viết code / artifact cuối): qua **readiness-gate** — liệt kê tất cả thiếu sót một lượt; hoãn có ghi nợ `memory/{phase}/open-questions.md`.
+- Trước khi **thực thi** (viết code / artifact cuối): qua **readiness-gate** — liệt kê tất cả thiếu sót một lượt; hoãn có ghi nợ `memory/open-questions.md`.
 - Trước **baseline / bàn giao**: qua **doc-review** (đối kháng đủ 5 chiều, ≥3 góc nhìn) — verdict PASS mới trình ký; BLOCK = người review không ký.
 - Gặp `prereq-gate` chặn: bổ sung tiền đề trước; `BYPASS` chỉ khi người dùng ra lệnh — ghi lại lý do.
 - Sau baseline: mọi sửa đổi đi qua `change-control` (CR) — kể cả "sửa nhỏ".
@@ -305,7 +305,7 @@ Chọn đúng **một** biến thể theo `project_mode`.
 - Bắt đầu mỗi vùng bằng skill **as-built**: một vùng chạm một phiên; đầu ra là **nháp + danh sách câu hỏi** để người dùng xác nhận — không tự kết luận hành vi hệ thống.
 - Tiền đề tối thiểu (hook nhắc, không chặn): code vùng chạm không bị đòi tiền đề; trước khi **test** cần AC (DOC-07) của vùng đó; trước khi **deploy** cần DOC-17.
 - **Không đổi hành vi hệ đang chạy** khi hiện trạng vùng đó chưa được ghi thành tài liệu.
-- Phát hiện lệch tài liệu ↔ thực tế: ghi `memory/{phase}/open-questions.md`, hỏi trọn gói — không lặng lẽ chọn một bên.
+- Phát hiện lệch tài liệu ↔ thực tế: ghi `memory/open-questions.md`, hỏi trọn gói — không lặng lẽ chọn một bên.
 - doc-review theo **vùng chạm** (không đủ 5 chiều toàn cục); finding mức **Blocker = chặn merge** — người dùng quyết.
 - Hiện trạng đủ dày: chủ động đề nghị chốt baseline → chuyển `standard` (kèm DEC qua change-control).
 ```
@@ -317,7 +317,7 @@ Chọn đúng **một** biến thể theo `project_mode`.
 Cho agent dự án đích biết **ngoài pipeline `sdlc` còn module nào, khi nào gọi cái gì**. Không viết tay danh sách — **sinh từ `PACK.md`** của từng module (schema: [contracts/pack-manifest.md](../../contracts/pack-manifest.md)):
 
 1. Khi init / reconfigure, quét `*/PACK.md` trong repo pack (`sdlc`, `backend`, `ops`, và mọi module tương lai — `frontend`, `design`, …).
-2. Bỏ `sdlc` (đã đi qua router `/minipower-sdlc` ở phần trên). Với mỗi module còn lại, lấy từ khối yaml: `pack` · `stage` · `consumes` · `handoff-in/out`; câu "dùng khi nào" chưng cất từ đó + mô tả ở hub `{module}/README.md`.
+2. Bỏ `sdlc` (đã đi qua router `/minipower-router` ở phần trên). Với mỗi module còn lại, lấy từ khối yaml: `pack` · `stage` · `consumes` · `handoff-in/out`; câu "dùng khi nào" chưng cất từ đó + mô tả ở hub `{module}/README.md`.
 3. Chỉ liệt kê module **thực sự cài** cho dự án (theo lựa chọn `--with` lúc cài / câu trả lời init). Không cài module nào ngoài `sdlc` → block rút còn một dòng ghi chú.
 
 Khuôn render:
@@ -357,9 +357,9 @@ Quy tắc dùng chung:
 
 người dùng mới dùng Minipower — mỗi khi bắt đầu phase mới, em sẽ:
 1. Nhắc skill phù hợp (`sdlc/skills/{phase}/SKILL.md`) và DOC liên quan.
-2. Liệt kê file nên đọc trước (theo `README.md` module / `overview.md`).
+2. Liệt kê file nên đọc trước (theo `README.md` module / `memory/memory.md`).
 3. Hỏi trọn gói nếu thiếu tiền đề (readiness-gate) — không hỏi nhỏ giọt.
-4. Giải thích ngắn cách gọi: `/minipower-sdlc` + `Phase: …` + `@` file.
+4. Giải thích ngắn cách gọi: `/minipower-router` + `Phase: …` + `@` file.
 ```
 
 **Khi `returning`:** một dòng:
@@ -386,7 +386,7 @@ Sau toàn bộ nội dung trên (sau phần Nguyên tắc code), thêm:
 @.cursor/skills/minipower-sdlc/agents/profile-guard.md
 ```
 
-> `AGENTS.md` **không** có block import — Cursor nạp rule qua `.cursor/rules/` khi đã cài [install/cursor](../install/cursor/README.md).
+> `AGENTS.md` **không** có block import — Cursor nạp rule qua `.cursor/rules/` khi đã cài [cli/cursor](../../../cli/cursor/README.md).
 
 ---
 

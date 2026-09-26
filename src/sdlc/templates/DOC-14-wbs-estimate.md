@@ -6,7 +6,7 @@
 
 **Tiêu chuẩn tham khảo:** **PMBOK WBS**; Agile Epic · Feature · User Story · Story Points
 
-> WBS/estimate là **phân rã phạm vi + điểm**. Tracker việc (todo/doing/done) **không** nằm trong DOC này — `memory/tasks/` khi `tasks_provider=none`, hoặc board OpenProject/Lark. Cột *Story ID* không thay `T-NNN`.
+> WBS/estimate là **phân rã phạm vi + điểm**. Tracker việc (todo/doing/done) **không** nằm trong DOC này — SQLite `artifact` khi `tasks_provider=none`, hoặc board OpenProject/Lark. Cột *Story ID* không thay `T-NNN`.
 
 ---
 

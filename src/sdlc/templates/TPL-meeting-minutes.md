@@ -27,4 +27,4 @@
 ## Vấn đề mở / theo dõi
 - [ ] [Chưa chốt — chuyển `open-questions.md` nếu chặn thực thi]
 
-> Chốt quan trọng → distill vào `docs/` (DOC tương ứng) hoặc `memory/{phase}/`, không để trôi trong biên bản.
+> Chốt quan trọng → distill vào `docs/` (DOC tương ứng) hoặc `memory/decision-log.md` / `open-questions.md`, không để trôi trong biên bản.

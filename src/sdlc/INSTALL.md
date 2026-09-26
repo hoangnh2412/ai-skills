@@ -4,7 +4,7 @@ Hướng dẫn cài Minipower vào IDE. Xem giới thiệu & cách dùng: [READM
 
 Có **2 phần độc lập**:
 
-1. **Đăng ký skill** — để gõ `/minipower-sdlc` / `@minipower-sdlc` (bắt buộc).
+1. **Đăng ký skill** — để gõ `/minipower-router` / `@minipower-router` (bắt buộc).
 2. **Rules + hooks** — token guard, auto-route, scope prompt (khuyến nghị, cài riêng).
 
 ---
@@ -15,13 +15,13 @@ Có **2 phần độc lập**:
 
 Cursor chỉ nhận skill tại **`.cursor/skills/{tên}/SKILL.md`**. Tạo **symbolic link** từ folder `sdlc/` trong repo `minipower` sang `.cursor/skills/minipower-sdlc` của workspace.
 
-Chạy lệnh **từ root workspace** đang mở trong Cursor. Nếu `minipower` nằm ngoài workspace, thay path nguồn bằng **đường dẫn tuyệt đối** tới `…/minipower/sdlc`.
+Chạy lệnh **từ root workspace** đang mở trong Cursor. Nếu `minipower` nằm ngoài workspace, thay path nguồn bằng **đường dẫn tuyệt đối** tới `…/minipower/src/sdlc`.
 
 **macOS / Linux**
 
 ```bash
 mkdir -p .cursor/skills
-ln -snf "$(pwd)/minipower/sdlc" .cursor/skills/minipower-sdlc
+ln -snf "$(pwd)/minipower/src/sdlc" .cursor/skills/minipower-sdlc
 
 # Kiểm tra
 ls -la .cursor/skills/minipower-sdlc
@@ -34,11 +34,11 @@ test -f .cursor/skills/minipower-sdlc/SKILL.md && echo "OK"
 
 ```powershell
 New-Item -ItemType Directory -Force -Path .cursor\skills
-$source = Join-Path (Get-Location) "minipower\sdlc"
+$source = Join-Path (Get-Location) "minipower\src\sdlc"
 New-Item -ItemType SymbolicLink -Force -Path .cursor\skills\minipower-sdlc -Target $source
 
 # Hoặc path tuyệt đối:
-# New-Item -ItemType SymbolicLink -Force -Path .cursor\skills\minipower-sdlc -Target "C:\path\to\minipower\sdlc"
+# New-Item -ItemType SymbolicLink -Force -Path .cursor\skills\minipower-sdlc -Target "C:\path\to\minipower\src\sdlc"
 
 # Kiểm tra
 Test-Path .cursor\skills\minipower-sdlc\SKILL.md
@@ -48,10 +48,10 @@ Test-Path .cursor\skills\minipower-sdlc\SKILL.md
 
 ```cmd
 mkdir .cursor\skills
-mklink /J "%CD%\.cursor\skills\minipower-sdlc" "%CD%\minipower\sdlc"
+mklink /J "%CD%\.cursor\skills\minipower-sdlc" "%CD%\minipower\src\sdlc"
 ```
 
-Sau khi link: trong chat gõ `/minipower-sdlc` hoặc `@minipower-sdlc`, kèm `Phase: discovery` (hoặc requirements, architecture, …).
+Sau khi link: trong chat gõ `/minipower-router` hoặc `@minipower-router`, kèm `Phase: discovery` (hoặc requirements, architecture, …).
 
 > Skill con trong `skills/` **không** xuất hiện trong menu `/` — đó là hành vi bình thường của Cursor (chỉ nhận skill một cấp), không phải lỗi. Gọi phase con bằng `Phase:` hoặc `@skills/{phase}/SKILL.md`.
 
@@ -60,13 +60,14 @@ Sau khi link: trong chat gõ `/minipower-sdlc` hoặc `@minipower-sdlc`, kèm `P
 Claude Code nhận skill tại **`.claude/skills/{tên}/SKILL.md`**. Symlink cả pack `sdlc/` vào — `SKILL.md` ở gốc pack là router.
 
 ```bash
-MP=/path/to/minipower/sdlc
+REPO=/path/to/minipower
+MP=$REPO/src/sdlc
 mkdir -p .claude/skills
 ln -snf "$MP" .claude/skills/minipower-sdlc
 test -f .claude/skills/minipower-sdlc/SKILL.md && echo "OK"
 ```
 
-Sau khi link: gõ `/minipower-sdlc` kèm `Phase: discovery` (hoặc requirements, architecture, …). Rules + hooks (permissions, token guard) cài riêng — xem [install/claude/README.md](../../cli/claude/README.md).
+Sau khi link: gõ `/minipower-router` kèm `Phase: discovery` (hoặc requirements, architecture, …). Rules + hooks (permissions, token guard) cài riêng — xem [install/claude/README.md](../../cli/claude/README.md).
 
 ### OpenCode
 
@@ -90,27 +91,17 @@ Guardrails agent (nguồn chung): [agents/README.md](agents/README.md) · Token 
 
 ---
 
-## 3. Sau khi cài — tạo khung dự án bằng prompt
+## 3. Sau khi cài — tạo khung dự án
 
-> **Bước tiếp theo bắt buộc** nếu bạn mới bắt đầu một dự án Minipower: mở workspace (hoặc folder dự án mới) đã cài skill + hooks ở mục 1–2, rồi chạy **`Init project`** trong chat agent — **không** cần copy tay thư mục trước.
+> Chạy script trong folder dự án đã cài. Model không hỏi và không ghi `profile.json`.
 
-### Prompt khởi tạo
+### Lệnh khởi tạo
 
-Trong Cursor / Claude Code / OpenCode, gõ:
-
-```text
-/minipower-sdlc
-Init project {tên-dự-án}
+```bash
+node .minipower/bin/minipower init
 ```
 
-Ví dụ:
-
-```text
-/minipower-sdlc
-Init project billing-demo
-```
-
-Agent sẽ:
+Script sẽ:
 
 1. **Hỏi trọn gói 5 câu** (bắt buộc — trả lời một lượt):
 
@@ -134,7 +125,7 @@ Agent sẽ:
    └── docs/                   ← DOC-01–18
    ```
 
-3. **Điền** `README.md`, `memory/memory.md`, `memory/{phase}/` theo câu trả lời.
+3. **Điền** `README.md`; copy `memory.md.example` → `memory.md`; cập nhật `decision-log` / `open-questions` khi cần.
 
 Sau init, mọi prompt làm việc minipower (Phase, DOC, `@docs/`, …) cần `memory/profile.json` hợp lệ — hook **profile-guard** chặn nếu thiếu. Cập nhật sau: `Reconfigure agent` / `Hoàn tất profile`.
 
@@ -146,7 +137,7 @@ Chỉ dùng khi không có agent hoặc CI/script:
 
 ```bash
 PROJECT=my-project
-MINIPOWER=/path/to/minipower/sdlc
+MINIPOWER=/path/to/minipower/src/sdlc
 mkdir -p "$PROJECT"
 cp -R "$MINIPOWER/project-skeleton/"* "$PROJECT/"
 cp -R "$MINIPOWER/docs-skeleton" "$PROJECT/docs"

@@ -80,7 +80,7 @@
 |-------|-------|----------|-----------------|---------------------|
 | FR-001 | Hệ thống shall … | Must | UC-001 | Test |
 
-> **Không** dùng SRS làm task board. Việc theo dõi (`tasks_provider=none`) sống ở `memory/tasks/T-NNN.md`; trong DOC này chỉ **trỏ** `T-NNN` nếu cần. OpenProject/Lark = SSOT việc, không nhân bảng trạng thái vào đây.
+> **Không** dùng SRS làm task board. Việc theo dõi khi `tasks_provider=none` sống ở SQLite `memory/trace.db` (`artifact` `type=task`); trong DOC này chỉ **trỏ** `T-NNN` nếu cần. OpenProject/Lark = SSOT việc, không nhân bảng trạng thái vào đây.
 
 ### FR-[ID] — [Tên] (mẫu chi tiết)
 

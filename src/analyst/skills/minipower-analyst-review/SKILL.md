@@ -2,7 +2,6 @@
 name: minipower-analyst-review
 description: Review tài liệu BA: ID, trace UC-FR-AC, testable. Dùng khi QC SRS, soi FR, analyst-review — không 5 chiều mọi DOC.
 metadata:
-  audience: hoangnh
   workflow: github
 ---
 

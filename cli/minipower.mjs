@@ -22,7 +22,7 @@ import {
   writeFileSync,
 } from "node:fs"
 import { spawnSync } from "node:child_process"
-import { userInfo } from "node:os"
+import { homedir, userInfo } from "node:os"
 import { basename, dirname, join, resolve } from "node:path"
 import { stdin, stdout } from "node:process"
 import * as readline from "node:readline/promises"
@@ -171,11 +171,35 @@ function installSkills(target, skillsRel, withPacks) {
   return notes
 }
 
-function installClient(id, target, withPacks, dry) {
+function cursorUserRulesDir() {
+  const home = process.env.MINIPOWER_CURSOR_HOME || homedir()
+  return join(home, ".cursor", "rules")
+}
+
+function installCursorUserAlwaysOn() {
+  const src = join(HERE, "cursor", "rules", "minipower-always-on.mdc")
+  if (!existsSync(src)) die(`Thiếu ${src}`)
+  const dest = join(cursorUserRulesDir(), "minipower-always-on.mdc")
+  mkdirSync(dirname(dest), { recursive: true })
+  if (existsSync(dest)) {
+    try {
+      unlinkSync(dest)
+    } catch {
+      /* replace bên dưới */
+    }
+  }
+  const how = linkPath(src, dest)
+  process.stdout.write(`✓ cursor user-rule ${dest} (${how})\n`)
+}
+
+function installClient(id, target, withPacks, dry, opts = {}) {
   const spec = CLIENTS[id]
   if (!spec) die(`Client không hỗ trợ: ${id}. Có: ${Object.keys(CLIENTS).join(", ")}`)
   if (dry) {
     process.stdout.write(`[dry-run] ${id} → ${target}\n`)
+    if (id === "cursor" && opts.userRules !== false) {
+      process.stdout.write(`[dry-run] cursor user-rule ${join(cursorUserRulesDir(), "minipower-always-on.mdc")}\n`)
+    }
     return
   }
 
@@ -207,6 +231,7 @@ function installClient(id, target, withPacks, dry) {
         linkPath(join(rulesDir, f), dest)
       }
     }
+    if (opts.userRules !== false) installCursorUserAlwaysOn()
   }
 
   if (spec.kind === "opencode") {
@@ -246,6 +271,13 @@ async function cmdInstall(flags) {
     return
   }
 
+  if (flags["print-user-rules"]) {
+    const p = join(HERE, "cursor", "rules", "minipower-always-on.mdc")
+    if (!existsSync(p)) die(`Thiếu ${p}`)
+    process.stdout.write(readFileSync(p, "utf8"))
+    return
+  }
+
   if (flags.check && !flags["dry-run"]) {
     let n = 0
     for (const script of [
@@ -269,6 +301,7 @@ async function cmdInstall(flags) {
   let target = resolve(flags.target && flags.target !== true ? flags.target : process.cwd())
   let clients = flagged ? parseCsv(flags.client) : []
   let withPacks = flags.with && flags.with !== true ? parseCsv(flags.with) : defaultWithPacks(registry)
+  let userRules = flags["no-user-rules"] !== true
 
   if (flags.print) {
     if (!clients.length) die(" --print cần --client claude (hoặc chạy install không flag để hỏi).")
@@ -281,6 +314,7 @@ async function cmdInstall(flags) {
     target = asked.target
     clients = asked.clients
     withPacks = asked.withPacks
+    userRules = asked.userRules
   }
 
   if (!clients.length) die("Thiếu client (cursor / claude / opencode).")
@@ -288,9 +322,13 @@ async function cmdInstall(flags) {
     if (!known.has(p)) die(`Module không có trong registry: ${p}`)
   }
 
-  process.stdout.write(`Repo: ${REPO}\nTarget: ${target}\nClient: ${clients.join(", ")}\nWith: ${withPacks.join(", ")}\n`)
+  process.stdout.write(
+    `Repo: ${REPO}\nTarget: ${target}\nClient: ${clients.join(", ")}\nWith: ${withPacks.join(", ")}\n`,
+  )
 
-  for (const id of clients) installClient(id, target, withPacks, flags["dry-run"] === true)
+  for (const id of clients) {
+    installClient(id, target, withPacks, flags["dry-run"] === true, { userRules })
+  }
   if (!flags["dry-run"]) recordInstalledClients(target, clients)
 }
 
@@ -435,11 +473,20 @@ async function promptInstall(registry) {
       withPacks = [...new Set(ids)]
     }
 
+    let userRules = true
+    if (clients.includes("cursor")) {
+      stdout.write(
+        "\nAlways-on user-global (~/.cursor/rules/minipower-always-on.mdc) — mọi workspace Cursor, kể cả không .minipower/. [Y/n]: ",
+      )
+      const ur = (await nextLine(iter, "Y")).toLowerCase()
+      userRules = ur !== "n" && ur !== "no"
+    }
+
     stdout.write(`\n${target}\nclient: ${clients.join(", ")}\npack: ${withPacks.join(", ")}\n`)
     stdout.write("Cài? [Y/n]\n")
     const ok = (await nextLine(iter, "Y")).toLowerCase()
     if (ok === "n" || ok === "no") die("Huỷ install.")
-    return { target, clients, withPacks }
+    return { target, clients, withPacks, userRules }
   } finally {
     rl.close()
   }
@@ -606,6 +653,11 @@ async function cmdInit(flags) {
   copyTree(join(SDLC, "project-skeleton"), target)
   copyTree(join(SDLC, "docs-skeleton"), join(target, "docs"))
 
+  // ADR-035: entry cá nhân — copy khuôn → memory.md (gitignore trên dự án đích)
+  const memExample = join(target, "memory", "memory.md.example")
+  const memLocal = join(target, "memory", "memory.md")
+  if (existsSync(memExample) && !existsSync(memLocal)) copyFileSync(memExample, memLocal)
+
   const profile = {
     version: 3,
     project_name: a.project_name,
@@ -673,7 +725,24 @@ function checkInit(target) {
     if (!v.valid) errors.push(`profile: ${v.errors.join("; ")}`)
   }
   if (!existsSync(join(target, "memory", "memory.md"))) errors.push("memory/memory.md")
+  if (!existsSync(join(target, "memory", "decision-log.md"))) errors.push("memory/decision-log.md")
+  if (!existsSync(join(target, "memory", "open-questions.md"))) errors.push("memory/open-questions.md")
   if (!existsSync(join(target, "docs"))) errors.push("docs/")
+  if (existsSync(join(target, "docs", "05-traceability", "overview.md"))) {
+    errors.push("docs/05-traceability/overview.md (đã bỏ — ADR-035; xoá hoặc migrate vào memory.md)")
+  }
+  if (existsSync(join(target, "memory", "tasks"))) {
+    errors.push("memory/tasks/ (đã bỏ — ADR-035; việc đội → trace.db)")
+  }
+  const launcher = join(mp, "bin", "minipower")
+  if (existsSync(mp) && existsSync(launcher)) {
+    const body = readFileSync(launcher, "utf8")
+    const stale = body.includes("sdlc/install/minipower.mjs")
+    const ok = body.includes('"cli", "minipower.mjs"') || body.includes("cli/minipower.mjs")
+    if (stale || !ok) {
+      errors.push(".minipower/bin/minipower (shim cũ — chạy lại minipower install)")
+    }
+  }
   if (existsSync(pf)) {
     const mode = JSON.parse(readFileSync(pf, "utf8")).project_mode
     if ((mode === "mvp" || mode === "maintain") && !existsSync(join(target, "memory", "doc-debt.md"))) {
@@ -688,10 +757,11 @@ function usage() {
 
   install                 hỏi thư mục, client, pack (số + Enter)
   install --client cursor[,claude] [--with pack,...] [--target DIR]
+                          [--no-user-rules]   bỏ always-on ~/.cursor/rules/
   init                    hỏi từng bước
   init --answers FILE.json
   init --check [--target DIR]
-  install --check | --list-modules | --dry-run | --print
+  install --check | --list-modules | --dry-run | --print | --print-user-rules
 
 Từ repo factory (lần đầu):
   node cli/minipower.mjs install

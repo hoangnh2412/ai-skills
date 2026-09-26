@@ -2,7 +2,6 @@
 name: minipower-architecture-sad
 description: Viết SAD ADR integration data model API spec DOC-08 đến 12. Dùng khi architecture, SAD, OpenAPI — không vibe-code .NET.
 metadata:
-  audience: hoangnh
   workflow: github
 ---
 

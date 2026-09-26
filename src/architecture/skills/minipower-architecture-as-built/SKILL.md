@@ -2,7 +2,6 @@
 name: minipower-architecture-as-built
 description: Khai quật hệ đang chạy thành tài liệu as-built, CodeGraph. Dùng khi maintain, legacy, as-built, tài liệu thất lạc — người trigger.
 metadata:
-  audience: hoangnh
   workflow: github
 ---
 

@@ -4,7 +4,7 @@
 
 import { INSTALL_HOOKS } from "./rules.js"
 
-export const CLAUDE_PACK_PLACEHOLDER = "/ABSOLUTE/PATH/TO/minipower/sdlc"
+export const CLAUDE_PACK_PLACEHOLDER = "/ABSOLUTE/PATH/TO/minipower/src/sdlc"
 export const CURSOR_SKILL_HOOK = ".cursor/skills/minipower-sdlc/hooks/bin"
 
 function promptHooks() {

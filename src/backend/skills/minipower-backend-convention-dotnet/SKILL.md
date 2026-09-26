@@ -2,7 +2,6 @@
 name: minipower-backend-convention-dotnet
 description: Quy ước coding C#/.NET — đặt tên, nullable, async/CancellationToken, exception, logging, LINQ, DI, C# 11–12, test, bảo mật. Dùng khi viết hoặc sửa code C#, và khi cần dựng .editorconfig / Directory.Build.props để analyzer ép convention lúc build.
 metadata:
-  audience: hoangnh
   workflow: github
 ---
 

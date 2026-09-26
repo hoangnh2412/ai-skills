@@ -32,7 +32,7 @@ repo: docs
 consumes: [assets/*, "khách hàng: khảo sát, biên bản"]
 produces: [DOC-01..19, "{MOD}-UC/FR/BR/AC-*", ADR-*, "trace-matrix"]
 handoff-out: [H2, H3, H4, H5, H6]
-memory: memory/{phase}/
+memory: memory/
 ```
 
 ## 3. Ví dụ — `backend`

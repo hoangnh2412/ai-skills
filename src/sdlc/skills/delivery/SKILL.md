@@ -1,11 +1,13 @@
 ---
 name: delivery
 description: >-
-  [minipower] Test strategy (ISTQB) & deployment — DOC-16–17. Dùng
-  khi UAT, test strategy, trace matrix test, deployment, cutover, go-live.
+  [KHO] SOP DOC-16/17. DOC-16 mở minipower-qa-strategy.
+  DOC-17 mở minipower-ops-deploy. Không route vào skill này.
 ---
 
 # BA Delivery — Test & Deploy
+
+> Kho. DOC-16: [minipower-qa-strategy](../../../qa/skills/minipower-qa-strategy/SKILL.md). DOC-17: [minipower-ops-deploy](../../../ops/skills/minipower-ops-deploy/SKILL.md).
 
 **Pack:** minipower · **Tiên quyết:** DOC-06 + DOC-07.
 

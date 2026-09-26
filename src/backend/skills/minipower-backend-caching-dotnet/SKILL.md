@@ -2,7 +2,6 @@
 name: minipower-backend-caching-dotnet
 description: Thiết lập Jarvis.Caching — memory + Redis distributed cache, invalidation pub/sub, cache-aside GetOrSetAsync. Dùng khi tích hợp cache .NET, section Cache, hoặc cache connection string cho EF.
 metadata:
-  audience: hoangnh
   workflow: github
 ---
 

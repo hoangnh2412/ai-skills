@@ -2,7 +2,7 @@
 
 Markdown thuần — **danh sách điểm nên có người chốt**, không phải rào chặn.
 
-> ⚠️ **Không hook nào enforce bảng này** ([ADR-020](../../../ADRs/ADR-020-2026-08-20-minipower-3-che-do-du-an-gate-bang-hook.md) QĐ-11). Chữ ký thôi làm điều kiện máy kiểm: hook `dec-gate` đã bị bỏ. Con người là **người ra lệnh** — yêu cầu làm SRS khi BRD chưa chốt thì hệ chỉ **cảnh báo**, người xác nhận là chạy.
+> ⚠️ **Không hook nào enforce bảng này** ([ADR-020](../../../ADRs/todo/ADR-020-2026-08-20-minipower-3-che-do-du-an-gate-bang-hook.md) QĐ-11). Chữ ký thôi làm điều kiện máy kiểm: hook `dec-gate` đã bị bỏ. Con người là **người ra lệnh** — yêu cầu làm SRS khi BRD chưa chốt thì hệ chỉ **cảnh báo**, người xác nhận là chạy.
 >
 > Cái *máy* kiểm được là **tồn tại DOC tiền đề**, theo từng module (`prereq-gate` — C2), và cả nó cũng mở bằng `BYPASS`.
 
@@ -49,7 +49,7 @@ Diễn giải:
 
 ```
 AI hoàn tất DOC `approve` (fan-out các module nếu có)
-  → AI SOẠN một DEC nháp trong memory/{phase}/decision-log.md
+  → AI SOẠN một DEC nháp trong memory/decision-log.md
         (tóm tắt cái đã làm · điểm cần người quyết · rủi ro/assumption/TBD)
   → Người REVIEW: ✅ duyệt · ✍️ sửa · ⛔ trả lại
   → Duyệt ⇒ DEC ghi "đã chốt" (người xác nhận) ⇒ đi tiếp, quyết định có dấu vết

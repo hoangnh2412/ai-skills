@@ -14,8 +14,8 @@ Pack nghề **sở hữu** template tương ứng; file DOC đợt này vẫn `s
 | DOC-13 | `requirements` | `analyst/` |
 | DOC-14 | `planning` | `pm/` |
 | DOC-15 | `planning` | `pm/` |
-| DOC-16 | `delivery` | `qa/` + `ops/` (DOC-16 vs DOC-17) |
-| DOC-17 | `delivery` | `qa/` + `ops/` (DOC-16 vs DOC-17) |
+| DOC-16 | `delivery` | `qa/` |
+| DOC-17 | `delivery` | `ops/` |
 | DOC-18 | `change-control` | `analyst/` + `pm/` + `support/` |
 | DOC-19 | `requirements` | `analyst/` |
 | DOC-01 | `discovery` | `discovery/` |

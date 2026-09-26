@@ -5,23 +5,23 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"/ABSOLUTE/PATH/TO/minipower/sdlc/hooks/bin/token-guard.js\""
+            "command": "node \"/ABSOLUTE/PATH/TO/minipower/src/sdlc/hooks/bin/token-guard.js\""
           },
           {
             "type": "command",
-            "command": "node \"/ABSOLUTE/PATH/TO/minipower/sdlc/hooks/bin/auto-routing.js\""
+            "command": "node \"/ABSOLUTE/PATH/TO/minipower/src/sdlc/hooks/bin/auto-routing.js\""
           },
           {
             "type": "command",
-            "command": "node \"/ABSOLUTE/PATH/TO/minipower/sdlc/hooks/bin/profile-guard.js\""
+            "command": "node \"/ABSOLUTE/PATH/TO/minipower/src/sdlc/hooks/bin/profile-guard.js\""
           },
           {
             "type": "command",
-            "command": "node \"/ABSOLUTE/PATH/TO/minipower/sdlc/hooks/bin/prereq-gate.js\""
+            "command": "node \"/ABSOLUTE/PATH/TO/minipower/src/sdlc/hooks/bin/prereq-gate.js\""
           },
           {
             "type": "command",
-            "command": "node \"/ABSOLUTE/PATH/TO/minipower/sdlc/hooks/bin/decision-staleness.js\""
+            "command": "node \"/ABSOLUTE/PATH/TO/minipower/src/sdlc/hooks/bin/decision-staleness.js\""
           }
         ]
       }
@@ -32,7 +32,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"/ABSOLUTE/PATH/TO/minipower/sdlc/hooks/bin/baseline-guard.js\""
+            "command": "node \"/ABSOLUTE/PATH/TO/minipower/src/sdlc/hooks/bin/baseline-guard.js\""
           }
         ]
       }

@@ -46,7 +46,7 @@ Dong bo toan bo requirements tat ca module
 ## Agent làm gì khi đọc / sửa
 
 - **Chưa rõ scope** → hỏi 1 câu (module + DOC + section), không quét repo.
-- **Context theo lớp:** `overview.md` → `memory/{phase}/` → **1 DOC đích** (+ tối đa 1 dependency).
+- **Context theo lớp:** `memory/memory.md` → (khi cần) DEC/open-Q → **1 DOC đích** (+ tối đa 1 dependency).
 - **Tối đa 3 file** đọc thêm so với file user @; vượt → hỏi trước.
 - **Không tự đọc** `docs/02-baseline/`, `docs/03-modules/_legacy/`, toàn bộ `trace-matrix.md` / `doc-registry.md` trừ khi user yêu cầu rõ (migrate, rollup).
 - **Một slice khi sửa:** `{module}/{DOC-XX}` + section hoặc ID (`{MOD}-FR-010`); chỉ diff phần được yêu cầu.

@@ -2,7 +2,6 @@
 name: minipower-tasks-lark
 description: Đọc, lọc, soạn nháp và ghi task Lark (tasklist / task) theo L1–L3. Dùng khi việc trên Lark, sprint, tasklist, "tạo task", tasks_provider lark — không dùng cho tin nhắn nhóm hay wiki.
 metadata:
-  audience: hoangnh
   workflow: github
 ---
 
@@ -21,7 +20,7 @@ SOP MCP mặt **`tasks`**. Wrap tool, không copy schema API vào pack. Hướng
 
 ## Quy tắc cốt lõi
 
-- Đọc `memory/profile.json` → `tasks_provider`. Khác `lark` → **dừng**, không ghi Lark. `none` → `memory/tasks/`.
+- Đọc `memory/profile.json` → `tasks_provider`. Khác `lark` → **dừng**, không gọi MCP Lark. `none` → đọc/ghi SQLite `artifact` (`trace.db`), không gọi Lark. **Không** đề xuất “đọc Lark cá nhân” trừ khi người **xác nhận rõ** đó là ngoài SSOT dự án. Đổi provider → người chạy lại `minipower init`.
 - MCP từ `mcp.tasks` (thường `user-lark-mcp`). Thiếu server / `needsAuth` → `mcp_auth` một lần rồi dừng nếu vẫn lỗi.
 - Đọc schema tool lần đầu phiên. Tên hay gặp: `task_v2_task_list`, `task_v2_task_get`, `task_v2_tasklist_list`, `task_v2_tasklist_tasks`. **Không** bịa `task_create` nếu catalog không có — nói rõ giới hạn, để người tạo tay.
 - L1 tự do đọc. L3 chỉ sau OK trên **một bảng** (bỏ tick dòng không gửi — ADR-033 QĐ-7).

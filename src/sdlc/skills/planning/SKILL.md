@@ -1,11 +1,13 @@
 ---
 name: planning
 description: >-
-  [minipower] Ước lượng & kế hoạch — complexity, WBS, Story Point,
-  roadmap. Bước 10–12, DOC-14–15. Dùng khi estimate, WBS, project plan, roadmap.
+  [KHO] SOP WBS/kế hoạch DOC-14–15. Làm việc mở minipower-pm-plan.
+  Không route vào skill này. ULNL trước ký là presales.
 ---
 
 # BA Planning & Estimation
+
+> Kho. Mở [minipower-pm-plan](../../../pm/skills/minipower-pm-plan/SKILL.md).
 
 **Pack:** minipower · **Phase:** 10–12 · **Tiên quyết:** DOC-03 + DOC-06.
 

@@ -2,7 +2,6 @@
 name: minipower-backend-architecture-dotnet
 description: Kiến trúc DDD/Clean của backend .NET theo framework Jarvis — file đặt ở layer nào, layer nào được reference layer nào, lát cắt dọc khi thêm tính năng, architecture test ép luật lúc dotnet test. Dùng khi thêm tính năng/API/entity/handler mới, khi phân vân đặt code ở đâu, hoặc khi dựng kiểm tra kiến trúc cho solution.
 metadata:
-  audience: hoangnh
   workflow: github
 ---
 

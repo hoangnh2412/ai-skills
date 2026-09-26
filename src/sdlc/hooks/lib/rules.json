@@ -178,8 +178,8 @@
     { "label": "Data model", "doc": "11" },
     { "label": "API spec", "doc": "12" },
     { "label": "Coding convention", "path": "docs/00-governance/" },
-    { "label": "Decision log", "path": "memory/{phase}/decision-log.md" },
-    { "label": "Open questions / issues", "path": "memory/{phase}/open-questions.md" },
+    { "label": "Decision log", "path": "memory/decision-log.md" },
+    { "label": "Open questions / issues", "path": "memory/open-questions.md" },
     { "label": "Current sprint", "doc": "15" }
   ],
   "approval_gates": [

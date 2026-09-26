@@ -1,13 +1,13 @@
 ---
 name: readiness-gate
 description: >-
-  [minipower] Cổng thực thi — soát tài liệu tiền đề trước khi sinh code/artifact
-  cuối. Liệt kê TRỌN BỘ thiếu sót một lượt, cho hoãn có ghi nợ, "đủ ở mức chấp
-  nhận được" do người quyết. Dùng khi: thiết kế module, viết code, kiểm thử,
-  triển khai — hoặc bất kỳ yêu cầu chuyển sang thực thi.
+  [KHO] SOP cổng thực thi. Làm việc mở minipower-router-readiness.
+  Không route vào skill này.
 ---
 
 # Readiness Gate — Cổng thực thi
+
+> Kho. Mở [minipower-router-readiness](../../../router/skills/minipower-router-readiness/SKILL.md).
 
 **Pack:** minipower · **Loại:** skill cross-phase · **Không** sinh DOC — sinh *checklist tiền đề + verdict đi tiếp*.
 
@@ -23,7 +23,7 @@ Khác [deliberation](../deliberation/SKILL.md): deliberation soát *có nên là
 
 1. **Hỏi trọn gói, một lượt.** Liệt kê **TẤT CẢ** tiền đề còn thiếu cùng lúc — **không** hỏi nhỏ giọt từng câu.
 2. **Ngưỡng "đủ chấp nhận được".** Con người xác nhận mức đủ; không ép đủ tất cả mới cho đi tiếp.
-3. **Cho hoãn có ghi nợ.** Mục bị bỏ qua tạm → ghi vào `memory/{phase}/open-questions.md`, đi tiếp, **bổ sung dần khi thực thi**.
+3. **Cho hoãn có ghi nợ.** Mục bị bỏ qua tạm → ghi vào `memory/open-questions.md`, đi tiếp, **bổ sung dần khi thực thi**.
 
 ```
 Yêu cầu thực thi
@@ -52,7 +52,7 @@ Yêu cầu thực thi
 
 <!-- END generated: prereq-by-intent -->
 
-**Mặc định vs cấu hình riêng (Q7):** đây là bộ **mặc định**. Đầu phiên gate hỏi *"Dùng bộ tiền đề mặc định, hay dự án có bộ riêng?"* — nếu riêng, đọc `memory/{phase}/` để lấy danh sách tiền đề của dự án thay cho bảng này.
+**Mặc định vs cấu hình riêng (Q7):** đây là bộ **mặc định**. Đầu phiên gate hỏi *"Dùng bộ tiền đề mặc định, hay dự án có bộ riêng?"* — nếu riêng, đọc `memory/open-questions.md` / `memory/memory.md` để lấy danh sách tiền đề của dự án thay cho bảng này.
 
 ## Theo chế độ dự án
 
@@ -70,7 +70,7 @@ Bảng trên là bộ của chế độ `standard`. Chế độ hiện tại đ�
 
 ## Sổ nợ tài liệu — `open-questions.md`
 
-Mỗi mục hoãn ghi 1 dòng vào `memory/{phase}/open-questions.md`:
+Mỗi mục hoãn ghi 1 dòng vào `memory/open-questions.md`:
 
 ```text
 - [ ] {OQ-NNN} <câu hỏi/tiền đề thiếu> · intent: <id> · hoãn ngày YYYY-MM-DD · chặn: <có/không>

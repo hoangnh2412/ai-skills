@@ -1,13 +1,13 @@
 ---
 name: deliberation
 description: >-
-  [minipower] Tư duy trước khi làm — Premise Check (có đáng làm không) +
-  Deliberation (nghị luận đa góc nhìn). Gate cross-phase, chạy TRƯỚC khi viết
-  DOC hoặc chốt quyết định lớn. Dùng khi brainstorm, có nên làm, đánh giá lại,
-  chốt problem/scope, ADR quan trọng, CR lớn.
+  [KHO] SOP premise check. Làm việc mở minipower-router-deliberation.
+  Không route vào skill này.
 ---
 
 # Deliberation — Tư duy trước khi cam kết
+
+> Kho. Mở [minipower-router-deliberation](../../../router/skills/minipower-router-deliberation/SKILL.md).
 
 **Pack:** minipower · **Loại:** skill dùng chung (cross-phase, **không** phải phase) · **Không** sinh DOC — sinh *quyết định + khung vấn đề*.
 
@@ -15,7 +15,7 @@ Chạy **trước** khi vào phase để tránh: viết DOC vô ích, chốt gi�
 
 > **Theo tầng** ([SKILL.md](../../SKILL.md#phân-tầng-công-việc-micro--light--full)): Premise Check **bắt buộc ở Full** (module/DOC mới, đổi kiến trúc, discovery, đụng baseline). **Bỏ ở micro/light** (typo, sửa 1 FR trong DOC đã có) — trừ khi có bằng chứng mới làm nghi ngờ tiền đề.
 
-**Ghi kết quả vào:** `brainstorm/YYYY-MM-DD.md` + assumption/decision → `memory/{phase}/`. **Không** tự sinh file DOC.
+**Ghi kết quả vào:** `brainstorm/YYYY-MM-DD.md` + assumption/decision → `memory/decision-log.md` / `memory/open-questions.md`. **Không** tự sinh file DOC.
 
 ---
 
@@ -112,7 +112,7 @@ Phát biểu lại vấn đề + liệt kê trade-off cần quyết + assumption
 - [ ] ≥3 góc nhìn, mỗi góc 1 lượt — không tranh luận vòng
 - [ ] Điểm hội tụ + căng thẳng tách bạch
 - [ ] Vấn đề được khung lại **không** kèm giải pháp
-- [ ] Assumption ghi vào `memory/{phase}/`, không nhồi `memory.md`
+- [ ] Assumption/DEC ghi vào `memory/decision-log.md` hoặc `open-questions.md`, không nhồi `memory.md`
 
 ## Anti-patterns
 

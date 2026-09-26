@@ -1,17 +1,17 @@
 ---
 name: fan-out
 description: >-
-  [minipower] Điều phối sinh artifact SONG SONG theo module. Mỗi module chạy
-  chuỗi riêng theo nhịp riêng — module xong trước đi tiếp trước, không chờ module
-  khác. Dùng khi: viết Business Rules / Prototype / SRS cho nhiều module, sinh
-  hàng loạt theo module, làm song song.
+  [KHO] Playbook pipeline theo module. Harness client điều phối.
+  Không spawn agent. Không route vào skill này.
 ---
 
 # Fan-out — sinh artifact song song theo module
 
+> Kho. Người (hoặc harness client) mở từng pack — mỗi module một nhịp riêng. File này là playbook, không phải skill spawn.
+
 **Pack:** minipower · **Loại:** skill cross-phase (điều phối, **không** thay phase con) · **Không** tự sáng tác nội dung — **điều phối** phase skill + template sinh cho từng module.
 
-**Mô hình: pipeline theo module, không phải barrier** ([ADR-020](../../../../ADRs/ADR-020-2026-08-20-minipower-3-che-do-du-an-gate-bang-hook.md) QĐ-14). Mỗi module đi chuỗi của nó theo nhịp của nó. `ORD` xong Business Rules thì làm SRS cho `ORD` **ngay**, trong khi `INV` còn đang khảo sát. Module lệch nhịp là trạng thái **đúng**, không phải lỗi cần đồng bộ.
+**Mô hình: pipeline theo module, không phải barrier** ([ADR-020](../../../../ADRs/todo/ADR-020-2026-08-20-minipower-3-che-do-du-an-gate-bang-hook.md) QĐ-14). Mỗi module đi chuỗi của nó theo nhịp của nó. `ORD` xong Business Rules thì làm SRS cho `ORD` **ngay**, trong khi `INV` còn đang khảo sát. Module lệch nhịp là trạng thái **đúng**, không phải lỗi cần đồng bộ.
 
 > **Người quyết từng nhánh.** Không hook nào, không skill nào tự phán module đã "đủ để chảy tiếp". `prereq-gate` chỉ **nhắc** khi thiếu DOC tiền đề *của đúng module đó* — bạn xác nhận là chạy. Không có agent bàn giao cho agent.
 
@@ -64,8 +64,8 @@ Ba nhánh **không** gặp nhau ở vạch đích nào. Mũi tên đứt tới "
 
 4. **Fan-out — một artifact, một owner.** Mỗi module một luồng độc lập sinh/cập nhật DOC target trong `docs/03-modules/{module-id}/`. Host hỗ trợ sub-agent → chạy **song song thật**; không thì tuần tự, **vẫn giữ ranh giới owner** (không trộn context giữa module).
 5. **Thiếu tiền đề thì nói ra, đừng tự chặn.** Module thiếu DOC upstream → báo rõ *"`INV` chưa có DOC-04"* và hỏi người: bổ sung trước, hay chạy tiếp và ghi nợ vào `memory/doc-debt.md`. **Không** tự dừng cả mẻ vì một module chưa sẵn sàng.
-6. **Tuân quy tắc song song** ([parallel-work.md](../../docs/parallel-work.md)): chỉ owner sửa DOC-04–07/19 của module mình; **tránh** sửa đồng thời file chung (DOC-03, `overview.md`, `trace-matrix.md`, `doc-registry.md`) — mỗi module chỉ **thêm dòng của mình**; prefix ID cố định `{MOD}-…`.
-7. **Tổng hợp — bước riêng, khi lead muốn.** Cập nhật `05-traceability/trace-matrix.md`, `doc-registry.md`, `overview.md`, tóm tắt vào `memory/{phase}/`; hợp nhất BRD đầy đủ nếu đến lúc. **Không** phải điều kiện để module nào đó đi tiếp.
+6. **Tuân quy tắc song song** ([parallel-work.md](../../docs/parallel-work.md)): chỉ owner sửa DOC-04–07/19 của module mình; **tránh** sửa đồng thời file chung (DOC-03, `trace-matrix.md`, `doc-registry.md`) — mỗi module chỉ **thêm dòng của mình**; prefix ID cố định `{MOD}-…`.
+7. **Tổng hợp — bước riêng, khi lead muốn.** Cập nhật `05-traceability/trace-matrix.md`, `doc-registry.md`; cập nhật `memory/memory.md` cá nhân nếu người yêu cầu; hợp nhất BRD đầy đủ nếu đến lúc. **Không** phải điều kiện để module nào đó đi tiếp.
 
 ## Theo chế độ dự án
 

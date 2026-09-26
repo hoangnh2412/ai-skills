@@ -2,7 +2,6 @@
 name: minipower-architecture-review
 description: Review kiến trúc chức năng cho người đọc: view, ADR header, không convention C#. Dùng khi QC SAD, soi ADR.
 metadata:
-  audience: hoangnh
   workflow: github
 ---
 

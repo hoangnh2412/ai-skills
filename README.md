@@ -59,6 +59,8 @@ node cli/minipower.mjs install
 
 Flag (`--client`, `--with`, `--target`) chỉ khi script/CI. Thêm client sau: chạy `install` lại, chọn client mới.
 
+Cursor **User Rules (bắt buộc cho Agent Chat):** [cli/cursor/USER-RULES.md](cli/cursor/USER-RULES.md) — dán always-on vào Settings. File `~/.cursor/rules` do `install` ghi **không đủ** trên Cursor hiện tại (`--no-user-rules` nếu không muốn file máy).
+
 Hook + dispatcher neo `sdlc/`: [sdlc/INSTALL.md](src/sdlc/INSTALL.md). Pack lá: symlink `*/skills/{tên}/` → `.cursor/skills/{tên}/`.
 
 **2. Init dự án** — một lệnh, script hỏi từng bước (số + Enter = mặc định). Không JSON, không LLM.
@@ -113,7 +115,7 @@ npm run link:check    # link markdown gãy mới (ngoài baseline)
 
 Cùng lệnh nếu đang ở `src/sdlc/hooks/`. Chạm `rules.json` / `lib/*.js`: `npm run gen` → `npm test` → `npm run gen:check`.
 
-Một file: `node --test test/minipower-catalog.test.js` (cwd `sdlc/hooks`). Trace ID trên **dự án đích**: `npm run trace:check`. CI: [minipower-hooks.yml](.github/workflows/minipower-hooks.yml).
+Một file: `node --test test/minipower-catalog.test.js` (cwd `src/sdlc/hooks`). Trace ID trên **dự án đích**: `npm run trace:check`. CI: [minipower-hooks.yml](.github/workflows/minipower-hooks.yml).
 
 ---
 

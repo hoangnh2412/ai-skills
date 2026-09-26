@@ -2,7 +2,6 @@
 name: minipower-backend-blobstoring-dotnet
 description: Thiết lập Jarvis.BlobStoring — upload/download file qua IBlobStoringService với FileSystem hoặc MinIO keyed DI. Dùng khi tích hợp blob storage .NET, section FileSystem/MinIO, hoặc inject IBlobStoringService.
 metadata:
-  audience: hoangnh
   workflow: github
 ---
 

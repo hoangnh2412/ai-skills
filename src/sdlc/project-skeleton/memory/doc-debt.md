@@ -4,7 +4,7 @@
 
 Chế độ `mvp` và `maintain` cố tình **không** điền đủ 19 DOC — đó là lựa chọn hợp lý, không phải cẩu thả. Nhưng lựa chọn đó chỉ lành mạnh khi món nợ **hiện hình**. File này là chỗ nợ hiện hình.
 
-Nằm ở gốc `memory/` chứ không trong `memory/{phase}/` vì nó **cắt ngang mọi phase** — nó là *bản đồ đường lên `standard`*.
+Nằm ở gốc `memory/` vì nó **cắt ngang mọi phase** — *bản đồ đường lên `standard`* (ADR-020). Không nhầm với [`open-questions.md`](open-questions.md) (nợ tiền đề phiên) hay `memory.md` (nhắc việc cá nhân, gitignore).
 
 > Chế độ `standard` thường để file này rỗng. Không rỗng cũng không sao: nó thành danh sách việc trước khi chốt baseline.
 

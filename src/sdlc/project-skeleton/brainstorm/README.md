@@ -19,8 +19,8 @@ Nhiều phiên trong cùng ngày → thêm hậu tố `-02`, `-03` hoặc mô t�
 - Quyết định + lý do
 - Phân tích từ `assets/` — trace nguồn khi cần
 - Ghi phase Minipower đang làm (discovery, requirements, …) **trong file**
-- Sau phiên: cập nhật tóm tắt vào [`../memory/{phase}/`](../memory/) — không nhồi vào `memory/memory.md`
-- Câu hỏi dự án chưa trả lời → `memory/{phase}/open-questions.md`
+- Sau phiên: cập nhật `memory/memory.md` (tiến độ/nhắc việc cá nhân) và/hoặc `decision-log` / `open-questions` nếu có DEC/hỏi đội
+- Câu hỏi dự án chưa trả lời → `memory/open-questions.md`
 
 ## Danh sách file
 

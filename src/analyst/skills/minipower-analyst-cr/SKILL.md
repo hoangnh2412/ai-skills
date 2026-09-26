@@ -2,7 +2,6 @@
 name: minipower-analyst-cr
 description: Soạn nội dung change request đổi FR/AC với khách. Dùng khi CR yêu cầu, đổi scope sau baseline — không ghi ticket board (pm), không sửa registry (support).
 metadata:
-  audience: hoangnh
   workflow: github
 ---
 

@@ -37,8 +37,8 @@ flowchart LR
 
 ## 5. Ghi chú & câu hỏi mở
 
-- TBD / assumption về UI — chuyển mục chưa rõ vào `memory/requirements/open-questions.md`.
+- TBD / assumption về UI — chuyển mục chưa rõ vào `memory/open-questions.md`.
 
 ## 6. Cổng chốt
 
-- [ ] Người duyệt prototype (ghi **DEC** trong `memory/requirements/decision-log.md`) → mở khoá viết **SRS (DOC-06)**.
+- [ ] Người duyệt prototype (ghi **DEC** trong `memory/decision-log.md`) → mở khoá viết **SRS (DOC-06)**.

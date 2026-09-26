@@ -125,7 +125,9 @@ test("#11 — mọi file ADR-020 hứa đều tồn tại thật", () => {
     ["sdlc", "project-skeleton", "memory", "doc-debt.md"],
     ["sdlc", "project-skeleton", "assets", "archive", "README.md"],
     ["sdlc", "skills", "as-built", "SKILL.md"],
-    ["sdlc", "project-skeleton", "memory", "tasks", "README.md"],
+    ["sdlc", "project-skeleton", "memory", "decision-log.md"],
+    ["sdlc", "project-skeleton", "memory", "open-questions.md"],
+    ["sdlc", "project-skeleton", "memory", "memory.md.example"],
     ["sdlc", "docs-skeleton", "06-changes", "incident", "README.md"],
   ]
   for (const p of must) {
@@ -135,10 +137,25 @@ test("#11 — mọi file ADR-020 hứa đều tồn tại thật", () => {
 
 // ─── #13 — ADR-022: router name + contracts/ + index AGENTS ─────────────────
 
-test("#13 — dispatcher đăng ký minipower-router (ADR-033 E)", () => {
-  const t = readFileSync(join(PACK, "SKILL.md"), "utf8")
-  const name = (t.match(/^name:\s*(\S+)/m) || [])[1]
-  assert.equal(name, "minipower-router")
+test("#13 — đúng một name minipower-router; kho sdlc không đăng ký", () => {
+  const kho = readFileSync(join(PACK, "SKILL.md"), "utf8")
+  assert.equal((kho.match(/^name:\s*(\S+)/m) || [])[1], undefined, "src/sdlc/SKILL.md là kho, không có name:")
+  const hits = []
+  const walk = (dir) => {
+    for (const e of readdirSync(dir, { withFileTypes: true })) {
+      if (e.name === "node_modules" || e.name === ".git") continue
+      const p = join(dir, e.name)
+      if (e.isDirectory()) walk(p)
+      else if (e.name === "SKILL.md") {
+        const t = readFileSync(p, "utf8")
+        if (/^name:\s*minipower-router\s*$/m.test(t)) hits.push(p)
+      }
+    }
+  }
+  walk(ROOT)
+  assert.deepEqual(hits.map((p) => p.slice(ROOT.length + 1)), [
+    join("src", "router", "skills", "minipower-router", "SKILL.md"),
+  ])
 })
 
 test("T8 — không SKILL.md nào đăng ký name minipower-sdlc", () => {

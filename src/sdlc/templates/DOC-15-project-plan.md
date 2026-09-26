@@ -72,7 +72,7 @@
 |--------|------|----------|------------|-------|
 | | | | FS / SS | |
 
-> Cột *Task* = hạng mục lịch trình, **không** phải board. Việc ngày-một-file: `memory/tasks/` hoặc tasks provider.
+> Cột *Task* = hạng mục lịch trình, **không** phải board. Việc theo dõi: SQLite `trace.db` (`tasks=none`) hoặc tasks provider.
 
 ## 5. Kế hoạch nguồn lực ▸ full
 | Role | FTE | Phase 1 | Phase 2 | Notes |

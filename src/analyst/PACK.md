@@ -15,6 +15,6 @@ consumes: [DOC-03, SUR-*]
 produces: ["{MOD}-UC/FR/BR/AC/NFR-*", DOC-04, DOC-05, DOC-06, DOC-07, DOC-13, DOC-19]
 handoff-in: [H1]
 handoff-out: [H2, H3, H5]
-memory: memory/requirements/
+memory: memory/
 mcp: []
 ```

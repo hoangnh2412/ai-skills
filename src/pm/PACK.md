@@ -15,6 +15,6 @@ consumes: ["DOC-06 Must-have", "CR nội dung BA"]
 produces: [DOC-14, DOC-15, DOC-18]
 handoff-in: [H3]
 handoff-out: []
-memory: memory/planning/
+memory: memory/
 mcp: [tasks]
 ```

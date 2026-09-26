@@ -2,7 +2,6 @@
 name: minipower-backend-entityframework-dotnet
 description: Thiết lập Jarvis.EntityFramework — repository, multitenancy, AddCoreDbContext, UoW. Dùng khi tích hợp EF Core .NET với single DB, separate tenant DB, hybrid, hoặc custom DI resolver.
 metadata:
-  audience: hoangnh
   workflow: github
 ---
 

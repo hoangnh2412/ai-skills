@@ -2,7 +2,6 @@
 name: minipower-router-deliberation
 description: Premise check trước khi làm việc Full: PROCEED RESHAPE STOP. Dùng khi có nên làm, nghị luận, deliberation — verdict người, máy không FAIL.
 metadata:
-  audience: hoangnh
   workflow: github
 ---
 

@@ -2,7 +2,6 @@
 name: minipower-backend-telemetry-dotnet
 description: Thiết lập Jarvis.OpenTelemetry cho ASP.NET Core — trace/metric/log OTLP, enrich middleware, instrumentation plug-in. Dùng khi tích hợp telemetry .NET, section OTEL, hoặc thêm Redis/EF/enricher.
 metadata:
-  audience: hoangnh
   workflow: github
 ---
 

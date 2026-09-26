@@ -12,6 +12,6 @@ repo: docs
 consumes: [assets/*, "khách hàng: khảo sát, biên bản"]
 produces: [DOC-01..19, "{MOD}-UC/FR/BR/AC-*", ADR-*, "trace-matrix"]
 handoff-out: [H2, H3, H4, H5, H6]
-memory: memory/{phase}/
+memory: memory/
 mcp: [tasks, docs]   # tên trừu tượng (QĐ-9) — dự kiến openproject, outline; hiện approval_source: local
 ```
