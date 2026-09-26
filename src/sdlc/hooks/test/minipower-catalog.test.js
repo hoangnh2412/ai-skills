@@ -50,7 +50,7 @@ test("catalog: README gốc liệt kê mọi lá (href skills/{tên}/)", () => {
 
 test("catalog: kho sdlc/skills — mỗi thư mục một SKILL.md", () => {
   const ware = listWarehouseSkills()
-  assert.equal(ware.length, 11, `kho SOP: ${ware.map((w) => w.name).join(",")}`)
+  assert.equal(ware.length, 8, `kho SOP: ${ware.map((w) => w.name).join(",")}`)
   for (const w of ware) {
     assert.ok(existsSync(w.skillMd), `kho thiếu ${w.name}/SKILL.md`)
   }

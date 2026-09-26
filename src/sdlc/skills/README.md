@@ -10,9 +10,9 @@
 | [deliberation/SKILL.md](deliberation/SKILL.md) | `deliberation` (cross-phase) | Premise Check + nghị luận — chạy trước phase |
 | [doc-review/SKILL.md](doc-review/SKILL.md) | `doc-review` (cross-phase) | QC đối kháng DOC — trace, mâu thuẫn, testable |
 | [readiness-gate/SKILL.md](readiness-gate/SKILL.md) | `readiness-gate` (cross-phase) | Soát tiền đề trước khi thực thi — hỏi trọn gói, cho hoãn ghi nợ |
-| [discovery/SKILL.md](discovery/SKILL.md) | `Phase: discovery` | Khám phá, scope |
-| [requirements/SKILL.md](requirements/SKILL.md) | `Phase: requirements` | UC, FR, BR, NFR, AC |
-| [architecture/SKILL.md](architecture/SKILL.md) | `Phase: architecture` | SAD, ADR, API |
+| [minipower-discovery-survey](../../discovery/skills/minipower-discovery-survey/SKILL.md) | `Phase: discovery` | Khám phá, scope |
+| [minipower-analyst-srs](../../analyst/skills/minipower-analyst-srs/SKILL.md) | `Phase: requirements` | UC, FR, BR, NFR, AC |
+| [minipower-architecture-sad](../../architecture/skills/minipower-architecture-sad/SKILL.md) | `Phase: architecture` | SAD, ADR, API |
 | [planning/SKILL.md](planning/SKILL.md) | `Phase: planning` | WBS, roadmap |
 | [delivery/SKILL.md](delivery/SKILL.md) | `Phase: delivery` | Test, deploy |
 | [change-control/SKILL.md](change-control/SKILL.md) | `Phase: change-control` | CR |

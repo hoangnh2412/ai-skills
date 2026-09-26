@@ -61,7 +61,14 @@ function phaseMapTable() {
   for (const phase of PHASE_ORDER) {
     const nums = docsForPhase(phase)
     if (!nums.length) continue
-    rows.push(`| **${phase}** | DOC-${formatDocRanges(nums)} | \`skills/${phase}/SKILL.md\` |`)
+    const leaf = {
+      discovery: "../discovery/skills/minipower-discovery-survey/SKILL.md",
+      requirements: "../analyst/skills/minipower-analyst-srs/SKILL.md",
+      architecture: "../architecture/skills/minipower-architecture-sad/SKILL.md",
+    }[phase]
+    rows.push(
+      `| **${phase}** | DOC-${formatDocRanges(nums)} | \`${leaf || `skills/${phase}/SKILL.md`}\` |`,
+    )
   }
   return rows.join("\n")
 }

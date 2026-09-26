@@ -23,9 +23,9 @@ description: >-
 
 | Bước | Artifact | DOC | Phase skill uỷ quyền |
 |------|----------|-----|----------------------|
-| B1 | Business Rules | DOC-04 | [requirements](../requirements/SKILL.md) |
-| C | Prototype / Wireframe | DOC-19 | [requirements](../requirements/SKILL.md) + template DOC-19 |
-| B2 | SRS (FR) | DOC-06 | [requirements](../requirements/SKILL.md) |
+| B1 | Business Rules | DOC-04 | [minipower-analyst-srs](../../../analyst/skills/minipower-analyst-srs/SKILL.md) |
+| C | Prototype / Wireframe | DOC-19 | [minipower-analyst-srs](../../../analyst/skills/minipower-analyst-srs/SKILL.md) + template DOC-19 |
+| B2 | SRS (FR) | DOC-06 | [minipower-analyst-srs](../../../analyst/skills/minipower-analyst-srs/SKILL.md) |
 
 > Mở rộng cùng khung: test case (DOC-16), code + unit test.
 

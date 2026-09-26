@@ -8,9 +8,9 @@ Markdown thuần — hành vi agent khi user `@` file DOC. **Bảng map DOC→ph
 
 | Phase | DOC | Skill con |
 |-------|-----|-----------|
-| **discovery** | DOC-01–03 | `skills/discovery/SKILL.md` |
-| **requirements** | DOC-04–07, 13, 19 | `skills/requirements/SKILL.md` |
-| **architecture** | DOC-08–12 | `skills/architecture/SKILL.md` |
+| **discovery** | DOC-01–03 | `../discovery/skills/minipower-discovery-survey/SKILL.md` |
+| **requirements** | DOC-04–07, 13, 19 | `../analyst/skills/minipower-analyst-srs/SKILL.md` |
+| **architecture** | DOC-08–12 | `../architecture/skills/minipower-architecture-sad/SKILL.md` |
 | **planning** | DOC-14–15 | `skills/planning/SKILL.md` |
 | **delivery** | DOC-16–17 | `skills/delivery/SKILL.md` |
 | **change-control** | DOC-18 | `skills/change-control/SKILL.md` |
@@ -22,7 +22,7 @@ Markdown thuần — hành vi agent khi user `@` file DOC. **Bảng map DOC→ph
 ## Agent — khi không có hook
 
 1. Parse `@` path, tên file `DOC-NN-*.md`, hoặc nhắc trần `DOC-NN` trong prompt → tra bảng trên.
-2. **Một phase** → hook/script chèn `Phase: …`, `/minipower`, `@skills/{phase}/SKILL.md` (và `@` file DOC nếu đã tag path đầy đủ); agent đọc skill con tương ứng.
+2. **Một phase** → hook chèn `Phase: …`, `/minipower-router`, và `@` skill lá (khảo sát, SRS, SAD) hoặc `@skills/{phase}/SKILL.md` với phase còn ở kho (và `@` file DOC nếu đã tag path đầy đủ).
 3. **Nhiều phase** → **không** bắt đầu đọc/sửa; liệt kê file theo phase và gợi ý tách prompt (mỗi prompt 1 phase).
 4. `Phase:` trong prompt **khác** phase file DOC → báo conflict, yêu cầu sửa.
 

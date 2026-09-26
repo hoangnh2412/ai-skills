@@ -11,7 +11,7 @@ description: >-
 
 **Pack:** minipower · **Loại:** skill dùng chung (cross-phase, **không** phải phase) · **Không** sinh DOC — sinh *quyết định + khung vấn đề*.
 
-Chạy **trước** khi vào phase để tránh: viết DOC vô ích, chốt giải pháp sớm, bỏ sót góc nhìn. Output feed vào [discovery](../discovery/SKILL.md) (problem/scope), [architecture](../architecture/SKILL.md) (ADR), [change-control](../change-control/SKILL.md) (CR lớn).
+Chạy **trước** khi vào phase để tránh: viết DOC vô ích, chốt giải pháp sớm, bỏ sót góc nhìn. Output feed vào [minipower-discovery-survey](../../../discovery/skills/minipower-discovery-survey/SKILL.md) (problem/scope), [minipower-architecture-sad](../../../architecture/skills/minipower-architecture-sad/SKILL.md) (ADR), [change-control](../change-control/SKILL.md) (CR lớn).
 
 > **Theo tầng** ([SKILL.md](../../SKILL.md#phân-tầng-công-việc-micro--light--full)): Premise Check **bắt buộc ở Full** (module/DOC mới, đổi kiến trúc, discovery, đụng baseline). **Bỏ ở micro/light** (typo, sửa 1 FR trong DOC đã có) — trừ khi có bằng chứng mới làm nghi ngờ tiền đề.
 
@@ -104,7 +104,7 @@ Phát biểu lại vấn đề + liệt kê trade-off cần quyết + assumption
 4. **Căng thẳng còn sống** (trade-off cần quyết)
 5. **Vấn đề đã khung lại** (1 đoạn — chưa có giải pháp)
 6. **Assumption / Unknowns** (kèm mức tin cậy: cao/vừa/thấp)
-7. **Tiếp →** phase phù hợp ([discovery](../discovery/SKILL.md) / [architecture](../architecture/SKILL.md) / [change-control](../change-control/SKILL.md))
+7. **Tiếp →** phase phù hợp ([minipower-discovery-survey](../../../discovery/skills/minipower-discovery-survey/SKILL.md) / [minipower-architecture-sad](../../../architecture/skills/minipower-architecture-sad/SKILL.md) / [change-control](../change-control/SKILL.md))
 
 ## Exit criteria
 

@@ -39,7 +39,19 @@ function resolveRoot(opts) {
   return root.replace(/[/\\]+$/, "")
 }
 
+// SOP đã chuyển khỏi kho. root là thư mục pack sdlc; lá nằm cạnh pack, dưới src/.
+const LEAF = {
+  discovery: "discovery/skills/minipower-discovery-survey/SKILL.md",
+  requirements: "analyst/skills/minipower-analyst-srs/SKILL.md",
+  architecture: "architecture/skills/minipower-architecture-sad/SKILL.md",
+}
+
 function skillPath(phase, root) {
+  const leaf = LEAF[phase]
+  if (leaf) {
+    const src = root.replace(/[/\\]sdlc$/, "")
+    if (src !== root) return `${src}/${leaf}`
+  }
   return `${root}/skills/${phase}/SKILL.md`
 }
 

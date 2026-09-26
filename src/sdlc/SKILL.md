@@ -225,9 +225,9 @@ Business Goal → Stakeholder → Process → Requirement → Solution
 
 | Skill | Path | Bước | DOC |
 |-------|------|------|-----|
-| Discovery | [skills/discovery/SKILL.md](skills/discovery/SKILL.md) | 1–2 | 01–03 |
-| Requirements | [skills/requirements/SKILL.md](skills/requirements/SKILL.md) | 3–9 | 04–07, 13, 19 |
-| Architecture | [skills/architecture/SKILL.md](skills/architecture/SKILL.md) | 9 | 08–12 |
+| Discovery | [minipower-discovery-survey](../discovery/skills/minipower-discovery-survey/SKILL.md) | 1–2 | 01–03 |
+| Requirements | [minipower-analyst-srs](../analyst/skills/minipower-analyst-srs/SKILL.md) | 3–9 | 04–07, 13, 19 |
+| Architecture | [minipower-architecture-sad](../architecture/skills/minipower-architecture-sad/SKILL.md) | 9 | 08–12 |
 | Planning | [skills/planning/SKILL.md](skills/planning/SKILL.md) | 10–12 | 14–15 |
 | Delivery | [skills/delivery/SKILL.md](skills/delivery/SKILL.md) | — | 16–17 |
 | Change control | [skills/change-control/SKILL.md](skills/change-control/SKILL.md) | — | 18 |

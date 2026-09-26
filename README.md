@@ -238,7 +238,8 @@ Lá-rời: **mô tả việc**. Provider/pattern con chỉ đọc khi skill cha 
 
 | File | Vai |
 |------|-----|
-| [discovery](src/sdlc/skills/discovery/SKILL.md) · [requirements](src/sdlc/skills/requirements/SKILL.md) · [architecture](src/sdlc/skills/architecture/SKILL.md) · [planning](src/sdlc/skills/planning/SKILL.md) · [delivery](src/sdlc/skills/delivery/SKILL.md) · [change-control](src/sdlc/skills/change-control/SKILL.md) | SOP 6 phase (kho) |
+| [survey](src/discovery/skills/minipower-discovery-survey/SKILL.md) · [srs](src/analyst/skills/minipower-analyst-srs/SKILL.md) · [sad](src/architecture/skills/minipower-architecture-sad/SKILL.md) | SOP khảo sát, SRS, SAD (lá) |
+| [planning](src/sdlc/skills/planning/SKILL.md) · [delivery](src/sdlc/skills/delivery/SKILL.md) · [change-control](src/sdlc/skills/change-control/SKILL.md) | SOP còn ở kho |
 | [deliberation](src/sdlc/skills/deliberation/SKILL.md) · [readiness-gate](src/sdlc/skills/readiness-gate/SKILL.md) | Gate mềm — lá `minipower-router-*` |
 | [fan-out](src/sdlc/skills/fan-out/SKILL.md) | Playbook song song; spawn = harness |
 | [as-built](src/sdlc/skills/as-built/SKILL.md) | Kho; nhà mới = `minipower-architecture-as-built` |

@@ -86,7 +86,7 @@ test("auto-routing: ENRICH — một phase, prompt chưa khai Phase", async (t) 
       const r = checkAutoRouting("sửa DOC-06", [])
       assert.equal(r.action, "enrich")
       assert.match(r.prefix, /^\/minipower-router$/m)
-      assert.match(r.prefix, /\/sdlc\/skills\/requirements\/SKILL\.md$/m)
+      assert.match(r.prefix, /\/analyst\/skills\/minipower-analyst-srs\/SKILL\.md$/m)
     } finally {
       if (prev === undefined) delete process.env.MINIPOWER_ROOT
       else process.env.MINIPOWER_ROOT = prev
@@ -99,7 +99,10 @@ test("auto-routing: ENRICH — một phase, prompt chưa khai Phase", async (t) 
     assert.equal(r.phase, "requirements")
     assert.match(r.prefix, /^\/minipower-router$/m)
     assert.match(r.prefix, /^Phase: requirements$/m)
-    assert.match(r.prefix, new RegExp(`^@${ROOT}/skills/requirements/SKILL\\.md$`, "m"))
+    assert.match(
+      r.prefix,
+      /^@ai-skills\/analyst\/skills\/minipower-analyst-srs\/SKILL\.md$/m,
+    )
   })
 
   await t.test("không chèn lại /minipower nếu prompt đã có", () => {
@@ -110,7 +113,9 @@ test("auto-routing: ENRICH — một phase, prompt chưa khai Phase", async (t) 
   })
 
   await t.test("không chèn lại @skill nếu prompt đã có", () => {
-    const r = route(`sửa DOC-06 @${ROOT}/skills/requirements/SKILL.md`)
+    const r = route(
+      "sửa DOC-06 @ai-skills/analyst/skills/minipower-analyst-srs/SKILL.md",
+    )
     assert.equal(r.action, "enrich")
     assert.doesNotMatch(r.prefix, /SKILL\.md/)
   })

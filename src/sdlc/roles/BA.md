@@ -1,6 +1,6 @@
 # BA — Business Analyst
 
-**Lăng kính hỗ trợ** người làm BA. Phase: `discovery`, `requirements`. Skill: [discovery](../skills/discovery/SKILL.md) · [requirements](../skills/requirements/SKILL.md).
+**Lăng kính hỗ trợ** người làm BA. Phase: `discovery`, `requirements`. Skill: [minipower-discovery-survey](../../discovery/skills/minipower-discovery-survey/SKILL.md) · [minipower-analyst-srs](../../analyst/skills/minipower-analyst-srs/SKILL.md).
 
 ## Goal
 Biến nhu cầu mơ hồ thành yêu cầu rõ, testable, có trace — **không** nhảy sang giải pháp.

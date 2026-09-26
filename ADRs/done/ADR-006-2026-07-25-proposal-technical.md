@@ -145,4 +145,4 @@ Cấu trúc: đúng Phần I–III + checklist cuối khung SOP.
 - [ADR cha — proposal skills](../done/ADR-004-2026-07-25-minipower-proposal-skills.md)
 - [proposal-quotation](../done/ADR-005-2026-07-25-proposal-quotation.md) · [proposal-timeline](../done/ADR-007-2026-07-25-proposal-timeline.md)
 - [`SOPs/GiaiPhapKyThuat-KHUNG.md`](../../SOPs/GiaiPhapKyThuat-KHUNG.md)
-- [`minipower/skills/architecture/SKILL.md`](../../src/sdlc/skills/architecture/SKILL.md) — produce DOC-08 (upstream)
+- [`minipower/skills/architecture/SKILL.md`](../../src/architecture/skills/minipower-architecture-sad/SKILL.md) — produce DOC-08 (upstream)

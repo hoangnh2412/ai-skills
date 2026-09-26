@@ -81,7 +81,7 @@ Sổ nợ là **điều kiện vào** luồng chuyển mode, nên format phải 
 | **Trạng thái** | `☐ nợ` · `☐ đang trả` · `☑ xong` |
 | **Khi nào ghi** | `prereq-gate` nhắc thiếu tiền đề mà vẫn quyết làm tiếp → ghi ngay. Đó là lúc nợ phát sinh |
 
-**Liên quan:** [requirements](../requirements/SKILL.md) · [architecture](../architecture/SKILL.md) · [planning](../planning/SKILL.md) · [delivery](../delivery/SKILL.md) · [as-built](../as-built/SKILL.md)
+**Liên quan:** [minipower-analyst-srs](../../../analyst/skills/minipower-analyst-srs/SKILL.md) · [minipower-architecture-sad](../../../architecture/skills/minipower-architecture-sad/SKILL.md) · [planning](../planning/SKILL.md) · [delivery](../delivery/SKILL.md) · [as-built](../as-built/SKILL.md)
 
 ## Anti-patterns
 

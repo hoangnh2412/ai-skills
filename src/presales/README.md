@@ -21,5 +21,5 @@ Manifest: [PACK.md](PACK.md).
 
 ## Liên quan
 
-- Khảo sát: [`discovery/`](../discovery/README.md) · SOP kho: [`sdlc/skills/discovery/SKILL.md`](../sdlc/skills/discovery/SKILL.md)
+- Khảo sát: [`minipower-discovery-survey`](../discovery/skills/minipower-discovery-survey/SKILL.md)
 - Giải pháp bán: [`minipower-architecture-solution-lite`](../architecture/skills/minipower-architecture-solution-lite/SKILL.md)

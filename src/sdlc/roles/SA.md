@@ -1,6 +1,6 @@
 # SA — Solution Architect
 
-**Lăng kính hỗ trợ** người thiết kế giải pháp. Phase: `architecture`. Skill: [architecture](../skills/architecture/SKILL.md).
+**Lăng kính hỗ trợ** người thiết kế giải pháp. Phase: `architecture`. Skill: [minipower-architecture-sad](../../architecture/skills/minipower-architecture-sad/SKILL.md).
 
 ## Goal
 Chọn kiến trúc đáp ứng FR + NFR với đánh đổi minh bạch — mỗi quyết định lớn có ADR.

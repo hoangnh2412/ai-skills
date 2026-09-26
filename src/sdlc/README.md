@@ -27,9 +27,9 @@ Business Goal → Stakeholder → Process → Requirement → Solution
 
 | Phase | Skill | Làm gì | DOC |
 |-------|-------|--------|-----|
-| **Discovery** | [discovery](skills/discovery/SKILL.md) | Khám phá bài toán, stakeholder, scope | 01–03 |
-| **Requirements** | [requirements](skills/requirements/SKILL.md) | Use Case, Business Rule, Prototype, FR/SRS, NFR, Acceptance Criteria | 04–07, 13, 19 |
-| **Architecture** | [architecture](skills/architecture/SKILL.md) | SAD, ADR, Integration, Data Model, API | 08–12 |
+| **Discovery** | [minipower-discovery-survey](../discovery/skills/minipower-discovery-survey/SKILL.md) | Khám phá bài toán, stakeholder, scope | 01–03 |
+| **Requirements** | [minipower-analyst-srs](../analyst/skills/minipower-analyst-srs/SKILL.md) | Use Case, Business Rule, Prototype, FR/SRS, NFR, Acceptance Criteria | 04–07, 13, 19 |
+| **Architecture** | [minipower-architecture-sad](../architecture/skills/minipower-architecture-sad/SKILL.md) | SAD, ADR, Integration, Data Model, API | 08–12 |
 | **Planning** | [planning](skills/planning/SKILL.md) | Complexity, WBS, estimate, roadmap | 14–15 |
 | **Delivery** | [delivery](skills/delivery/SKILL.md) | Test strategy, deployment, go-live | 16–17 |
 | **Change control** | [change-control](skills/change-control/SKILL.md) | Change Request sau baseline | 18 |

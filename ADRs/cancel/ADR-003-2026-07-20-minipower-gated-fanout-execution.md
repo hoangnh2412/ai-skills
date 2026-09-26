@@ -139,7 +139,7 @@ Cổng người-chốt hiện là *ngầm* (readiness-gate soát tiền đề đ
 
 ### A3 — Chèn Prototype + đúng thứ tự phase  ✅ (đã triển khai)
 1. **DOC-19 "Prototype / Wireframe"** (chốt Q1: nối đuôi, không đánh số lại) → `phase_by_doc` + `doc_short`, thuộc phase `requirements`. Template [DOC-19-prototype.md](../../src/sdlc/templates/DOC-19-prototype.md).
-2. **Thứ tự requirements:** `Actor/UC(05) → BR(04) → Prototype(19) → FR/SRS(06) → NFR(13) → AC(07)` — cập nhật [requirements SKILL](../../src/sdlc/skills/requirements/SKILL.md) + [pipeline.md](../../src/sdlc/docs/pipeline.md) (luồng module + gate).
+2. **Thứ tự requirements:** `Actor/UC(05) → BR(04) → Prototype(19) → FR/SRS(06) → NFR(13) → AC(07)` — cập nhật [requirements SKILL](../../src/analyst/skills/minipower-analyst-srs/SKILL.md) + [pipeline.md](../../src/sdlc/docs/pipeline.md) (luồng module + gate).
 3. **Routing SSOT:** `auto-routing.js` `normalizeDocNum` nay lấy bound từ `PHASE_BY_DOC` thay vì hardcode `≤18` → tự hỗ trợ DOC-19 và mọi DOC tương lai.
 4. **prereq_by_intent:** thêm intent `prototype` (requires DOC-04); intent `implement` nay requires cả DOC-19 (UI cần prototype đã chốt).
 5. **Architecture là cổng bắt buộc trước code:** cổng `architecture` (approve DOC-08) trong `approval_gates` mở khoá task-breakdown — vá lỗ hổng "8 bước quên architecture".
@@ -150,7 +150,7 @@ Cổng người-chốt hiện là *ngầm* (readiness-gate soát tiền đề đ
 
 ## §3′. Giai đoạn B & C — chi tiết (đã triển khai)
 
-**Quyết định gộp B và C thành MỘT cơ chế.** B (fan-out BR + SRS) và C (fan-out Prototype) khác nhau chỉ ở DOC target và phần render — bản chất điều phối per-module giống hệt. Thay vì 3 skill trùng lặp → **một skill [fan-out](../../src/sdlc/skills/fan-out/SKILL.md)** tham số hoá theo DOC, uỷ quyền nội dung cho [requirements SKILL](../../src/sdlc/skills/requirements/SKILL.md) + template (nguyên tắc "co lại trước khi mở rộng").
+**Quyết định gộp B và C thành MỘT cơ chế.** B (fan-out BR + SRS) và C (fan-out Prototype) khác nhau chỉ ở DOC target và phần render — bản chất điều phối per-module giống hệt. Thay vì 3 skill trùng lặp → **một skill [fan-out](../../src/sdlc/skills/fan-out/SKILL.md)** tham số hoá theo DOC, uỷ quyền nội dung cho [requirements SKILL](../../src/analyst/skills/minipower-analyst-srs/SKILL.md) + template (nguyên tắc "co lại trước khi mở rộng").
 
 | # | Việc | Deliverable | Trạng thái |
 |---|------|-------------|-----------|

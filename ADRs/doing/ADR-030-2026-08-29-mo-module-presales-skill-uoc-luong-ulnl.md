@@ -32,7 +32,7 @@ File `staging/ULNL.md` (đã rút 2026-09-26 vào `presales/`) — 364 dòng: qu
 
 Bản 2 mở module bằng câu 2 của [ADR-022](../done/ADR-022-2026-08-24-minipower-nen-tang-cong-cu-ai-toan-cong-ty.md) QĐ-7 (*"người dùng khác hẳn"*) mà **chưa loại được câu 1** (*"tác động lên chính tài liệu/pipeline minipower sở hữu?"*) — trong khi ba câu hỏi đó **có thứ tự**. Chạy lại cho đủ:
 
-**Chỗ trùng — lớn hơn bản 2 thừa nhận.** Đối chiếu [`discovery/SKILL.md`](../../src/sdlc/skills/discovery/SKILL.md) với ULNL §4 *"Đầu vào tối thiểu"*:
+**Chỗ trùng — lớn hơn bản 2 thừa nhận.** Đối chiếu [`discovery/SKILL.md`](../../src/discovery/skills/minipower-discovery-survey/SKILL.md) với ULNL §4 *"Đầu vào tối thiểu"*:
 
 | ULNL §4 cần | Discovery đã sinh |
 |---|---|
@@ -108,7 +108,7 @@ Vết cắt **có sẵn trong chính tài liệu gốc**: ULNL §6–§8 là *ư
 |---|---|---|
 | **QĐ-1** | **Mở module `presales/`** — thứ năm, ngang hàng `sdlc`/`backend`/`ops`/`toolbox`; phạm vi: **giai đoạn trước khi ký hợp đồng**. Khuôn `ops/` ([ADR-023](../done/ADR-023-2026-08-25-tach-module-ops-tu-backend-troubleshooting.md)): `PACK.md` + `README.md` + `skills/` lá-rời, **không router** | Thoả ADR-028 QĐ-6 và C7 |
 | **QĐ-2** | **Mở với đúng hai skill có nội dung thật**: `minipower-presales-estimation-ulnl` + `minipower-presales-quotation`. **`survey` · `proposal` (GPKT) · slide/pitch = tên trong `presales/README.md`**, không thư mục. `proposal` rút từ [staging #12](../../staging/GiaiPhapKyThuat-KHUNG.md) bằng **ADR riêng** (ADR-028 QĐ-4: rút từng file một) | Thư mục rỗng là lời hứa, không phải năng lực |
-| **QĐ-3** | **Presales KHÔNG sở hữu discovery.** Không có skill khảo sát trong `presales/`; **không sửa một chữ** trong [`sdlc/skills/discovery/`](../../src/sdlc/skills/discovery/SKILL.md). Skill presales **trỏ sang** discovery cho phần elicit và **chỉ chồng thêm lớp định giá**. Trùng phần thu thập là **cố ý dùng lại**, không phải thiếu sót | Trả lời trực tiếp P7 và câu 1 ADR-022 QĐ-7. Một quá trình nghiệp vụ đi xuyên nhiều module là hợp lệ; **hai bản scope thì không** |
+| **QĐ-3** | **Presales KHÔNG sở hữu discovery.** Không có skill khảo sát trong `presales/`; **không sửa một chữ** trong [`sdlc/skills/discovery/`](../../src/discovery/skills/minipower-discovery-survey/SKILL.md). Skill presales **trỏ sang** discovery cho phần elicit và **chỉ chồng thêm lớp định giá**. Trùng phần thu thập là **cố ý dùng lại**, không phải thiếu sót | Trả lời trực tiếp P7 và câu 1 ADR-022 QĐ-7. Một quá trình nghiệp vụ đi xuyên nhiều module là hợp lệ; **hai bản scope thì không** |
 | **QĐ-4** | **Boundary `H0: Discovery (sơ bộ) → Estimation`** trong [`contracts/handoff.md`](../../contracts/handoff.md) — producer owner: **BA/discovery** (không phải presales); input tối thiểu = **ULNL §4**: in/out scope + cây chức năng ở mức thao tác + assumption log. **Giữ nguyên H1–H6** | Bản 2 vẽ ngược (`Presales → Discovery`). Luồng thật: discovery **vắt ngang** vạch ký — chạy sơ bộ trước, **tiếp tục** từ chính DOC-01/02/03 đó sau khi ký, **không làm lại** |
 | **QĐ-5** | **Nới enum `stage:`** trong [`contracts/pack-manifest.md`](../../contracts/pack-manifest.md) thêm `presales` (trước `discovery`) | Manifest là schema — thêm module thì schema phải biết |
 
@@ -187,7 +187,7 @@ Thứ tự cố ý: **module → schema → engine → skill**. Bước 3–6 ch
 | 5 | `estimation-ulnl`: `lib/calc.js` (`lineMH` + `sumMH`) + `bin/estimate.js` | Xuất đúng schema bước 3 | Bước 4 |
 | 6 | `quotation`: `catalog/risk-bands.json` + `lib/money.js` (`risk` · `toMD` · `price` · `rom`) + `validate()` + `bin/quote.js` | Golden §12 đúng số; 6 luật `validate()` đều FAIL được | Bước 3, Q5–Q8 |
 | 7 | `sdlc/hooks/test/presales-pack.test.js` (khuôn `ops-pack.test.js`) + `estimation.test.js` + `quotation.test.js` | `npm test` xanh | Bước 6 |
-| 8 | Hai `SKILL.md` + `README.md` — ba vai QĐ-12, **cách điền số** (không phải cách chọn mã), `estimation` trỏ sang [`discovery`](../../src/sdlc/skills/discovery/SKILL.md) cho phần elicit (QĐ-3); frontmatter `name` ≡ thư mục + `description` | `presales-pack.test.js` xanh | Bước 7, Q2 |
+| 8 | Hai `SKILL.md` + `README.md` — ba vai QĐ-12, **cách điền số** (không phải cách chọn mã), `estimation` trỏ sang [`discovery`](../../src/discovery/skills/minipower-discovery-survey/SKILL.md) cho phần elicit (QĐ-3); frontmatter `name` ≡ thư mục + `description` | `presales-pack.test.js` xanh | Bước 7, Q2 |
 | 9 | Xoá `staging/ULNL.md`, sửa href, hạ ratchet `link-check.baseline.txt` | `npm run link:check` 0 gãy mới | Bước 8 |
 | 10 | Cập nhật index ADR + ghi chú ADR-028 §5a #11 (kho 10 → 9) | Dòng index khớp repo thật | Bước 9 |
 
