@@ -168,7 +168,7 @@ Icon: 🟢 xong · 🟡 có sẵn, cần giữ xanh · 🔴 chưa có. **Không 
 
 ---
 
-## §10. Điều chỉnh 2026-09-26 — QĐ-8 bị [ADR-037](../doing/ADR-037-2026-09-26-xoa-folder-sdlc-dot-e.md) siết
+## §10. Điều chỉnh 2026-09-26 — QĐ-8 bị [ADR-037](ADR-037-2026-09-26-xoa-folder-sdlc-dot-e.md) siết
 
 | Mục | Nội dung cũ (QĐ-8) | Thay bằng |
 |---|---|---|

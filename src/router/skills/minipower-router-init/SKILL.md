@@ -7,7 +7,7 @@ metadata:
 
 # minipower-router-init
 
-**Không** thuộc support (QĐ-14). **Ghi cây + profile = CLI** `minipower init` ([ADR-031](../../../../ADRs/doing/ADR-031-2026-09-01-cli-install-init-thay-llm-thi-hanh.md) QĐ-9). Skill **không** mkdir, **không** hỏi 7 câu, **không** ghi `profile.json` / `profile.user.json`.
+**Không** thuộc support (QĐ-14). **Ghi cây + profile = CLI** `minipower init`. **`AGENTS.md`:** init không ghi. CLI in prompt (đường dẫn `templates/SAMPLE-agents.md` + số liệu profile). Người dán prompt vào chat để AI viết file. Skill **không** mkdir, **không** hỏi 7 câu, **không** ghi `profile.json` / `profile.user.json`, **không** tự viết `AGENTS.md`.
 
 ## Đã có `.minipower/`
 

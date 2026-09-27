@@ -127,9 +127,12 @@ test("#8 — khuôn AGENTS.md là khung; mẫu đã điền tách file; file ren
   assert.ok(!body.includes("TPL-agent-profile"), "khối render không được trỏ file khuôn")
   assert.match(body, /\{project_name\}/)
   assert.match(body, /\{surfaces\}/)
-  assert.match(body, /_\(điền\)_/)
   assert.match(body, /Bề mặt đang có: `\{surfaces\}`/)
   assert.match(body, /backend\/src\//)
+  const blanks = body.split("_(điền)_").length - 1
+  assert.ok(blanks > 0 && blanks <= 20, `ô _(điền)_ = ${blanks}, init phải để lại nội dung đã viết`)
+  const bodyLines = body.split("\n")
+  assert.ok(bodyLines.length >= 200 && bodyLines.length <= 300, `khối render ${bodyLines.length} dòng`)
   const sample = readFileSync(join(TPL, "SAMPLE-agents.md"), "utf8")
   const lines = sample.split("\n")
   assert.ok(lines.length >= 200 && lines.length <= 300, `mẫu ${lines.length} dòng, cần 200–300`)

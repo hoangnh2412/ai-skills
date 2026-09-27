@@ -112,25 +112,6 @@ function applyLayout(target, surfaces) {
   }
 }
 
-function renderAgents(profile) {
-  const tpl = readFileSync(join(ROUTER, "templates", "TPL-agent-profile.md"), "utf8")
-  const raw = tpl.split("<!-- BEGIN template: agents-md -->")[1]?.split("<!-- END template: agents-md -->")[0]
-  if (!raw) die("TPL-agent-profile thiếu marker agents-md")
-  const body = raw.replace(/^\n*````markdown\n/, "").replace(/\n````\s*$/, "")
-  const map = {
-    project_name: profile.project_name,
-    project_summary: profile.project_summary,
-    project_mode: profile.project_mode,
-    current_phase: profile.current_phase,
-    docs_provider: profile.docs_provider,
-    tasks_provider: profile.tasks_provider,
-    chat_provider: profile.chat_provider,
-    code_provider: profile.code_provider,
-    surfaces: profile.surfaces.join(", "),
-  }
-  return body.replace(/\{([a-z_]+)\}/g, (m, key) => (map[key] != null ? String(map[key]) : m))
-}
-
 function writeSurfaceIndex(target, surfaces) {
   const code = RULES.project_surfaces.filter((s) => s.id !== "docs" && surfaces.includes(s.id))
   const readme = join(target, "README.md")
@@ -798,10 +779,39 @@ async function cmdInit(flags) {
     if (!existsSync(debt)) copyFileSync(join(ROUTER, "project-skeleton", "memory", "doc-debt.md"), debt)
   }
 
-  const agents = join(target, "AGENTS.md")
-  if (!existsSync(agents)) writeFileSync(agents, renderAgents(profile))
   writeFactoryLauncher(target)
+  printAgentsHint(target, profile)
   process.stdout.write(`✓ init ${target}\n  tiếp: node .minipower/bin/minipower --help\n`)
+}
+
+function printAgentsHint(target, profile) {
+  const agents = join(target, "AGENTS.md")
+  if (existsSync(agents)) {
+    process.stdout.write("AGENTS.md đã có — giữ nguyên.\n")
+    return
+  }
+  const sample = join(ROUTER, "templates", "SAMPLE-agents.md")
+  const surfaces = profile.surfaces.join(", ")
+  const backend = profile.surfaces.includes("backend") ? "Code backend nằm ở `backend/src/`.\n" : ""
+  process.stdout.write(`AGENTS.md chưa có. Init không ghi file này.
+Dán prompt sau vào chat của dự án để AI viết AGENTS.md:
+
+---
+Đọc bản mẫu ${sample}.
+Viết file AGENTS.md mới, cùng cấu trúc mục 0–8, tiếng Việt, đúng sự thật dưới đây. Không chép tên dự án của bản mẫu.
+
+project_name: ${profile.project_name}
+project_summary: ${profile.project_summary}
+project_mode: ${profile.project_mode}
+current_phase: ${profile.current_phase}
+docs_provider: ${profile.docs_provider}
+tasks_provider: ${profile.tasks_provider}
+chat_provider: ${profile.chat_provider}
+code_provider: ${profile.code_provider}
+Bề mặt đang có: \`${surfaces}\`
+${backend}Không ghi tên người. Không chèn link tới SAMPLE-agents.md hay TPL-agent-profile.md.
+---
+`)
 }
 
 function declaredSurfaces(target) {
@@ -874,7 +884,7 @@ function usage() {
   install                 hỏi thư mục, client, pack (số + Enter)
   install --client cursor[,claude] [--with pack,...] [--target DIR]
                           [--no-user-rules]   bỏ always-on ~/.cursor/rules/
-  init                    hỏi từng bước (bề mặt: docs mặc định; backend, frontend, mobile, autotest chọn thêm)
+  init                    hỏi từng bước. AGENTS.md: in prompt, người tự tạo
   init --answers FILE.json   tuỳ chọn "surfaces": ["docs","backend"]
   init --check [--target DIR]
   install --check | --list-modules | --dry-run | --print | --print-user-rules

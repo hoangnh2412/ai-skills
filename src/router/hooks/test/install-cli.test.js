@@ -17,7 +17,11 @@ function run(args, cwd, envExtra = {}) {
       encoding: "utf8",
       cwd: cwd || HOOKS,
       stdio: ["ignore", "pipe", "pipe"],
-      env: { ...process.env, MINIPOWER_CURSOR_HOME: home, ...envExtra },
+      env: {
+        ...process.env,
+        MINIPOWER_CURSOR_HOME: home,
+        ...envExtra,
+      },
     })
   } catch (e) {
     e.message = `${e.stderr || ""}${e.stdout || ""}${e.message}`
@@ -104,6 +108,20 @@ test("install --no-user-rules không ghi ~/.cursor/rules", () => {
   }
 })
 
+test("init không ghi AGENTS.md, in prompt để người tự tạo", () => {
+  const dir = mkdtempSync(join(tmpdir(), "mp-nollm-"))
+  try {
+    const out = run(["init", "--answers", answersFile(dir), "--target", dir])
+    assert.match(out, /AGENTS\.md chưa có/)
+    assert.match(out, /SAMPLE-agents\.md/)
+    assert.match(out, /project_name: sample/)
+    assert.match(out, /Bề mặt đang có: `docs`/)
+    assert.ok(!existsSync(join(dir, "AGENTS.md")))
+  } finally {
+    rmSync(dir, { recursive: true, force: true })
+  }
+})
+
 test("init --answers + --check", () => {
   const dir = mkdtempSync(join(tmpdir(), "mp-init-"))
   const answers = join(dir, "a.json")
@@ -160,6 +178,7 @@ test("init hỏi lựa chọn qua stdin (không LLM)", () => {
       encoding: "utf8",
       input,
       stdio: ["pipe", "pipe", "pipe"],
+      env: { ...process.env },
     })
     const p = JSON.parse(readFileSync(join(dir, "memory", "profile.json"), "utf8"))
     assert.equal(p.version, 3)
@@ -200,7 +219,7 @@ function answersFile(dir, extra = {}) {
 test("init surfaces docs+backend+frontend — không tạo mobile/autotest, không sinh .sln", () => {
   const dir = mkdtempSync(join(tmpdir(), "mp-surf-"))
   try {
-    run(["init", "--answers", answersFile(dir, { surfaces: ["frontend", "backend", "docs"] }), "--target", dir])
+    const out = run(["init", "--answers", answersFile(dir, { surfaces: ["frontend", "backend", "docs"] }), "--target", dir])
     const p = JSON.parse(readFileSync(join(dir, "memory", "profile.json"), "utf8"))
     assert.deepEqual(p.surfaces, ["docs", "backend", "frontend"])
     assert.ok(existsSync(join(dir, "docs", "01-project")))
@@ -211,10 +230,9 @@ test("init surfaces docs+backend+frontend — không tạo mobile/autotest, khô
     assert.ok(existsSync(join(dir, "backend", "docs", "Architecture.md")))
     assert.ok(!existsSync(join(dir, "backend", "src", "App.sln")))
     assert.ok(existsSync(join(dir, "frontend", "src", "README.md")))
-    const agents = readFileSync(join(dir, "AGENTS.md"), "utf8")
-    assert.match(agents, /Bề mặt đang có: `docs, backend, frontend`/)
-    assert.match(agents, /backend\/src\//)
-    assert.ok(!agents.includes("{surfaces}"))
+    assert.match(out, /Bề mặt đang có: `docs, backend, frontend`/)
+    assert.match(out, /backend\/src\//)
+    assert.ok(!existsSync(join(dir, "AGENTS.md")))
     assert.ok(!existsSync(join(dir, "mobile")))
     assert.ok(!existsSync(join(dir, "autotest")))
     assert.match(readFileSync(join(dir, "README.md"), "utf8"), /<!-- surfaces:start -->/)
@@ -227,9 +245,10 @@ test("init surfaces docs+backend+frontend — không tạo mobile/autotest, khô
 test("init surfaces backend — không dựng cây docs", () => {
   const dir = mkdtempSync(join(tmpdir(), "mp-be-"))
   try {
-    run(["init", "--answers", answersFile(dir, { surfaces: ["backend"] }), "--target", dir])
+    const out = run(["init", "--answers", answersFile(dir, { surfaces: ["backend"] }), "--target", dir])
     assert.ok(existsSync(join(dir, "backend", "src", "README.md")))
-    assert.match(readFileSync(join(dir, "AGENTS.md"), "utf8"), /Bề mặt đang có: `backend`/)
+    assert.match(out, /Bề mặt đang có: `backend`/)
+    assert.ok(!existsSync(join(dir, "AGENTS.md")))
     assert.ok(existsSync(join(dir, "memory", "memory.md")))
     assert.ok(existsSync(join(dir, ".minipower", "identity.json")))
     assert.ok(!existsSync(join(dir, "docs")))

@@ -66,7 +66,7 @@ cp "$PROJECT/memory/memory.md.example" "$PROJECT/memory/memory.md"
 | `mobile` | `mobile/` | tắt |
 | `autotest` | `autotest/` | tắt |
 
-Init copy cây của bề mặt được chọn (`backend/src|tests|build`, `frontend/src`, `mobile/src`, `autotest/src`) và render `AGENTS.md` từ khuôn, điền `{surfaces}`. Không sinh `.sln` hay framework. Agent đặt file mới trong cây đó.
+Init copy cây của bề mặt được chọn (`backend/src|tests|build`, `frontend/src`, `mobile/src`, `autotest/src`). Không ghi `AGENTS.md` — in prompt để người dán vào chat. Không sinh `.sln` hay framework. Agent đặt file mới trong cây đó.
 
 `.minipower/` và `memory/` luôn có, kể cả khi bỏ `docs`.
 
