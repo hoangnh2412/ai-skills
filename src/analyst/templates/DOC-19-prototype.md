@@ -4,7 +4,7 @@
 |-----------|------|---------|------------|
 | 0.1 | YYYY-MM-DD | | Draft |
 
-**Vị trí trong pipeline:** phase `requirements`, **sau** DOC-04 (Business Rules) và **trước** DOC-06 (SRS). Prototype chốt hình hài UI/luồng màn hình rồi mới đặc tả FR chi tiết. Là một **cổng người-chốt** — xem [agents/approval-gate.md](../agents/approval-gate.md).
+**Vị trí trong pipeline:** phase `requirements`, **sau** DOC-04 (Business Rules) và **trước** DOC-06 (SRS). Prototype chốt hình hài UI/luồng màn hình rồi mới đặc tả FR chi tiết. Là một **cổng người-chốt** — xem [SAMPLE mục 6](../../router/templates/SAMPLE-agents.md).
 
 > **Cơ chế sinh wireframe (HTML) — hiện HOÃN.** Bản vẽ HTML wireframe sẽ do **MCP ngoài** đảm nhận (tích hợp sau, ADR 2026-07-20 gated-fanout §6 Q2). Ở giai đoạn này DOC-19 chỉ **đăng ký** vào pipeline như một cổng + khung mô tả dưới đây; chưa build generator. Khi có MCP: nhúng link/asset wireframe vào mục 3.
 

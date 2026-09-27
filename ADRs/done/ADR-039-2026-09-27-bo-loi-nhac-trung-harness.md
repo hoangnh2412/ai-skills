@@ -3,10 +3,10 @@
 | | |
 |---|---|
 | **Ngày** | 2026-09-27 |
-| **Trạng thái** | Đề xuất — chờ Confirm §6 |
+| **Trạng thái** | Done — T1–T4 xanh 2026-09-27 |
 | **Phạm vi** | Lời nhắc agent / rule Cursor-OpenCode đang lặp việc client harness hoặc `AGENTS.md` dự án đã mang. Xoá bản chữ thừa. Giữ hook máy kiểm được |
-| **Ngoài phạm vi** | Skill nghề (deliberation, readiness, SRS, SAD, .NET, kênh MCP, `*-review`) · hook `token-guard` / `profile-guard` / `auto-routing` / `prereq-gate` / `baseline-guard` · SOP Lark IM còn trong `lark-work-assistant` (trùng skill `minipower-chat-lark`, không phải harness — [ADR-036](ADR-036-2026-09-26-agent-skill-lark-tasks.md)) · persona `src/tasks/agents/minipower-tasks-lark.md` (trùng skill tasks) · mở lại skill `fan-out` |
-| **Nối tiếp** | [ADR-033](../doing/ADR-033-2026-09-25-dispatcher-role-channel-ssot-provider.md) C5 · [ADR-034](../done/ADR-034-2026-09-26-minipower-marker-always-on-dispatch.md) QĐ-4 (route = LLM) · [ADR-037](../done/ADR-037-2026-09-26-xoa-folder-sdlc-dot-e.md) Q4 (fan-out = harness, đã xoá skill) · [ADR-031](../doing/ADR-031-2026-09-01-cli-install-init-thay-llm-thi-hanh.md) (init = CLI) · mẫu [SAMPLE-agents.md](../../src/router/templates/SAMPLE-agents.md) |
+| **Ngoài phạm vi** | Skill nghề (deliberation, readiness, SRS, SAD, .NET, kênh MCP, `*-review`) · hook `token-guard` / `profile-guard` / `auto-routing` / `prereq-gate` / `baseline-guard` · SOP Lark IM còn trong `lark-work-assistant` (trùng skill `minipower-chat-lark`, không phải harness — [ADR-036](../todo/ADR-036-2026-09-26-agent-skill-lark-tasks.md)) · persona `src/tasks/agents/minipower-tasks-lark.md` (trùng skill tasks) · mở lại skill `fan-out` |
+| **Nối tiếp** | [ADR-033](../doing/ADR-033-2026-09-25-dispatcher-role-channel-ssot-provider.md) C5 · [ADR-034](ADR-034-2026-09-26-minipower-marker-always-on-dispatch.md) QĐ-4 (route = LLM) · [ADR-037](ADR-037-2026-09-26-xoa-folder-sdlc-dot-e.md) Q4 (fan-out = harness, đã xoá skill) · [ADR-031](../doing/ADR-031-2026-09-01-cli-install-init-thay-llm-thi-hanh.md) (init = CLI) · mẫu [SAMPLE-agents.md](../../src/router/templates/SAMPLE-agents.md) |
 | **Mục đích** | Một lời nhắc một nhà. Không viết lại cơ chế hay đoạn chữ mà harness đã thực thi |
 | **Ảnh hưởng** | `src/router/agents/` (xoá các file §5a) · `cli/cursor/rules/minipower-token-guard.mdc` · `minipower-doc-editing.mdc` · `minipower-profile.mdc` · `cli/opencode/rules/minipower-profile.md` · `src/router/hooks/gen-agents-doc.js` · `src/router/hooks/lib/rules.json` (`context_chain`, `approval_gates`) · `src/router/hooks/lib/auto-routing.js` (path lá chết) · `src/router/templates/TPL-agent-profile.md` (import Claude) · `src/router/docs/token-guard.md` · href trong skill/role/pipeline/README cài · test gen / soft-layer / rules |
 
@@ -100,8 +100,8 @@ Việc còn lại là **lời nhắc**. Cùng một đoạn đang nằm ở ba c
 
 | # | Câu hỏi | Trả lời |
 |---|---|---|
-| Q1 | Duyệt QĐ-1…8 (xoá lời nhắc §5a, giữ hook, bỏ `context_chain` + `approval_gates`, sửa path lá trong auto-routing)? | |
-| Q2 | Rule Cursor `minipower-token-guard.mdc` và `minipower-doc-editing.mdc` xoá hẳn (O2), không giữ một bản IDE song song với `AGENTS.md`? | |
+| Q1 | Duyệt QĐ-1…8 (xoá lời nhắc §5a, giữ hook, bỏ `context_chain` + `approval_gates`, sửa path lá trong auto-routing)? | **OK** — 2026-09-27 |
+| Q2 | Rule Cursor `minipower-token-guard.mdc` và `minipower-doc-editing.mdc` xoá hẳn (O2), không giữ một bản IDE song song với `AGENTS.md`? | **OK** — 2026-09-27. Cùng QĐ-2, xoá luôn bản Claude và OpenCode cùng ba bullet (`cli/claude/rules/minipower-doc-editing.md`, `cli/opencode/rules/minipower-doc-editing.md`) |
 
 ## §7. Việc triển khai
 
@@ -117,10 +117,10 @@ Việc còn lại là **lời nhắc**. Cùng một đoạn đang nằm ở ba c
 
 | # | Loại | Case | Expect | Trạng thái |
 |---|---|---|---|---|
-| T1 | Smoke | Cài Cursor trên dự án có `AGENTS.md`: không còn rule token-guard / doc-editing / profile trong `.cursor/rules/` của fragment | Chỉ còn always-on (+ hook) | 🔴 |
-| T2 | Regression | `npm test` + `gen:check` + `link:check` 0 gãy mới | xanh | 🔴 |
-| T3 | Mới | Grep `agents/token-guard.md` `agents/doc-editing.md` `agents/context-load.md` `agents/approval-gate.md` `agents/project-state.md` `agents/auto-routing.md` ngoài `ADRs/` và CHANGELOG | 0 | 🔴 |
-| T4 | Mới | `auto-routing` với DOC-14 / DOC-16 / DOC-17 / DOC-18 | path lá pm / qa / ops / analyst-cr, không path `skills/{phase}` | 🔴 |
+| T1 | Smoke | Cài Cursor trên dự án có `AGENTS.md`: không còn rule token-guard / doc-editing / profile trong `.cursor/rules/` của fragment | Chỉ còn always-on (+ hook) | 🟢 `sample-cursor` 2026-09-27 — `.cursor/rules/` chỉ `minipower-always-on.mdc` |
+| T2 | Regression | `npm test` + `gen:check` + `link:check` 0 gãy mới | xanh | 🟢 597/597 · `gen:check` · `link:check` 0 MỚI (2026-09-27) |
+| T3 | Mới | Grep `agents/token-guard.md` `agents/doc-editing.md` `agents/context-load.md` `agents/approval-gate.md` `agents/project-state.md` `agents/auto-routing.md` ngoài `ADRs/` và CHANGELOG | 0 | 🟢 |
+| T4 | Mới | `auto-routing` với DOC-14 / DOC-16 / DOC-17 / DOC-18 | path lá pm / qa / ops / analyst-cr, không path `skills/{phase}` | 🟢 |
 
 ## §9. Hệ quả
 

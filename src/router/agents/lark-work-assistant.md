@@ -4,7 +4,7 @@ Markdown thuần — guardrail **cũ, gộp** cho trợ lý Lark (`user-lark-mcp
 
 **Pack kênh (ưu tiên, ADR-033 D1):** task → [`minipower-tasks-lark`](../../tasks/skills/minipower-tasks-lark/SKILL.md); tin nhắn → [`minipower-chat-lark`](../../chat/skills/minipower-chat-lark/SKILL.md). File này giữ SOP wiki/Base/Drive cho đến khi có lá riêng. Outline → [`minipower-docs-outline`](../../docs/skills/minipower-docs-outline/SKILL.md), không trộn vào đây.
 
-**Khi nào còn đọc file này:** Base/Bitable, wiki Lark, Drive permission — **không** SOP task (pack `tasks/`). **Không** thay skill phase Minipower — bổ trợ [planning](../../pm/skills/minipower-pm-plan/SKILL.md) / [approval-gate](approval-gate.md).
+**Khi nào còn đọc file này:** Base/Bitable, wiki Lark, Drive permission — **không** SOP task (pack `tasks/`). **Không** thay skill phase Minipower — bổ trợ [planning](../../pm/skills/minipower-pm-plan/SKILL.md). Cổng người chốt: [SAMPLE mục 6](../templates/SAMPLE-agents.md).
 
 ---
 
@@ -91,7 +91,7 @@ flowchart TD
 1. **Kiểm tra MCP đã cài** — không có server Lark trong catalog → §2, dừng.
 2. **Xác thực MCP** — nếu `user-lark-mcp` ở trạng thái `needsAuth` hoặc tool trả lỗi auth → gọi `mcp_auth` (không đối số), rồi thử lại **một lần**. Vẫn lỗi → dừng, báo người dùng đăng nhập/ cấp quyền app Lark (hoặc chạy lại lệnh `login` ở §2).
 3. **Làm rõ một lượt** — thiếu `chat_id`, `app_token`, khoảng thời gian, hoặc tiêu chí lọc wiki/Base → **hỏi trọn gói**. Tasklist / task → pack `tasks/`, không hỏi SOP task ở file này.
-4. **Nạp ngữ cảnh cục bộ** (nếu workspace là dự án Minipower): `memory/profile.json` → `memory/memory.md` → slice liên quan trong `docs/` hoặc `memory/decision-log.md` / `open-questions.md` — tuân [token-guard](token-guard.md); **không** đọc cả repo vì một câu hỏi Lark.
+4. **Nạp ngữ cảnh cục bộ** (nếu workspace là dự án Minipower): `memory/profile.json` → `memory/memory.md` → slice liên quan trong `docs/` hoặc `memory/decision-log.md` / `open-questions.md` — một slice theo [SAMPLE mục 2](../templates/SAMPLE-agents.md); **không** đọc cả repo vì một câu hỏi Lark.
 5. **Cấu hình Lark tùy chọn** — nếu có `memory/lark.json` (xem §9), ưu tiên ID mặc định ở đó thay vì đoán.
 
 ---
@@ -154,7 +154,7 @@ Server: **`user-lark-mcp`**. Luôn đọc schema tool (`GetMcpTools`) trước k
 
 1. `wiki_v1_node_search` hoặc `docx_builtin_search` → `wiki_v2_space_getNode` / `docx_v1_document_rawContent`.
 2. Tóm tắt, trích dẫn, đối chiếu với `docs/` (nếu dự án Minipower).
-3. Publish/import (`docx_builtin_import`) = **L3** — chỉ bản đã duyệt; chưa qua [approval-gate](approval-gate.md) / doc-review → **không** import làm bản chính thức.
+3. Publish/import (`docx_builtin_import`) = **L3** — chỉ bản đã duyệt; chưa qua cổng người ([SAMPLE mục 6](../templates/SAMPLE-agents.md)) / doc-review → **không** import làm bản chính thức.
 
 ### 6.4 Base / Bitable (L1 → L3)
 
@@ -168,11 +168,11 @@ Server: **`user-lark-mcp`**. Luôn đọc schema tool (`GetMcpTools`) trước k
 
 | Tình huống | Hành vi |
 |------------|---------|
-| Cổng phê duyệt ([approval-gate](approval-gate.md)) | AI soạn approval item / tóm tắt trên Lark → **người** duyệt trên Lark. Chưa có event duyệt = chưa qua cổng. |
+| Cổng phê duyệt ([SAMPLE mục 6](../templates/SAMPLE-agents.md)) | AI soạn approval item / tóm tắt trên Lark → **người** duyệt trên Lark. Chưa có event duyệt = chưa qua cổng. |
 | Sau duyệt | Ghi back-ref vào `memory/decision-log.md`: `approved via {Lark ref} @ {date}` — repo vẫn tự mô tả khi không có Lark. |
 | `doc-registry` | Mirror `DOC ↔ Lark ↔ version` — **không** coi Lark là SSOT nội dung; nội dung SSOT vẫn ở git `docs/`. |
 | Fan-out module | Mỗi module một luồng Lark riêng (thread); không gom duyệt chờ cả dự án. Task board → pack `tasks/`. |
-| Phase | Intent wiki/Base → file này. Intent task → `minipower-tasks-lark`. Intent DOC/phase → [auto-routing](auto-routing.md) + skill con **trước**. |
+| Phase | Intent wiki/Base → file này. Intent task → `minipower-tasks-lark`. Intent DOC/phase → hook auto-routing + skill con **trước**. |
 
 ---
 

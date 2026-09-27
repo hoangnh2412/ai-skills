@@ -30,7 +30,6 @@ function markdownFiles() {
     "skills/minipower-router/SKILL.md",
     "docs/parallel-work.md",
     "docs/pipeline.md",
-    "agents/approval-gate.md",
   ]) {
     out.push([rel, readRouter(...rel.split("/"))])
   }
@@ -122,11 +121,4 @@ test("QĐ-11 — không markdown nào còn hứa 'chưa duyệt = không qua'", 
     }
   }
   assert.deepEqual(problems, [], `tầng mềm còn hứa cổng chặn:\n${problems.join("\n")}`)
-})
-
-test("QĐ-11 — approval-gate.md tự khai là advisory, không phải rào", () => {
-  const text = readRouter("agents", "approval-gate.md")
-  assert.match(text, /advisory/i)
-  assert.match(text, /[Kk]hông hook nào enforce/, "phải nói thẳng không hook nào enforce")
-  assert.match(text, /QĐ-11/)
 })

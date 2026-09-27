@@ -14,7 +14,7 @@
  *
  * Quyết định đã chốt (ADR §6, 2026-07-17):
  *   Q7a — baseline DENY TUYỆT ĐỐI: không lối thoát, kể cả prompt nói migrate.
- *         (Tài liệu agents/token-guard.md + docs/token-guard.md phải sửa cho khớp — P4.)
+ *         (Tài liệu docs/token-guard.md phải sửa cho khớp — P4.)
  *   Q7b — read-guard KHÔNG gọi shouldBypass: BYPASS không mở được read-guard.
  *         Lý do: bảo vệ token, chặn AI đọc thừa. read-guard là guard nghiêm nhất, có chủ đích.
  *

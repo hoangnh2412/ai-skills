@@ -2,64 +2,19 @@
 
 [← README](README.md) · [Pipeline](pipeline.md)
 
-Giảm **đọc/sửa lan man** trên repo `docs/` (baseline, legacy, cả thư mục, nhiều module một lúc) — tiết kiệm token và giữ mỗi phiên chat **một slice** rõ ràng.
+Hook chặn **đọc/sửa lan man** trên repo `docs/` (baseline, legacy, cả thư mục, nhiều module một lúc). Lời nhắc cho agent — một slice, tối đa ba file, không đọc baseline — nằm ở `AGENTS.md` dự án, mẫu [SAMPLE-agents.md](../templates/SAMPLE-agents.md) mục 2–3.
 
-**Cần cài rules/hooks** trên **workspace project docs** — symlink skill Minipower **không** tự bật token guard. Xem [../install/cursor/README.md](../../../cli/cursor/README.md) · [../install/claude/README.md](../../../cli/claude/README.md).
+Cài hook trên workspace project. Symlink skill **không** tự bật token guard. Xem [Cursor](../../../cli/cursor/README.md) · [Claude](../../../cli/claude/README.md).
 
-## Ba lớp
+## Hooks
 
-| Lớp | Vai trò | Nguồn |
-|-----|---------|--------|
-| **Agent rules** | Hướng dẫn agent: hỏi scope, đọc theo lớp, một slice khi sửa | [../agents/token-guard.md](../agents/token-guard.md) · [../agents/doc-editing.md](../agents/doc-editing.md) |
-| **IDE rules** | Cursor `.mdc` / Claude `.md` — áp dụng khi chat hoặc khi sửa `docs/**/*.md` | [../install/cursor/README.md](../../../cli/cursor/README.md) · [../install/claude/README.md](../../../cli/claude/README.md) |
-| **Hooks (Node)** | Chặn/cảnh báo **trước khi gửi prompt** và **trước khi đọc file** — một implementation Node cho cả Cursor/Claude/OpenCode | [../hooks/](../hooks/) (`bin/*.js` → `lib/*.js`) — cài: [../install/cursor/README.md](../../../cli/cursor/README.md) |
-
-## Quy ước scope trong prompt
-
-Một phiên làm việc nên có đủ **phase + đích + file** (hoặc @ một file cụ thể):
-
-| Thành phần | Cách ghi | Ví dụ |
-|------------|----------|--------|
-| Phase | `Phase: discovery` · `requirements` · … (xem [pipeline.md](pipeline.md)) | `Phase: requirements` |
-| Module | `Module: {module-id}` hoặc path `03-modules/{module-id}/` | `Module: billing` |
-| Platform | `04-platform` (khi không theo module) | `Phase: architecture — 04-platform, DOC-08` |
-| DOC | `DOC-06` … `DOC-18` | `DOC-06 §2` |
-| File đích | `@docs/03-modules/{module-id}/DOC-06-srs.md` | @ một file, không @ cả folder |
-
-**Prompt gọn, đủ scope:**
-
-```text
-/minipower
-Phase: requirements — Module: billing, DOC-06
-@docs/03-modules/billing/DOC-06-srs.md
-Cap nhat FR dang nhap SSO — section 2.3
-```
-
-**Tránh** (hooks có thể chặn hoặc cảnh báo):
-
-```text
-@docs/
-@docs/03-modules/
-Dong bo toan bo requirements tat ca module
-```
-
-## Agent làm gì khi đọc / sửa
-
-- **Chưa rõ scope** → hỏi 1 câu (module + DOC + section), không quét repo.
-- **Context theo lớp:** `memory/memory.md` → (khi cần) DEC/open-Q → **1 DOC đích** (+ tối đa 1 dependency).
-- **Tối đa 3 file** đọc thêm so với file user @; vượt → hỏi trước.
-- **Không tự đọc** `docs/02-baseline/`, `docs/03-modules/_legacy/`, toàn bộ `trace-matrix.md` / `doc-registry.md` trừ khi user yêu cầu rõ (migrate, rollup).
-- **Một slice khi sửa:** `{module}/{DOC-XX}` + section hoặc ID (`{MOD}-FR-010`); chỉ diff phần được yêu cầu.
-
-Chi tiết rule agent: [../agents/token-guard.md](../agents/token-guard.md)
-
-## Hooks (khi đã cài)
-
-Chạy qua Node (`node …/hooks/bin/*.js`) — giống nhau trên Cursor/Claude/OpenCode. Hai hook token guard (cùng `beforeSubmitPrompt` còn có auto-routing + decision-staleness — xem [auto-routing.md](../agents/auto-routing.md), [decision-log.md](decision-log.md)):
+Chạy qua Node (`node …/hooks/bin/*.js`) — giống nhau trên Cursor/Claude/OpenCode. Cùng `beforeSubmitPrompt` còn có auto-routing và decision-staleness ([auto-routing.js](../hooks/lib/auto-routing.js), [decision-log.md](decision-log.md)).
 
 | Shim | Sự kiện | Hành vi |
 |------|---------|---------|
 | `bin/token-guard.js` | `beforeSubmitPrompt` | **Chặn** `@docs/` hoặc `@docs/03-modules/` không kèm file; **cảnh báo** prompt sửa/sync thiếu Phase + Module (hoặc 04-platform) + DOC |
 | `bin/token-guard-read.js` | `beforeReadFile` (tuỳ chọn) | **Từ chối** đọc `02-baseline/` (tuyệt đối) và `_legacy/` (trừ khi prompt có migrate / MIGRATION) |
 
-Smoke test: [../install/cursor/README.md](../../../cli/cursor/README.md)
+Prompt bị chặn hoặc cảnh báo khi thiếu scope, ví dụ `@docs/`, `@docs/03-modules/`, hoặc "đồng bộ toàn bộ requirements tất cả module" mà không có phase, module và DOC.
+
+Smoke test: [Cursor](../../../cli/cursor/README.md)

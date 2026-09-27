@@ -3,7 +3,7 @@
  *  - rules.json phủ đủ DOC-01..18, mọi phase hợp lệ.
  *  - Nhãn phase suy ra khớp chuỗi cũ (không regress message hook).
  *  - Regex edit/breadth sinh từ keyword match đúng như bản hardcode cũ.
- *  - agents/auto-routing.md đồng bộ rules.json (chạy gen --check).
+ *  - bảng generated đồng bộ rules.json (chạy gen --check).
  */
 
 import test from "node:test"
@@ -23,8 +23,6 @@ import {
   PHASE_META,
   ROLES,
   PREREQ_BY_INTENT,
-  CONTEXT_CHAIN,
-  APPROVAL_GATES,
   DOC_SCOPE,
   PROJECT_MODES,
   DEFAULT_PROJECT_MODE,
@@ -89,7 +87,7 @@ test("rules.json giữ đủ danh sách keyword không rỗng", () => {
   assert.ok(RULES.breadth_words.length >= 3)
 })
 
-test("agents/auto-routing.md đồng bộ rules.json (gen --check)", () => {
+test("bảng generated đồng bộ rules.json (gen --check)", () => {
   // Nếu lệch, execFileSync ném (exit 1) → test fail với stderr hướng dẫn.
   execFileSync("node", [join(HOOKS, "gen-agents-doc.js"), "--check"], { encoding: "utf8" })
 })
@@ -157,28 +155,6 @@ test("matchIntents (N1) — nhận diện intent từ prompt đã strip", () => 
   const hit = matchIntents(stripDiacritics("giúp tôi viết code cho module billing".toLowerCase()))
   assert.ok(hit.some((h) => h.id === "implement"), "miss intent implement")
   assert.equal(matchIntents(stripDiacritics("chào bạn".toLowerCase())).length, 0)
-})
-
-test("context_chain (N4) — mỗi mục có doc hợp lệ HOẶC path", () => {
-  assert.ok(CONTEXT_CHAIN.length >= 3)
-  for (const c of CONTEXT_CHAIN) {
-    if (c.doc) assert.ok(DOC_SHORT[c.doc], `context doc lạ "${c.doc}"`)
-    else assert.ok(c.path, `context "${c.label}" thiếu cả doc lẫn path`)
-  }
-})
-
-// ─── A2/A3 — gated fan-out (ADR 2026-07-20 gated-fanout) ─────────────────────
-
-test("approval_gates (A2) — id duy nhất, approve trỏ DOC hợp lệ, có label+unlocks", () => {
-  assert.ok(APPROVAL_GATES.length >= 5)
-  const ids = APPROVAL_GATES.map((g) => g.id)
-  assert.equal(new Set(ids).size, ids.length, "gate id trùng")
-  for (const g of APPROVAL_GATES) {
-    assert.ok(g.label && g.unlocks, `gate ${g.id} thiếu label/unlocks`)
-    assert.ok(PHASE_BY_DOC[g.approve], `gate ${g.id}: approve DOC lạ "${g.approve}"`)
-  }
-  // Cổng prototype duyệt đúng DOC-19.
-  assert.ok(APPROVAL_GATES.some((g) => g.id === "prototype" && g.approve === "19"))
 })
 
 test("intent prototype (A3) — nhận diện, requires DOC-04 (Business Rules đã chốt)", () => {

@@ -10,27 +10,23 @@
  *   node gen-agents-doc.js --check  # CI: exit 1 nếu bất kỳ target lệch rules.json
  *
  * Target:
- *   agents/auto-routing.md          — bảng map DOC→phase
- *   agents/project-state.md         — bảng giai đoạn dự án → phase → vai trò (N2)
- *   agents/context-load.md          — chuỗi ngữ cảnh auto-load (N4)
- *   skills/readiness-gate/SKILL.md  — bảng tiền đề theo intent (N1)
+ *   skills/minipower-router-readiness/SKILL.md — bảng tiền đề theo intent (N1)
  *   roles/README.md                 — chỉ mục vai trò (N3)
- *   hooks.json, install/claude/settings.fragment.json,
- *   install/cursor/hooks/hooks.fragment.json — wiring hook (SSOT: rules.json install_hooks)
+ *   skills/minipower-router/SKILL.md — bảng project_mode
+ *   contracts/doc-mode.md           — DOC × pack
+ *   hooks.json, cli/claude/settings.fragment.json,
+ *   cli/cursor/hooks/hooks.fragment.json — wiring hook (SSOT: rules.json install_hooks)
  *   hooks/lib/module-registry.json — PACK.md packs (ADR-031 QĐ-4)
+ *
+ * Không sinh bốn file agent đã bỏ (ADR-039 QĐ-2/QĐ-5). phase_meta vẫn trong rules.json — hook đọc.
  */
 
 import { readFileSync, writeFileSync, existsSync } from "node:fs"
 import { fileURLToPath } from "node:url"
 import {
-  PHASE_ORDER,
-  PHASE_META,
   ROLES,
   PREREQ_BY_INTENT,
   PROJECT_MODES,
-  CONTEXT_CHAIN,
-  APPROVAL_GATES,
-  docsForPhase,
   formatDocRanges,
   docLabel,
   docScope,
@@ -60,45 +56,6 @@ const marker = (id) =>
   `<!-- BEGIN generated: ${id} (nguồn: hooks/lib/rules.json — chạy \`npm run gen\`) -->`
 const END = (id) => `<!-- END generated: ${id} -->`
 
-function phaseMapTable() {
-  const rows = ["| Phase | DOC | Skill con |", "|-------|-----|-----------|"]
-  for (const phase of PHASE_ORDER) {
-    const nums = docsForPhase(phase)
-    if (!nums.length) continue
-    const leaf = {
-      discovery: "../discovery/skills/minipower-discovery-survey/SKILL.md",
-      requirements: "../analyst/skills/minipower-analyst-srs/SKILL.md",
-      architecture: "../architecture/skills/minipower-architecture-sad/SKILL.md",
-    }[phase]
-    rows.push(
-      `| **${phase}** | DOC-${formatDocRanges(nums)} | \`${leaf || `skills/${phase}/SKILL.md`}\` |`,
-    )
-  }
-  return rows.join("\n")
-}
-
-function projectStateTable() {
-  const rows = [
-    "| Giai đoạn dự án | Phase minipower | Vai trò chính |",
-    "|-----------------|-----------------|----------------|",
-  ]
-  for (const phase of PHASE_ORDER) {
-    const meta = PHASE_META[phase]
-    if (!meta) continue
-    rows.push(`| ${meta.state} | \`${phase}\` | ${meta.role} |`)
-  }
-  return rows.join("\n")
-}
-
-function contextChainTable() {
-  const rows = ["| # | Nguồn ngữ cảnh | Vị trí |", "|---|----------------|--------|"]
-  CONTEXT_CHAIN.forEach((c, i) => {
-    const where = c.doc ? docLabel(c.doc) : `\`${c.path}\``
-    rows.push(`| ${i + 1} | ${c.label} | ${where} |`)
-  })
-  return rows.join("\n")
-}
-
 function prereqTable() {
   const rows = [
     "| Intent | Tiền đề cần có | Kiểm ở đâu |",
@@ -114,17 +71,6 @@ function prereqTable() {
       : "cấp dự án"
     rows.push(`| **${it.label}** | ${reqs} | ${where} |`)
   }
-  return rows.join("\n")
-}
-
-function approvalGateTable() {
-  const rows = [
-    "| # | Cổng (người chốt) | DOC duyệt | Mở khoá bước sau |",
-    "|---|-------------------|-----------|------------------|",
-  ]
-  APPROVAL_GATES.forEach((g, i) => {
-    rows.push(`| ${i + 1} | **${g.label}** | ${docLabel(g.approve)} | ${g.unlocks} |`)
-  })
   return rows.join("\n")
 }
 
@@ -177,11 +123,7 @@ function rolesTable() {
 }
 
 const TARGETS = [
-  { file: rt("agents", "auto-routing.md"), id: "phase-map", build: phaseMapTable },
-  { file: rt("agents", "project-state.md"), id: "project-state", build: projectStateTable },
-  { file: rt("agents", "context-load.md"), id: "context-chain", build: contextChainTable },
   { file: rt("skills", "minipower-router-readiness", "SKILL.md"), id: "prereq-by-intent", build: prereqTable },
-  { file: rt("agents", "approval-gate.md"), id: "approval-gates", build: approvalGateTable },
   { file: rt("roles", "README.md"), id: "roles-index", build: rolesTable },
   { file: rt("skills", "minipower-router", "SKILL.md"), id: "project-modes", build: projectModesTable },
   { file: rel("../../../contracts/doc-mode.md"), id: "doc-mode", build: docModeTable },

@@ -40,19 +40,49 @@ function resolveRoot(opts) {
 }
 
 // SOP lá nghề dưới src/{pack}/. root mặc định = pack chứa hooks (router); strip pack → src/.
+// delivery tách theo DOC (ADR-039 QĐ-6): 16 → qa, 17 → ops.
 const LEAF = {
   discovery: "discovery/skills/minipower-discovery-survey/SKILL.md",
   requirements: "analyst/skills/minipower-analyst-srs/SKILL.md",
   architecture: "architecture/skills/minipower-architecture-sad/SKILL.md",
+  planning: "pm/skills/minipower-pm-plan/SKILL.md",
+  "change-control": "analyst/skills/minipower-analyst-cr/SKILL.md",
+}
+const DELIVERY_BY_DOC = {
+  "16": "qa/skills/minipower-qa-strategy/SKILL.md",
+  "17": "ops/skills/minipower-ops-deploy/SKILL.md",
 }
 
-function skillPath(phase, root) {
-  const leaf = LEAF[phase]
-  if (leaf) {
-    const src = root.replace(/[/\\](sdlc|router)$/, "")
-    if (src !== root) return `${src}/${leaf}`
+function docNumsFromLabels(labels) {
+  const nums = []
+  for (const label of labels || []) {
+    const match = String(label).match(DOC_IN_NAME)
+    if (!match) continue
+    const num = normalizeDocNum(match[1])
+    if (num && !nums.includes(num)) nums.push(num)
   }
-  return `${root}/skills/${phase}/SKILL.md`
+  return nums
+}
+
+function leafRels(phase, labels) {
+  if (phase === "delivery") {
+    const rels = []
+    for (const num of docNumsFromLabels(labels)) {
+      const rel = DELIVERY_BY_DOC[num]
+      if (rel && !rels.includes(rel)) rels.push(rel)
+    }
+    return rels
+  }
+  return LEAF[phase] ? [LEAF[phase]] : []
+}
+
+function skillPaths(phase, root, labels) {
+  const rels = leafRels(phase, labels)
+  if (rels.length) {
+    const src = root.replace(/[/\\](sdlc|router)$/, "")
+    if (src !== root) return rels.map((rel) => `${src}/${rel}`)
+  }
+  return [`${root}/skills/${phase}/SKILL.md`]
 }
 
 function basename(path) {
@@ -105,11 +135,13 @@ function parseExplicitPhase(prompt) {
   return match ? match[1].toLowerCase() : undefined
 }
 
-function buildRoutePrefix(prompt, phase, skill, docLabels) {
+function buildRoutePrefix(prompt, phase, skills, docLabels) {
   const lines = []
   if (!prompt.includes(DISPATCH)) lines.push(DISPATCH)
   if (!new RegExp(`Phase:\\s*${phase}\\b`, "i").test(prompt)) lines.push(`Phase: ${phase}`)
-  if (!prompt.includes(skill)) lines.push(`@${skill}`)
+  for (const skill of skills) {
+    if (!prompt.includes(skill)) lines.push(`@${skill}`)
+  }
   for (const doc of docLabels) {
     if (!doc || !/[/\\]DOC[\s-]\d{1,2}/i.test(doc)) continue
     const docNorm = doc.replace(/\\/g, "/")
@@ -142,12 +174,12 @@ function handleSinglePhase(byPhase, explicit, prompt, root) {
   }
 
   if (!explicit) {
-    const skill = skillPath(detected, root)
-    const prefix = buildRoutePrefix(prompt, detected, skill, byPhase[detected])
+    const skills = skillPaths(detected, root, byPhase[detected])
+    const prefix = buildRoutePrefix(prompt, detected, skills, byPhase[detected])
     const role = roleForPhase(detected)
     const context = [
       "Minipower auto-route (DOC -> phase).",
-      `Phase: ${detected} Skill: @${skill}`,
+      `Phase: ${detected} Skill: ${skills.map((s) => `@${s}`).join(" ")}`,
       // [N2] Giai đoạn dự án + vai trò chính (lăng kính hỗ trợ, không phải agent tự chạy).
       `State: ${stateForPhase(detected)}${role ? ` Role: ${role}` : ""}`,
       "Follow minipower-token-guard: one slice, read skill con for this phase only.",
@@ -176,7 +208,7 @@ function handleMultiPhase(byPhase, explicit, root) {
       `${idx + 1}) Phase: ${phase}`,
       `   ${DISPATCH}`,
       `   @${sample}`,
-      `   @${skillPath(phase, root)}`,
+      ...skillPaths(phase, root, byPhase[phase]).map((s) => `   @${s}`),
       "   <mô tả task cho phase này>",
       "",
     )

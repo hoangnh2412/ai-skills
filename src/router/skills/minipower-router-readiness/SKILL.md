@@ -31,7 +31,7 @@ Yêu cầu thực thi
   → LIỆT KÊ trọn bộ tiền đề còn thiếu (một lượt)
       mỗi mục:  [Trả lời ngay] · [Hoãn → ghi nợ] · [Không cần]
   → Đủ ở mức chấp nhận được?
-        Có  → thực thi (kèm sổ nợ để bổ sung dần) → [context-load](../../../router/agents/context-load.md)
+        Có  → thực thi (kèm sổ nợ để bổ sung dần) → đọc DOC theo [SAMPLE mục 2](../../templates/SAMPLE-agents.md)
         Không → xin phần tối thiểu còn thiếu (không tự bịa)
 ```
 

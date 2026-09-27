@@ -9,7 +9,7 @@
 | **Trạng thái (2026-08-20)** | 🟣 **CANCEL** — [ADR-019](../cancel/ADR-019-2026-08-20-minipower-harness-khong-gate.md) bỏ toàn bộ gate nội bộ; ADR này lấy "gated" làm lõi nên mất căn cứ. **Kế thừa:** cơ chế fan-out per-module (skill `fan-out` đã có) + thứ tự requirements + DOC-19. Giữ làm lịch sử. |
 | **Cập nhật 2026-08-20 (trước khi cancel)** | Theo [ADR-017](../cancel/ADR-017-2026-08-20-minipower-toolchain-openproject-github-outline-slack.md): **GĐ-C bỏ phần HTML wireframe** (chuyển sang skill `jarvis-frontend`, DOC-19 chỉ còn đặc tả) · **GĐ-D** đổi đích Lark → **OpenProject work package**, blocker thành *chờ SOP OpenProject* · **GĐ-E** "Lark MCP adapter" → **OpenProject + Github MCP**. Lộ trình A→E và triết lý §0 **không đổi**. |
 | **Mục đích** | Chốt hướng cho tầm nhìn 8 bước (BRD→BR→Prototype→SRS→Task→Plan→Test→Code→Report); ghi lại quyết định kiến trúc và lộ trình A→E |
-| **Ảnh hưởng** | [minipower/agents/approval-gate.md](../../src/router/agents/approval-gate.md) — guardrail cổng người-chốt (§0/§3-A2) · [minipower/skills/fan-out/SKILL.md](../../src/router/docs/parallel-work.md) — fan-out chỉ chạy giữa hai cổng (§0). Cũng chi phối mô hình "gatekeeper + fan-out" mô tả trong [AGENTS.md](../../AGENTS.md). |
+| **Ảnh hưởng** | `minipower/agents/approval-gate.md` — guardrail cổng người-chốt (§0/§3-A2) · [minipower/skills/fan-out/SKILL.md](../../src/router/docs/parallel-work.md) — fan-out chỉ chạy giữa hai cổng (§0). Cũng chi phối mô hình "gatekeeper + fan-out" mô tả trong [AGENTS.md](../../AGENTS.md). |
 
 ---
 
@@ -133,7 +133,7 @@ Cổng người-chốt hiện là *ngầm* (readiness-gate soát tiền đề đ
 ]
 ```
 
-- Guardrail [agents/approval-gate.md](../../src/router/agents/approval-gate.md) (bảng sinh qua `npm run gen`): giao thức **AI soạn DEC nháp → người duyệt → mở khoá** (Q3). Không có DEC chốt = không qua cổng; fan-out chỉ nằm *giữa* hai cổng.
+- Guardrail `agents/approval-gate.md` (bảng sinh qua `npm run gen`): giao thức **AI soạn DEC nháp → người duyệt → mở khoá** (Q3). Không có DEC chốt = không qua cổng; fan-out chỉ nằm *giữa* hai cổng.
 - Phân biệt với readiness-gate: approval-gate soát *người đã chốt bước trước chưa*; readiness-gate soát *tiền đề đầu vào đủ chưa*.
 - Golden test `approval_gates` trong [rules.test.js](../../src/router/hooks/test/rules.test.js); `gen:check` phủ bảng mới.
 

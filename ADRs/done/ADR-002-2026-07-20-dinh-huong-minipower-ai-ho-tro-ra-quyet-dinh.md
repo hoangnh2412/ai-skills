@@ -101,9 +101,9 @@ Khi tài liệu đã đủ, AI tự nạp chuỗi ngữ cảnh trước khi đ�
 | # | Việc | Deliverable | Trạng thái |
 |---|------|-------------|-----------|
 | **N1** | Readiness Gate (§3.1) | `prereq_by_intent` trong [rules.json](../../src/router/hooks/lib/rules.json) + skill [readiness-gate/SKILL.md](../../src/router/skills/minipower-router-readiness/SKILL.md) (hỏi trọn gói, hoãn-ghi-nợ, sổ `open-questions.md`) + wire router. Bảng tiền đề sinh qua `npm run gen`. | ✅ |
-| **N2** | Project State Awareness (§3.2) | `phase_meta` (state+role) trong rules.json + [agents/project-state.md](../../src/router/agents/project-state.md) (bảng generated) + auto-routing nhét `State:/Role:` vào context enrich; test golden. | ✅ |
+| **N2** | Project State Awareness (§3.2) | `phase_meta` (state+role) trong rules.json + `agents/project-state.md` (bảng generated) + auto-routing nhét `State:/Role:` vào context enrich; test golden. | ✅ |
 | **N3** | Roles as lenses (§3.3) | [roles/](../../src/router/roles/) — 7 file (BA, PM, SA, DEV, QC, DevOps, Support): Goal · Deliverables · Checklist · Câu hỏi cần hỏi; index sinh từ `roles` trong rules.json. | ✅ |
-| **N4** | Context-aware auto-load (§3.4) | `context_chain` trong rules.json + [agents/context-load.md](../../src/router/agents/context-load.md) (bảng generated); readiness-gate → context-load sau khi đủ tiền đề. | ✅ |
+| **N4** | Context-aware auto-load (§3.4) | `context_chain` trong rules.json + `agents/context-load.md` (bảng generated); readiness-gate → context-load sau khi đủ tiền đề. | ✅ |
 | **N5** | Templates mở rộng (§3.5) | [templates/](../../src/router/templates/) — TPL RFC / Meeting Minutes / Incident / Postmortem (ADR đã là DOC-09); README có mục "Template phụ trợ". | ✅ |
 | **N6** | Memory linking (§3.5) | Trường `Affects:` (hệ thống/task/release) vào schema [decision-log](../../src/router/docs/decision-log.md) + 6 skeleton; recall "vì sao X đổi" lần ngược `Affects`. | ✅ |
 

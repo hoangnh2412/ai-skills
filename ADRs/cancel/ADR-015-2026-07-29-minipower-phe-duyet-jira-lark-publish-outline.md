@@ -7,7 +7,7 @@
 | **Phạm vi** | `minipower/` — cơ chế **cổng ký (chữ ký)** và **publish tài liệu**. Không đổi nội dung/luồng phase. |
 | **Nối tiếp** | [gated-fanout 2026-07-20](../cancel/ADR-003-2026-07-20-minipower-gated-fanout-execution.md) (§0 approval-gate, D/E chờ SOP Lark) · [checkpoint 2026-07-25](../done/ADR-010-2026-07-25-tam-dung-gated-fanout-checkpoint.md) · [COORDINATION §4](../../contracts/cross-repo-bridge.md) (cross-repo bridge) |
 | **Mục đích** | Bắt đầu định nghĩa "SOP Lark/Jira/Outline" cho **chiều phê duyệt + publish** — biến "chữ ký" từ tick-markdown thành **event duyệt trên công cụ quy trình thật**, rồi doc bump version + publish lên Outline. |
-| **Ảnh hưởng** (khi accepted) | [approval-gate.md](../../src/router/agents/approval-gate.md) — "chữ ký" = event ngoài, không còn chỉ DEC-markdown · [doc-versioning.md](../../src/router/docs-skeleton/00-governance/doc-versioning.md) — version bump kích bởi approval event · [doc-registry.md](../../src/router/docs-skeleton/05-traceability/doc-registry.md) — đổi vai thành **bảng ánh xạ** DOC↔Jira↔Lark↔Outline · [parallel-work.md](../../src/router/docs/parallel-work.md) — phân vai Author vs Approver. **Không** sửa `rules.json` trong ADR này (chỉ đề xuất; sửa khi có skill/adapter thật). |
+| **Ảnh hưởng** (khi accepted) | `approval-gate.md` — "chữ ký" = event ngoài, không còn chỉ DEC-markdown · [doc-versioning.md](../../src/router/docs-skeleton/00-governance/doc-versioning.md) — version bump kích bởi approval event · [doc-registry.md](../../src/router/docs-skeleton/05-traceability/doc-registry.md) — đổi vai thành **bảng ánh xạ** DOC↔Jira↔Lark↔Outline · [parallel-work.md](../../src/router/docs/parallel-work.md) — phân vai Author vs Approver. **Không** sửa `rules.json` trong ADR này (chỉ đề xuất; sửa khi có skill/adapter thật). |
 
 ---
 
@@ -21,7 +21,7 @@ Cơ chế "ký" hiện tại là **tick trong markdown** (mục Approval trong D
 
 Tức **dời "chữ ký" ra hệ thống ngoài** (có audit trail thật: ai duyệt, khi nào, comment), và **Outline là bản đọc đã duyệt** — không sửa nội dung trên Outline.
 
-Đây **không phải** cơ chế mới đè lên pipeline: nó là **hiện thực hoá cột "người chốt" của [approval-gate](../../src/router/agents/approval-gate.md)** bằng công cụ ngoài, đúng nhánh **D/E đang paused** (§4 gated-fanout) — chỉ khác: ta mở **riêng chiều phê duyệt + publish**, chưa động tới task-hierarchy.
+Đây **không phải** cơ chế mới đè lên pipeline: nó là **hiện thực hoá cột "người chốt" của `approval-gate`** bằng công cụ ngoài, đúng nhánh **D/E đang paused** (§4 gated-fanout) — chỉ khác: ta mở **riêng chiều phê duyệt + publish**, chưa động tới task-hierarchy.
 
 ---
 
@@ -74,7 +74,7 @@ flowchart LR
   class SIG gate
 ```
 
-**Các bước (khớp [approval-gate](../../src/router/agents/approval-gate.md) — chỉ đổi *nơi ký*):**
+**Các bước (khớp `approval-gate` — chỉ đổi *nơi ký*):**
 
 1. **Soạn (git)** — BA A/B viết draft `03-modules/{module}/`; `Status=Draft`, `Version=—`.
 2. **Self-QC** — chạy [doc-review](../../src/router/docs/parallel-work.md) đối kháng 5 chiều; sửa Blocker; chuyển `Status=Review`.
@@ -130,7 +130,7 @@ flowchart LR
 
 1. Bổ sung phân vai **Author (BA module) vs Approver (Lead BA)** vào [parallel-work.md](../../src/router/docs/parallel-work.md) + [roles/BA.md](../../src/router/roles/BA.md).
 2. Ghi luồng "Review → approval event → bump version → publish" vào [doc-versioning.md](../../src/router/docs-skeleton/00-governance/doc-versioning.md); đổi `doc-registry.md` thành bảng ánh xạ (thêm cột Jira key / Outline URL).
-3. Cập nhật [approval-gate.md](../../src/router/agents/approval-gate.md): "chữ ký" = approve event ngoài + back-ref DEC (giữ bảng `approval_gates` — sinh từ rules.json).
+3. Cập nhật `approval-gate.md`: "chữ ký" = approve event ngoài + back-ref DEC (giữ bảng `approval_gates` — sinh từ rules.json).
 4. **Adapter riêng** (`minipower/install/…` hoặc pack adapter) cho Jira/Lark/Outline — **sau** khi chốt Q1–Q3; kèm ranh giới QĐ-3.
 5. Cập nhật §4 gated-fanout: đánh dấu nhánh **approval+publish** đã tách ra khỏi "chờ SOP Lark".
 
@@ -140,7 +140,7 @@ flowchart LR
 
 | Tài liệu | Vai trò |
 |---|---|
-| [approval-gate.md](../../src/router/agents/approval-gate.md) | 7 cổng người-chốt (nền để ánh xạ ra Jira/Lark) |
+| `approval-gate.md` | 7 cổng người-chốt (nền để ánh xạ ra Jira/Lark) |
 | [gated-fanout ADR](../cancel/ADR-003-2026-07-20-minipower-gated-fanout-execution.md) §4 | Lộ trình D/E — nơi Lark integration đang paused |
 | [checkpoint 2026-07-25](../done/ADR-010-2026-07-25-tam-dung-gated-fanout-checkpoint.md) | Ranh giới "không làm D/E thiếu SOP" |
 | [doc-versioning.md](../../src/router/docs-skeleton/00-governance/doc-versioning.md) | Quy tắc version chỉ-sau-sign-off |

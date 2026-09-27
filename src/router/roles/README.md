@@ -24,6 +24,6 @@ Mỗi file gồm: **Goal · Deliverables · Checklist · Câu hỏi cần hỏi*
 
 ## Kết nối
 
-- Chọn vai trò theo **giai đoạn dự án**: [agents/project-state.md](../agents/project-state.md) (phase → vai trò chính).
-- Trước khi thực thi: [readiness-gate](../skills/minipower-router-readiness/SKILL.md). Trước khi đề xuất: [context-load](../agents/context-load.md).
+- Chọn vai trò theo giai đoạn: bảng vai trong [SAMPLE-agents.md](../templates/SAMPLE-agents.md) mục 2. Hook gắn `State:` / `Role:` từ `phase_meta`.
+- Trước khi thực thi: [readiness-gate](../skills/minipower-router-readiness/SKILL.md). Thứ tự đọc DOC: SAMPLE mục 2.
 - Vai trò **không** thay con người quyết — chỉ hỗ trợ. Quyết định lớn → ghi [decision-log](../docs/decision-log.md).

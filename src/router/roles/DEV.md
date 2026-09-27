@@ -10,7 +10,7 @@ Code trace về FR/UC · unit test · cập nhật DOC khi phát hiện lệch (
 
 ## Checklist
 - [ ] Tiền đề đủ: SRS, AC, API spec, data model (readiness-gate: intent `implement`)
-- [ ] Đọc [context-load](../agents/context-load.md) + decision-log trước khi code
+- [ ] Đọc thứ tự DOC trong [SAMPLE-agents.md](../templates/SAMPLE-agents.md) mục 2 + decision-log trước khi code
 - [ ] Mỗi hàm/endpoint trace FR; không tự thêm nghiệp vụ ngoài SRS
 - [ ] Tuân coding convention (`docs/00-governance/`)
 - [ ] Lệch tài liệu → nêu lại, không âm thầm "sửa cho chạy"

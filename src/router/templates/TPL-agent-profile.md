@@ -327,19 +327,7 @@ Một phiên làm việc xong khi:
 
 ## `CLAUDE.md`
 
-Cùng thân trên. Thêm cuối file:
-
-```markdown
----
-
-## Minipower pack (import)
-
-@.cursor/skills/minipower-router/agents/token-guard.md
-@.cursor/skills/minipower-router/agents/auto-routing.md
-@.cursor/skills/minipower-router/agents/profile-guard.md
-```
-
-`AGENTS.md` không có block import. Cursor nạp rule qua `.cursor/rules/` sau khi cài.
+Cùng thân trên. Không `@import` thêm. `AGENTS.md` và `CLAUDE.md` là một nhà chữ. Cursor nạp `minipower-always-on.mdc` qua cài CLI.
 
 ## Init
 

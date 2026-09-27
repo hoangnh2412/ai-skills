@@ -1,4 +1,4 @@
-# Cài Minipower — OpenCode (instructions + plugins)
+# Cài Minipower — OpenCode (plugins)
 
 Chạy từ **root workspace project docs**. `$REPO` là gốc repo factory; `$MP` là `$REPO/src/router` (hook và agents).
 
@@ -6,50 +6,14 @@ OpenCode dùng:
 
 | Cursor | OpenCode |
 |--------|----------|
-| `.cursor/rules/*.mdc` | `instructions` trong `opencode.json` + `.opencode/rules/*.md` |
+| `.cursor/rules/*.mdc` (always-on) | `AGENTS.md` dự án |
 | `.cursor/hooks.json` → `node hooks/bin/*.js` | `.opencode/plugins/minipower.ts` (hook `chat.message`, `tool.execute.before`) |
 
 **SSOT logic guard:** [hooks/lib/*.js](../../src/router/hooks/) — dùng chung Cursor/Claude/OpenCode. Plugin OpenCode (`minipower.ts`) là glue mỏng: import thẳng lib `.js` (Bun chạy `.ts` + `.js` trực tiếp, không build).
 
-## Rules (instructions)
+## Lời nhắc
 
-```bash
-# macOS / Linux
-REPO=/path/to/minipower
-MP=$REPO/src/router
-mkdir -p .opencode/rules
-ln -snf "$MP/agents/token-guard.md" .opencode/rules/minipower-token-guard.md
-ln -snf "$REPO/cli/opencode/rules/minipower-profile.md" .opencode/rules/minipower-profile.md
-ln -snf "$REPO/cli/opencode/rules/minipower-doc-editing.md" .opencode/rules/minipower-doc-editing.md
-```
-
-```powershell
-# Windows PowerShell
-$REPO = "D:\path\to\minipower"
-$MP = "$REPO\src\sdlc"
-New-Item -ItemType Directory -Force -Path .opencode\rules
-New-Item -ItemType SymbolicLink -Force -Path .opencode\rules\minipower-token-guard.md `
-  -Target "$MP\agents\token-guard.md"
-New-Item -ItemType SymbolicLink -Force -Path .opencode\rules\minipower-profile.md `
-  -Target "$REPO\cli\opencode\rules\minipower-profile.md"
-New-Item -ItemType SymbolicLink -Force -Path .opencode\rules\minipower-doc-editing.md `
-  -Target "$REPO\cli\opencode\rules\minipower-doc-editing.md"
-```
-
-Merge [opencode.fragment.json](opencode.fragment.json) vào `opencode.json` (giữ key khác nếu đã có):
-
-```json
-{
-  "$schema": "https://opencode.ai/config.json",
-  "instructions": [
-    ".opencode/rules/minipower-token-guard.md",
-    ".opencode/rules/minipower-profile.md",
-    ".opencode/rules/minipower-doc-editing.md"
-  ]
-}
-```
-
-> Rule `minipower-profile.md` là always-on: chưa có `memory/profile.json` → agent **chỉ** làm init / hoàn tất profile, chưa đòi khai `Phase:`. Thiếu rule này thì `/minipower-router Init project` bị agent đòi chọn phase (parity với Cursor).
+`AGENTS.md` dự án (mẫu [SAMPLE-agents.md](../../src/router/templates/SAMPLE-agents.md)) giữ slice, sửa DOC và profile. Không có file rule OpenCode lặp các đoạn đó. Hook `profile-guard` vẫn chặn khi thiếu profile.
 
 ## Plugins (hooks)
 
@@ -102,7 +66,7 @@ Chạy trong `chat.message` **sau** token guard:
 | Tag DOC khác phase (vd. DOC-07 + DOC-16) | **Chặn** + gợi ý tách prompt |
 | `Phase:` sai so với file DOC | **Chặn** |
 
-**SSOT:** [agents/auto-routing.md](../../src/router/agents/auto-routing.md)
+**SSOT:** [auto-routing.js](../../src/router/hooks/lib/auto-routing.js) (`phase_by_doc` trong [rules.json](../../src/router/hooks/lib/rules.json))
 
 ### Decision-log staleness (advisory)
 
@@ -117,7 +81,7 @@ Nếu chưa cần: xoá block `tool.execute.before` trong [plugins/minipower.ts]
 ## Kiểm tra
 
 1. Khởi động lại OpenCode — plugin load không lỗi (xem log).
-2. Dự án mới (chưa có `memory/profile.json`): `/minipower-router Init project HRM` → agent hỏi trọn gói 5 câu cá nhân hoá, **không** đòi khai `Phase:` (rule profile).
+2. Dự án mới (chưa có `memory/profile.json`): `/minipower-router Init project HRM` → hook `profile-guard` chặn việc minipower cho đến khi init xong. Lời nhắc profile nằm ở `AGENTS.md` mục 0.
 3. Prompt thiếu scope: `/minipower-router` + `đồng bộ requirements` (không @ file) → cảnh báo token guard trong context.
 4. `@docs/` hoặc `@docs/03-modules/` không kèm file → bị chặn.
 5. Tag DOC-07 + DOC-16 cùng lúc → bị chặn (auto-routing).

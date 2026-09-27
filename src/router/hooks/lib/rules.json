@@ -178,26 +178,6 @@
       "requires": ["15", "17"]
     }
   ],
-  "context_chain": [
-    { "label": "BRD", "doc": "03" },
-    { "label": "SRS", "doc": "06" },
-    { "label": "Architecture (SAD)", "doc": "08" },
-    { "label": "Data model", "doc": "11" },
-    { "label": "API spec", "doc": "12" },
-    { "label": "Coding convention", "path": "docs/00-governance/" },
-    { "label": "Decision log", "path": "memory/decision-log.md" },
-    { "label": "Open questions / issues", "path": "memory/open-questions.md" },
-    { "label": "Current sprint", "doc": "15" }
-  ],
-  "approval_gates": [
-    { "id": "brd", "label": "Chốt BRD", "approve": "03", "unlocks": "Business Rules — fan-out theo module" },
-    { "id": "business-rules", "label": "Chốt Business Rules", "approve": "04", "unlocks": "Prototype / Wireframe — fan-out theo module" },
-    { "id": "prototype", "label": "Chốt Prototype / Wireframe", "approve": "19", "unlocks": "SRS — fan-out theo module" },
-    { "id": "srs", "label": "Chốt SRS", "approve": "06", "unlocks": "Architecture (SAD / Data model / API)" },
-    { "id": "architecture", "label": "Chốt Architecture", "approve": "08", "unlocks": "Epic / Story / Task → tạo task (Lark)" },
-    { "id": "plan", "label": "Chốt Project Plan", "approve": "15", "unlocks": "Test case + Code" },
-    { "id": "test-cases", "label": "Chốt Test case", "approve": "16", "unlocks": "Code + Unit test → cập nhật task" }
-  ],
   "install_hooks": [
     { "shim": "token-guard", "slot": "prompt", "cursor_timeout": 5 },
     { "shim": "auto-routing", "slot": "prompt", "cursor_timeout": 5 },

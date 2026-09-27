@@ -54,7 +54,7 @@ Chi tiết kỹ thuật: [ADR gated-fanout §3–§3′](../cancel/ADR-003-2026-
 | GĐ | Deliverable chính | Trạng thái |
 |---|---|---|
 | **A1** | Pivot §0 — Gated Fan-out Execution | ✅ |
-| **A2** | `approval_gates` trong `rules.json` + [approval-gate.md](../../src/router/agents/approval-gate.md) | ✅ |
+| **A2** | `approval_gates` trong `rules.json` + `approval-gate.md` | ✅ |
 | **A3** | DOC-19 Prototype; thứ tự BR → Prototype → SRS; routing `prototype` / `implement` | ✅ |
 | **B** | Skill [fan-out](../../src/router/docs/parallel-work.md) — Business Rules (DOC-04) + SRS (DOC-06) | ✅ |
 | **C (khung)** | Fan-out Prototype (DOC-19) — màn hình/luồng/mermaid; **chưa** HTML wireframe | ✅ khung |
@@ -139,5 +139,5 @@ Khi quay lại nhánh gated-fanout, làm theo thứ tự:
 |---|---|
 | [ADR-003-2026-07-20-minipower-gated-fanout-execution.md](../cancel/ADR-003-2026-07-20-minipower-gated-fanout-execution.md) | Kiến trúc + lộ trình A→E (trạng thái ⏸️) |
 | [minipower/skills/fan-out/SKILL.md](../../src/router/docs/parallel-work.md) | Cơ chế fan-out đã triển khai |
-| [minipower/agents/approval-gate.md](../../src/router/agents/approval-gate.md) | Giao thức cổng người-chốt |
+| `minipower/agents/approval-gate.md` | Giao thức cổng người-chốt |
 | Branch `feature/minipower-pm-project` @ `7dbf584` | Snapshot code |

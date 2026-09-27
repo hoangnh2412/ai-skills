@@ -6,26 +6,9 @@ Chạy từ **root workspace project docs**. `$REPO` là gốc repo factory; `$M
 
 ## Rules
 
-```powershell
-# Windows PowerShell
-$REPO = "D:\path\to\minipower"
-$MP = "$REPO\src\sdlc"
-New-Item -ItemType Directory -Force -Path .cursor\rules
-New-Item -ItemType SymbolicLink -Force -Path .cursor\rules\minipower-token-guard.mdc `
-  -Target "$REPO\cli\cursor\rules\minipower-token-guard.mdc"
-New-Item -ItemType SymbolicLink -Force -Path .cursor\rules\minipower-doc-editing.mdc `
-  -Target "$REPO\cli\cursor\rules\minipower-doc-editing.mdc"
-```
+Lời nhắc phiên (một slice, sửa DOC, đọc `profile.user.json`) ở `AGENTS.md` dự án — mẫu [SAMPLE-agents.md](../../src/router/templates/SAMPLE-agents.md). Không có rule IDE lặp các đoạn đó.
 
-```bash
-# macOS / Linux
-REPO=/path/to/minipower
-MP=$REPO/src/router
-mkdir -p .cursor/rules
-ln -snf "$REPO/cli/cursor/rules/minipower-token-guard.mdc" .cursor/rules/
-ln -snf "$REPO/cli/cursor/rules/minipower-doc-editing.mdc" .cursor/rules/
-ln -snf "$REPO/cli/cursor/rules/minipower-profile.mdc" .cursor/rules/
-```
+`cli/cursor/rules/` còn `minipower-always-on.mdc` (workspace **chưa** có `.minipower/`). CLI `install` symlink mọi `.mdc` trong thư mục đó vào `.cursor/rules/` của project, và bản user-global `~/.cursor/rules/`. Xem [USER-RULES.md](USER-RULES.md).
 
 ## Hooks
 
@@ -42,7 +25,7 @@ ln -snf "$REPO/cli/cursor/rules/minipower-profile.mdc" .cursor/rules/
 | Decision-log staleness | `bin/decision-staleness.js` | Advisory (không chặn), keyword-gated |
 | Baseline guard (`beforeReadFile`) | `bin/baseline-guard.js` | Chặn `02-baseline/` mọi mode (không BYPASS); `_legacy/` mở ở mode `maintain` |
 
-**SSOT logic agent:** [agents/auto-routing.md](../../src/router/agents/auto-routing.md).
+**SSOT map DOC → phase:** [auto-routing.js](../../src/router/hooks/lib/auto-routing.js) (`phase_by_doc` trong [rules.json](../../src/router/hooks/lib/rules.json)).
 
 ### Auto-routing (DOC → phase)
 

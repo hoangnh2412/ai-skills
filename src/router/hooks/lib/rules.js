@@ -4,7 +4,7 @@
  * SSOT duy nhất cho map DOC→phase và các danh sách từ khoá heuristic là
  * [rules.json](./rules.json). File này CHỈ đọc + suy ra cấu trúc dùng chung;
  * không hardcode luật. Thêm DOC-19 = **một dòng** trong rules.json (auto-routing,
- * token-guard và agents/auto-routing.md đều sinh từ đây — chạy `npm run gen`).
+ * token-guard và auto-routing đều đọc từ đây — chạy `npm run gen`).
  *
  * Vì sao keyword lưu dạng tiếng Việt CÓ DẤU nhưng match được prompt không dấu:
  * cả prompt lẫn keyword đều được `stripDiacritics` + lowercase trước khi so
@@ -29,8 +29,6 @@ import { readFileSync } from "node:fs"
  *   profile_providers: Record<string,string[]>,
  *   project_surfaces: {id:string,label:string,path:string,default:boolean,role:string}[],
  *   prereq_by_intent: {id:string,label:string,keywords:string[],requires:string[]}[],
- *   context_chain: {label:string,doc?:string,path?:string}[],
- *   approval_gates: {id:string,label:string,approve:string,unlocks:string}[],
  *   install_hooks: {shim:string,slot:"prompt"|"pre_tool",cursor_timeout?:number,matcher?:string}[]
  * }} Rules */
 
@@ -206,16 +204,6 @@ export function matchIntents(norm) {
     ({ id, label, requires }) => ({ id, label, requires }),
   )
 }
-
-/** @type {{label:string,doc?:string,path?:string}[]} Chuỗi ngữ cảnh auto-load (N4). */
-export const CONTEXT_CHAIN = RULES.context_chain
-
-/**
- * @type {{id:string,label:string,approve:string,unlocks:string}[]}
- * Cổng người-chốt (A2, ADR 2026-07-20 gated-fanout). Mỗi cổng: người duyệt DOC
- * `approve` (ghi DEC) → mở khoá bước `unlocks`. AI soạn DEC nháp, người review.
- */
-export const APPROVAL_GATES = RULES.approval_gates
 
 /** Thứ tự + slot 6 hook IDE — SSOT sinh fragment Claude/Cursor (ADR-031 Q5 cách B). */
 export const INSTALL_HOOKS = RULES.install_hooks

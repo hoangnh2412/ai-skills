@@ -7,7 +7,7 @@
 | **Phạm vi** | `minipower/` — cơ chế **cổng ký** và **publish tài liệu**. Không đổi nội dung/luồng phase |
 | **Nối tiếp** | **Thay** [ADR-015](../cancel/ADR-015-2026-07-29-minipower-phe-duyet-jira-lark-publish-outline.md) (cancel — neo vào Jira/Lark) · [ADR-017](../cancel/ADR-017-2026-08-20-minipower-toolchain-openproject-github-outline-slack.md) QĐ-2 (toolchain) · [ADR-003](../cancel/ADR-003-2026-07-20-minipower-gated-fanout-execution.md) §0 (approval-gate) |
 | **Mục đích** | Biến "chữ ký" từ tick-markdown thành **event duyệt trên OpenProject**, rồi bump version + publish lên **Outline**, báo **Slack** |
-| **Ảnh hưởng** (khi làm) | [approval-gate.md](../../src/router/agents/approval-gate.md) — chữ ký = event ngoài + back-ref DEC · [doc-versioning.md](../../src/router/docs-skeleton/00-governance/doc-versioning.md) — version bump kích bởi approval event · `doc-registry.md` — đổi vai thành **bảng ánh xạ** DOC↔OpenProject↔Outline · [parallel-work.md](../../src/router/docs/parallel-work.md) — phân vai Author vs Approver |
+| **Ảnh hưởng** (khi làm) | `approval-gate.md` — chữ ký = event ngoài + back-ref DEC · [doc-versioning.md](../../src/router/docs-skeleton/00-governance/doc-versioning.md) — version bump kích bởi approval event · `doc-registry.md` — đổi vai thành **bảng ánh xạ** DOC↔OpenProject↔Outline · [parallel-work.md](../../src/router/docs/parallel-work.md) — phân vai Author vs Approver |
 
 ---
 
@@ -126,7 +126,7 @@ flowchart LR
 
 1. Phân vai **Author (BA module) vs Approver (Lead BA)** vào [parallel-work.md](../../src/router/docs/parallel-work.md) + [roles/BA.md](../../src/router/roles/BA.md).
 2. Ghi luồng "Review → approve event → bump version → publish → notify" vào [doc-versioning.md](../../src/router/docs-skeleton/00-governance/doc-versioning.md); `doc-registry.md` thêm cột WP# / Outline URL.
-3. Cập nhật [approval-gate.md](../../src/router/agents/approval-gate.md): chữ ký = approve event ngoài + back-ref DEC (bảng `approval_gates` vẫn sinh từ rules.json).
+3. Cập nhật `approval-gate.md`: chữ ký = approve event ngoài + back-ref DEC (bảng `approval_gates` vẫn sinh từ rules.json).
 4. Guardrail MCP OpenProject/Outline/Slack — **sau** khi chốt Q1–Q3; đọc tự do, ghi qua cổng người.
 5. Cập nhật [ADR-003](../cancel/ADR-003-2026-07-20-minipower-gated-fanout-execution.md) §4: nhánh approval+publish đã tách khỏi phần chờ SOP.
 
@@ -138,6 +138,6 @@ flowchart LR
 |---|---|
 | [ADR-017](../cancel/ADR-017-2026-08-20-minipower-toolchain-openproject-github-outline-slack.md) | Toolchain 4 công cụ, wrap MCP |
 | [ADR-015](../cancel/ADR-015-2026-07-29-minipower-phe-duyet-jira-lark-publish-outline.md) (cancel) | Bản gốc của mô hình 3 mặt phẳng |
-| [approval-gate.md](../../src/router/agents/approval-gate.md) | 7 cổng người-chốt |
+| `approval-gate.md` | 7 cổng người-chốt |
 | [doc-versioning.md](../../src/router/docs-skeleton/00-governance/doc-versioning.md) | Version chỉ-sau-sign-off |
 | [COORDINATION.md](../../contracts/README.md) §4 | Cross-repo bridge — pin + back-reference |

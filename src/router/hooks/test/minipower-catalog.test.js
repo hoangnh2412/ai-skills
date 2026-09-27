@@ -51,9 +51,13 @@ test("catalog: không còn src/sdlc (ADR-037 E5)", () => {
   assert.equal(existsSync(join(SRC, "sdlc")), false)
 })
 
-test("catalog: router/agents — file guardrail có trong README agents", () => {
+test("catalog: router/agents — file còn lại có trong README agents", () => {
   const agents = listAgents()
-  assert.ok(agents.length >= 8, `ít agent: ${agents.map((a) => a.name)}`)
+  assert.deepEqual(
+    agents.map((a) => a.name),
+    ["lark-work-assistant.md"],
+    "ADR-039: chỉ còn lark-work-assistant",
+  )
   const index = readFileSync(join(ROUTER, "agents", "README.md"), "utf8")
   for (const a of agents) {
     assert.ok(existsSync(a.path))

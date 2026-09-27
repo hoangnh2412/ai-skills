@@ -7,7 +7,7 @@
 | **Phạm vi** | Toàn `minipower/` — **pivot định vị**: từ *pipeline 6 phase có cổng* sang *harness hỗ trợ 7 vai, không block ở bước nào*. Chạm §0 và toàn bộ mô hình gatekeeper |
 | **Nối tiếp** | **Huỷ** [ADR-003](../cancel/ADR-003-2026-07-20-minipower-gated-fanout-execution.md) · [ADR-013](../cancel/ADR-013-2026-07-26-minipower-senior-junior-execution.md) · [ADR-017](../cancel/ADR-017-2026-08-20-minipower-toolchain-openproject-github-outline-slack.md) · [ADR-018](../cancel/ADR-018-2026-08-20-minipower-phe-duyet-openproject-publish-outline.md) · **giữ** [ADR-014](../todo/ADR-014-2026-07-28-minipower-spine-tong-hop-wrap-not-build.md) (wrap-not-build) · [ADR-008](../todo/ADR-008-2026-07-25-minipower-proposal-suite.md) · [ADR-016](../todo/ADR-016-2026-08-02-minipower-discovery-tom-tat-tai-lieu-lon.md) |
 | **Mục đích** | Chốt: minipower là **bộ công cụ gọi khi cần** cho mọi vai SDLC; **mọi phê duyệt sống ở công cụ ngoài**; kháng thể chống hallucination giữ lại dưới dạng **khuyến nghị, không chặn** |
-| **Ảnh hưởng** | [AGENTS.md](../../AGENTS.md) §0 + mục gatekeeper + phân tầng micro/light/full · [minipower/SKILL.md](../../src/router/skills/minipower-router/SKILL.md) router · [rules.json](../../src/router/hooks/lib/rules.json) (`approval_gates`, `prereq_by_intent`) · [agents/approval-gate.md](../../src/router/agents/approval-gate.md) · 3 skill [deliberation](../../src/router/skills/minipower-router-deliberation/SKILL.md) / [readiness-gate](../../src/router/skills/minipower-router-readiness/SKILL.md) / [doc-review](../../src/router/docs/parallel-work.md) · [COORDINATION.md](../../contracts/README.md) H1–H6 · [docs/pipeline.md](../../src/router/docs/pipeline.md) · `install/*` (`permissions.deny`) |
+| **Ảnh hưởng** | [AGENTS.md](../../AGENTS.md) §0 + mục gatekeeper + phân tầng micro/light/full · [minipower/SKILL.md](../../src/router/skills/minipower-router/SKILL.md) router · [rules.json](../../src/router/hooks/lib/rules.json) (`approval_gates`, `prereq_by_intent`) · `agents/approval-gate.md` · 3 skill [deliberation](../../src/router/skills/minipower-router-deliberation/SKILL.md) / [readiness-gate](../../src/router/skills/minipower-router-readiness/SKILL.md) / [doc-review](../../src/router/docs/parallel-work.md) · [COORDINATION.md](../../contracts/README.md) H1–H6 · [docs/pipeline.md](../../src/router/docs/pipeline.md) · `install/*` (`permissions.deny`) |
 
 ---
 
@@ -78,7 +78,7 @@ Chưa có MCP cho công cụ nào → **vẫn làm việc bình thường trên 
 | Trace UC→FR→AC→Test | **Giữ**, thêm `trace:check` + **job CI Gitlab** (QĐ-6) — cưỡng chế chuyển từ *gate trong repo* sang *pipeline ngoài* | `hooks/` (script + test) · `package.json` · template `.gitlab-ci.yml` trong [project-skeleton](../../src/router/project-skeleton/) |
 | baseline / CR governance | **Định nghĩa lại**: baseline = version đã publish Outline / tag Gitlab; `change-control` ghi delta, không chặn | [change-control](../../src/analyst/skills/minipower-analyst-cr/SKILL.md) · [doc-versioning.md](../../src/router/docs-skeleton/00-governance/doc-versioning.md) |
 | Phân tầng micro/light/full | **Bỏ** — không còn gate để bật/tắt | AGENTS.md · [minipower/SKILL.md](../../src/router/skills/minipower-router/SKILL.md) |
-| `approval_gates` + guardrail cổng | **Xoá khỏi SSOT** hoặc đổi thành bảng ánh xạ trạng thái OpenProject | [rules.json](../../src/router/hooks/lib/rules.json) · [agents/approval-gate.md](../../src/router/agents/approval-gate.md) → `gen` → `test` → `gen:check` |
+| `approval_gates` + guardrail cổng | **Xoá khỏi SSOT** hoặc đổi thành bảng ánh xạ trạng thái OpenProject | [rules.json](../../src/router/hooks/lib/rules.json) · `agents/approval-gate.md` → `gen` → `test` → `gen:check` |
 | Co lại trước khi mở rộng · rules-as-data · wrap-not-build | **Không đổi** | — |
 
 ---
@@ -124,7 +124,7 @@ Chưa có MCP cho công cụ nào → **vẫn làm việc bình thường trên 
 |---|---|---|
 | 1 | Viết lại [AGENTS.md](../../AGENTS.md) §0 + bỏ mục gatekeeper/phân tầng | Đọc lại: không còn câu nào hứa "chặn" |
 | 2 | `rules.json`: bỏ `approval_gates`, đổi `prereq_by_intent` thành advisory | `npm run gen && npm test && npm run gen:check` xanh |
-| 3 | Xoá/viết lại [agents/approval-gate.md](../../src/router/agents/approval-gate.md) | `gen:check` xanh |
+| 3 | Xoá/viết lại `agents/approval-gate.md` | `gen:check` xanh |
 | 4 | Sửa 3 skill gate → dịch vụ/advisory/báo cáo | Không skill nào còn từ chối làm việc |
 | 5 | Nới read-guard + `permissions.deny` từ chặn → nhắc | Smoke hook |
 | 6 | Viết `trace:check` (Node thuần + golden test) **+ job CI** | `npm run trace:check` chạy đúng trên project-skeleton; template `.gitlab-ci.yml` fail khi ID trỏ sai/trùng, warn khi thiếu AC/Test |

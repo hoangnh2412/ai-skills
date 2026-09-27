@@ -8,7 +8,7 @@
  *
  * Nguồn hành vi: install/cursor/hooks/minipower-auto-routing.py (289 dòng — bản trưởng thành nhất)
  * Đối chiếu:     .ps1 (191 dòng, bản dựng lại) và opencode/plugins/lib/auto-routing.ts (207 dòng)
- * SSOT tài liệu: agents/auto-routing.md
+ * SSOT map: rules.json phase_by_doc + lá trong auto-routing.js (ADR-039 QĐ-6)
  *
  * Khác biệt API so với .py (cố ý):
  *   - .py trả prompt đã ghép sẵn; ở đây trả `prefix` + để caller ghép (theo bản .ts).
@@ -47,7 +47,7 @@ test("auto-routing: cho qua sớm", async (t) => {
   })
 })
 
-test("auto-routing: map DOC → phase (SSOT agents/auto-routing.md)", async (t) => {
+test("auto-routing: map DOC → phase (rules.json phase_by_doc)", async (t) => {
   const MAP = [
     ["DOC-01", "discovery"],
     ["DOC-02", "discovery"],
@@ -64,8 +64,8 @@ test("auto-routing: map DOC → phase (SSOT agents/auto-routing.md)", async (t) 
     ["DOC-13", "requirements"], // bẫy: nằm ngoài dải 04–07 nhưng vẫn là requirements (NFR)
     ["DOC-14", "planning"],
     ["DOC-15", "planning"],
-    ["DOC-16", "delivery"], // bẫy có ghi trong agents/auto-routing.md:
-    ["DOC-17", "delivery"], //   DOC-16 nằm trong docs/03-modules/ nhưng phase là delivery
+    ["DOC-16", "delivery"], // DOC-16 nằm trong docs/03-modules/ nhưng phase là delivery
+    ["DOC-17", "delivery"],
     ["DOC-18", "change-control"],
   ]
 
@@ -140,6 +140,40 @@ test("auto-routing: ENRICH — một phase, prompt chưa khai Phase", async (t) 
   await t.test("root có dấu / thừa ở cuối → cắt bỏ", () => {
     const r = checkAutoRouting("sửa DOC-06", [], { root: "custom/mp/" })
     assert.match(r.prefix, /^@custom\/mp\/skills\/requirements\/SKILL\.md$/m)
+  })
+})
+
+test("auto-routing: lá thật planning / delivery / change-control (ADR-039 QĐ-6)", async (t) => {
+  await t.test("DOC-14 → pm-plan", () => {
+    const r = route("sửa DOC-14")
+    assert.match(r.prefix, /\/pm\/skills\/minipower-pm-plan\/SKILL\.md$/m)
+    assert.doesNotMatch(r.prefix, /skills\/planning\//)
+  })
+
+  await t.test("DOC-16 → qa-strategy", () => {
+    const r = route("sửa DOC-16")
+    assert.match(r.prefix, /\/qa\/skills\/minipower-qa-strategy\/SKILL\.md$/m)
+    assert.doesNotMatch(r.prefix, /skills\/delivery\//)
+  })
+
+  await t.test("DOC-17 → ops-deploy", () => {
+    const r = route("sửa DOC-17")
+    assert.match(r.prefix, /\/ops\/skills\/minipower-ops-deploy\/SKILL\.md$/m)
+    assert.doesNotMatch(r.prefix, /skills\/delivery\//)
+  })
+
+  await t.test("DOC-18 → analyst-cr", () => {
+    const r = route("sửa DOC-18")
+    assert.match(r.prefix, /\/analyst\/skills\/minipower-analyst-cr\/SKILL\.md$/m)
+    assert.doesNotMatch(r.prefix, /skills\/change-control\//)
+  })
+
+  await t.test("DOC-16 và DOC-17 cùng phase → cả hai lá", () => {
+    const r = route("sửa DOC-16 và DOC-17")
+    assert.equal(r.action, "enrich")
+    assert.equal(r.phase, "delivery")
+    assert.match(r.prefix, /minipower-qa-strategy\/SKILL\.md/)
+    assert.match(r.prefix, /minipower-ops-deploy\/SKILL\.md/)
   })
 })
 

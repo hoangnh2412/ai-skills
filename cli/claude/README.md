@@ -40,32 +40,9 @@ claude --plugin-dir /path/to/minipower/src/router
 
 > Chọn **một** kênh: **project-skill + install.mjs** (mục dưới) *hoặc* **plugin** — đừng dùng cả hai, tránh trùng skill/hook.
 
-## Symlink rules (khuyên dùng)
+## Lời nhắc
 
-```bash
-REPO=/path/to/minipower
-MP=$REPO/src/router
-mkdir -p .claude/rules
-ln -snf "$MP/agents/token-guard.md" .claude/rules/minipower-token-guard.md
-ln -snf "$REPO/cli/claude/rules/minipower-doc-editing.md" .claude/rules/minipower-doc-editing.md
-```
-
-```powershell
-$REPO = "D:\path\to\minipower"
-$MP = "$REPO\src\sdlc"
-New-Item -ItemType Directory -Force -Path .claude\rules
-New-Item -ItemType SymbolicLink -Force -Path .claude\rules\minipower-token-guard.md `
-  -Target "$MP\agents\token-guard.md"
-New-Item -ItemType SymbolicLink -Force -Path .claude\rules\minipower-doc-editing.md `
-  -Target "$REPO\cli\claude\rules\minipower-doc-editing.md"
-```
-
-## Hoặc import trong `CLAUDE.md`
-
-```markdown
-@path/to/minipower/src/router/agents/token-guard.md
-@path/to/minipower/src/router/agents/doc-editing.md
-```
+`AGENTS.md` và `CLAUDE.md` cùng một thân, viết từ [SAMPLE-agents.md](../../src/router/templates/SAMPLE-agents.md). Không symlink rule lặp slice / sửa DOC / profile.
 
 ## Permissions + hooks (tuỳ chọn)
 
