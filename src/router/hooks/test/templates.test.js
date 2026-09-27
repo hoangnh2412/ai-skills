@@ -116,3 +116,39 @@ test("#8 — TPL-agent-profile khai đúng schema hiện hành", () => {
   assert.match(text, /"code_provider"/)
   assert.match(text, /profile\.user\.json/, "tách identity local")
 })
+
+test("#8 — khuôn AGENTS.md là khung; mẫu đã điền tách file; file render không trỏ hai file nguồn", () => {
+  const text = readFileSync(join(TPL, "TPL-agent-profile.md"), "utf8")
+  assert.match(text, /SAMPLE-agents\.md/)
+  const raw = text.split("<!-- BEGIN template: agents-md -->")[1]?.split("<!-- END template: agents-md -->")[0]
+  assert.ok(raw, "thiếu marker template: agents-md")
+  const body = raw.replace(/^\n*````markdown\n/, "").replace(/\n````\s*$/, "")
+  assert.ok(!body.includes("SAMPLE-agents"), "khối render không được trỏ file mẫu")
+  assert.ok(!body.includes("TPL-agent-profile"), "khối render không được trỏ file khuôn")
+  assert.match(body, /\{project_name\}/)
+  assert.match(body, /\{surfaces\}/)
+  assert.match(body, /_\(điền\)_/)
+  assert.match(body, /Bề mặt đang có: `\{surfaces\}`/)
+  assert.match(body, /backend\/src\//)
+  const sample = readFileSync(join(TPL, "SAMPLE-agents.md"), "utf8")
+  const lines = sample.split("\n")
+  assert.ok(lines.length >= 200 && lines.length <= 300, `mẫu ${lines.length} dòng, cần 200–300`)
+  assert.ok(!sample.includes("SAMPLE-agents"))
+  assert.ok(!sample.includes("TPL-agent-profile"))
+  assert.ok(!sample.includes("{project_name}"))
+  assert.match(sample, /Bề mặt đang có: `docs, backend`/)
+  for (const h of [
+    "## 0. Metadata",
+    "## 1. Tổng quan",
+    "## 2. Bắt đầu làm việc từ đâu",
+    "## 3. Quy tắc",
+    "## 4. Nguyên tắc",
+    "## 5. Quy ước",
+    "## 6. Cổng quyết định",
+    "## 7. Bảo mật",
+    "## 8. Definition of Done",
+  ]) {
+    assert.ok(body.includes(h), `khuôn thiếu ${h}`)
+    assert.ok(sample.includes(h), `mẫu thiếu ${h}`)
+  }
+})

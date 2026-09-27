@@ -1,5 +1,13 @@
 # Backend
 
-Gốc code backend. Init tạo folder này và dừng.
+Code backend đặt trong cây này.
 
-Solution .NET theo Jarvis do skill `minipower-backend-scaffold-dotnet` dựng bên trong folder — init không sinh `.sln` hay project.
+```text
+backend/
+├── src/                 .sln và project layer
+├── tests/
+├── build/
+└── docs/Architecture.md
+```
+
+`.sln` do skill `minipower-backend-scaffold-dotnet` tạo trong `src/`. Không đặt project .NET ngoài `src/`.

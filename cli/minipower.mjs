@@ -107,12 +107,28 @@ function applyLayout(target, surfaces) {
   }
   for (const spec of RULES.project_surfaces) {
     if (spec.id === "docs" || !picked.has(spec.id)) continue
-    const dest = join(target, spec.path)
-    mkdirSync(dest, { recursive: true })
-    const readme = join(dest, "README.md")
-    const src = join(ROUTER, "surface-skeleton", spec.id, "README.md")
-    if (!existsSync(readme) && existsSync(src)) copyFileSync(src, readme)
+    const src = join(ROUTER, "surface-skeleton", spec.id)
+    if (existsSync(src)) copyTree(src, join(target, spec.path))
   }
+}
+
+function renderAgents(profile) {
+  const tpl = readFileSync(join(ROUTER, "templates", "TPL-agent-profile.md"), "utf8")
+  const raw = tpl.split("<!-- BEGIN template: agents-md -->")[1]?.split("<!-- END template: agents-md -->")[0]
+  if (!raw) die("TPL-agent-profile thiếu marker agents-md")
+  const body = raw.replace(/^\n*````markdown\n/, "").replace(/\n````\s*$/, "")
+  const map = {
+    project_name: profile.project_name,
+    project_summary: profile.project_summary,
+    project_mode: profile.project_mode,
+    current_phase: profile.current_phase,
+    docs_provider: profile.docs_provider,
+    tasks_provider: profile.tasks_provider,
+    chat_provider: profile.chat_provider,
+    code_provider: profile.code_provider,
+    surfaces: profile.surfaces.join(", "),
+  }
+  return body.replace(/\{([a-z_]+)\}/g, (m, key) => (map[key] != null ? String(map[key]) : m))
 }
 
 function writeSurfaceIndex(target, surfaces) {
@@ -783,12 +799,7 @@ async function cmdInit(flags) {
   }
 
   const agents = join(target, "AGENTS.md")
-  if (!existsSync(agents)) {
-    writeFileSync(
-      agents,
-      `# ${a.project_name}\n\nChế độ \`${a.project_mode}\`. Bề mặt: ${surfaces.join(", ")}. Có \`.minipower/\` — dùng Minipower; thông báo skill; kế hoạch cần người OK.\n`,
-    )
-  }
+  if (!existsSync(agents)) writeFileSync(agents, renderAgents(profile))
   writeFactoryLauncher(target)
   process.stdout.write(`✓ init ${target}\n  tiếp: node .minipower/bin/minipower --help\n`)
 }
