@@ -7,6 +7,6 @@ metadata:
 
 # minipower-pm-plan
 
-Workflow: [sdlc/skills/planning/SKILL.md](../../../sdlc/skills/planning/SKILL.md). Task file riêng khi `tasks=none`.
+Kế hoạch / WBS / estimate (DOC-14/15). Rubric: [complexity-rubric.md](complexity-rubric.md). Task file riêng khi `tasks=none`.
 
 Hướng dẫn người: [README.md](README.md).

@@ -7,6 +7,6 @@ metadata:
 
 # minipower-ops-deploy
 
-DOC-17 thuộc ops (ADR-033 QĐ-17). Template: [DOC-17](../../../sdlc/templates/DOC-17-deployment-guide.md). Một phần workflow: [delivery](../../../sdlc/skills/delivery/SKILL.md).
+DOC-17 thuộc ops (ADR-033 QĐ-17). Template: [DOC-17](../../../ops/templates/DOC-17-deployment-guide.md). Một phần workflow: workflow deploy (lá này).
 
 Không soạn SRS.

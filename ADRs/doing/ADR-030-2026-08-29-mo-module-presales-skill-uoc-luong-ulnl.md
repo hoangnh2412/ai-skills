@@ -20,7 +20,7 @@ File `staging/ULNL.md` (đã rút 2026-09-26 vào `presales/`) — 364 dòng: qu
 
 ### §1.2. Vì sao không đặt trong `sdlc/` — ba luận điểm
 
-Đối chiếu template [`DOC-14`](../../src/sdlc/templates/DOC-14-wbs-estimate.md) với ULNL ngày 2026-08-29:
+Đối chiếu template [`DOC-14`](../../src/pm/templates/DOC-14-wbs-estimate.md) với ULNL ngày 2026-08-29:
 
 | # | Luận điểm | Đối chiếu |
 |---|---|---|

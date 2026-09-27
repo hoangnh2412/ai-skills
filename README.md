@@ -14,14 +14,13 @@ Cách làm dựa trên ba nguyên tắc:
 
 ## Minipower có gì?
 
-**Module nghề** + **module kênh** (ADR-033: SOP MCP, không luật UC/FR) + **tầng nền** + **kho tạm**. Pack cài được nằm dưới `src/`; code cài đặt nằm `cli/` (không chứa `hooks/` — hook ở `src/sdlc/hooks/`). Hướng dẫn cài nằm trong từng module.
+**Module nghề** + **module kênh** (ADR-033: SOP MCP, không luật UC/FR) + **tầng nền** + **kho tạm**. Pack cài được nằm dưới `src/`; code cài đặt nằm `cli/` (không chứa `hooks/` — hook ở `src/router/hooks/`). Hướng dẫn cài nằm trong từng module.
 
 | Thành phần | Loại | Giải quyết việc gì | Bắt đầu |
 |------------|------|--------------------|---------|
-| **Quy trình (kho neo)** — [`sdlc/`](src/sdlc/) | Kho chuyển | Hook, skeleton, template 19 DOC, plugin path — đăng ký dispatcher `minipower-router` | [sdlc/README.md](src/sdlc/README.md) · [sdlc/INSTALL.md](src/sdlc/INSTALL.md) |
+| **Dispatcher / runtime** — [`router/`](src/router/) | Dispatcher | Hook, skeleton, TPL, plugin root; gợi ý pack; init `project_mode` + provider (`minipower-router`) | [router/README.md](src/router/README.md) |
 | **Code backend .NET** — [`backend/`](src/backend/) | Module nghề | Dựng backend .NET theo framework Jarvis chuẩn công ty: scaffold chạy được ngay, gắn auth / cache / EF / observability theo nhu cầu, review PR trước khi merge — 15 skill `minipower-backend-*` | [backend/README.md](src/backend/README.md) · cài: [§ Cài vào Cursor](src/backend/README.md#cài-vào-cursor) |
 | **Vận hành hạ tầng** — [`ops/`](src/ops/) | Module nghề | Kỹ năng DevOps/SRE: thu thập metrics Grafana/Prometheus chuẩn hoá cho AI chẩn đoán sự cố; sẽ mở rộng dần sang chẩn đoán theo case (memory leak, deadlock, log flow), cài server, CI/CD — skill `minipower-ops-*` (ADR-023) | [ops/README.md](src/ops/README.md) |
-| **Dispatcher** — [`router/`](src/router/) | Dispatcher | Gợi ý đúng một pack; init `project_mode` + provider (`minipower-router`) | [router/README.md](src/router/README.md) |
 | **Presales** — [`presales/`](src/presales/) | Module nghề | ULNL + quotation trước ký — không sở hữu khảo sát | [presales/README.md](src/presales/README.md) |
 | **Công cụ làm ra Minipower** — [`toolbox/`](src/toolbox/) | Module nghề | Viết/soát skill, mở module — `minipower-toolbox-*`. Không cài workspace khách | [toolbox/README.md](src/toolbox/README.md) |
 | **Tài liệu (Outline)** — [`docs/`](src/docs/) | Module kênh | SOP MCP mặt `docs`: tra / publish / migrate Outline (`minipower-docs-outline`) | [docs/README.md](src/docs/README.md) |
@@ -35,7 +34,7 @@ Cách làm dựa trên ba nguyên tắc:
 
 ## Ba chế độ dự án
 
-Không dự án nào cũng cần đủ 19 tài liệu. Quy trình phát triển (`sdlc`) có **`project_mode`**, chọn khi khởi tạo, quyết định *tài liệu nào cần điền* và *cảnh báo nào bật* — nhưng **dùng chung một cấu trúc thư mục**, nên đổi chế độ về sau không phải di trú gì.
+Không dự án nào cũng cần đủ 19 tài liệu. Minipower có **`project_mode`**, chọn khi khởi tạo, quyết định *tài liệu nào cần điền* và *cảnh báo nào bật* — nhưng **dùng chung một cấu trúc thư mục**, nên đổi chế độ về sau không phải di trú gì.
 
 | Chế độ | Khi nào chọn | Điền gì | Lên đời |
 |--------|--------------|---------|---------|
@@ -45,7 +44,7 @@ Không dự án nào cũng cần đủ 19 tài liệu. Quy trình phát triển 
 
 Chỉ `standard` có cảnh báo **chặn** (và luôn mở được bằng `BYPASS`); hai chế độ kia chỉ nhắc. Ở mọi chế độ, **con người là người ra lệnh** — hệ cảnh báo, bạn xác nhận là chạy.
 
-Chi tiết: [sdlc/SKILL.md § Chế độ dự án](src/sdlc/SKILL.md#chế-độ-dự-án-project_mode)
+Chi tiết: [minipower-router § Chế độ dự án](src/router/skills/minipower-router/SKILL.md#chế-độ-dự-án-project_mode)
 
 ---
 
@@ -61,7 +60,7 @@ Flag (`--client`, `--with`, `--target`) chỉ khi script/CI. Thêm client sau: c
 
 Cursor **User Rules (bắt buộc cho Agent Chat):** [cli/cursor/USER-RULES.md](cli/cursor/USER-RULES.md) — dán always-on vào Settings. File `~/.cursor/rules` do `install` ghi **không đủ** trên Cursor hiện tại (`--no-user-rules` nếu không muốn file máy).
 
-Hook + dispatcher neo `sdlc/`: [sdlc/INSTALL.md](src/sdlc/INSTALL.md). Pack lá: symlink `*/skills/{tên}/` → `.cursor/skills/{tên}/`.
+Hook + dispatcher neo `router/`: [router/README.md](src/router/README.md). Pack lá: symlink `*/skills/{tên}/` → `.cursor/skills/{tên}/`.
 
 **2. Init dự án** — một lệnh, script hỏi từng bước (số + Enter = mặc định). Không JSON, không LLM.
 
@@ -105,7 +104,7 @@ Hai pack cùng lúc → hỏi người, không tự ghép. Không spawn agent kh
 
 ### Chạy test (toàn Minipower)
 
-Node ≥ 18. Từ **gốc repo** (ủy quyền `src/sdlc/hooks/` — catalog mọi pack, không chỉ sdlc):
+Node ≥ 18. Từ **gốc repo** (ủy quyền `src/router/hooks/` — catalog mọi pack):
 
 ```bash
 npm test              # mọi skill lá · kho SOP · agents · hook
@@ -113,15 +112,15 @@ npm run gen:check     # bảng generated khớp rules.json
 npm run link:check    # link markdown gãy mới (ngoài baseline)
 ```
 
-Cùng lệnh nếu đang ở `src/sdlc/hooks/`. Chạm `rules.json` / `lib/*.js`: `npm run gen` → `npm test` → `npm run gen:check`.
+Cùng lệnh nếu đang ở `src/router/hooks/`. Chạm `rules.json` / `lib/*.js`: `npm run gen` → `npm test` → `npm run gen:check`.
 
-Một file: `node --test test/minipower-catalog.test.js` (cwd `src/sdlc/hooks`). Trace ID trên **dự án đích**: `npm run trace:check`. CI: [minipower-hooks.yml](.github/workflows/minipower-hooks.yml).
+Một file: `node --test test/minipower-catalog.test.js` (cwd `src/router/hooks`). Trace ID trên **dự án đích**: `npm run trace:check`. CI: [minipower-hooks.yml](.github/workflows/minipower-hooks.yml).
 
 ---
 
 ## Danh mục skill & cách dùng
 
-Skill **đăng ký loader** = thư mục lá `minipower-…` (có `SKILL.md` + `description`). SOP phase cũ trong [`sdlc/skills/`](src/sdlc/skills/README.md) là **kho** — pack nghề trỏ tới, không còn cửa `/minipower-sdlc`.
+Skill **đăng ký loader** = thư mục lá `minipower-…` (có `SKILL.md` + `description`). Không còn pack/`src/sdlc` — dispatcher = [`minipower-router`](src/router/skills/minipower-router/SKILL.md).
 
 Hub: [router](src/router/README.md) · [discovery](src/discovery/README.md) · [analyst](src/analyst/README.md) · [architecture](src/architecture/README.md) · [pm](src/pm/README.md) · [support](src/support/README.md) · [qa](src/qa/README.md) · [presales](src/presales/README.md) · [ops](src/ops/README.md) · [backend](src/backend/README.md) · [toolbox](src/toolbox/README.md) · [docs](src/docs/README.md) · [tasks](src/tasks/README.md) · [chat](src/chat/README.md) · [vcs](src/vcs/README.md).
 
@@ -232,18 +231,16 @@ Lá-rời: **mô tả việc**. Provider/pattern con chỉ đọc khi skill cha 
 
 `tasks=none` → `memory/tasks/`. `docs=local` → git `docs/`.
 
-### Kho SOP `sdlc/skills/` (không đăng ký menu)
-
-Đọc khi pack nghề trỏ tới, hoặc `@sdlc/skills/…`. QC công ty = `*-review` trong pack, không load `doc-review` như gate toàn repo.
+### Gate & cross-cut (lá `router/` + pack nghề)
 
 | File | Vai |
 |------|-----|
-| [survey](src/discovery/skills/minipower-discovery-survey/SKILL.md) · [srs](src/analyst/skills/minipower-analyst-srs/SKILL.md) · [sad](src/architecture/skills/minipower-architecture-sad/SKILL.md) | SOP khảo sát, SRS, SAD (lá) |
-| [planning](src/sdlc/skills/planning/SKILL.md) · [delivery](src/sdlc/skills/delivery/SKILL.md) · [change-control](src/sdlc/skills/change-control/SKILL.md) | SOP còn ở kho |
-| [deliberation](src/sdlc/skills/deliberation/SKILL.md) · [readiness-gate](src/sdlc/skills/readiness-gate/SKILL.md) | Gate mềm — lá `minipower-router-*` |
-| [fan-out](src/sdlc/skills/fan-out/SKILL.md) | Playbook song song; spawn = harness |
-| [as-built](src/sdlc/skills/as-built/SKILL.md) | Kho; nhà mới = `minipower-architecture-as-built` |
-| [doc-review](src/sdlc/skills/doc-review/SKILL.md) | Kho 5 chiều |
+| [survey](src/discovery/skills/minipower-discovery-survey/SKILL.md) · [srs](src/analyst/skills/minipower-analyst-srs/SKILL.md) · [sad](src/architecture/skills/minipower-architecture-sad/SKILL.md) | SOP khảo sát, SRS, SAD |
+| [pm-plan](src/pm/skills/minipower-pm-plan/SKILL.md) · [ops-deploy](src/ops/skills/minipower-ops-deploy/SKILL.md) · [analyst-cr](src/analyst/skills/minipower-analyst-cr/SKILL.md) | Kế hoạch · deploy · CR nội dung |
+| [deliberation](src/router/skills/minipower-router-deliberation/SKILL.md) · [readiness](src/router/skills/minipower-router-readiness/SKILL.md) | Gate mềm |
+| [parallel-work](src/router/docs/parallel-work.md) | Fan-out = pipeline theo module (harness, không skill spawn) |
+| [as-built](src/architecture/skills/minipower-architecture-as-built/SKILL.md) | Maintain / legacy |
+| `minipower-*-review` trong từng pack | QC — người ký |
 
 ---
 
@@ -253,11 +250,11 @@ Repo tổ chức theo **module** (đơn vị cài, chứa skill — mỗi module
 
 ```text
 minipower/
-├── router/ · discovery/ · analyst/ · architecture/ · pm/ · support/ · qa/ · presales/
-├── sdlc/                  # Kho neo: hook, skeleton, templates 19 DOC, plugin path
-│   ├── SKILL.md           #   Dispatcher đăng ký minipower-router
-│   ├── skills/            #   SOP phase (kho)
-│   ├── hooks/ · templates/ · project-skeleton/ · install/
+├── router/                # Dispatcher + hooks + skeleton + TPL + plugin root
+│   ├── skills/minipower-router*
+│   ├── hooks/ · templates/ · project-skeleton/ · docs-skeleton/
+├── discovery/ · analyst/ · architecture/ · pm/ · support/ · qa/ · presales/
+│   └── …/templates/DOC-*  # template DOC theo pack nghề
 ├── backend/ · ops/ · toolbox/
 ├── docs/ · tasks/ · chat/ · vcs/
 ├── contracts/ · ADRs/
@@ -268,13 +265,13 @@ Nguyên tắc tổ chức:
 
 - **Tên hai tầng:** `minipower` là thương hiệu; module một-từ. Skill lá: `minipower-{module}-{capability}[-{stack}]`.
 - **Mỗi thư mục một vai:** `SKILL.md` viết cho agent (quy tắc, workflow); `README.md` viết cho người (hướng dẫn, bảng tra). Module mới chỉ tạo khi đã có skill thật.
-- **Nguồn chân lý duy nhất:** các bảng routing/phase trong tài liệu được **sinh tự động** từ [`src/sdlc/hooks/lib/rules.json`](src/sdlc/hooks/lib/rules.json) — sửa rules rồi chạy `npm run gen`, không sửa tay vùng generated.
+- **Nguồn chân lý duy nhất:** các bảng routing/phase trong tài liệu được **sinh tự động** từ [`src/router/hooks/lib/rules.json`](src/router/hooks/lib/rules.json) — sửa rules rồi chạy `npm run gen`, không sửa tay vùng generated.
 
 ---
 
 ## Liên kết nhanh
 
-- [Danh mục skill & cách dùng](#danh-mục-skill--cách-dùng) · [Gọi chung](#gọi-chung--tự-chọn-skill) · [Chạy test](#chạy-test-repo-này) · [dispatcher SKILL](src/sdlc/SKILL.md) · [19 DOC](src/sdlc/templates/README.md)
+- [Danh mục skill & cách dùng](#danh-mục-skill--cách-dùng) · [Gọi chung](#gọi-chung--tự-chọn-skill) · [Chạy test](#chạy-test-repo-này) · [dispatcher SKILL](src/router/skills/minipower-router/SKILL.md) · [TPL](src/router/templates/README.md)
 - [router](src/router/README.md) · [discovery](src/discovery/README.md) · [analyst](src/analyst/README.md) · [architecture](src/architecture/README.md) · [pm](src/pm/README.md) · [support](src/support/README.md) · [qa](src/qa/README.md) · [presales](src/presales/README.md)
 - [backend](src/backend/README.md) · [ops](src/ops/README.md) · [toolbox](src/toolbox/README.md)
 - [docs](src/docs/README.md) · [tasks](src/tasks/README.md) · [chat](src/chat/README.md) · [vcs](src/vcs/README.md)

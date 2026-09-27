@@ -25,4 +25,4 @@ Các skill case dùng `minipower-ops-metrics` làm tầng lấy số liệu; h�
 ## Liên quan
 
 - [backend/](../backend/README.md) — cài OTEL/telemetry/healthcheck vào app .NET (phía **code**; `ops` đứng phía **vận hành**)
-- [sdlc/](../sdlc/README.md) — incident report / postmortem sống ở `docs/06-changes/incident/` của dự án đích
+- [router/](../router/README.md) — incident report / postmortem sống ở `docs/06-changes/incident/` của dự án đích

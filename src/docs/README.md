@@ -13,4 +13,4 @@ Manifest: [PACK.md](PACK.md).
 ## Liên quan
 
 - Wiki Lark vẫn là MCP Lark — không nằm pack này
-- Nội dung chuẩn nghề (DOC-01…19) sống ở `sdlc/templates/`; pack này chỉ **kênh xuất bản**
+- Nội dung chuẩn nghề (DOC-01…19) sống ở `router/templates/`; pack này chỉ **kênh xuất bản**

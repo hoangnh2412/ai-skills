@@ -13,7 +13,7 @@ Trước ký, giải pháp mức bán là [minipower-architecture-solution-lite]
 
 **Tiên quyết:** DOC-06 + DOC-13 của module. Thiếu → [minipower-analyst-srs](../../../analyst/skills/minipower-analyst-srs/SKILL.md).
 
-**Template:** [DOC-08–12](../../../sdlc/templates/) · **Folder:** `docs/04-platform/`
+**Template:** [DOC-08–12](../../../router/templates/) · **Folder:** `docs/04-platform/`
 
 | DOC | Nội dung |
 |-----|----------|

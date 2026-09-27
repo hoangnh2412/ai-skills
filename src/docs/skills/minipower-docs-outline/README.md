@@ -14,5 +14,5 @@ Atomic pack `docs/`. Điền `mcp.docs` trong `memory/profile.json`.
 
 ## Không làm
 
-- Sửa template DOC trong `sdlc/templates/`
+- Sửa template DOC trong `router/templates/`
 - Coi Outline là nơi viết FR lần đầu khi dự án đang `docs_provider: local`

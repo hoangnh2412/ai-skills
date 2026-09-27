@@ -29,10 +29,10 @@ Tách từ `COORDINATION.md` (draft v0.1) ngày 2026-08-25 — **mỗi chủ đ�
 
 - [x] `PACK.md` cho `sdlc` và `backend` (theo [pack-manifest.md](pack-manifest.md)) — *xong 2026-08-25*
 - [ ] Mở rộng trace spine trong `sdlc`: thêm `CMP/TEST/DEPLOY` vào trace-matrix template
-- [ ] Ghi boundary H4/H6 vào `sdlc/skills/architecture` + `delivery`
+- [ ] Ghi boundary H4/H6 vào `architecture/` + `ops/` / `qa/`
 - [ ] `traceability/from-docs.md` mẫu ở phía repo code
 - [ ] Pack vai trò mới khi cần: `frontend`, `qa`, `ops` (theo khung [pack-manifest.md](pack-manifest.md) §5.4)
 
 ---
 
-*Liên quan:* [sdlc pipeline](../src/sdlc/docs/pipeline.md) · [parallel-work](../src/sdlc/docs/parallel-work.md) · [decision-log](../src/sdlc/docs/decision-log.md) · [backend publish](../src/backend/README.md)
+*Liên quan:* [sdlc pipeline](../src/router/docs/pipeline.md) · [parallel-work](../src/router/docs/parallel-work.md) · [decision-log](../src/router/docs/decision-log.md) · [backend publish](../src/backend/README.md)

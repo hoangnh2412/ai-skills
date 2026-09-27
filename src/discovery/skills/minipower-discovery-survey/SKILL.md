@@ -15,7 +15,7 @@ Dừng ở gói khảo sát. Không UC/FR, không báo giá, không SAD.
 - Không FR/AC/giá.
 - H0: gói khảo sát → [minipower-architecture-solution-lite](../../../architecture/skills/minipower-architecture-solution-lite/SKILL.md) (`SOL-*`) → presales. Không nhảy thẳng tờ giá.
 
-**Template:** [DOC-01–03](../../../sdlc/templates/) · **Folder:** `{project}/docs/01-project/`
+**Template:** [DOC-01–03](../../../router/templates/) · **Folder:** `{project}/docs/01-project/`
 
 ## Bước 1 — Khám phá bài toán
 

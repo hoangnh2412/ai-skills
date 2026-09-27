@@ -203,4 +203,4 @@ Cập nhật `type_code` trên scope → tái chạy calc + regenerate báo giá
 - [ADR cha](../done/ADR-004-2026-07-25-minipower-proposal-skills.md)
 - [proposal-technical](../done/ADR-006-2026-07-25-proposal-technical.md) · [proposal-timeline](../done/ADR-007-2026-07-25-proposal-timeline.md)
 - [`SOPs/ULNL.md`](../../SOPs/ULNL.md)
-- [`minipower/skills/planning/SKILL.md`](../../src/sdlc/skills/planning/SKILL.md) — upstream DOC-14
+- [`minipower/skills/planning/SKILL.md`](../../src/pm/skills/minipower-pm-plan/SKILL.md) — upstream DOC-14

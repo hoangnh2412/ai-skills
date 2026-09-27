@@ -13,7 +13,7 @@ Skill để **viết và soát skill Minipower**. Agent đọc [SKILL.md](./SKIL
 | Nghi một skill cũ lệch chuẩn | [workflows/extend-skill.md § Soát skill có sẵn](./workflows/extend-skill.md#soát-skill-có-sẵn) |
 | Muốn mở **module** mới, không phải skill | [workflows/new-skill.md § Module mới](./workflows/new-skill.md#module-mới) — cần ADR trước |
 
-**Không dùng cho:** viết SOP phase trong [`sdlc/skills/`](../../../sdlc/README.md) (kho chuyển; luật dispatcher xem [minipower-router](../../../router/skills/minipower-router/SKILL.md)) · viết ADR (theo [ADRs/TEMPLATE.md](../../../../ADRs/TEMPLATE.md)) · viết tài liệu nền không phải skill (→ [`staging/`](../../../../staging/), kho tạm đang rút).
+**Không dùng cho:** viết SOP dispatcher/gate (xem [minipower-router](../../../router/skills/minipower-router/SKILL.md)) · viết ADR (theo [ADRs/TEMPLATE.md](../../../../ADRs/TEMPLATE.md)) · viết tài liệu nền không phải skill (→ [`staging/`](../../../../staging/), kho tạm đang rút).
 
 Agent **không tự chốt** nội dung skill: nêu phương án, dừng chờ bạn xác nhận, rồi mới ghi file. Đọc/kiểm tra (`npm test`, `link:check`) thì làm luôn.
 
@@ -75,7 +75,7 @@ Copy rồi thay placeholder:
 ## Lệnh kiểm
 
 ```bash
-cd sdlc/hooks && npm test && npm run link:check
+cd src/router/hooks && npm test && npm run link:check
 ```
 
 ## Liên quan

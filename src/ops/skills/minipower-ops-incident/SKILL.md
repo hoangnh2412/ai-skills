@@ -7,4 +7,4 @@ metadata:
 
 # minipower-ops-incident
 
-Template: [TPL-incident-report](../../../sdlc/templates/TPL-incident-report.md) · [TPL-postmortem](../../../sdlc/templates/TPL-postmortem.md). Thư mục đích: `docs/06-changes/incident/`.
+Template: [TPL-incident-report](../../../router/templates/TPL-incident-report.md) · [TPL-postmortem](../../../router/templates/TPL-postmortem.md). Thư mục đích: `docs/06-changes/incident/`.

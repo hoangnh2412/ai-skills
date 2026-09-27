@@ -7,6 +7,6 @@ metadata:
 
 # minipower-qa-strategy
 
-Một phần [sdlc/skills/delivery/SKILL.md](../../../sdlc/skills/delivery/SKILL.md) (test). DOC-17 thuộc ops.
+Test strategy (DOC-16). Deploy/runbook = [minipower-ops-deploy](../../../ops/skills/minipower-ops-deploy/SKILL.md).
 
 Hướng dẫn người: [README.md](README.md).

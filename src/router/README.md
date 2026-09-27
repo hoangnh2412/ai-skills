@@ -1,6 +1,6 @@
 # router — dispatcher
 
-Pack **dispatcher** (ADR-033 QĐ-1/QĐ-14): gợi ý đúng một pack / phiên. Init = CLI `minipower init`, không phỏng vấn LLM. Hook máy vẫn neo `src/sdlc/hooks/` đến Đợt E.
+Pack **dispatcher** (ADR-033 QĐ-1/QĐ-14): gợi ý đúng một pack / phiên. Init = CLI `minipower init`, không phỏng vấn LLM. Hook máy neo `src/router/hooks/` (ADR-037).
 
 Manifest: [PACK.md](PACK.md).
 

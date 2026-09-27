@@ -3,12 +3,12 @@
 | | |
 |---|---|
 | **Ngày** | 2026-09-25 |
-| **Trạng thái** | **QĐ-1…20 chốt.** A–C, D1 (4 lá kênh), presales unit 2026-09-26. **031 CLI unit xong.** SOP khảo sát / SRS / SAD nằm ở lá `minipower-discovery-survey`, `minipower-analyst-srs`, `minipower-architecture-sad`. Đợt E chưa xong: hook/plugin vẫn neo `src/sdlc/hooks` (ADR-032 QĐ-8). Một `name` dispatcher: `minipower-router`. Còn smoke T6. |
+| **Trạng thái** | **QĐ-1…20 chốt.** A–C, D1 (4 lá kênh), presales unit 2026-09-26. **031 CLI unit xong.** SOP khảo sát / SRS / SAD nằm ở lá `minipower-discovery-survey`, `minipower-analyst-srs`, `minipower-architecture-sad`. **Đợt E/F → [ADR-037](../doing/ADR-037-2026-09-26-xoa-folder-sdlc-dot-e.md)** (xoá `src/sdlc/`; siết ADR-032 QĐ-8). Một `name` dispatcher: `minipower-router`. Còn smoke T6. |
 | **Phạm vi** | **Toàn repo + skeleton dự án đích** — định vị dispatcher, tách pack nghề/kênh, `profile.json` v3, SSOT tài liệu/việc, chỉ mục trace SQLite, cấu trúc folder mục tiêu |
 | **Ngoài phạm vi** | Thi hành di chuyển file (đợt sau, sau Confirm) · MCP Obsidian (treo) · Control Plane / agent runtime · đổi tên repo · [ADR-032](../done/ADR-032-2026-09-03-gop-module-vao-thu-muc-modules.md) (`src/`/`cli/`) — trực giao, không ghép vào đợt này |
 | **Nối tiếp** | **Giữ** [ADR-022](../done/ADR-022-2026-08-24-minipower-nen-tang-cong-cu-ai-toan-cong-ty.md) QĐ-1 (Role Intelligence, không runtime) · QĐ-4/QĐ-7 (hệ tên, 3 câu hỏi) · QĐ-9 (MCP bằng tên trừu tượng) · QĐ-12 (không Control Plane) · **Giữ** [ADR-014](../todo/ADR-014-2026-07-28-minipower-spine-tong-hop-wrap-not-build.md) wrap-not-build + L1/L2/L3 · **Giữ** [ADR-020](../todo/ADR-020-2026-08-20-minipower-3-che-do-du-an-gate-bang-hook.md) `project_mode` + cứng-bằng-máy · **Siết** ADR-022 QĐ-3/QĐ-5 (`sdlc` = router-gộp ôm hết phase) · **Mở lại** Lark như *provider tuỳ chọn* (không phải module nghề) — khác [ADR-017](../cancel/ADR-017-2026-08-20-minipower-toolchain-openproject-github-outline-slack.md) QĐ-3 (🟣, “Lark rời lộ trình”) · **Chọn nhánh** [ADR-009](../cancel/ADR-009-2026-07-25-minipower-orchestrator-analysis.md) đã 🟣: dispatcher, **không** supervisor tự bàn giao |
 | **Mục đích** | Chốt: Minipower gợi ý/mở pack (atomic), không điều phối runtime; đất sét nằm đúng một docs provider + một tasks provider; trace UC→FR→AC vẫn moat, query bằng SQLite |
-| **Ảnh hưởng** | [AGENTS.md](../../AGENTS.md) · [README.md](../README.md) · [`sdlc/`](../../src/sdlc/) (kho chuyển) · pack nghề (`analyst/` `architecture/` `pm/` `support/` `backend/` …) tự chứa skill/rules/hooks/templates/review · kênh `tasks/` `docs/` `chat/` `vcs/` · [`contracts/`](../../contracts/) · `profile-guard` · không tầng `templates/` 19 DOC dùng chung |
+| **Ảnh hưởng** | [AGENTS.md](../../AGENTS.md) · [README.md](../README.md) · [`sdlc/`](../../src/router/) (kho chuyển) · pack nghề (`analyst/` `architecture/` `pm/` `support/` `backend/` …) tự chứa skill/rules/hooks/templates/review · kênh `tasks/` `docs/` `chat/` `vcs/` · [`contracts/`](../../contracts/) · `profile-guard` · không tầng `templates/` 19 DOC dùng chung |
 
 ---
 
@@ -714,8 +714,8 @@ Nguyên tắc đợt: **một đợt = một thay đổi Full** (đụng baselin
 | **D1** | Lá kênh: `minipower-docs-outline` (migrate local↔outline) · `minipower-tasks-lark` · `minipower-chat-lark` · `minipower-vcs-gitlab` (SOP mỏng nếu GitLab MCP đã có) — **từng lá một đợt**, không 4 folder trống | loader thấy skill; T2 | A, MCP thật |
 | **D2** | Pack nghề **theo nhu cầu dùng**, không theo alphabet: `router/` (cửa + init skill, hook chuyển dần) → `discovery/` → `analyst/` (templates DOC-04…07,13,19) → `architecture/` (lite + SAD) → `pm/` → `support/` (registry, không init) → `qa/` → `ops/` (lá deploy/incident) | mỗi pack: PACK.md consumes/produces + ≥1 skill + review nếu nghề viết DOC | QĐ-4 folder; copy từ `sdlc/` không để hai SSOT |
 | **D3** | `presales/` + `quotation-calc.js` | schema estimate + test | ADR-030 Confirm |
-| **E** | H0 vào `handoff.md`; bảng DOC×mode → `contracts/` (gen từ một SSOT); đổi đăng ký `minipower-sdlc` → `minipower-router`; gỡ plugin path khi `router/` đứng; xoá identity `doc-review` | `npm run gen:check`; không còn skill `minipower-sdlc` | D2 tối thiểu: router + analyst |
-| **F** | AGENTS.md / README / `sdlc/SKILL.md` chữ khớp QĐ; persona runtime từ `profile.user.json` | grep “router-gộp ôm phase” hết ngoài ADR cũ | E hoặc song song A (chữ identity) |
+| **E** | H0 vào `handoff.md`; bảng DOC×mode → `contracts/` (gen từ một SSOT); đổi đăng ký `minipower-sdlc` → `minipower-router`; gỡ plugin path khi `router/` đứng; xoá identity `doc-review` | `npm run gen:check`; không còn skill `minipower-sdlc` | D2 tối thiểu: router + analyst — **thi hành: [ADR-037](../doing/ADR-037-2026-09-26-xoa-folder-sdlc-dot-e.md)** (Confirm 2026-09-26) |
+| **F** | AGENTS.md / README / hub chữ khớp QĐ; persona runtime từ `profile.user.json` | grep “router-gộp ôm phase” hết ngoài ADR cũ | E — **gộp theo dõi ADR-037** |
 
 Đợt A–C **được bắt đầu ngay** (sửa `sdlc/` tại chỗ). Đợt D+ = tách file. Không xoá `sdlc/` trước hết path neo (QĐ-3).
 

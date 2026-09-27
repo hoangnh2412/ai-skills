@@ -22,16 +22,16 @@ memory: memory/<namespace>/      # nơi ghi/đọc context
 mcp: [<tên trừu tượng>, ...]     # tool cần qua MCP, bằng TÊN (docs·tasks·chat·code·…), không endpoint
 ```
 
-## 2. Ví dụ — `sdlc`
+## 2. Ví dụ — `router` (dispatcher)
 
 ```yaml
-pack: sdlc
-roles: [business-analyst, solution-architect, technical-pm]
-stage: [discovery, requirements, architecture, planning, delivery, change-control]
-repo: docs
-consumes: [assets/*, "khách hàng: khảo sát, biên bản"]
-produces: [DOC-01..19, "{MOD}-UC/FR/BR/AC-*", ADR-*, "trace-matrix"]
-handoff-out: [H2, H3, H4, H5, H6]
+pack: router
+roles: []
+stage: [init, deliberation, readiness]
+repo: any
+consumes: []
+produces: []
+handoff-out: []
 memory: memory/
 ```
 

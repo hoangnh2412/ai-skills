@@ -56,7 +56,7 @@ Còn **13 file `.md` ở gốc** + `interview/`. Việc này làm **trước** p
 | P2 | Tên **`fundamentals`** (nền tảng) nói **ngược hẳn** vai thật (nội dung cũ viết tạm) | Tên là thứ đọc trước nội dung; tên sai thì mọi chú thích phía sau phải đi sửa chữa nhận thức |
 | P3 | 75% nợ link gãy của repo nằm ở đây, và **không có cơ chế nào làm nó giảm** | `link:check` chỉ chặn gãy **mới**; nợ cũ nằm yên vĩnh viễn |
 | P4 | Không luật nào cấm nạp thêm file — mà chữ "tầng nền" nghe **hợp lệ** để đặt tài liệu mới | Kho phình; mỗi file mới là một nguồn cạnh tranh với skill |
-| P5 | Trùng vai đã xảy ra: `incident-template.md` (446 dòng) ↔ [`sdlc/templates/TPL-incident-report.md`](../../src/sdlc/templates/TPL-incident-report.md) (34 dòng, đang trong pipeline) · `code_review.md` (110 dòng) ↔ [`minipower-backend-review-dotnet`](../../src/backend/skills/minipower-backend-review-dotnet/README.md) | Hai nguồn cho một việc — thứ mà `contracts/` và `rules.json` tồn tại để tránh |
+| P5 | Trùng vai đã xảy ra: `incident-template.md` (446 dòng) ↔ [`router/templates/TPL-incident-report.md`](../../src/router/templates/TPL-incident-report.md) (34 dòng, đang trong pipeline) · `code_review.md` (110 dòng) ↔ [`minipower-backend-review-dotnet`](../../src/backend/skills/minipower-backend-review-dotnet/README.md) | Hai nguồn cho một việc — thứ mà `contracts/` và `rules.json` tồn tại để tránh |
 | P6 | Ba file .NET viết như skill nhưng không là skill | Nội dung sẵn sàng, chỉ thiếu chỗ đứng — nằm đó thì không bao giờ được agent gọi |
 
 ## §3. Ràng buộc
@@ -99,7 +99,7 @@ Còn **13 file `.md` ở gốc** + `interview/`. Việc này làm **trước** p
 | # | File | Dòng | Kết cục | Đích | Chờ gì |
 |---|---|---|---|---|---|
 | 1 | `code_review.md` | 110 | **Xoá** | [`minipower-backend-review-dotnet`](../../src/backend/skills/minipower-backend-review-dotnet/README.md) đã phủ | — (soát ý còn thiếu, bơm vào skill trước khi xoá) |
-| 2 | `incident-template.md` | 446 | **Gộp** | [`sdlc/templates/TPL-incident-report.md`](../../src/sdlc/templates/TPL-incident-report.md) (bản lõi 34 dòng) | — (chọn phần thật sự dùng, không bê nguyên 446 dòng) |
+| 2 | `incident-template.md` | 446 | **Gộp** | [`router/templates/TPL-incident-report.md`](../../src/router/templates/TPL-incident-report.md) (bản lõi 34 dòng) | — (chọn phần thật sự dùng, không bê nguyên 446 dòng) |
 | 3 | `dotnet-clean-architecture.md` | 54 | **→ skill** | `backend/` — skill kiến trúc layer (mới) | — (module có sẵn) |
 | 4 | `dotnet-ddd.md` | 121 | **→ skill** | cùng #3, hoặc `reference/` của nó | — |
 | 5 | `dotnet-structure.md` | 295 | **→ skill** | gộp vào [`minipower-backend-scaffold-dotnet`](../../src/backend/skills/minipower-backend-scaffold-dotnet/README.md) | — (kiểm trùng với scaffold hiện có trước) |
@@ -109,7 +109,7 @@ Còn **13 file `.md` ở gốc** + `interview/`. Việc này làm **trước** p
 | 9 | `automation-test-api-insomnia.md` | 866 | **→ skill** | cùng #7 | chờ `autotest/` |
 | 10 | `UCP.md` | 397 | **→ skill** | proposal suite | **Chờ [ADR-008](../todo/ADR-008-2026-07-25-minipower-proposal-suite.md)** (R2 catalog + `quotation-calc.js`) |
 | 11 | `ULNL.md` | 364 | **→ skill** | cùng #10 | chờ ADR-008 |
-| 12 | `GiaiPhapKyThuat-KHUNG.md` | 662 | **→ template/skill** | TPL trong `sdlc/templates/` hoặc `proposal-technical` | chờ ADR-008 (R5 TPL GPKT) |
+| 12 | `GiaiPhapKyThuat-KHUNG.md` | 662 | **→ template/skill** | TPL trong `router/templates/` hoặc `proposal-technical` | chờ ADR-008 (R5 TPL GPKT) |
 | 13 | `FundamentalClaudeCode.md` | 307 | **Giữ** | tài liệu cá nhân, ở lại `staging/` — không lên bản đồ repo | — (Q3 chốt 2026-08-28) |
 | 14 | `interview/` | 35 file | **Giữ tạm — có chủ** | ứng viên module riêng (người dùng khác hẳn: người tuyển dụng — ADR-022 QĐ-7 câu 2) | chờ có skill thật, không chỉ tài liệu |
 | ~~—~~ | ~~`tutorial-index.md`~~ | ~~466~~ | **Đã xoá** 2026-08-28 | — | — (QĐ-5) |

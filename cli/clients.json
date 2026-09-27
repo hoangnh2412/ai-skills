@@ -11,7 +11,7 @@
     "hooksRel": ".cursor/hooks.json",
     "skillsRel": ".cursor/skills",
     "rulesRel": ".cursor/rules",
-    "sdlcLinkName": "minipower-sdlc"
+    "sdlcLinkName": "minipower-router"
   },
   "opencode": {
     "id": "opencode",

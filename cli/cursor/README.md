@@ -2,7 +2,7 @@
 
 **Always-on mọi workspace (User Rules):** xem [USER-RULES.md](USER-RULES.md) — dán vào Settings. Không thay bằng symlink project.
 
-Chạy từ **root workspace project docs**. `$REPO` là gốc repo factory; `$MP` là `$REPO/src/sdlc` (hook và agents).
+Chạy từ **root workspace project docs**. `$REPO` là gốc repo factory; `$MP` là `$REPO/src/router` (hook và agents).
 
 ## Rules
 
@@ -20,7 +20,7 @@ New-Item -ItemType SymbolicLink -Force -Path .cursor\rules\minipower-doc-editing
 ```bash
 # macOS / Linux
 REPO=/path/to/minipower
-MP=$REPO/src/sdlc
+MP=$REPO/src/router
 mkdir -p .cursor/rules
 ln -snf "$REPO/cli/cursor/rules/minipower-token-guard.mdc" .cursor/rules/
 ln -snf "$REPO/cli/cursor/rules/minipower-doc-editing.mdc" .cursor/rules/
@@ -29,7 +29,7 @@ ln -snf "$REPO/cli/cursor/rules/minipower-profile.mdc" .cursor/rules/
 
 ## Hooks
 
-**Một implementation Node duy nhất** cho cả 3 nền tảng (Cursor/Claude/OpenCode). Logic ở [`hooks/lib/*.js`](../../src/sdlc/hooks/), shim CLI ở [`hooks/bin/*.js`](../../src/sdlc/hooks/bin/). Yêu cầu **Node ≥ 18** trên PATH — không còn cần `python3`, không còn bản `.ps1`/`.sh` riêng.
+**Một implementation Node duy nhất** cho cả 3 nền tảng (Cursor/Claude/OpenCode). Logic ở [`hooks/lib/*.js`](../../src/router/hooks/), shim CLI ở [`hooks/bin/*.js`](../../src/router/hooks/bin/). Yêu cầu **Node ≥ 18** trên PATH — không còn cần `python3`, không còn bản `.ps1`/`.sh` riêng.
 
 > Vì sao đổi: 4 bản cài đặt cũ (`.py`/`.ps1`/`.sh`/`.ts`) đã lệch nhau thành nhiều bug thật (regex có dấu/không dấu, path `/` vs `\`, `DOC-0[0-9]` bỏ sót DOC-10…18). Gộp về một bản Node + golden test (`node --test`) + CI 3 OS. Xem `ADRs/`.
 
@@ -42,7 +42,7 @@ ln -snf "$REPO/cli/cursor/rules/minipower-profile.mdc" .cursor/rules/
 | Decision-log staleness | `bin/decision-staleness.js` | Advisory (không chặn), keyword-gated |
 | Baseline guard (`beforeReadFile`) | `bin/baseline-guard.js` | Chặn `02-baseline/` mọi mode (không BYPASS); `_legacy/` mở ở mode `maintain` |
 
-**SSOT logic agent:** [agents/auto-routing.md](../../src/sdlc/agents/auto-routing.md).
+**SSOT logic agent:** [agents/auto-routing.md](../../src/router/agents/auto-routing.md).
 
 ### Auto-routing (DOC → phase)
 
@@ -53,7 +53,7 @@ ln -snf "$REPO/cli/cursor/rules/minipower-profile.mdc" .cursor/rules/
 | Tag DOC khác phase (vd. DOC-07 + DOC-16) | **Chặn** + gợi ý tách prompt |
 | `Phase:` sai so với file DOC | **Chặn** |
 
-Biến môi trường tuỳ chọn: `MINIPOWER_ROOT` (mặc định `minipower/src/sdlc`) — path gợi ý skill trong message hook.
+Biến môi trường tuỳ chọn: `MINIPOWER_ROOT` (mặc định `minipower/src/router`) — path gợi ý skill trong message hook.
 
 ### Decision-log staleness (advisory)
 
@@ -61,11 +61,11 @@ Biến môi trường tuỳ chọn: `MINIPOWER_ROOT` (mặc định `minipower/s
 
 ### Cài đặt
 
-Pack đã được symlink tại `.cursor/skills/minipower-sdlc/` (xem [README chính](../../README.md)) → bin + lib đi kèm sẵn, **không cần symlink script riêng**. Chỉ cần merge một fragment.
+Pack đã được symlink tại `.cursor/skills/minipower-router/` (xem [README chính](../../README.md)) → bin + lib đi kèm sẵn, **không cần symlink script riêng**. Chỉ cần merge một fragment.
 
-Merge [hooks.fragment.json](hooks/hooks.fragment.json) vào `.cursor/hooks.json` (giữ hook khác nếu đã có). Fragment gọi `node .cursor/skills/minipower-sdlc/hooks/bin/*.js` — giống hệt trên Windows/macOS/Linux.
+Merge [hooks.fragment.json](hooks/hooks.fragment.json) vào `.cursor/hooks.json` (giữ hook khác nếu đã có). Fragment gọi `node .cursor/skills/minipower-router/hooks/bin/*.js` — giống hệt trên Windows/macOS/Linux.
 
-> Nếu pack **không** nằm ở `.cursor/skills/minipower-sdlc/` (vd. Claude/khác), sửa path trong fragment thành đường dẫn tới `…/src/sdlc/hooks/bin/`.
+> Nếu pack **không** nằm ở `.cursor/skills/minipower-router/` (vd. Claude/khác), sửa path trong fragment thành đường dẫn tới `…/src/router/hooks/bin/`.
 
 ### Kiểm tra
 
@@ -81,7 +81,7 @@ Merge [hooks.fragment.json](hooks/hooks.fragment.json) vào `.cursor/hooks.json`
 
 ```bash
 REPO=/path/to/minipower
-MP=$REPO/src/sdlc
+MP=$REPO/src/router
 
 echo '{"prompt":"@docs/03-modules/"}' | node "$MP/hooks/bin/token-guard.js"
 # Kỳ vọng: exit 2, {"continue":false,...}

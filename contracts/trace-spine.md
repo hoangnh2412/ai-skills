@@ -14,9 +14,9 @@ DOC-01   DOC-02    04   05   06   07    │  09/11/12  CMP   TEST   17
 
 | ID | Ý nghĩa | Nguồn |
 |----|---------|-------|
-| `DOC-NN` | Tài liệu chuẩn (01–18) | `sdlc/templates/` |
+| `DOC-NN` | Tài liệu chuẩn (01–18) | `router/templates/` |
 | `{MOD}-UC-NNN` · `-FR-` · `-BR-` · `-AC-` | Artifact theo module | [minipower-analyst-srs](../src/analyst/skills/minipower-analyst-srs/SKILL.md) |
-| `DEC-{PHASE}-NNN` | Quyết định + phương án bị loại | [decision-log.md](../src/sdlc/docs/decision-log.md) |
+| `DEC-{PHASE}-NNN` | Quyết định + phương án bị loại | [decision-log.md](../src/router/docs/decision-log.md) |
 | `ADR-NNN` | Quyết định kiến trúc formal | DOC-09 |
 
 ## 2. ID thêm mới — cho downstream trace ngược

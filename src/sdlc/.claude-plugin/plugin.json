@@ -1,6 +1,0 @@
-{
-  "name": "minipower",
-  "description": "Kho Minipower — hook và SOP phase. Dispatcher là skill minipower-router. Plugin root là src/sdlc (hook). Con người gatekeeper.",
-  "version": "0.1.0",
-  "agents": []
-}

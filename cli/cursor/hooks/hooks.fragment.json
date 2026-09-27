@@ -3,29 +3,29 @@
   "hooks": {
     "beforeSubmitPrompt": [
       {
-        "command": "node .cursor/skills/minipower-sdlc/hooks/bin/token-guard.js",
+        "command": "node .cursor/skills/minipower-router/hooks/bin/token-guard.js",
         "timeout": 5
       },
       {
-        "command": "node .cursor/skills/minipower-sdlc/hooks/bin/auto-routing.js",
+        "command": "node .cursor/skills/minipower-router/hooks/bin/auto-routing.js",
         "timeout": 5
       },
       {
-        "command": "node .cursor/skills/minipower-sdlc/hooks/bin/profile-guard.js",
+        "command": "node .cursor/skills/minipower-router/hooks/bin/profile-guard.js",
         "timeout": 5
       },
       {
-        "command": "node .cursor/skills/minipower-sdlc/hooks/bin/prereq-gate.js",
+        "command": "node .cursor/skills/minipower-router/hooks/bin/prereq-gate.js",
         "timeout": 5
       },
       {
-        "command": "node .cursor/skills/minipower-sdlc/hooks/bin/decision-staleness.js",
+        "command": "node .cursor/skills/minipower-router/hooks/bin/decision-staleness.js",
         "timeout": 10
       }
     ],
     "beforeReadFile": [
       {
-        "command": "node .cursor/skills/minipower-sdlc/hooks/bin/baseline-guard.js",
+        "command": "node .cursor/skills/minipower-router/hooks/bin/baseline-guard.js",
         "matcher": "Read|Write|Edit"
       }
     ]

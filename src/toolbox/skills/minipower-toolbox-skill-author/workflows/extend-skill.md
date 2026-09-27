@@ -47,7 +47,7 @@ Thêm một dòng vào bảng Providers/Patterns của `SKILL.md`. Một biến 
 ## Bước 6 — Validate
 
 ```bash
-cd sdlc/hooks && npm test && npm run link:check
+cd src/router/hooks && npm test && npm run link:check
 ```
 
 ---
@@ -70,7 +70,7 @@ Dùng khi nghi một skill cũ lệch chuẩn. Soát theo thứ tự **đắt d�
 Bốn dòng đầu chạy được ngay:
 
 ```bash
-cd sdlc/hooks && npm test && npm run link:check
+cd src/router/hooks && npm test && npm run link:check
 ```
 
 Bốn dòng cuối phải đọc bằng mắt — đó là lý do chúng hay hỏng.

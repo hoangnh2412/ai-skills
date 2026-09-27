@@ -1,6 +1,6 @@
 # Cài Minipower — OpenCode (instructions + plugins)
 
-Chạy từ **root workspace project docs**. `$REPO` là gốc repo factory; `$MP` là `$REPO/src/sdlc` (hook và agents).
+Chạy từ **root workspace project docs**. `$REPO` là gốc repo factory; `$MP` là `$REPO/src/router` (hook và agents).
 
 OpenCode dùng:
 
@@ -9,14 +9,14 @@ OpenCode dùng:
 | `.cursor/rules/*.mdc` | `instructions` trong `opencode.json` + `.opencode/rules/*.md` |
 | `.cursor/hooks.json` → `node hooks/bin/*.js` | `.opencode/plugins/minipower.ts` (hook `chat.message`, `tool.execute.before`) |
 
-**SSOT logic guard:** [hooks/lib/*.js](../../src/sdlc/hooks/) — dùng chung Cursor/Claude/OpenCode. Plugin OpenCode (`minipower.ts`) là glue mỏng: import thẳng lib `.js` (Bun chạy `.ts` + `.js` trực tiếp, không build).
+**SSOT logic guard:** [hooks/lib/*.js](../../src/router/hooks/) — dùng chung Cursor/Claude/OpenCode. Plugin OpenCode (`minipower.ts`) là glue mỏng: import thẳng lib `.js` (Bun chạy `.ts` + `.js` trực tiếp, không build).
 
 ## Rules (instructions)
 
 ```bash
 # macOS / Linux
 REPO=/path/to/minipower
-MP=$REPO/src/sdlc
+MP=$REPO/src/router
 mkdir -p .opencode/rules
 ln -snf "$MP/agents/token-guard.md" .opencode/rules/minipower-token-guard.md
 ln -snf "$REPO/cli/opencode/rules/minipower-profile.md" .opencode/rules/minipower-profile.md
@@ -49,11 +49,11 @@ Merge [opencode.fragment.json](opencode.fragment.json) vào `opencode.json` (gi�
 }
 ```
 
-> Rule `minipower-profile.md` là always-on: chưa có `memory/profile.json` → agent **chỉ** làm init / hoàn tất profile, chưa đòi khai `Phase:`. Thiếu rule này thì `/minipower-sdlc Init project` bị agent đòi chọn phase (parity với Cursor).
+> Rule `minipower-profile.md` là always-on: chưa có `memory/profile.json` → agent **chỉ** làm init / hoàn tất profile, chưa đòi khai `Phase:`. Thiếu rule này thì `/minipower-router Init project` bị agent đòi chọn phase (parity với Cursor).
 
 ## Plugins (hooks)
 
-Plugin gói **một file entry** (`minipower.ts`) + `lib/parts.ts` (glue OpenCode). Logic guard đến từ [hooks/lib/*.js](../../src/sdlc/hooks/) dùng chung — `minipower.ts` import qua đường dẫn tương đối `../../../hooks/lib/*.js`, resolve theo **realpath** của pack (nên symlink pack, đừng copy rời file).
+Plugin gói **một file entry** (`minipower.ts`) + `lib/parts.ts` (glue OpenCode). Logic guard đến từ [hooks/lib/*.js](../../src/router/hooks/) dùng chung — `minipower.ts` import qua đường dẫn tương đối `../../../hooks/lib/*.js`, resolve theo **realpath** của pack (nên symlink pack, đừng copy rời file).
 
 | Hook OpenCode | Tương đương Cursor | Mục đích |
 |---------------|-------------------|----------|
@@ -61,7 +61,7 @@ Plugin gói **một file entry** (`minipower.ts`) + `lib/parts.ts` (glue OpenCod
 | `chat.message` (message **đầu phiên**) | Claude SessionStart | Decision-log staleness advisory (không chặn) |
 | `tool.execute.before` (`read`) | `beforeReadFile` | Chặn `02-baseline/`, `_legacy/` (tuỳ chọn) |
 
-Biến môi trường tuỳ chọn: `MINIPOWER_ROOT` (mặc định `minipower/src/sdlc`) — path gợi ý skill trong auto-route.
+Biến môi trường tuỳ chọn: `MINIPOWER_ROOT` (mặc định `minipower/src/router`) — path gợi ý skill trong auto-route.
 
 ### Symlink plugin
 
@@ -69,7 +69,7 @@ Biến môi trường tuỳ chọn: `MINIPOWER_ROOT` (mặc định `minipower/s
 
 ```bash
 REPO=/path/to/minipower
-MP=$REPO/src/sdlc
+MP=$REPO/src/router
 mkdir -p .opencode/plugins
 ln -snf "$REPO/cli/opencode/plugins/minipower.ts" .opencode/plugins/
 ln -snf "$REPO/cli/opencode/plugins/lib" .opencode/plugins/lib
@@ -102,11 +102,11 @@ Chạy trong `chat.message` **sau** token guard:
 | Tag DOC khác phase (vd. DOC-07 + DOC-16) | **Chặn** + gợi ý tách prompt |
 | `Phase:` sai so với file DOC | **Chặn** |
 
-**SSOT:** [agents/auto-routing.md](../../src/sdlc/agents/auto-routing.md)
+**SSOT:** [agents/auto-routing.md](../../src/router/agents/auto-routing.md)
 
 ### Decision-log staleness (advisory)
 
-Ở **message đầu tiên mỗi phiên** (mô phỏng SessionStart), plugin gọi `checkDecisionStaleness` từ [hooks/lib/decision-staleness.js](../../src/sdlc/hooks/lib/decision-staleness.js): so ngày DEC (còn hiệu lực) với lịch sử git của DOC trong `Trace:`; DOC đổi sau ngày → chèn cảnh báo vào context. Git thuần qua `child_process`, không cần python. **Không chặn** — lỗi hook không ảnh hưởng luồng. Cùng logic với Cursor/Claude (một file `.js`).
+Ở **message đầu tiên mỗi phiên** (mô phỏng SessionStart), plugin gọi `checkDecisionStaleness` từ [hooks/lib/decision-staleness.js](../../src/router/hooks/lib/decision-staleness.js): so ngày DEC (còn hiệu lực) với lịch sử git của DOC trong `Trace:`; DOC đổi sau ngày → chèn cảnh báo vào context. Git thuần qua `child_process`, không cần python. **Không chặn** — lỗi hook không ảnh hưởng luồng. Cùng logic với Cursor/Claude (một file `.js`).
 
 ### Read guard (tuỳ chọn)
 
@@ -117,7 +117,7 @@ Nếu chưa cần: xoá block `tool.execute.before` trong [plugins/minipower.ts]
 ## Kiểm tra
 
 1. Khởi động lại OpenCode — plugin load không lỗi (xem log).
-2. Dự án mới (chưa có `memory/profile.json`): `/minipower-sdlc Init project HRM` → agent hỏi trọn gói 5 câu cá nhân hoá, **không** đòi khai `Phase:` (rule profile).
+2. Dự án mới (chưa có `memory/profile.json`): `/minipower-router Init project HRM` → agent hỏi trọn gói 5 câu cá nhân hoá, **không** đòi khai `Phase:` (rule profile).
 3. Prompt thiếu scope: `/minipower-router` + `đồng bộ requirements` (không @ file) → cảnh báo token guard trong context.
 4. `@docs/` hoặc `@docs/03-modules/` không kèm file → bị chặn.
 5. Tag DOC-07 + DOC-16 cùng lúc → bị chặn (auto-routing).

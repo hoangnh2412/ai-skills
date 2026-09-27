@@ -35,14 +35,14 @@ try {
   DatabaseSync = null
 }
 
-import { CLAUDE_PACK_PLACEHOLDER, claudeSettingsFragment, jsonFile } from "../src/sdlc/hooks/lib/install-fragments.js"
+import { CLAUDE_PACK_PLACEHOLDER, claudeSettingsFragment, jsonFile } from "../src/router/hooks/lib/install-fragments.js"
 import {
   defaultWithPacks,
   loadModuleRegistry,
-} from "../src/sdlc/hooks/lib/module-registry.js"
-import { validateProfile, validateUserProfile } from "../src/sdlc/hooks/lib/profile-guard.js"
-import { RULES } from "../src/sdlc/hooks/lib/rules.js"
-import { listLeafSkills } from "../src/sdlc/hooks/lib/skill-catalog.js"
+} from "../src/router/hooks/lib/module-registry.js"
+import { resolveSurfaces, validateProfile, validateUserProfile } from "../src/router/hooks/lib/profile-guard.js"
+import { RULES } from "../src/router/hooks/lib/rules.js"
+import { listLeafSkills } from "../src/router/hooks/lib/skill-catalog.js"
 
 const MODE_ORDER = ["mvp", "standard", "maintain"]
 const CLIENT_ORDER = ["cursor", "claude", "opencode"]
@@ -51,7 +51,7 @@ const NO_MCP = new Set(["local", "none"])
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 const REPO = resolve(HERE, "..")
-const SDLC = join(REPO, "src", "sdlc")
+const ROUTER = join(REPO, "src", "router")
 const CLIENTS = JSON.parse(readFileSync(join(HERE, "clients.json"), "utf8"))
 
 function die(msg, code = 1) {
@@ -97,6 +97,45 @@ function copyTree(src, dest) {
   }
 }
 
+function applyLayout(target, surfaces) {
+  const picked = new Set(surfaces)
+  if (picked.has("docs")) {
+    copyTree(join(ROUTER, "project-skeleton"), target)
+    copyTree(join(ROUTER, "docs-skeleton"), join(target, "docs"))
+  } else {
+    copyTree(join(ROUTER, "project-skeleton", "memory"), join(target, "memory"))
+  }
+  for (const spec of RULES.project_surfaces) {
+    if (spec.id === "docs" || !picked.has(spec.id)) continue
+    const dest = join(target, spec.path)
+    mkdirSync(dest, { recursive: true })
+    const readme = join(dest, "README.md")
+    const src = join(ROUTER, "surface-skeleton", spec.id, "README.md")
+    if (!existsSync(readme) && existsSync(src)) copyFileSync(src, readme)
+  }
+}
+
+function writeSurfaceIndex(target, surfaces) {
+  const code = RULES.project_surfaces.filter((s) => s.id !== "docs" && surfaces.includes(s.id))
+  const readme = join(target, "README.md")
+  if (!code.length || !existsSync(readme)) return
+  const rows = code.map((s) => `| \`${s.path}/\` | ${s.role} |`).join("\n")
+  const block = [
+    "## Code",
+    "",
+    "<!-- surfaces:start -->",
+    "| Thư mục | Vai trò |",
+    "|---------|---------|",
+    rows,
+    "<!-- surfaces:end -->",
+    "",
+  ].join("\n")
+  const text = readFileSync(readme, "utf8")
+  const re = /## Code\n\n<!-- surfaces:start -->[\s\S]*?<!-- surfaces:end -->\n?/
+  const next = re.test(text) ? text.replace(re, block) : `${text.replace(/\s*$/, "\n\n")}${block}`
+  writeFileSync(readme, next)
+}
+
 function linkPath(src, dest) {
   const abs = resolve(src)
   mkdirSync(dirname(dest), { recursive: true })
@@ -122,7 +161,14 @@ function linkPath(src, dest) {
 
 function isOurs(cmd) {
   const s = String(cmd || "")
-  return s.includes("minipower-sdlc") || s.includes(`${join("sdlc", "hooks", "bin")}`) || s.includes("minipower/sdlc/hooks")
+  return (
+    s.includes("minipower-sdlc") ||
+    s.includes("minipower-router") ||
+    s.includes(`${join("sdlc", "hooks", "bin")}`) ||
+    s.includes(`${join("router", "hooks", "bin")}`) ||
+    s.includes("minipower/sdlc/hooks") ||
+    s.includes("minipower/src/router/hooks")
+  )
 }
 
 function mergeClaude(cur, frag) {
@@ -154,7 +200,7 @@ function writeJson(path, obj) {
 }
 
 function resolveClaudeFrag() {
-  const packRoot = JSON.stringify(SDLC).slice(1, -1)
+  const packRoot = JSON.stringify(ROUTER).slice(1, -1)
   const raw = jsonFile(claudeSettingsFragment()).split(CLAUDE_PACK_PLACEHOLDER).join(packRoot)
   return JSON.parse(raw)
 }
@@ -221,7 +267,7 @@ function installClient(id, target, withPacks, dry, opts = {}) {
     const cur = existsSync(hooksPath) ? JSON.parse(readFileSync(hooksPath, "utf8")) : {}
     writeJson(hooksPath, mergeCursor(cur, frag))
     const sdlcLink = join(target, spec.skillsRel, spec.sdlcLinkName)
-    process.stdout.write(`✓ cursor hooks; sdlc:${linkPath(SDLC, sdlcLink)}\n`)
+    process.stdout.write(`✓ cursor hooks; router:${linkPath(ROUTER, sdlcLink)}\n`)
     const rulesDir = join(HERE, "cursor", "rules")
     if (existsSync(rulesDir)) {
       mkdirSync(join(target, spec.rulesRel), { recursive: true })
@@ -288,7 +334,7 @@ async function cmdInstall(flags) {
       "decision-staleness.js",
       "baseline-guard.js",
     ]) {
-      if (!existsSync(join(SDLC, "hooks", "bin", script))) die(`Thiếu shim ${script}`)
+      if (!existsSync(join(ROUTER, "hooks", "bin", script))) die(`Thiếu shim ${script}`)
       n++
     }
     process.stdout.write(`(--check) ${n} shim có mặt. Không ghi.\n`)
@@ -539,6 +585,34 @@ async function askRolesFrom(iter) {
   }
 }
 
+async function askSurfacesFrom(iter) {
+  const specs = RULES.project_surfaces
+  stdout.write("\nBề mặt (nhiều số: 1,2 hoặc Enter = mặc định)\n")
+  specs.forEach((s, i) => {
+    const d = s.default ? "  ← mặc định" : ""
+    stdout.write(`  ${i + 1}) ${s.id} — ${s.label}${d}\n`)
+  })
+  for (;;) {
+    const raw = await nextLine(iter, "")
+    if (raw === "") return resolveSurfaces(undefined)
+    const parts = raw.split(/[,\s]+/).filter(Boolean)
+    const ids = []
+    let ok = true
+    for (const p of parts) {
+      const n = Number(p)
+      if (Number.isInteger(n) && n >= 1 && n <= specs.length) ids.push(specs[n - 1].id)
+      else if (specs.some((s) => s.id === p)) ids.push(p)
+      else {
+        ok = false
+        break
+      }
+    }
+    const resolved = ok ? resolveSurfaces(ids) : null
+    if (resolved) return resolved
+    stdout.write("Không hợp lệ.\n")
+  }
+}
+
 async function promptAnswers(target) {
   const rl = readline.createInterface({ input: stdin, output: stdout, terminal: Boolean(stdin.isTTY) })
   const iter = rl[Symbol.asyncIterator]()
@@ -589,6 +663,7 @@ async function promptAnswers(target) {
       0,
     )
     const roles = await askRolesFrom(iter)
+    const surfaces = await askSurfacesFrom(iter)
     const minipower_experience = await askChoiceFrom(
       iter,
       "Đã dùng Minipower chưa",
@@ -599,7 +674,7 @@ async function promptAnswers(target) {
       0,
     )
     stdout.write(
-      `\n${project_name} · ${project_mode} · ${current_phase} · ${user_name} (${honorific}) · ${roles.join("+")}\n`,
+      `\n${project_name} · ${project_mode} · ${current_phase} · ${surfaces.join("+")} · ${user_name} (${honorific}) · ${roles.join("+")}\n`,
     )
     stdout.write("Ghi cây dự án? [Y/n]\n")
     const ok = (await nextLine(iter, "Y")).toLowerCase()
@@ -614,6 +689,7 @@ async function promptAnswers(target) {
       user_name,
       honorific,
       roles,
+      surfaces,
       minipower_experience,
     }
   } finally {
@@ -643,6 +719,11 @@ async function cmdInit(flags) {
   }
 
   const a = await loadAnswers(flags, target)
+  const surfaces = resolveSurfaces(a.surfaces)
+  if (!surfaces) {
+    const ids = RULES.project_surfaces.map((s) => s.id).join(", ")
+    die(`surfaces phải là mảng không rỗng gồm: ${ids}`)
+  }
   const missing = requiredAnswers().filter((k) => {
     const v = a[k]
     if (Array.isArray(v)) return v.length === 0
@@ -650,8 +731,9 @@ async function cmdInit(flags) {
   })
   if (missing.length) die(`Thiếu trường: ${missing.join(", ")}`)
 
-  copyTree(join(SDLC, "project-skeleton"), target)
-  copyTree(join(SDLC, "docs-skeleton"), join(target, "docs"))
+  const readmeExisted = existsSync(join(target, "README.md"))
+  applyLayout(target, surfaces)
+  if (!readmeExisted) writeSurfaceIndex(target, surfaces)
 
   // ADR-035: entry cá nhân — copy khuôn → memory.md (gitignore trên dự án đích)
   const memExample = join(target, "memory", "memory.md.example")
@@ -669,6 +751,7 @@ async function cmdInit(flags) {
     chat_provider: a.chat_provider,
     code_provider: a.code_provider,
     trace_store: "sqlite",
+    surfaces,
   }
   if (a.mcp && typeof a.mcp === "object") profile.mcp = a.mcp
   const pv = validateProfile(profile)
@@ -696,18 +779,29 @@ async function cmdInit(flags) {
 
   if (a.project_mode === "mvp" || a.project_mode === "maintain") {
     const debt = join(target, "memory", "doc-debt.md")
-    if (!existsSync(debt)) copyFileSync(join(SDLC, "project-skeleton", "memory", "doc-debt.md"), debt)
+    if (!existsSync(debt)) copyFileSync(join(ROUTER, "project-skeleton", "memory", "doc-debt.md"), debt)
   }
 
   const agents = join(target, "AGENTS.md")
   if (!existsSync(agents)) {
     writeFileSync(
       agents,
-      `# ${a.project_name}\n\nChế độ \`${a.project_mode}\`. Có \`.minipower/\` — dùng Minipower; thông báo skill; kế hoạch cần người OK.\n`,
+      `# ${a.project_name}\n\nChế độ \`${a.project_mode}\`. Bề mặt: ${surfaces.join(", ")}. Có \`.minipower/\` — dùng Minipower; thông báo skill; kế hoạch cần người OK.\n`,
     )
   }
   writeFactoryLauncher(target)
   process.stdout.write(`✓ init ${target}\n  tiếp: node .minipower/bin/minipower --help\n`)
+}
+
+function declaredSurfaces(target) {
+  const pf = join(target, "memory", "profile.json")
+  if (!existsSync(pf)) return resolveSurfaces(undefined)
+  try {
+    const surfaces = resolveSurfaces(JSON.parse(readFileSync(pf, "utf8")).surfaces)
+    return surfaces || resolveSurfaces(undefined)
+  } catch {
+    return resolveSurfaces(undefined)
+  }
 }
 
 function checkInit(target) {
@@ -727,7 +821,14 @@ function checkInit(target) {
   if (!existsSync(join(target, "memory", "memory.md"))) errors.push("memory/memory.md")
   if (!existsSync(join(target, "memory", "decision-log.md"))) errors.push("memory/decision-log.md")
   if (!existsSync(join(target, "memory", "open-questions.md"))) errors.push("memory/open-questions.md")
-  if (!existsSync(join(target, "docs"))) errors.push("docs/")
+  const surfaces = declaredSurfaces(target)
+  for (const spec of RULES.project_surfaces) {
+    if (!surfaces.includes(spec.id)) continue
+    if (!existsSync(join(target, spec.path))) errors.push(`${spec.path}/`)
+    if (spec.id !== "docs" && !existsSync(join(target, spec.path, "README.md"))) {
+      errors.push(`${spec.path}/README.md`)
+    }
+  }
   if (existsSync(join(target, "docs", "05-traceability", "overview.md"))) {
     errors.push("docs/05-traceability/overview.md (đã bỏ — ADR-035; xoá hoặc migrate vào memory.md)")
   }
@@ -745,7 +846,11 @@ function checkInit(target) {
   }
   if (existsSync(pf)) {
     const mode = JSON.parse(readFileSync(pf, "utf8")).project_mode
-    if ((mode === "mvp" || mode === "maintain") && !existsSync(join(target, "memory", "doc-debt.md"))) {
+    if (
+      surfaces.includes("docs") &&
+      (mode === "mvp" || mode === "maintain") &&
+      !existsSync(join(target, "memory", "doc-debt.md"))
+    ) {
       errors.push("memory/doc-debt.md")
     }
   }
@@ -758,8 +863,8 @@ function usage() {
   install                 hỏi thư mục, client, pack (số + Enter)
   install --client cursor[,claude] [--with pack,...] [--target DIR]
                           [--no-user-rules]   bỏ always-on ~/.cursor/rules/
-  init                    hỏi từng bước
-  init --answers FILE.json
+  init                    hỏi từng bước (bề mặt: docs mặc định; backend, frontend, mobile, autotest chọn thêm)
+  init --answers FILE.json   tuỳ chọn "surfaces": ["docs","backend"]
   init --check [--target DIR]
   install --check | --list-modules | --dry-run | --print | --print-user-rules
 

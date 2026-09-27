@@ -1,0 +1,6 @@
+{
+  "name": "minipower",
+  "description": "Minipower — dispatcher minipower-router + hooks. Plugin root = src/router (ADR-037). Con người gatekeeper.",
+  "version": "0.1.0",
+  "agents": []
+}

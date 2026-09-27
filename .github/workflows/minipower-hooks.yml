@@ -31,7 +31,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     defaults:
       run:
-        working-directory: src/sdlc/hooks
+        working-directory: src/router/hooks
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -44,7 +44,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: src/sdlc/hooks
+        working-directory: src/router/hooks
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

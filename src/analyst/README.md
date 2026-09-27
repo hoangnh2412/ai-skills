@@ -1,6 +1,6 @@
 # analyst — phân tích BA
 
-UC/FR/BR/AC/SRS/NFR/prototype + nội dung CR. Template DOC-04…07, 13, 19 — **file** vẫn `sdlc/templates/` (một SSOT) cho đến khi chuyển file.
+UC/FR/BR/AC/SRS/NFR/prototype + nội dung CR. Template DOC-04…07, 13, 19 — **file** vẫn `router/templates/` (một SSOT) cho đến khi chuyển file.
 
 Manifest: [PACK.md](PACK.md).
 

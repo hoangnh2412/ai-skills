@@ -1,35 +1,37 @@
 ---
 name: minipower-tasks-lark
-description: Đọc, lọc, soạn nháp và ghi task Lark (tasklist / task) theo L1–L3. Dùng khi việc trên Lark, sprint, tasklist, "tạo task", tasks_provider lark — không dùng cho tin nhắn nhóm hay wiki.
+description: Đọc, lọc, tìm, soạn nháp và ghi task Lark (tasklist / task) theo L1–L3. Dùng khi việc trên Lark, sprint, tasklist, "tìm task", "tạo task", tasks_provider lark — không dùng cho tin nhắn nhóm hay wiki.
 metadata:
   workflow: github
 ---
 
 # minipower-tasks-lark
 
-SOP MCP mặt **`tasks`**. Wrap tool, không copy schema API vào pack. Hướng dẫn người: [README.md](README.md).
+SOP MCP mặt **`tasks`**, provider Lark. Wrap tool, không copy schema API. Người: [README.md](README.md). Persona: [agents/minipower-tasks-lark.md](../../agents/minipower-tasks-lark.md). Cổng L1–L3: [rules/l1-l2-l3-tasks.md](../../rules/l1-l2-l3-tasks.md).
 
 ## Khi nào dùng
 
 | Tình huống | Workflow |
 |---|---|
-| Đọc việc / báo cáo tiến độ | [workflows/l1-l3.md](workflows/l1-l3.md) — dừng L1 |
-| Đề xuất task mới / sửa due | L2 bảng preview → một lần OK → L3 |
+| Tìm / lọc / tóm tắt / việc tôi / quá hạn | [workflows/l1-read.md](workflows/l1-read.md) |
+| Đề xuất tạo / sửa due / hoàn thành | [workflows/l2-preview.md](workflows/l2-preview.md) → OK → [workflows/l3-write.md](workflows/l3-write.md) |
 
-**Không dùng** skill này cho IM, wiki, Bitable, Outline.
+**Không dùng** cho IM, wiki, Bitable, Outline, OpenProject.
 
 ## Quy tắc cốt lõi
 
-- Đọc `memory/profile.json` → `tasks_provider`. Khác `lark` → **dừng**, không gọi MCP Lark. `none` → đọc/ghi SQLite `artifact` (`trace.db`), không gọi Lark. **Không** đề xuất “đọc Lark cá nhân” trừ khi người **xác nhận rõ** đó là ngoài SSOT dự án. Đổi provider → người chạy lại `minipower init`.
-- MCP từ `mcp.tasks` (thường `user-lark-mcp`). Thiếu server / `needsAuth` → `mcp_auth` một lần rồi dừng nếu vẫn lỗi.
-- Đọc schema tool lần đầu phiên. Tên hay gặp: `task_v2_task_list`, `task_v2_task_get`, `task_v2_tasklist_list`, `task_v2_tasklist_tasks`. **Không** bịa `task_create` nếu catalog không có — nói rõ giới hạn, để người tạo tay.
-- L1 tự do đọc. L3 chỉ sau OK trên **một bảng** (bỏ tick dòng không gửi — ADR-033 QĐ-7).
-- Map task ↔ `{MOD}-FR-` / `T-NNN` trong bảng; **không** copy body FR sang Lark.
-- Hỏi thiếu `tasklist_guid` / khoảng thời gian **một lượt**.
-- `useUAT: true` khi schema cho phép và đang làm việc của chính user.
+- `memory/profile.json` → `tasks_provider`. Khác `lark` → **dừng**, không gọi MCP Lark. `none` → artifact SQLite (không MCP). `openproject` → lá kia, không skill này. Đổi provider → người `minipower init`.
+- MCP `mcp.tasks` (thường `user-lark-mcp`). Thiếu server / `needsAuth` → `mcp_auth` một lần; vẫn lỗi → dừng + README cài.
+- Schema tool **đầu phiên**. Tên hay gặp: `task_v2_task_list`, `task_v2_task_get`, `task_v2_tasklist_list`, `task_v2_tasklist_tasks`. **Không** bịa `task_create` / `task_search`.
+- Tìm task = L1, không skill riêng.
+- L3 chỉ sau **một** bảng L2 đã OK. Không có tool ghi → L3 = hướng dẫn tay.
+- Map `{MOD}-FR-` / `T-NNN` trong bảng; **không** copy body FR.
+- Hỏi thiếu một lượt: `tasklist_guid` (nếu không `my_tasks`), `completed`, cửa sổ thời gian, map ID.
+- `useUAT: true` khi schema cho phép và việc của chính user.
+- (Opt) `memory/lark.json` → `default_tasklist_guid`. Không tự ghi memory.
 
 ## Output
 
-- L1: tóm tắt 3–7 bullet + mục mở.
-- L2: bảng `hành động | tiêu đề | due | list | map ID`.
-- L3: id task từ MCP + back-ref nếu user yêu cầu ghi memory (không tự ghi).
+- L1: tóm tắt 3–7 bullet + mục mở (+ bảng nếu cần).
+- L2: `hành động | tiêu đề | due | list | map ID`.
+- L3: id MCP **hoặc** “chưa ghi — MCP không có tool”.

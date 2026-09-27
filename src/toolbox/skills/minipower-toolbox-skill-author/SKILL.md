@@ -36,7 +36,7 @@ Ba câu hỏi ADR-022 QĐ-7, hỏi **theo thứ tự**, dừng ở câu đầu t
 
 | # | Câu hỏi | Kết quả |
 |---|---|---|
-| 1 | Tác động lên chính tài liệu / pipeline mà minipower sở hữu (DOC, trace, gate)? | Pack nghề (`analyst/` …) hoặc kho `sdlc/skills/` — **không** mặc định lá-rời toolbox |
+| 1 | Tác động lên chính tài liệu / pipeline mà minipower sở hữu (DOC, trace, gate)? | Pack nghề (`analyst/` …) hoặc lá `router/` — **không** mặc định lá-rời toolbox |
 | 2 | Gắn framework/stack có vòng đời riêng, hoặc người dùng khác hẳn? | **Module mới** ngang hàng — cần ADR + `PACK.md` + hub + test |
 | 3 | Chỉ là một năng lực của skill đã có? | `workflows/` hoặc `providers/` **bên trong** skill đó — không tạo skill mới |
 
@@ -94,7 +94,7 @@ Copy rồi thay placeholder — đừng viết lại khung từ đầu:
 
 ## Output bắt buộc
 
-Phần **máy kiểm được** — chạy trong `sdlc/hooks/`:
+Phần **máy kiểm được** — chạy trong `src/router/hooks/`:
 
 ```bash
 npm test              # {module}-pack.test.js: name ≡ thư mục · description tồn tại · bảng hub khớp

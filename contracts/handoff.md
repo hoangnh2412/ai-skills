@@ -2,7 +2,7 @@
 
 **Trạng thái:** 🟢 Nguyên tắc **per-module đã sống** ([ADR-020](../ADRs/todo/ADR-020-2026-08-20-minipower-3-che-do-du-an-gate-bang-hook.md) QĐ-13/14 — `prereq-gate` kiểm tiền đề theo module, `fan-out` = pipeline theo module). Hai điểm liên-repo **H4/H6** chờ mô hình 2 repo — xem [cross-repo-bridge.md](cross-repo-bridge.md).
 
-Tổng quát bảng *"Mức tối thiểu để dev bắt đầu"* của [parallel-work.md](../src/sdlc/docs/parallel-work.md) thành boundary có tên. **H0** (trước ký) bổ sung ADR-030/033; **H1–H6** không đổi sau ký.
+Tổng quát bảng *"Mức tối thiểu để dev bắt đầu"* của [parallel-work.md](../src/router/docs/parallel-work.md) thành boundary có tên. **H0** (trước ký) bổ sung ADR-030/033; **H1–H6** không đổi sau ký.
 
 | ID | Từ → đến | Input tối thiểu | Liên repo |
 |----|----------|-----------------|:---------:|
@@ -54,4 +54,4 @@ Mọi mắt xích trace ngược về `BILL-FR-021`/`BILL-AC-005` → khép kín
 
 ---
 
-*Liên quan:* [trace-spine.md](trace-spine.md) · [cross-repo-bridge.md](cross-repo-bridge.md) (H4/H6 liên repo) · [parallel-work](../src/sdlc/docs/parallel-work.md)
+*Liên quan:* [trace-spine.md](trace-spine.md) · [cross-repo-bridge.md](cross-repo-bridge.md) (H4/H6 liên repo) · [parallel-work](../src/router/docs/parallel-work.md)

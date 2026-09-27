@@ -32,7 +32,7 @@ Một skill dùng **một trong hai**, không dùng cả hai. Chọn sai thì ng
 
 ## sdlc khác gì
 
-`sdlc/` là **kho chuyển + neo plugin/hook**. Dispatcher đăng ký **`minipower-router`**. Pack nghề/kênh là **lá-rời** `minipower-{module}-*`. SOP phase cũ còn trong `sdlc/skills/` cho đến khi chữ chuyển hết.
+`src/router/` là **plugin root + hooks**. Dispatcher = **`minipower-router`**. Pack nghề/kênh là **lá-rời** `minipower-{module}-*`.
 
 | | Lá-rời (`backend` · `ops` · `toolbox`) | Skill trong `sdlc/` |
 |---|---|---|
@@ -41,7 +41,7 @@ Một skill dùng **một trong hai**, không dùng cả hai. Chọn sai thì ng
 | Tên thư mục | Có tiền tố `minipower-{module}-` | **Tên trơn** ≡ thư mục (`discovery`, `doc-review`) — ADR-023 QĐ-5 |
 | Khai trigger ở đâu | Chính `description` | `rules.json` (`phase_by_doc`) hoặc bảng trigger trong `sdlc/SKILL.md` |
 
-Thêm skill vào `sdlc/` là **đụng SSOT**: sửa [`rules.json`](../../../../sdlc/hooks/lib/rules.json) rồi chạy `npm run gen` → `npm test` → `npm run gen:check`, cả ba xanh. Skill này không phủ luồng đó.
+Thêm skill vào `sdlc/` là **đụng SSOT**: sửa [`rules.json`](../../../../router/hooks/lib/rules.json) rồi chạy `npm run gen` → `npm test` → `npm run gen:check`, cả ba xanh. Skill này không phủ luồng đó.
 
 ## Skill mẫu theo độ phức tạp
 

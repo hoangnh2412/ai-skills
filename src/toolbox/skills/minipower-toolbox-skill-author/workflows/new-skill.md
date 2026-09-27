@@ -99,7 +99,7 @@ Thiếu dòng này → `npm test` đỏ (bảng hub phải khớp thư mục th�
 ## Bước 8 — Validate
 
 ```bash
-cd sdlc/hooks && npm test && npm run link:check
+cd src/router/hooks && npm test && npm run link:check
 ```
 
 - `npm test` — name ≡ thư mục · kebab/≤64 · có description · bảng hub khớp
@@ -113,8 +113,8 @@ Chỉ khi câu 2 của bảng lọc trả lời *có*. Ngoài skill, phải làm
 - [ ] ADR mới (mã kế tiếp ở ADRs/README.md) + một dòng index, CÙNG commit
 - [ ] {module}/PACK.md — đủ trường schema contracts/pack-manifest.md
 - [ ] {module}/README.md — hub: bảng skill, ranh giới "cái gì KHÔNG vào đây", cách cài
-- [ ] sdlc/hooks/test/{module}-pack.test.js — khuôn ops-pack.test.js
-- [ ] sdlc/hooks/test/pack-manifest.test.js — thêm "{module}" vào MODULES
+- [ ] src/router/hooks/test/{module}-pack.test.js — khuôn ops-pack.test.js
+- [ ] src/router/hooks/test/pack-manifest.test.js — thêm "{module}" vào MODULES
 - [ ] README.md (root) — bảng §Minipower có gì + cây thư mục
 - [ ] AGENTS.md — §Quy ước đặt tên & thư mục, danh sách module
 ```

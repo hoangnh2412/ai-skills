@@ -8,4 +8,4 @@
 
 ## Hook
 
-`profile-guard` chặn việc minipower khi thiếu profile v3 hợp lệ hoặc identity lệch. Chi tiết: [profile-guard.md](../../../src/sdlc/agents/profile-guard.md).
+`profile-guard` chặn việc minipower khi thiếu profile v3 hợp lệ hoặc identity lệch. Chi tiết: [profile-guard.md](../../../src/router/agents/profile-guard.md).

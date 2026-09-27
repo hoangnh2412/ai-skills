@@ -13,7 +13,7 @@ Không viết code. Không SAD. Không board task trong SRS (QĐ-8).
 
 **ID:** `{MOD}-UC-001`, `{MOD}-FR-001`, `{MOD}-BR-001`, `{MOD}-AC-001`, `{MOD}-NFR-001`. AC phải trỏ FR.
 
-**Template:** [DOC-04–07, 13, 19](../../../sdlc/templates/) · **Folder:** `docs/03-modules/{module-id}/` · NFR: `docs/04-platform/DOC-13-nfr.md`
+**Template:** [DOC-04–07, 13, 19](../../../router/templates/) · **Folder:** `docs/03-modules/{module-id}/` · NFR: `docs/04-platform/DOC-13-nfr.md`
 
 Trước khi đề xuất slice DOC-06, chạy [minipower-router-readiness](../../../router/skills/minipower-router-readiness/SKILL.md) — liệt kê tiền đề thiếu một lượt (module index, UC, BR, ghi nợ/BYPASS). Không nhảy soạn FR khi skeleton trống.
 
@@ -29,7 +29,7 @@ Trước khi đề xuất slice DOC-06, chạy [minipower-router-readiness](../.
 | 8 | NFR | DOC-13 |
 | 9 | Acceptance Criteria | DOC-07 |
 
-> **Thứ tự khuyến nghị:** DOC-04 Business Rules → DOC-19 Prototype → DOC-06 SRS. Đây là thứ tự tốt, không phải cổng chặn ([ADR-020](../../../../ADRs/todo/ADR-020-2026-08-20-minipower-3-che-do-du-an-gate-bang-hook.md) QĐ-11). `prereq-gate` nhắc khi thiếu DOC upstream của đúng module; ở `standard` nó chặn và người gõ `BYPASS` để đi tiếp. Chốt bước nào thì ghi DEC làm bản ghi ([approval-gate](../../../sdlc/agents/approval-gate.md)). Wireframe HTML sinh qua MCP ngoài (hoãn).
+> **Thứ tự khuyến nghị:** DOC-04 Business Rules → DOC-19 Prototype → DOC-06 SRS. Đây là thứ tự tốt, không phải cổng chặn ([ADR-020](../../../../ADRs/todo/ADR-020-2026-08-20-minipower-3-che-do-du-an-gate-bang-hook.md) QĐ-11). `prereq-gate` nhắc khi thiếu DOC upstream của đúng module; ở `standard` nó chặn và người gõ `BYPASS` để đi tiếp. Chốt bước nào thì ghi DEC làm bản ghi ([approval-gate](../../../router/agents/approval-gate.md)). Wireframe HTML sinh qua MCP ngoài (hoãn).
 
 **NFR:** Performance · SLA · Security · Audit · HA/DR
 

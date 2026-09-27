@@ -165,4 +165,4 @@ gantt
 - [ADR cha](../done/ADR-004-2026-07-25-minipower-proposal-skills.md)
 - [proposal-technical](../done/ADR-006-2026-07-25-proposal-technical.md) · [proposal-quotation](../done/ADR-005-2026-07-25-proposal-quotation.md)
 - [`SOPs/GiaiPhapKyThuat-KHUNG.md`](../../SOPs/GiaiPhapKyThuat-KHUNG.md) — III.3
-- [`minipower/skills/planning/SKILL.md`](../../src/sdlc/skills/planning/SKILL.md) — upstream DOC-15
+- [`minipower/skills/planning/SKILL.md`](../../src/pm/skills/minipower-pm-plan/SKILL.md) — upstream DOC-15

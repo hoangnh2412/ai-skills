@@ -22,6 +22,6 @@ node <factory>/cli/minipower.mjs init
 # sau install:  node .minipower/bin/minipower init
 ```
 
-CLI hỏi từng bước. Thiếu trường → CLI FAIL, **không** đệm bằng LLM.
+CLI hỏi từng bước, kể cả bề mặt (`docs` mặc định; `backend` / `frontend` / `mobile` / `autotest` chọn thêm — chỉ folder + README). Thiếu trường → CLI FAIL, **không** đệm bằng LLM.
 
 Hướng dẫn người: [README.md](README.md).

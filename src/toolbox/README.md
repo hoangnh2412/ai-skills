@@ -25,7 +25,7 @@ Chưa có nội dung thật thì **chưa tạo thư mục** — hai dòng trên 
 
 | Việc | Thuộc về |
 |---|---|
-| Skill tác động lên tài liệu/pipeline dự án đích (DOC, trace, gate) | [`sdlc/`](../sdlc/README.md) — skill core, đi qua router |
+| Skill tác động lên tài liệu/pipeline dự án đích (DOC, trace, gate) | [`router/`](../router/README.md) — dispatcher + hooks |
 | Skill dựng code .NET | [`backend/`](../backend/README.md) |
 | Skill vận hành hạ tầng | [`ops/`](../ops/README.md) |
 | Kiến thức nền đọc-để-hiểu (DDD, testing, clean architecture) | [`staging/`](../../staging/) — tài liệu chờ chuẩn hoá, không phải skill |

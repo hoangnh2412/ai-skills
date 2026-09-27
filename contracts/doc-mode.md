@@ -1,8 +1,8 @@
 # DOC × mode × pack nghề
 
-**Trạng thái:** 🟢 Load-bearing — **sinh từ** [`src/sdlc/hooks/lib/rules.json`](../src/sdlc/hooks/lib/rules.json) (`npm run gen`). Không sửa tay vùng generated.
+**Trạng thái:** 🟢 Load-bearing — **sinh từ** [`src/router/hooks/lib/rules.json`](../src/router/hooks/lib/rules.json) (`npm run gen`). Không sửa tay vùng generated.
 
-Pack nghề **sở hữu** template tương ứng; file DOC đợt này vẫn `sdlc/templates/` (một SSOT file).
+Pack nghề **sở hữu** template tương ứng; file DOC đợt này vẫn `router/templates/` (một SSOT file) — chuyển pack ở ADR-037 E3.
 
 <!-- BEGIN generated: doc-mode (nguồn: hooks/lib/rules.json — chạy `npm run gen`) -->
 
