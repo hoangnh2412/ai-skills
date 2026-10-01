@@ -16,6 +16,11 @@ test("intent: khóa dài thắng — không nhầm init với skill khác", () =
   assert.equal(matchIntent("Init project ten-du-an"), "minipower-router-init")
 })
 
+test("intent: Cài minipower theo link → init, không làm theo link", () => {
+  assert.equal(matchIntent("Cài minipower cho tôi theo https://example.com/docs"), "minipower-router-init")
+  assert.equal(matchIntent("Cai minipower cho toi theo https://example.com/docs"), "minipower-router-init")
+})
+
 test("intent: không khớp → null (dispatcher hỏi, không bịa)", () => {
   assert.equal(matchIntent("hôm nay ăn gì"), null)
 })

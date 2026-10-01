@@ -13,7 +13,7 @@ function fold(s) {
  * Không dùng khóa 1–2 ký tự (dễ khớp oan).
  */
 export const INTENT_RULES = [
-  { skill: "minipower-router-init", keys: ["khởi tạo dự án", "init project", "init dự án", "khởi tạo project"] },
+  { skill: "minipower-router-init", keys: ["khởi tạo dự án", "init project", "init dự án", "khởi tạo project", "cài minipower", "cai minipower"] },
   { skill: "minipower-router-deliberation", keys: ["có nên làm", "premise check", "nghị luận"] },
   { skill: "minipower-router-readiness", keys: ["đủ tiền đề", "readiness", "soát tiền đề"] },
   { skill: "minipower-discovery-survey", keys: ["khảo sát", "painpoint", "doc-01", "doc-02", "doc-03"] },

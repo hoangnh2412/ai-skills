@@ -53,6 +53,12 @@ test("router — QĐ-2: nói rõ copy đủ khung, không cắt folder theo ch�
   assert.match(HUB, /không.*cắt|KHÔNG.*cắt/i, "phải nói rõ không cắt folder theo chế độ")
 })
 
+test("router — prompt cài theo link chỉ in lệnh init", () => {
+  assert.match(INIT, /Cài minipower cho tôi theo \{link\}/)
+  assert.match(INIT, /Không fetch/)
+  assert.match(INIT, /minipower\.mjs init/)
+})
+
 test("router — có luồng init vào repo đã có sẵn (việc #5)", () => {
   // CLI idempotent + skeleton INIT/TPL mô tả archive + doc-debt
   assert.match(INIT, /minipower init/i)

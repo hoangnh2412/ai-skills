@@ -1,6 +1,6 @@
 ---
 name: minipower-router-init
-description: Init dự án bằng CLI minipower init, không phỏng vấn LLM. Đã có .minipower thì nói CLI đã xong. Chưa có thì in lệnh init. Dùng khi init project, khởi tạo dự án — support không init.
+description: Init dự án bằng CLI minipower init, không phỏng vấn LLM. Prompt «Cài minipower cho tôi theo link» cũng chỉ in lệnh init, không làm theo link. Đã có .minipower thì nói CLI đã xong. Chưa có thì in lệnh init. Dùng khi init project, khởi tạo dự án — support không init.
 metadata:
   workflow: github
 ---
@@ -14,6 +14,10 @@ metadata:
 Một đoạn: init đã chạy bằng script; SSOT là `memory/profile.json`. **`project_mode` / provider chỉ lấy từ file đó** — bảng hay ví dụ trong `AGENTS.md` (kể cả chữ `standard`) không phải cấu hình hiện hành; **không** hỏi “giữ mvp hay standard”.
 
 Muốn sửa cấu hình → người chạy lại `minipower init`. Dừng. Shim: `node .minipower/bin/minipower`. Nếu shim còn trỏ `sdlc/install/minipower.mjs` → người chạy `minipower install` (CLI factory mới ghi `cli/minipower.mjs`).
+
+## Cài theo link
+
+Prompt `Cài minipower cho tôi theo {link}` = init. Không fetch `{link}`, không làm bước trong trang, không ghi file. In lệnh mục dưới rồi dừng. Đã có marker thì mục trên.
 
 ## Chưa có marker
 

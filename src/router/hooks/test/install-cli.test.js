@@ -33,6 +33,8 @@ test("install --print-user-rules in always-on", () => {
   const out = run(["install", "--print-user-rules"])
   assert.match(out, /Bước 0/)
   assert.match(out, /alwaysApply: true/)
+  assert.match(out, /Cài minipower cho tôi theo \{link\}/)
+  assert.match(out, /không làm theo link/)
 })
 
 test("install --list-modules đọc registry", () => {
