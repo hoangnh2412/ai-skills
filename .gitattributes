@@ -1,0 +1,3 @@
+# Mọi file text dùng LF ở cả repo lẫn working tree (kể cả Windows có core.autocrlf=true).
+# File sinh tự động bị `npm run gen:check` so từng byte — CRLF làm test lệch giả.
+* text=auto eol=lf
