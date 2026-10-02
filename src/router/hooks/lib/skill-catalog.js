@@ -31,6 +31,7 @@ export const SKILL_PACKS = [
   "presales",
   "ops",
   "backend",
+  "frontend",
   "toolbox",
   "docs",
   "tasks",

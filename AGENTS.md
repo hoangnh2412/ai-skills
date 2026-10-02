@@ -2,13 +2,13 @@
 
 # Minipower — Agent
 
-Bạn là agent hỗ trợ xây dựng **Minipower** trong repo này — dispatcher + pack nghề/kênh. Cốt lõi: **con người làm gatekeeper, AI fan-out theo module**. Nhiệm vụ: bảo trì `router/` · nghề `discovery`/`analyst`/`architecture`/`pm`/`support`/`qa`/`presales` · `backend`/`ops`/`toolbox` · kênh `docs`/`tasks`/`chat`/`vcs`.
+Bạn là agent hỗ trợ xây dựng **Minipower** trong repo này — dispatcher + pack nghề/kênh. Cốt lõi: **con người làm gatekeeper, AI fan-out theo module**. Nhiệm vụ: bảo trì `router/` · nghề `discovery`/`analyst`/`architecture`/`pm`/`support`/`qa`/`presales` · `backend`/`frontend`/`ops`/`toolbox` · kênh `docs`/`tasks`/`chat`/`vcs`.
 
 Repo này **là bản thân bộ công cụ** (source of truth của skill), không phải một sản phẩm ứng dụng. Tài liệu chính viết bằng tiếng Việt. Trả lời và giao tiếp bằng tiếng Việt.
 
 ## Bối cảnh dự án
 
-- **Mục tiêu:** đưa kỹ năng vị trí và quy trình phòng ban thành skill AI thi hành được, gắn tool công ty đang dùng, ba mode `mvp` · `standard` · `maintain`. Dispatcher mở pack; DOC theo [doc-mode](contracts/doc-mode.md); `backend` Jarvis; `ops` vận hành; `presales` trước ký. Trace UC→FR→AC→Test.
+- **Mục tiêu:** đưa kỹ năng vị trí và quy trình phòng ban thành skill AI thi hành được, gắn tool công ty đang dùng, ba mode `mvp` · `standard` · `maintain`. Dispatcher mở pack; DOC theo [doc-mode](contracts/doc-mode.md); `backend` Jarvis; `frontend` kit `@platform/core`; `ops` vận hành; `presales` trước ký. Trace UC→FR→AC→Test.
 - **Triết lý bất biến:** `AI = trợ lý ra quyết định · Con người = người quyết định cuối cùng`. **Không** xây đội agent tự chạy / tự bàn giao. AI chỉ chuyển sang *thực thi* (sinh code, sinh artifact cuối) **khi tài liệu tiền đề đã đủ rõ**; trước đó chỉ discovery, đặt câu hỏi, phản biện, phân tích trade-off, gợi ý — **không nhảy giải pháp sớm**.
 - **Định vị:** Minipower là **AI Operating Model** — mô hình vận hành viết thành dạng AI thi hành được. Model là engine (thay được); tri thức, memory và cách làm việc là tài sản (model-agnostic). **Không** phải Prompt Library, **không** marketing "research-backed". Trong kiến trúc công ty, minipower là **Role Intelligence Layer** — nằm giữa AI client và MCP: **giữ cách làm** (quy trình, template, quy tắc truy vết, gate), **không giữ dữ liệu** (tri thức nghiệp vụ → Outline · code → GitLab/CodeGraph · task → OpenProject), **không** phải agent runtime (ADR-022 QĐ-1).
 - **Stack:** tài liệu Markdown thuần cho agent; logic hook là **Node ESM plain (`src/router/hooks/`), không build step, không dependency**, yêu cầu **Node ≥ 18**. Nguồn chân lý của mọi bảng sinh-tự-động là **[`rules.json`](src/router/hooks/lib/rules.json)** ("rules-as-data").
@@ -31,7 +31,7 @@ Repo này **là bản thân bộ công cụ** (source of truth của skill), kh�
   - **Theo chiều review:** harness fan-out **1 subagent / chiều** hoặc **/ module**, context sạch; agent chính **dedup** finding theo `{DOC}#{section/ID}`. Tiêu chí thuộc pack `*-review` — **không** để agent tự sửa DOC của owner khác.
   - Điều phối giữa các mảnh song song là việc của **con người** qua **ID ổn định** (`{MOD}-FR-`, `{MOD}-AC-`, `DEC-{PHASE}-`, `ADR-`) + memory theo chủ đề — không có "agent bàn giao cho agent".
 - **Rules-as-data (SSOT):** bảng map DOC→phase, project-state, roles index, prereq-by-intent, context-chain đều **sinh tự động** từ [`rules.json`](src/router/hooks/lib/rules.json) vào vùng `<!-- BEGIN/END generated -->`. **Không sửa tay vùng generated.** Thêm DOC / intent / role = sửa `rules.json` rồi chạy `npm run gen`.
-- **SKILL.md cho agent, README.md cho người:** SKILL.md = quy tắc/workflow/output bắt buộc; README.md = hướng dẫn, bảng tra, prompt mẫu. Skill mới phải **single-purpose**. Phase-skill map qua `rules.json`; dispatcher [`minipower-router`](src/router/skills/minipower-router/SKILL.md) gợi ý pack. Skill **lá-rời** sống nhờ description: `name` ≡ tên thư mục lá, tiền tố `minipower-{module}-`, ≤64 ký tự, **bắt buộc có `description`**. Test canh: `backend-pack` · `ops-pack` · `toolbox-pack` · `channel-pack` · `role-pack` · `presales-pack`. Viết skill lá mới: [`minipower-toolbox-skill-author`](src/toolbox/skills/minipower-toolbox-skill-author/SKILL.md).
+- **SKILL.md cho agent, README.md cho người:** SKILL.md = quy tắc/workflow/output bắt buộc; README.md = hướng dẫn, bảng tra, prompt mẫu. Skill mới phải **single-purpose**. Phase-skill map qua `rules.json`; dispatcher [`minipower-router`](src/router/skills/minipower-router/SKILL.md) gợi ý pack. Skill **lá-rời** sống nhờ description: `name` ≡ tên thư mục lá, tiền tố `minipower-{module}-`, ≤64 ký tự, **bắt buộc có `description`**. Test canh: `backend-pack` · `frontend-pack` · `ops-pack` · `toolbox-pack` · `channel-pack` · `role-pack` · `presales-pack`. Viết skill lá mới: [`minipower-toolbox-skill-author`](src/toolbox/skills/minipower-toolbox-skill-author/SKILL.md).
 - **Chi phí tương xứng (micro / light / full):** không phải thay đổi nào cũng qua đủ gate ([phân tầng](src/router/skills/minipower-router/SKILL.md#phân-tầng-công-việc-micro--light--full)). Micro (typo/format) bỏ gate; Full (skill/DOC/kiến trúc mới, đụng baseline) bật đầy đủ. Không chắc micro hay light → chọn **light**. `discovery` scope mới và `change-control` **luôn Full**; đụng `docs/02-baseline/` **luôn Full**.
 - **Co lại trước khi mở rộng:** không thêm "nền tảng thứ tư"; mọi thứ mới phải có SSOT + test/CI, không dựa vào kỷ luật con người.
 
@@ -58,7 +58,7 @@ Toàn bộ Minipower (mọi pack skill + hook + catalog): từ **gốc repo** `n
 - Khi một tác vụ cần đến thao tác thay đổi Git: dừng lại, nêu chính xác lệnh định chạy, và hỏi tôi. Chỉ chạy sau khi tôi đồng ý.
 
 ### Tham chiếu tài liệu
-- `README.md` — bản đồ toàn repo; `src/router/README.md`, `src/backend/README.md`, `src/ops/README.md` — hub từng module.
+- `README.md` — bản đồ toàn repo; `src/router/README.md`, `src/backend/README.md`, `src/frontend/README.md`, `src/ops/README.md` — hub từng module.
 - [`minipower-router`](src/router/skills/minipower-router/SKILL.md) — dispatcher + bảng `project_mode` / phân tầng (generated).
 - `contracts/` — hợp đồng liên-pack, tách theo chủ đề, **mỗi file tự khai trạng thái** (đọc trạng thái trước khi dẫn chiếu): [trace-spine](contracts/trace-spine.md) (luật ID + trace) · [handoff](contracts/handoff.md) (H0 + H1–H6) · [lingua-franca](contracts/lingua-franca.md) (quy ước chung) · [cross-repo-bridge](contracts/cross-repo-bridge.md) (pin + back-ref) · [pack-manifest](contracts/pack-manifest.md) (schema `PACK.md`) · [doc-mode](contracts/doc-mode.md) (DOC×pack).
 - `src/router/hooks/lib/rules.json` — SSOT; generator: `src/router/hooks/gen-agents-doc.js`.

@@ -20,6 +20,7 @@ Cách làm dựa trên ba nguyên tắc:
 |------------|------|--------------------|---------|
 | **Dispatcher / runtime** — [`router/`](src/router/) | Dispatcher | Hook, skeleton, TPL, plugin root; gợi ý pack; init `project_mode` + provider (`minipower-router`) | [router/README.md](src/router/README.md) |
 | **Code backend .NET** — [`backend/`](src/backend/) | Module nghề | Dựng backend .NET theo framework Jarvis chuẩn công ty: scaffold chạy được ngay, gắn auth / cache / EF / observability theo nhu cầu, review PR trước khi merge — 15 skill `minipower-backend-*` | [backend/README.md](src/backend/README.md) · cài: [§ Cài vào Cursor](src/backend/README.md#cài-vào-cursor) |
+| **Code frontend React** — [`frontend/`](src/frontend/) | Module nghề | Dựng frontend React theo kit UI `@platform/core` chuẩn công ty: app host chạy được ngay, feature module đúng cấu trúc kit (API · form · CRUD · route · quyền), tuỳ biến page có sẵn của kit không fork, lint ép convention + kiến trúc, review PR — 9 skill `minipower-frontend-*` (ADR-040) | [frontend/README.md](src/frontend/README.md) · cài: [§ Cài vào Cursor](src/frontend/README.md#cài-vào-cursor) |
 | **Vận hành hạ tầng** — [`ops/`](src/ops/) | Module nghề | Kỹ năng DevOps/SRE: thu thập metrics Grafana/Prometheus chuẩn hoá cho AI chẩn đoán sự cố; sẽ mở rộng dần sang chẩn đoán theo case (memory leak, deadlock, log flow), cài server, CI/CD — skill `minipower-ops-*` (ADR-023) | [ops/README.md](src/ops/README.md) |
 | **Presales** — [`presales/`](src/presales/) | Module nghề | ULNL + quotation trước ký — không sở hữu khảo sát | [presales/README.md](src/presales/README.md) |
 | **Công cụ làm ra Minipower** — [`toolbox/`](src/toolbox/) | Module nghề | Viết/soát skill, mở module — `minipower-toolbox-*`. Không cài workspace khách | [toolbox/README.md](src/toolbox/README.md) |
@@ -122,7 +123,7 @@ Một file: `node --test test/minipower-catalog.test.js` (cwd `src/router/hooks`
 
 Skill **đăng ký loader** = thư mục lá `minipower-…` (có `SKILL.md` + `description`). Không còn pack/`src/sdlc` — dispatcher = [`minipower-router`](src/router/skills/minipower-router/SKILL.md).
 
-Hub: [router](src/router/README.md) · [discovery](src/discovery/README.md) · [analyst](src/analyst/README.md) · [architecture](src/architecture/README.md) · [pm](src/pm/README.md) · [support](src/support/README.md) · [qa](src/qa/README.md) · [presales](src/presales/README.md) · [ops](src/ops/README.md) · [backend](src/backend/README.md) · [toolbox](src/toolbox/README.md) · [docs](src/docs/README.md) · [tasks](src/tasks/README.md) · [chat](src/chat/README.md) · [vcs](src/vcs/README.md).
+Hub: [router](src/router/README.md) · [discovery](src/discovery/README.md) · [analyst](src/analyst/README.md) · [architecture](src/architecture/README.md) · [pm](src/pm/README.md) · [support](src/support/README.md) · [qa](src/qa/README.md) · [presales](src/presales/README.md) · [ops](src/ops/README.md) · [backend](src/backend/README.md) · [frontend](src/frontend/README.md) · [toolbox](src/toolbox/README.md) · [docs](src/docs/README.md) · [tasks](src/tasks/README.md) · [chat](src/chat/README.md) · [vcs](src/vcs/README.md).
 
 ### Dispatcher — [`router/`](src/router/)
 
@@ -214,6 +215,22 @@ Lá-rời: **mô tả việc**. Provider/pattern con chỉ đọc khi skill cha 
 | **[minipower-backend-realtime-dotnet](src/backend/skills/minipower-backend-realtime-dotnet/README.md)** | SignalR | *AddCoreRealtime + Redis backplane* |
 | **[minipower-backend-review-dotnet](src/backend/skills/minipower-backend-review-dotnet/README.md)** | review PR C# | *Review diff trước khi mở MR* |
 
+### Frontend React — [`frontend/`](src/frontend/)
+
+Lá-rời theo kit `@platform/core`: **mô tả việc**. Pattern con chỉ đọc khi skill cha gọi. Cài: [frontend § Cài vào Cursor](src/frontend/README.md#cài-vào-cursor).
+
+| Skill | Dùng khi | Cách dùng |
+|-------|----------|-----------|
+| **[minipower-frontend-scaffold-react](src/frontend/skills/minipower-frontend-scaffold-react/README.md)** | app mới, gắn kit, mount module kit | *Dựng frontend Acme, kit link file:* |
+| **[minipower-frontend-architecture-react](src/frontend/skills/minipower-frontend-architecture-react/README.md)** | feature mới, đặt file, lint R1–R7 | *Thêm feature Employee cắt dọc* |
+| **[minipower-frontend-convention-react](src/frontend/skills/minipower-frontend-convention-react/README.md)** | viết/sửa TS/React | Đi kèm mọi lá frontend |
+| **[minipower-frontend-api-react](src/frontend/skills/minipower-frontend-api-react/README.md)** | `call*`, list params, mock, Bearer | *Nối v1/hrm/employees theo DOC-12* |
+| **[minipower-frontend-form-react](src/frontend/skills/minipower-frontend-form-react/README.md)** | Zod + react-hook-form | *Thêm trường ngày vào làm + phòng ban* |
+| **[minipower-frontend-crud-react](src/frontend/skills/minipower-frontend-crud-react/README.md)** | danh sách / tạo-sửa / chi tiết | *Màn Employee theo route* |
+| **[minipower-frontend-navigation-react](src/frontend/skills/minipower-frontend-navigation-react/README.md)** | route, bridge, menu, quyền | *Gắn route + menu lọc quyền* |
+| **[minipower-frontend-customization-react](src/frontend/skills/minipower-frontend-customization-react/README.md)** | tuỳ biến page kit không fork | *RoleListPage nối API thật* |
+| **[minipower-frontend-review-react](src/frontend/skills/minipower-frontend-review-react/README.md)** | review PR TS/React | *Review diff frontend so với develop* |
+
 ### Toolbox — [`toolbox/`](src/toolbox/) (chỉ repo minipower)
 
 | Skill | Dùng khi | Cách dùng |
@@ -255,7 +272,7 @@ minipower/
 │   ├── hooks/ · templates/ · project-skeleton/ · docs-skeleton/
 ├── discovery/ · analyst/ · architecture/ · pm/ · support/ · qa/ · presales/
 │   └── …/templates/DOC-*  # template DOC theo pack nghề
-├── backend/ · ops/ · toolbox/
+├── backend/ · frontend/ · ops/ · toolbox/
 ├── docs/ · tasks/ · chat/ · vcs/
 ├── contracts/ · ADRs/
 └── staging/
@@ -273,6 +290,6 @@ Nguyên tắc tổ chức:
 
 - [Danh mục skill & cách dùng](#danh-mục-skill--cách-dùng) · [Gọi chung](#gọi-chung--tự-chọn-skill) · [Chạy test](#chạy-test-repo-này) · [dispatcher SKILL](src/router/skills/minipower-router/SKILL.md) · [TPL](src/router/templates/README.md)
 - [router](src/router/README.md) · [discovery](src/discovery/README.md) · [analyst](src/analyst/README.md) · [architecture](src/architecture/README.md) · [pm](src/pm/README.md) · [support](src/support/README.md) · [qa](src/qa/README.md) · [presales](src/presales/README.md)
-- [backend](src/backend/README.md) · [ops](src/ops/README.md) · [toolbox](src/toolbox/README.md)
+- [backend](src/backend/README.md) · [frontend](src/frontend/README.md) · [ops](src/ops/README.md) · [toolbox](src/toolbox/README.md)
 - [docs](src/docs/README.md) · [tasks](src/tasks/README.md) · [chat](src/chat/README.md) · [vcs](src/vcs/README.md)
 - [contracts](contracts/README.md) · [staging](staging/) · [interview](staging/interview/)

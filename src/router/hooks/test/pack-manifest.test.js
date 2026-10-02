@@ -14,6 +14,7 @@ import { SRC } from "../lib/skill-catalog.js"
 
 const MODULES = [
   "backend",
+  "frontend",
   "ops",
   "toolbox",
   "docs",

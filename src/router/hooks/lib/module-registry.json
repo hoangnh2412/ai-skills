@@ -90,6 +90,15 @@
     }
   },
   {
+    "pack": "frontend",
+    "path": "frontend/",
+    "repo": "code",
+    "kind": "role",
+    "install": {
+      "default": true
+    }
+  },
+  {
     "pack": "toolbox",
     "path": "toolbox/",
     "repo": "minipower                # tác động lên chính repo công cụ, KHÔNG lên repo dự án đích",

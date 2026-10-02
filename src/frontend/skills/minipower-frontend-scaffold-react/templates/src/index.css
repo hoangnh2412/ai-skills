@@ -1,0 +1,19 @@
+/* Thứ tự layer: utilities Tailwind thắng theme PrimeReact. KHÔNG @import "tailwindcss" đầy đủ — preflight đè Aura. */
+@layer theme, base, primereact, utilities;
+
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+/* Tailwind bỏ qua node_modules khi tự quét ⇒ PHẢI trỏ @source tới kit, thiếu là UI trắng / mất màu */
+@source "../node_modules/@platform/core/dist";
+@source "./";
+
+@import "@platform/core/theme.css";
+@import "@platform/core/styles.css";
+
+html,
+body,
+#root {
+  min-height: 100%;
+  margin: 0;
+}

@@ -10,6 +10,7 @@ test("intent: không cần /minipower — mô tả việc", () => {
   assert.equal(matchIntent("thêm cache Redis cho service đơn hàng"), "minipower-backend-caching-dotnet")
   assert.equal(matchIntent("Viết FR luồng đặt hàng module ORD"), "minipower-analyst-srs")
   assert.equal(matchIntent("làm gì tiếp"), "minipower-router")
+  assert.equal(matchIntent("Thêm màn danh sách nhân viên có phân trang"), "minipower-frontend-crud-react")
 })
 
 test("intent: khóa dài thắng — không nhầm init với skill khác", () => {

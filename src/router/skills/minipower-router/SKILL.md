@@ -43,6 +43,7 @@ Bảng dưới là **gợi ý pack** khi LLM định hướng, không phải mat
 | tin nhắn Slack/Lark | `chat/` |
 | MR GitLab commit push | `vcs/` |
 | code .NET Jarvis | `backend/` |
+| code React kit `@platform/core` | `frontend/` |
 | as-built / maintain legacy | `minipower-architecture-as-built` |
 
 Thiếu input tối thiểu của pack → **hỏi một lượt**, không bịa, không làm hộ pack trước (QĐ-19).
