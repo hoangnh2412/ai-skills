@@ -328,6 +328,56 @@ test("shim baseline-guard", async (t) => {
       assert.equal(r.code, 0)
       assert.equal(r.json.permission, "allow")
     })
+
+    await t.test("Claude PreToolUse + baseline → hookSpecificOutput deny", () => {
+      const r = run(
+        "baseline-guard.js",
+        { hook_event_name: "PreToolUse", tool_name: "Read", tool_input: { file_path: "docs/02-baseline/v1/x.md" } },
+        env,
+      )
+      assert.equal(r.code, 0)
+      assert.equal(r.json.hookSpecificOutput.hookEventName, "PreToolUse")
+      assert.equal(r.json.hookSpecificOutput.permissionDecision, "deny")
+      assert.match(r.json.hookSpecificOutput.permissionDecisionReason, /02-baseline/)
+      assert.equal(r.json.permission, undefined, "không trộn format Cursor vào output Claude")
+    })
+
+    await t.test("Claude PreToolUse + Write/Edit vào baseline cũng deny", () => {
+      for (const tool of ["Write", "Edit"]) {
+        const r = run(
+          "baseline-guard.js",
+          { hook_event_name: "PreToolUse", tool_name: tool, tool_input: { file_path: "docs/02-baseline/v1/x.md" } },
+          env,
+        )
+        assert.equal(r.json.hookSpecificOutput.permissionDecision, "deny", tool)
+      }
+    })
+
+    await t.test("Claude PreToolUse + file thường → im lặng, KHÔNG trả allow (không duyệt hộ)", () => {
+      const r = run(
+        "baseline-guard.js",
+        { hook_event_name: "PreToolUse", tool_name: "Write", tool_input: { file_path: "src/a.ts" } },
+        env,
+      )
+      assert.equal(r.code, 0)
+      assert.equal(r.stdout.trim(), "")
+    })
+
+    await t.test("Claude PreToolUse + _legacy @ standard: deny; kèm migrate: im lặng", () => {
+      const base = { hook_event_name: "PreToolUse", tool_name: "Read", tool_input: { file_path: "docs/03-modules/_legacy/old.md" } }
+      assert.equal(run("baseline-guard.js", base, env).json.hookSpecificOutput.permissionDecision, "deny")
+      assert.equal(run("baseline-guard.js", { ...base, prompt: "migrate" }, env).stdout.trim(), "")
+    })
+
+    await t.test("Cursor beforeReadFile giữ format cũ", () => {
+      const r = run(
+        "baseline-guard.js",
+        { hook_event_name: "beforeReadFile", file_path: "docs/02-baseline/v1/x.md" },
+        env,
+      )
+      assert.equal(r.json.permission, "deny")
+      assert.equal(r.json.hookSpecificOutput, undefined)
+    })
   } finally {
     rmSync(root, { recursive: true, force: true })
   }
