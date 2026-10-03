@@ -7,14 +7,20 @@ name: minipower-hooks
 on:
   push:
     paths:
-      - "minipower/hooks/**"
-      - "minipower/agents/auto-routing.md"
+      - "package.json"
+      - "cli/**"
+      - "src/**"
+      - "contracts/**"
       - ".github/workflows/minipower-hooks.yml"
+      - "**/*.md"
   pull_request:
     paths:
-      - "minipower/hooks/**"
-      - "minipower/agents/auto-routing.md"
+      - "package.json"
+      - "cli/**"
+      - "src/**"
+      - "contracts/**"
       - ".github/workflows/minipower-hooks.yml"
+      - "**/*.md"
 
 jobs:
   test:
@@ -25,7 +31,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     defaults:
       run:
-        working-directory: minipower/hooks
+        working-directory: src/router/hooks
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -33,3 +39,16 @@ jobs:
           node-version: "22"
       - name: Run tests (node --test)
         run: node --test
+
+  link-check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: src/router/hooks
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Check markdown links (npm run link:check)
+        run: npm run link:check

@@ -1,0 +1,24 @@
+{
+  "claude": {
+    "id": "claude",
+    "kind": "claude-settings",
+    "settingsRel": ".claude/settings.json",
+    "skillsRel": ".claude/skills"
+  },
+  "cursor": {
+    "id": "cursor",
+    "kind": "cursor-hooks",
+    "hooksRel": ".cursor/hooks.json",
+    "skillsRel": ".cursor/skills",
+    "rulesRel": ".cursor/rules",
+    "sdlcLinkName": "minipower-router"
+  },
+  "opencode": {
+    "id": "opencode",
+    "kind": "opencode",
+    "configRel": "opencode.json",
+    "skillsRel": ".opencode/skills",
+    "rulesRel": ".opencode/rules",
+    "pluginRel": ".opencode/plugins/minipower.ts"
+  }
+}

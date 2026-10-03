@@ -1,0 +1,189 @@
+{
+  "phase_by_doc": {
+    "01": "discovery",
+    "02": "discovery",
+    "03": "discovery",
+    "04": "requirements",
+    "05": "requirements",
+    "06": "requirements",
+    "07": "requirements",
+    "08": "architecture",
+    "09": "architecture",
+    "10": "architecture",
+    "11": "architecture",
+    "12": "architecture",
+    "13": "requirements",
+    "14": "planning",
+    "15": "planning",
+    "16": "delivery",
+    "17": "delivery",
+    "18": "change-control",
+    "19": "requirements"
+  },
+  "phase_order": [
+    "discovery",
+    "requirements",
+    "architecture",
+    "planning",
+    "delivery",
+    "change-control"
+  ],
+  "edit_verbs": [
+    "sửa",
+    "cập nhật",
+    "viết",
+    "thêm",
+    "sync",
+    "đồng bộ",
+    "review",
+    "update",
+    "edit",
+    "write"
+  ],
+  "breadth_words": [
+    "toàn bộ",
+    "all modules",
+    "sync everything",
+    "đồng bộ hết",
+    "review all"
+  ],
+  "doc_short": {
+    "01": "Vision / Business Case",
+    "02": "Stakeholder Analysis",
+    "03": "BRD",
+    "04": "Business Rules",
+    "05": "Use Cases",
+    "06": "SRS",
+    "07": "Acceptance Criteria",
+    "08": "SAD",
+    "09": "ADR",
+    "10": "Integration Spec",
+    "11": "Data Model",
+    "12": "API Spec",
+    "13": "NFR",
+    "14": "WBS / Estimate",
+    "15": "Project Plan",
+    "16": "Test Strategy",
+    "17": "Deployment Guide",
+    "18": "Change Request Register",
+    "19": "Prototype / Wireframe"
+  },
+  "doc_scope": {
+    "01": "project",
+    "02": "project",
+    "03": "project",
+    "04": "module",
+    "05": "module",
+    "06": "module",
+    "07": "module",
+    "08": "project",
+    "09": "project",
+    "10": "project",
+    "11": "project",
+    "12": "project",
+    "13": "project",
+    "14": "project",
+    "15": "project",
+    "16": "module",
+    "17": "project",
+    "18": "project",
+    "19": "module"
+  },
+  "phase_meta": {
+    "discovery": { "state": "Requirement", "role": "BA" },
+    "requirements": { "state": "Analysis", "role": "BA" },
+    "architecture": { "state": "Design", "role": "SA" },
+    "planning": { "state": "Planning", "role": "PM" },
+    "delivery": { "state": "Development → Testing → Deployment", "role": "DEV / QC / DevOps" },
+    "change-control": { "state": "Maintenance", "role": "Support" }
+  },
+  "roles": [
+    { "id": "BA", "title": "Business Analyst", "phase": "discovery, requirements", "file": "BA.md" },
+    { "id": "PM", "title": "Project Manager", "phase": "planning", "file": "PM.md" },
+    { "id": "SA", "title": "Solution Architect", "phase": "architecture", "file": "SA.md" },
+    { "id": "DEV", "title": "Developer", "phase": "delivery", "file": "DEV.md" },
+    { "id": "QC", "title": "Quality Control", "phase": "delivery", "file": "QC.md" },
+    { "id": "DevOps", "title": "DevOps", "phase": "delivery", "file": "DevOps.md" },
+    { "id": "Support", "title": "Support / Maintenance", "phase": "change-control", "file": "Support.md" }
+  ],
+  "project_modes": {
+    "standard": {
+      "label": "Chuẩn chỉnh",
+      "docs_focus": "all",
+      "gates": { "prereq": "block", "baseline": "deny", "legacy_read": "deny" }
+    },
+    "mvp": {
+      "label": "MVP",
+      "docs_focus": ["01", "03", "06", "07", "09", "17"],
+      "prereq_overrides": { "implement": ["03", "06", "07"], "deploy": ["17"] },
+      "gates": { "prereq": "warn", "baseline": "deny", "legacy_read": "deny" }
+    },
+    "maintain": {
+      "label": "Maintain legacy",
+      "docs_focus": ["04", "08", "09", "10", "11", "12", "17", "18"],
+      "prereq_overrides": { "implement": [], "test": ["07"], "deploy": ["17"] },
+      "gates": { "prereq": "warn", "baseline": "deny", "legacy_read": "allow" }
+    }
+  },
+  "default_project_mode": "standard",
+  "project_surfaces": [
+    { "id": "docs", "label": "Tài liệu", "path": "docs", "default": true, "role": "Hồ sơ baseline (docs, assets, brainstorm)" },
+    { "id": "backend", "label": "Backend", "path": "backend", "default": false, "role": "Gốc code backend — solution do skill scaffold, init không sinh .sln" },
+    { "id": "frontend", "label": "Frontend", "path": "frontend", "default": false, "role": "Gốc code frontend — init không sinh framework" },
+    { "id": "mobile", "label": "Mobile", "path": "mobile", "default": false, "role": "Gốc code mobile — init không sinh framework" },
+    { "id": "autotest", "label": "Autotest", "path": "autotest", "default": false, "role": "Gốc autotest — init không sinh bộ test" }
+  ],
+  "approval_source_kinds": ["docs", "tasks", "code"],
+  "profile_providers": {
+    "docs": ["local", "outline"],
+    "tasks": ["openproject", "lark", "none"],
+    "chat": ["slack", "lark", "none"],
+    "code": ["gitlab", "local"]
+  },
+  "prereq_by_intent": [
+    {
+      "id": "write-requirements",
+      "label": "Phân tích yêu cầu (UC, FR, SRS, AC)",
+      "keywords": ["phan tich yeu cau", "requirement", "use case", "viet srs", "viet fr", "acceptance criteria"],
+      "requires": ["03"]
+    },
+    {
+      "id": "prototype",
+      "label": "Vẽ prototype / wireframe",
+      "keywords": ["prototype", "wireframe", "wire frame", "ve prototype", "mockup", "phac giao dien", "ban ve giao dien"],
+      "requires": ["04"]
+    },
+    {
+      "id": "design-architecture",
+      "label": "Thiết kế kiến trúc / giải pháp / module",
+      "keywords": ["thiet ke kien truc", "thiet ke giai phap", "thiet ke module", "architecture", "thiet ke he thong"],
+      "requires": ["03", "06", "13"]
+    },
+    {
+      "id": "implement",
+      "label": "Viết code / hiện thực module",
+      "keywords": ["viet code", "code module", "hien thuc", "implement", "lap trinh", "dung module", "build module"],
+      "requires": ["06", "07", "08", "11", "12", "19"]
+    },
+    {
+      "id": "test",
+      "label": "Kiểm thử / viết test case",
+      "keywords": ["viet test", "test case", "kiem thu", "test plan", "qc module"],
+      "requires": ["06", "07", "16"]
+    },
+    {
+      "id": "deploy",
+      "label": "Triển khai / go-live / release",
+      "keywords": ["trien khai", "deploy", "go-live", "go live", "release", "phat hanh"],
+      "requires": ["15", "17"]
+    }
+  ],
+  "install_hooks": [
+    { "shim": "token-guard", "slot": "prompt", "cursor_timeout": 5 },
+    { "shim": "auto-routing", "slot": "prompt", "cursor_timeout": 5 },
+    { "shim": "profile-guard", "slot": "prompt", "cursor_timeout": 5 },
+    { "shim": "prereq-gate", "slot": "prompt", "cursor_timeout": 5 },
+    { "shim": "decision-staleness", "slot": "prompt", "cursor_timeout": 10 },
+    { "shim": "baseline-guard", "slot": "pre_tool", "matcher": "Read|Write|Edit" }
+  ]
+}

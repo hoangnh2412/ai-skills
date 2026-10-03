@@ -1,0 +1,40 @@
+{
+  "items": [
+    {
+      "id": "mock-1",
+      "code": "A001",
+      "name": "{Label} mẫu 1",
+      "description": null,
+      "status": 1,
+      "createdAt": "2026-01-05T08:00:00Z",
+      "createdBy": "system",
+      "updatedAt": null,
+      "updatedBy": null
+    },
+    {
+      "id": "mock-2",
+      "code": "A002",
+      "name": "{Label} mẫu 2",
+      "description": "Bản ghi ngừng hoạt động",
+      "status": 0,
+      "createdAt": "2026-01-06T08:00:00Z",
+      "createdBy": "system",
+      "updatedAt": null,
+      "updatedBy": null
+    },
+    {
+      "id": "mock-3",
+      "code": "A003",
+      "name": "{Label} mẫu 3",
+      "description": null,
+      "status": 1,
+      "createdAt": "2026-01-07T08:00:00Z",
+      "createdBy": "system",
+      "updatedAt": null,
+      "updatedBy": null
+    }
+  ],
+  "total": 3,
+  "page": 1,
+  "size": 10
+}

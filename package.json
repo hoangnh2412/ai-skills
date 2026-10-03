@@ -1,0 +1,13 @@
+{
+  "name": "minipower",
+  "private": true,
+  "description": "Minipower — test/gen/link từ gốc repo (logic ở src/router/hooks).",
+  "scripts": {
+    "test": "npm test --prefix src/router/hooks",
+    "gen": "npm run gen --prefix src/router/hooks",
+    "gen:check": "npm run gen:check --prefix src/router/hooks",
+    "link:check": "npm run link:check --prefix src/router/hooks",
+    "trace:check": "npm run trace:check --prefix src/router/hooks",
+    "minipower": "node cli/minipower.mjs"
+  }
+}

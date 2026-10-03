@@ -1,0 +1,146 @@
+[
+  {
+    "pack": "router",
+    "path": "router/",
+    "repo": "any",
+    "kind": "dispatcher",
+    "install": {
+      "default": true
+    }
+  },
+  {
+    "pack": "discovery",
+    "path": "discovery/",
+    "repo": "docs",
+    "kind": "role",
+    "install": {
+      "default": true
+    }
+  },
+  {
+    "pack": "analyst",
+    "path": "analyst/",
+    "repo": "docs",
+    "kind": "role",
+    "install": {
+      "default": true
+    }
+  },
+  {
+    "pack": "architecture",
+    "path": "architecture/",
+    "repo": "docs",
+    "kind": "role",
+    "install": {
+      "default": true
+    }
+  },
+  {
+    "pack": "pm",
+    "path": "pm/",
+    "repo": "any",
+    "kind": "role",
+    "install": {
+      "default": true
+    }
+  },
+  {
+    "pack": "support",
+    "path": "support/",
+    "repo": "any",
+    "kind": "role",
+    "install": {
+      "default": true
+    }
+  },
+  {
+    "pack": "qa",
+    "path": "qa/",
+    "repo": "any",
+    "kind": "role",
+    "install": {
+      "default": true
+    }
+  },
+  {
+    "pack": "presales",
+    "path": "presales/",
+    "repo": "any",
+    "kind": "role",
+    "install": {
+      "default": true
+    }
+  },
+  {
+    "pack": "ops",
+    "path": "ops/",
+    "repo": "any",
+    "kind": "role",
+    "install": {
+      "default": true
+    }
+  },
+  {
+    "pack": "backend",
+    "path": "backend/",
+    "repo": "code",
+    "kind": "role",
+    "install": {
+      "default": true
+    }
+  },
+  {
+    "pack": "frontend",
+    "path": "frontend/",
+    "repo": "code",
+    "kind": "role",
+    "install": {
+      "default": true
+    }
+  },
+  {
+    "pack": "toolbox",
+    "path": "toolbox/",
+    "repo": "minipower                # tác động lên chính repo công cụ, KHÔNG lên repo dự án đích",
+    "kind": "toolbox",
+    "install": {
+      "default": false
+    }
+  },
+  {
+    "pack": "docs",
+    "path": "docs/",
+    "repo": "docs",
+    "kind": "channel",
+    "install": {
+      "default": true
+    }
+  },
+  {
+    "pack": "tasks",
+    "path": "tasks/",
+    "repo": "any",
+    "kind": "channel",
+    "install": {
+      "default": true
+    }
+  },
+  {
+    "pack": "chat",
+    "path": "chat/",
+    "repo": "any",
+    "kind": "channel",
+    "install": {
+      "default": true
+    }
+  },
+  {
+    "pack": "vcs",
+    "path": "vcs/",
+    "repo": "code",
+    "kind": "channel",
+    "install": {
+      "default": true
+    }
+  }
+]

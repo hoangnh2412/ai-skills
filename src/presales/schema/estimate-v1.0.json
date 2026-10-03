@@ -1,0 +1,12 @@
+{
+  "schema": "estimate-v1.0",
+  "required": [
+    "schema",
+    "catalog_id",
+    "catalog_version",
+    "lines",
+    "nfr_lines",
+    "sum_mh"
+  ],
+  "line_required": ["id", "code", "mh", "out_of_scope", "group"]
+}

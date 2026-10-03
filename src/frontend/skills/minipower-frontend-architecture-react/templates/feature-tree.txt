@@ -1,0 +1,37 @@
+{app}/                                  app host hoặc module package
+├── index.html · vite.config.ts · tsconfig.json · eslint.config.js · eslint.architecture.js · .env.example
+└── src/
+    ├── main.tsx                        bootstrap: configureAppHttp → BrowserRouter → PrimeReactProvider → <App/> + <Toaster/>
+    ├── App.tsx                         <Routes>: AdminLayout + route từ src/app/routes/*
+    ├── index.css                       Tailwind layers + @source kit + CSS kit
+    ├── vite-env.d.ts                   khai VITE_*
+    ├── app/                            WIRING HOST — được import react-router, ghép feature
+    │   ├── http.ts                     configurePlatformHttp từ VITE_*
+    │   ├── navigation.ts               mainNav / buildMainNav(grants)
+    │   ├── NavigateBridge.tsx          gắn navigate cho mọi configure*Navigate
+    │   └── routes/{feature}.tsx        <Route> của feature + wrapper useParams
+    └── features/
+        ├── index.ts                    export * from './{feature}'   (host chỉ import qua đây)
+        └── {feature}/                  ── chuẩn feature; folder nào chưa cần thì KHÔNG tạo ──
+            ├── index.ts                public API có chủ đích
+            ├── pages/{Feature}List/    {Feature}ListPage.tsx + index.ts      màn mount vào <Route>
+            ├── pages/{Feature}Form/    {Feature}FormPage.tsx + index.ts
+            ├── pages/{Feature}Detail/  {Feature}DetailPage.tsx + index.ts
+            ├── components/
+            │   ├── {Feature}Table/     {Feature}Table.tsx + index.ts         UI thuần: props vào, callback ra
+            │   ├── {Feature}Form/      {Feature}Form.tsx + index.ts
+            │   ├── {Feature}PageShell/ {Feature}PageShell.tsx + index.ts
+            │   └── fieldStyles.ts      class Tailwind dùng chung trong feature (nội bộ)
+            ├── hooks/                  use{Feature}Form.ts + index.ts
+            ├── services/               req.ts · {feature}.ts (call*) · index.ts
+            ├── validation/             {feature}.ts (schema + defaults + mapper) · index.ts
+            ├── types/                  index.ts (DTO · payload · list params · hằng enum as const)
+            ├── constants/              index.ts                              (chỉ khi feature có hằng số riêng)
+            │   ┄┄ nhánh mock tạm (api › add-mock — DOC-12 có, backend chưa chạy; gỡ trước merge, M1) ┄┄
+            │   mocks/get-{feature}-list.json · constants/fake{Feature}s.ts · services/{feature}Mock.ts
+            ├── routes/                 paths.ts · navigation.ts · index.ts
+            ├── menu/                   items.ts · index.ts
+            ├── permission/             keys.ts · hasPermission.ts · index.ts
+            ├── localization/           vi.ts · en.ts · index.ts
+            ├── theme/                  tokens.ts · index.ts                  (chỉ khi feature có token riêng)
+            └── utils/                  resolveContent.ts · apiData.ts (nội bộ) · index.ts

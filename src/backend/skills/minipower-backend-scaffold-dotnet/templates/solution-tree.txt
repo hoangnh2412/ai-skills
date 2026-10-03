@@ -1,0 +1,51 @@
+{product}-backend/
+├── README.md
+├── docs/
+│   └── Architecture.md
+├── src/
+│   ├── {Product}.sln
+│   ├── {Product}.Domain.Shared/
+│   │   ├── Enums/
+│   │   └── Constants/
+│   ├── {Product}.Domain/
+│   │   ├── Entities/
+│   │   ├── ValueObjects/
+│   │   ├── Repositories/
+│   │   ├── Events/
+│   │   └── DependencyInjection/
+│   │       └── DomainLayerExtension.cs
+│   ├── {Product}.Application/
+│   │   ├── Commands/
+│   │   ├── Queries/
+│   │   ├── DTOs/
+│   │   ├── Interfaces/
+│   │   ├── Features/
+│   │   └── DependencyInjection/
+│   │       └── ApplicationLayerExtension.cs
+│   ├── {Product}.Infrastructure/
+│   │   ├── Persistence/
+│   │   │   ├── Configurations/
+│   │   │   ├── Migrations/
+│   │   │   ├── Repositories/
+│   │   │   └── AppDbContext.cs
+│   │   └── DependencyInjection/
+│   │       └── InfrastructureLayerExtension.cs
+│   └── {Product}.Host/
+│       ├── Program.cs
+│       ├── appsettings.json
+│       ├── appsettings.Development.json
+│       ├── Controllers/
+│       │   └── PingController.cs
+│       ├── Services/
+│       │   ├── EnrichTraceService.cs
+│       │   └── EnrichLogService.cs
+│       ├── DependencyInjection/
+│       │   └── HostLayerExtension.cs
+│       └── Properties/
+│           └── launchSettings.json
+└── tests/
+    ├── {Product}.Domain.Tests/
+    ├── {Product}.Application.Tests/
+    └── {Product}.ArchitectureTests/          # luật kiến trúc — dotnet test -c Debug
+        ├── ArchitectureFixture.cs
+        └── LayerDependencyTests.cs
